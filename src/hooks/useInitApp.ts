@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { toast } from 'react-toastify';
 
 import useAuth from './useAuth';
