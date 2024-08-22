@@ -79,13 +79,7 @@ const CustomModal: FC<CustomModalProps> = (props) => {
   );
 };
 
-export const TelegramModal: FC<CustomModalProps> = memo((props) => {
-  const backButton = useBackButton(true);
-  const mainButton = useMainButton(true);
-
-  console.log('mainButton', mainButton);
-  console.log('backButton', backButton);
-
+export const TelegramModal: FC<CustomModalProps> = (props) => {
   const {
     children,
     header,
@@ -100,6 +94,16 @@ export const TelegramModal: FC<CustomModalProps> = memo((props) => {
     isLoading,
     ...otherProps
   } = props;
+
+  if (!isOpen) {
+    return null;
+  }
+
+  const backButton = useBackButton(true);
+  const mainButton = useMainButton(true);
+
+  console.log('mainButton', mainButton);
+  console.log('backButton', backButton);
 
   const confirmHandler = () => {
     onConfirm && onConfirm();
@@ -197,7 +201,7 @@ export const TelegramModal: FC<CustomModalProps> = memo((props) => {
       </ModalContent>
     </Modal>
   );
-});
+};
 
 export const WebModal: FC<CustomModalProps> = (props) => {
   const {
