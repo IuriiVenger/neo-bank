@@ -14,13 +14,14 @@ type CurrencyListModalProps = {
   isOpen: boolean;
   setIsModalOpen: (isOpen: boolean) => void;
   chains?: API.List.Chains[];
+  title?: string;
   onSelect: (currency: API.List.Crypto | API.List.Fiat | API.List.Chains) => void;
   currencies: API.List.Crypto[] | API.List.Fiat[] | API.List.Chains[];
   activeCurrency: API.List.Crypto | API.List.Fiat | API.List.Chains;
 };
 
 const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
-  const { isOpen, setIsModalOpen, onSelect, currencies, activeCurrency, chains } = props;
+  const { isOpen, setIsModalOpen, onSelect, currencies, activeCurrency, chains, title = 'Select a currency' } = props;
 
   const handleCurrencyClick = (currency: API.List.Crypto | API.List.Fiat | API.List.Chains) => {
     onSelect(currency);
@@ -31,7 +32,7 @@ const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
     isChain(currency) ? currency.id : currency.uuid;
 
   return (
-    <CustomModal bodyClassname="px-0" isOpen={isOpen} onOpenChange={setIsModalOpen} header="Select a currency">
+    <CustomModal bodyClassname="px-0" isOpen={isOpen} onOpenChange={setIsModalOpen} header={title}>
       <>
         {currencies.map((currency, index) => (
           <div

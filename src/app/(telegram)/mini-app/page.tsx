@@ -1,6 +1,6 @@
 'use client';
 
-import MiniApp from '@/components/Mini-App';
+import MiniApp from '@/components/telegram/Mini-App';
 
 const MiniAppPage = () => <MiniApp />;
 

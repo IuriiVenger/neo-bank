@@ -50,6 +50,7 @@ const InfoTab: FC<InfoTabProps> = (props) => {
       {!isFirstTransactionsLoading && data ? (
         <>
           <h3 className="mb-4 text-xl font-bold">Transactions</h3>
+          {!data.length && <p className="text-neutral-500">No transactions to display.</p>}
           <Accordion>
             {data.map((transaction) => (
               <AccordionItem

@@ -40,10 +40,9 @@ const MainInformation: FC<MainInformationProps> = (props) => {
       </div>
       <div className="grid  grid-cols-4 justify-center  gap-1 lg:justify-start">
         {actionButtons.map((button, index) => (
-          <div className="flex flex-col items-center justify-center gap-2">
+          <div className="flex flex-col items-center justify-center gap-2" key={index}>
             <Button
               isIconOnly
-              key={index}
               color="primary"
               className={cn(
                 'bg-inherit lg:w-fit',

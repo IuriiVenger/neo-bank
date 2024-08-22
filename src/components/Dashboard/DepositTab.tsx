@@ -44,7 +44,6 @@ const DepositTab: FC<DepositTabProps> = (props) => {
   } = props;
 
   const { setAmount, amount, onrampCalcData, isOnrampCalcPending } = externalCalcData;
-  console.log(whiteLabelConfig);
 
   const [isFiatModalOpen, setIsFiatModalOpen] = useState(false);
   const [isCryptoModalOpen, setIsCryptoModalOpen] = useState(false);
@@ -194,6 +193,7 @@ const DepositTab: FC<DepositTabProps> = (props) => {
         activeCurrency={selectedChain}
         currencies={chainList}
         onSelect={selectCurrency}
+        title="Select network"
       />
     </div>
   );

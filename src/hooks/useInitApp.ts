@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+import { toast } from 'react-toastify';
+
 import useAuth from './useAuth';
 
 import { exchange } from '@/api/exchange';
@@ -26,23 +29,37 @@ const useInitApp = (dispatch: AppDispatch) => {
   const isWebEnviroment = appEnviroment === AppEnviroment.WEB;
 
   const initWebApp = async () => {
-    const [bins, fiats, crypto, chains, fiatExchangeRate] = await Promise.all([
+    const [binsData, fiatsData, cryptoData, chainsData, fiatExchangeRateData] = await Promise.allSettled([
       vcards.bins.getAll(),
       list.fiats.getAll(),
       list.crypto.getAll(),
       list.chains.getAll(),
       exchange.fiat2crypto.getByUuid(defaultCurrency.fiat.uuid),
-    ]);
-    dispatch(setBins(bins));
-    dispatch(setFiats(fiats));
-    dispatch(setCrypto(crypto));
-    dispatch(setChains(chains));
-    dispatch(setFiatExchangeRate(fiatExchangeRate));
+    ]).then((results) => {
+      results.forEach((result) => {
+        if (result.status === 'rejected') {
+          toast.error(`Error during app initialization in request ${result.reason.config.url}`);
+          console.error('Error during initWebApp:', result.reason);
+        }
+      });
 
-    const fiatExchangeRateCryptoUuid = fiatExchangeRate.map((item) => item.crypto_uuid);
-    const availableCrypto = crypto.filter((item) => fiatExchangeRateCryptoUuid.includes(item.uuid));
+      return results;
+    });
 
-    if (!availableCrypto.find((crypto_item) => crypto_item.uuid === defaultCurrency.crypto.uuid)) {
+    binsData.status === 'fulfilled' && dispatch(setBins(binsData.value));
+    fiatsData.status === 'fulfilled' && dispatch(setFiats(fiatsData.value));
+    cryptoData.status === 'fulfilled' && dispatch(setCrypto(cryptoData.value));
+    chainsData.status === 'fulfilled' && dispatch(setChains(chainsData.value));
+    fiatExchangeRateData.status === 'fulfilled' && dispatch(setFiatExchangeRate(fiatExchangeRateData.value));
+
+    const fiatExchangeRateCryptoUuid =
+      fiatExchangeRateData.status === 'fulfilled' && fiatExchangeRateData.value.map((item) => item.crypto_uuid);
+    const availableCrypto =
+      cryptoData.status === 'fulfilled' &&
+      fiatExchangeRateCryptoUuid &&
+      cryptoData.value.filter((item) => fiatExchangeRateCryptoUuid.includes(item.uuid));
+
+    if (availableCrypto && !availableCrypto.find((crypto_item) => crypto_item.uuid === defaultCurrency.crypto.uuid)) {
       dispatch(setSelectedCrypto(availableCrypto[0]));
     }
   };
@@ -50,11 +67,20 @@ const useInitApp = (dispatch: AppDispatch) => {
   const initApp = async () => {
     const isAuthTokensExist = localStorage.getItem('access_token');
 
-    await initWebApp();
-    isAuthTokensExist && (await initUser());
+    try {
+      await initWebApp();
+    } catch (error) {
+      toast.error('Error during app initialization');
+      console.error('Error during initWebApp:', error);
+    } finally {
+      dispatch(setWebAppInitialized(true));
+    }
 
-    dispatch(setWebAppInitialized(true));
-    isWebEnviroment && dispatch(setAppFullInitialized(true));
+    try {
+      isAuthTokensExist && (await initUser());
+    } finally {
+      isWebEnviroment && dispatch(setAppFullInitialized(true));
+    }
   };
 
   return { initApp };

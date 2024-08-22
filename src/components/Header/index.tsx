@@ -73,12 +73,12 @@ const Header: FC = () => {
       </NavbarContent>
       <NavbarContent className="pr-3 md:hidden" justify="center">
         <NavbarBrand>
-          <Image src={headerLogo} alt="Logo" height={24} />
+          <Image src={headerLogo} alt="Logo" height={48} className="h-6 w-fit" />
         </NavbarBrand>
       </NavbarContent>
       <NavbarContent className="hidden flex-grow gap-4 md:flex" justify="center">
         <Link className="flex-shrink-0" href="/">
-          <Image src={headerLogo} alt="Logo" height={24} />
+          <Image src={headerLogo} alt="Logo" height={48} className="h-6" />
         </Link>
 
         <div className="flex w-full  justify-center gap-8">

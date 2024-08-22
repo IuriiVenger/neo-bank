@@ -4,11 +4,13 @@ import { FC } from 'react';
 
 import { FaArrowRightArrowLeft, FaCircleCheck, FaCircleXmark, FaClock } from 'react-icons/fa6';
 
+import TransactionDetails from './TransactionDetails';
+
 import { API } from '@/api/types';
 import Loader from '@/components/ui/Loader';
 import { CardTransactionDirection, CardTransationStatus, RequestStatus } from '@/constants';
 import { StoreDataWithStatusAndMeta } from '@/store/types';
-import { getDate, getDateAndTime } from '@/utils/converters';
+import { getDate } from '@/utils/converters';
 
 type CardTransactionTableProps = {
   className?: string;
@@ -79,6 +81,7 @@ const CardTransactionTable: FC<CardTransactionTableProps> = (props) => {
       <h3 className="text-xl font-bold">Transactions</h3>
       {!isFirstTransactionsLoading && data ? (
         <>
+          {!data.length && <p className="text-neutral-500">No transactions to display.</p>}
           <Accordion>
             {data.map((transaction) => {
               const { transactionColorClass, transactionSymbol, transactionIcon } = getTransactionData(transaction);
@@ -98,23 +101,7 @@ const CardTransactionTable: FC<CardTransactionTableProps> = (props) => {
                     </p>
                   }
                 >
-                  <div className="pl-2">
-                    <h4 className="font-meidum mb-4 text-sm">Transaction details</h4>
-                    <div className="grid grid-cols-[1fr,4fr] gap-x-8 gap-y-2 px-2 pb-4 text-xs text-neutral-500">
-                      <p>ID:</p>
-                      <p>{transaction.id}</p>
-                      <p>DATE:</p>
-                      <p>{getDateAndTime(transaction.createdAt)}</p>
-                      <p>TYPE:</p>
-                      <p>{transaction.type}</p>
-                      <p>STATUS:</p>
-                      <p>{transaction.status}</p>
-                      <p>DIRECTION:</p>
-                      <p>{transaction.direction}</p>
-                      <p>DESCRIPTION:</p>
-                      <p>{transaction.description}</p>
-                    </div>
-                  </div>
+                  <TransactionDetails transaction={transaction} className="pl-2" />
                 </AccordionItem>
               );
             })}

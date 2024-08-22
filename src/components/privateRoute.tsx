@@ -31,7 +31,7 @@ const privateRoute = (Component: FC) => {
       return <Component {...props} />;
     }
 
-    return 'Something went wrong';
+    return null;
   };
 
   return IsAuth;

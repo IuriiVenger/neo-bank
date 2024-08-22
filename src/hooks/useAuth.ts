@@ -21,7 +21,7 @@ const useAuth = (dispatch: AppDispatch) => {
   const [isOtpRequested, setIsOtpRequested] = useState(false);
 
   const router = useRouter();
-  const { loadWallets, unloadWallets } = useWallet();
+  const { initUserWallets, unloadWallets } = useWallet();
 
   const setLoadingStatus = (status: RequestStatus) => {
     dispatch(setUserLoadingStatus(status));
@@ -38,7 +38,7 @@ const useAuth = (dispatch: AppDispatch) => {
   };
 
   const loadUserContent = async () => {
-    await Promise.all([loadUserData(), loadWallets(dispatch)]);
+    await Promise.all([loadUserData(), initUserWallets(dispatch)]);
   };
 
   const clearUserContent = async () => {

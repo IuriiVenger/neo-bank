@@ -66,7 +66,7 @@ const CryptoForm: FC<CryptoFormProps> = (props) => {
         <h3 className="text-xl font-medium lg:text-2.5xl">
           Buy {selectedCrypto.name} {selectedChainName}
         </h3>
-        <Image src={logo} alt="logo" height={48} />
+        <Image src={logo} alt="logo" height={96} className="h-12" />
       </div>
 
       <div className="flex flex-col gap-3">
@@ -100,8 +100,8 @@ const CryptoForm: FC<CryptoFormProps> = (props) => {
         </Button>
 
         <div className="flex gap-2">
-          <Image src={visa} alt="visa" height={16} />
-          <Image src={mastercard} alt="mastercard" height={16} />
+          <Image src={visa} alt="visa" height={32} className="h-4" />
+          <Image src={mastercard} alt="mastercard" height={32} className="h-4" />
         </div>
       </div>
     </Card>

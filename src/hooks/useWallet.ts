@@ -1,20 +1,32 @@
 import { API } from '@/api/types';
 import { wallets } from '@/api/wallets';
-import { setSelectedWallet, setUserWallets } from '@/store/slices/finance';
+import { WalletTypeValues } from '@/constants';
+import { loadSelectedWallet, setSelectedWallet, setUserWallets } from '@/store/slices/finance';
 import { AppDispatch } from '@/store/types';
 
 const useWallet = () => {
+  const createWallet = async (dispatch: AppDispatch) => {
+    await wallets.create(WalletTypeValues.PERSONAL);
+
+    const newUserWallets = await wallets.getAll();
+    const lastWallet = newUserWallets[newUserWallets.length - 1];
+    dispatch(setUserWallets(newUserWallets));
+    dispatch(loadSelectedWallet(lastWallet.uuid));
+  };
   const createWalletAddress = async (data: API.Wallets.WalletChain.Request) => wallets.createAddress(data);
 
   const getWalletAddress = async (chain: number, wallet_uuid: string) => wallets.getAddress(chain, wallet_uuid);
 
-  const loadWallets = async (dispatch: AppDispatch) => {
+  const initUserWallets = async (dispatch: AppDispatch) => {
     const userWallets = await wallets.getAll();
-    dispatch(setUserWallets(userWallets));
+
     if (userWallets.length) {
       const activeWalletUuid = userWallets[0].uuid;
       const activeWallet = await wallets.getByUuid(activeWalletUuid);
       dispatch(setSelectedWallet(activeWallet));
+      dispatch(setUserWallets(userWallets));
+    } else {
+      await createWallet(dispatch);
     }
   };
 
@@ -23,7 +35,7 @@ const useWallet = () => {
     dispatch(setSelectedWallet(null));
   };
 
-  return { createWalletAddress, getWalletAddress, loadWallets, unloadWallets };
+  return { createWalletAddress, getWalletAddress, initUserWallets, unloadWallets };
 };
 
 export default useWallet;

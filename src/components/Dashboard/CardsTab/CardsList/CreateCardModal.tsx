@@ -46,7 +46,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
 
   const [isCryptoModalOpen, setIsCryptoModalOpen] = useState(false);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
-  const [activeBin, setActiveBin] = useState<API.Cards.Bin>(bins[0]);
+  const [activeBin, setActiveBin] = useState<API.Cards.Bin | undefined>(bins[0]);
   const [cardName, setCardName] = useState<string>('');
   const [topUpConfirmationText, setTopUpConfirmationText] = useState<string | null>(null);
 
@@ -80,7 +80,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   const openCryptoModal = () => setIsCryptoModalOpen(true);
 
   const createCardHandler = async () => {
-    if (!selectedWallet.data) {
+    if (!selectedWallet.data || !activeBin) {
       return;
     }
 
@@ -130,6 +130,9 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   };
 
   const setCardFiatCurrency = () => {
+    if (!activeBin) {
+      return;
+    }
     const cardCurrency = fiatList.find((fiat) => fiat.code === activeBin.currencyCode);
 
     if (cardCurrency) {
@@ -205,7 +208,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
       }
     >
       <div className={cn('flex flex-col gap-4', className)}>
-        <Select label="Select BIN" onChange={handleSelectChange} selectedKeys={[activeBin.code]}>
+        <Select label="Select BIN" onChange={handleSelectChange} selectedKeys={activeBin && [activeBin.code]}>
           {bins?.map((bin) => (
             <SelectItem
               key={bin.code}

@@ -16,6 +16,7 @@ type ExternalWithdrawInputProps = {
   selectedCrypto: API.List.Crypto;
   isCalculating?: boolean;
   label?: string;
+  negativeValue?: boolean;
 };
 
 const ExternalWithdrawInput: FC<ExternalWithdrawInputProps> = (props) => {
@@ -28,8 +29,16 @@ const ExternalWithdrawInput: FC<ExternalWithdrawInputProps> = (props) => {
     netAmount,
     commission,
     label = 'Amount to withdraw',
+    negativeValue = false,
   } = props;
-  const handleAmountInput = (e: React.ChangeEvent<HTMLInputElement>) => setAmount(Number(e.target.value));
+  const handleAmountInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value);
+    if (value < 0 && !negativeValue) {
+      setAmount(0);
+      return;
+    }
+    setAmount(value);
+  };
   const prettyCommission = commission ? commission.toFixed(2) : '';
   return (
     <Card className={cn(className, 'border-1 shadow-none')}>

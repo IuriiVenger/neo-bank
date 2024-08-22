@@ -45,7 +45,7 @@ const cardDetailRequests = {
 };
 
 const CardDetail: FC<CardDetailProps> = (props) => {
-  const { card, setCardTabMode, getSensitiveData, updateCard } = props;
+  const { card, setCardTabMode, getSensitiveData, updateCard, getOTP } = props;
 
   const [sensitiveData, setSensitiveData] = useState<API.Cards.SensitiveData | null>(null);
   const [isSensitiveDataModalOpen, setIsSensitiveDataModalOpen] = useState(false);
@@ -227,6 +227,7 @@ const CardDetail: FC<CardDetailProps> = (props) => {
         sensitiveData={sensitiveData}
         isOpen={isSensitiveDataModalOpen}
         setIsModalOpen={setIsSensitiveDataModalOpen}
+        {...props}
       />
       <CardLimitsModal
         limits={card.limits}
@@ -247,7 +248,12 @@ const CardDetail: FC<CardDetailProps> = (props) => {
         {...confirmationModalText}
       />
 
-      <AddToWalletModal isOpen={isAddToWalletModalOpen} setIsModalOpen={setIsAddToWalletModalOpen} />
+      <AddToWalletModal
+        isOpen={isAddToWalletModalOpen}
+        setIsModalOpen={setIsAddToWalletModalOpen}
+        getOTP={getOTP}
+        cardId={card.id}
+      />
     </section>
   );
 };

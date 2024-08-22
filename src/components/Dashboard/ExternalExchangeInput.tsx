@@ -23,6 +23,7 @@ type ExchangeFormProps = {
   disableLabel?: boolean;
   externalLabel?: string;
   externalLabelClassName?: string;
+  negativeValue?: boolean;
 };
 
 const ExternalExhangeInput: FC<ExchangeFormProps> = (props) => {
@@ -39,6 +40,7 @@ const ExternalExhangeInput: FC<ExchangeFormProps> = (props) => {
     disableLabel,
     externalLabel,
     externalLabelClassName,
+    negativeValue = false,
   } = props;
 
   const buyingValue = useMemo(() => {
@@ -48,7 +50,14 @@ const ExternalExhangeInput: FC<ExchangeFormProps> = (props) => {
     return calcData.type === CalcType.OFFRAMP ? calcData.amount_fiat : calcData.amount_crypto;
   }, [calcData]);
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => setSellValue && setSellValue(Number(e.target.value));
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value);
+    if (value < 0 && !negativeValue) {
+      setSellValue(0);
+      return;
+    }
+    setSellValue(value);
+  };
   const prettyBuyingValue = roundToDecimals(buyingValue, 2);
   const prettyFee = roundToDecimals(calcData?.commission || 0, 2);
 

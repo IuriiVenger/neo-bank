@@ -3,7 +3,7 @@ import { FC, FocusEvent, useState } from 'react';
 
 const CustomInput: FC<InputProps> = (props) => {
   const [initialWindowScroll, setInitialWindowScroll] = useState(0);
-  const { onBlur, onFocus } = props;
+  const { onBlur, onFocus, ...otherProps } = props;
 
   const handleFocus = (e: FocusEvent<Element, Element>) => {
     setInitialWindowScroll(window.scrollY);
@@ -21,7 +21,7 @@ const CustomInput: FC<InputProps> = (props) => {
     }
   };
 
-  return <Input onBlur={handleBlur} onFocus={handleFocus} onBl {...props} />;
+  return <Input onBlur={handleBlur} onFocus={handleFocus} {...otherProps} />;
 };
 
 export default CustomInput;

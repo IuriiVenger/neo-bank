@@ -18,9 +18,9 @@ export const BrandLoader: FC = () => (
   <div className="flex w-full flex-col items-center justify-center">
     <Image
       src={logo}
-      height={64}
+      height={128}
       alt="logo"
-      className="absolute mb-6 animate-[pulse_1s_cubic-bezier(0.4,0,0.6,1)_infinite]"
+      className="absolute mb-6 h-16 animate-[pulse_1s_cubic-bezier(0.4,0,0.6,1)_infinite]"
     />
   </div>
 );

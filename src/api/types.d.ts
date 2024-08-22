@@ -310,6 +310,13 @@ export namespace API {
       name_on_card: string;
     }
 
+    export interface OTP {
+      created_at: number;
+      internal_card_id: string;
+      otp: string;
+      valid_to: number;
+    }
+
     export namespace Create {
       export interface Request {
         wallet_uuid: string;

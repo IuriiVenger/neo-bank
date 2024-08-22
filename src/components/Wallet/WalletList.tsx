@@ -14,17 +14,13 @@ import { getWalletTypeLabel } from '@/utils/helpers';
 
 type WalletMenuProps = {
   wallets: API.Wallets.Wallet[];
-  walletTypes: ValueWithLabel[];
   onSelect: (wallet_uuid: string) => void;
   activeWallet: API.Wallets.Wallet | null;
   className?: string;
-  createWallet: (wallet_type: WalletTypeValues) => Promise<void>;
+  openCreateWalletModal: () => void;
 };
 
-const WalletList: FC<WalletMenuProps> = ({ wallets, onSelect, activeWallet, className, createWallet, walletTypes }) => {
-  const [isCreateWalletModalOpen, setIsCreateWalletModalOpen] = useState(false);
-
-  const openCreateWalletModal = () => setIsCreateWalletModalOpen(true);
+const WalletList: FC<WalletMenuProps> = ({ wallets, onSelect, activeWallet, className, openCreateWalletModal }) => {
   const handleSelectWallet = (e: React.ChangeEvent<HTMLSelectElement>) => onSelect(e.target.value);
 
   return (
@@ -86,12 +82,6 @@ const WalletList: FC<WalletMenuProps> = ({ wallets, onSelect, activeWallet, clas
       >
         Create new wallet <CiCirclePlus />
       </Button>
-      <CreateWalletModal
-        isOpen={isCreateWalletModalOpen}
-        setIsModalOpen={setIsCreateWalletModalOpen}
-        onConfirm={createWallet}
-        walletTypes={walletTypes}
-      />
     </section>
   );
 };
