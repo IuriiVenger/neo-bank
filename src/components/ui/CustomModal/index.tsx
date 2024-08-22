@@ -1,7 +1,7 @@
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalProps } from '@nextui-org/react';
 import { useBackButton, useMainButton } from '@telegram-apps/sdk-react';
 import cn from 'classnames';
-import { FC, ReactNode, useEffect } from 'react';
+import { FC, memo, ReactNode, useEffect } from 'react';
 
 import { framerMotionAnimations } from '@/config/animations';
 import { AppEnviroment } from '@/constants';
@@ -79,7 +79,7 @@ const CustomModal: FC<CustomModalProps> = (props) => {
   );
 };
 
-export const TelegramModal: FC<CustomModalProps> = (props) => {
+export const TelegramModal: FC<CustomModalProps> = memo((props) => {
   const backButton = useBackButton(true);
   const mainButton = useMainButton(true);
 
@@ -189,7 +189,7 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
       </ModalContent>
     </Modal>
   );
-};
+});
 
 export const WebModal: FC<CustomModalProps> = (props) => {
   const {
