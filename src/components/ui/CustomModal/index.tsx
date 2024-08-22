@@ -123,14 +123,17 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
       backButton.on('click', closeModal);
       if (!hideConfirmButton) {
         mainButton.show();
+        onConfirm && mainButton.on('click', onConfirm);
         onConfirmButtonTextChanged();
         console.log('mainButtonShow');
       }
     } else {
       backButton.hide();
       console.log('backButtonHide');
+      backButton.off('click', closeModal);
       if (!hideConfirmButton) {
         mainButton.hide();
+        onConfirm && mainButton.off('click', onConfirm);
         console.log('mainButtonHide');
       }
     }
