@@ -149,6 +149,7 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
 
   const onOnConfirmChanged = () => {
     if (!mainButton || !isOpen) return;
+    mainButton.off('click', confirmHandler);
     mainButton.on('click', confirmHandler);
   };
 
@@ -191,7 +192,7 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
   }, [isLoading]);
 
   return (
-    <Modal isOpen={isOpen} disableAnimation onOpenChange={onOpenChange} {...otherProps}>
+    <Modal isOpen={isOpen} closeButton={false} disableAnimation onOpenChange={onOpenChange} {...otherProps}>
       <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:static md:max-h-[90vh]', contentClassName)}>
         {!!header && <ModalHeader>{header}</ModalHeader>}
         <ModalBody className={cn('pb-10 shadow-inner sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>
