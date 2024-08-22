@@ -95,12 +95,8 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
     ...otherProps
   } = props;
 
-  if (!isOpen) {
-    return null;
-  }
-
-  const backButton = useBackButton(true);
-  const mainButton = useMainButton(true);
+  const backButton = useBackButton();
+  const mainButton = useMainButton();
 
   console.log('mainButton', mainButton);
   console.log('backButton', backButton);
