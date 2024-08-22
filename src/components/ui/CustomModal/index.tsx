@@ -181,9 +181,9 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
     onConfirmButtonDisabledChanged();
   }, [confirmButtonDisabled]);
 
-  useEffect(() => {
-    onOnConfirmChanged();
-  }, [onConfirm]);
+  // useEffect(() => {
+  //   onOnConfirmChanged();
+  // }, [onConfirm]);
 
   useEffect(() => {
     onIsLoadingChanged();
