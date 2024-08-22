@@ -116,6 +116,24 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
     console.log('set main button text', confirmButtonText);
   };
 
+  const onConfirmButtonDisabledChanged = () => {
+    if (!mainButton || !isOpen) return;
+    console.log('confirmButtonDisabledChanged', confirmButtonDisabled);
+    confirmButtonDisabled ? mainButton.disable() : mainButton.enable();
+  };
+
+  const onIsLoadingChanged = () => {
+    if (!mainButton || !isOpen) return;
+    console.log('onIsLoadingChanged', isLoading);
+    isLoading ? mainButton.showLoader() : mainButton.hideLoader();
+  };
+
+  const onOnConfirmChanged = () => {
+    if (!mainButton || !isOpen) return;
+    mainButton.off('click', confirmHandler);
+    mainButton.on('click', confirmHandler);
+  };
+
   const onOpenChangeHandler = () => {
     if (!backButton || !mainButton) return;
 
@@ -125,8 +143,9 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
       backButton.on('click', closeModal);
       if (!hideConfirmButton) {
         mainButton.show();
-        mainButton.on('click', confirmHandler);
+        onOnConfirmChanged();
         onConfirmButtonTextChanged();
+        onConfirmButtonDisabledChanged();
         console.log('mainButtonShow');
       }
     } else {
@@ -139,24 +158,6 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
         console.log('mainButtonHide');
       }
     }
-  };
-
-  const onConfirmButtonDisabledChanged = () => {
-    if (!mainButton || !isOpen) return;
-    console.log('confirmButtonDisabledChanged', confirmButtonDisabled);
-    confirmButtonDisabled ? mainButton.disable() : mainButton.enable();
-  };
-
-  const onOnConfirmChanged = () => {
-    if (!mainButton || !isOpen) return;
-    mainButton.off('click', confirmHandler);
-    mainButton.on('click', confirmHandler);
-  };
-
-  const onIsLoadingChanged = () => {
-    if (!mainButton || !isOpen) return;
-    console.log('onIsLoadingChanged', isLoading);
-    isLoading ? mainButton.showLoader() : mainButton.hideLoader();
   };
 
   useEffect(() => {
