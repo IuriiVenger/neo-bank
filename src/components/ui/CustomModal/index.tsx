@@ -82,6 +82,9 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
   const backButton = useBackButton(true);
   const mainButton = useMainButton(true);
 
+  console.log('mainButton', mainButton);
+  console.log('backButton', backButton);
+
   const {
     children,
     header,
@@ -105,11 +108,19 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
 
     if (isOpen) {
       backButton.show();
+      console.log('backButtonShow');
       backButton.on('click', closeModal);
-      !hideConfirmButton && mainButton.show();
+      if (!hideConfirmButton) {
+        mainButton.show();
+        console.log('mainButtonShow');
+      }
     } else {
       backButton.hide();
-      !hideConfirmButton && mainButton.hide();
+      console.log('backButtonHide');
+      if (!hideConfirmButton) {
+        mainButton.hide();
+        console.log('mainButtonHide');
+      }
     }
   };
 
