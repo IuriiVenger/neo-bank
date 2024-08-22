@@ -149,8 +149,6 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
 
   const onOnConfirmChanged = () => {
     if (!mainButton || !isOpen) return;
-    console.log('onConfirmChanger', onConfirm);
-    mainButton.off('click', confirmHandler);
     mainButton.on('click', confirmHandler);
   };
 
