@@ -18,6 +18,7 @@ type CustomModalProps = ModalProps & {
   confirmButtonDisabled?: boolean;
   onConfirm?: () => void;
   hideConfirmButton?: boolean;
+  isLoading?: boolean;
 };
 
 const CustomModal: FC<CustomModalProps> = (props) => {
@@ -96,6 +97,7 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
     confirmButtonText,
     confirmButtonDisabled,
     hideConfirmButton,
+    isLoading,
     ...otherProps
   } = props;
 
@@ -147,6 +149,11 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
     });
   };
 
+  const onIsLoadingChanged = () => {
+    if (!mainButton) return;
+    isLoading ? mainButton.showLoader() : mainButton.hideLoader();
+  };
+
   useEffect(() => {
     onOpenChangeHandler();
   }, [isOpen]);
@@ -162,6 +169,10 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
   useEffect(() => {
     onOnConfirmChanged();
   }, [onConfirm]);
+
+  useEffect(() => {
+    onIsLoadingChanged();
+  }, [isLoading]);
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} {...otherProps}>
@@ -185,6 +196,7 @@ export const WebModal: FC<CustomModalProps> = (props) => {
     onOpenChange,
     onConfirm,
     hideConfirmButton,
+    isLoading,
     ...otherProps
   } = props;
 
@@ -206,7 +218,13 @@ export const WebModal: FC<CustomModalProps> = (props) => {
           }}
         >
           {!hideConfirmButton && (
-            <Button isDisabled={confirmButtonDisabled} color="primary" radius="md" onClick={onConfirm}>
+            <Button
+              isDisabled={confirmButtonDisabled}
+              isLoading={isLoading}
+              color="primary"
+              radius="md"
+              onClick={onConfirm}
+            >
               {confirmButtonText}
             </Button>
           )}
