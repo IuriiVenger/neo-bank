@@ -136,7 +136,6 @@ export const TelegramModal: FC<CustomModalProps> = memo((props) => {
       if (!hideConfirmButton) {
         mainButton.off('click', confirmHandler);
         mainButton.hide();
-
         console.log('mainButtonHide');
       }
     }
@@ -163,6 +162,15 @@ export const TelegramModal: FC<CustomModalProps> = memo((props) => {
 
   useEffect(() => {
     onOpenChangeHandler();
+
+    return () => {
+      if (backButton) {
+        backButton.off('click', closeModal);
+      }
+      if (mainButton) {
+        mainButton.off('click', confirmHandler);
+      }
+    };
   }, [isOpen]);
 
   useEffect(() => {
