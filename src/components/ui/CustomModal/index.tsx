@@ -99,6 +99,8 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
     ...otherProps
   } = props;
 
+  console.log(confirmButtonText);
+
   const closeModal = () => {
     onOpenChange && onOpenChange(false);
   };
