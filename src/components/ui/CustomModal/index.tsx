@@ -106,12 +106,9 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
     if (isOpen) {
       backButton.show();
       backButton.on('click', closeModal);
-
       !hideConfirmButton && mainButton.show();
-      onConfirm && mainButton.on('click', onConfirm);
     } else {
       backButton.hide();
-
       !hideConfirmButton && mainButton.hide();
     }
   };
@@ -126,6 +123,14 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
     confirmButtonDisabled ? mainButton.disable() : mainButton.enable();
   };
 
+  const onOnConfirmChanged = () => {
+    if (!mainButton) return;
+
+    mainButton.on('click', () => {
+      onConfirm && onConfirm();
+    });
+  };
+
   useEffect(() => {
     onOpenChangeHandler();
   }, [isOpen]);
@@ -137,6 +142,10 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
   useEffect(() => {
     onConfirmButtonDisabledChanged();
   }, [confirmButtonDisabled]);
+
+  useEffect(() => {
+    onOnConfirmChanged();
+  }, [onConfirm]);
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} {...otherProps}>
