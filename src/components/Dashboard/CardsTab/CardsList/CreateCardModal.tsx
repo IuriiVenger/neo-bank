@@ -15,7 +15,7 @@ import SelectCurrency from '@/components/Currency/SelectCurrency';
 import ConfirmModal from '@/components/modals/ConfirmModal';
 import CurrencyListModal from '@/components/modals/CurrencyListModal';
 import CustomInput from '@/components/ui/CustomInput';
-import CustomModal from '@/components/ui/CustomModal';
+import CustomModal, { NewCustomModal } from '@/components/ui/CustomModal';
 import { isCrypto, isFiat } from '@/utils/financial';
 
 type CreateCardModalProps = CardsListProps & {
@@ -64,7 +64,8 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   const telegramPopup = isTelegramEnviroment && usePopup(true);
 
   const isAmountEnough = selectedCryptoAvavilibleToWithdraw && selectedCryptoAvavilibleToWithdraw >= amount;
-  const isTopUpAvailable = !!selectedCrypto && !!selectedFiat && !!selectedWallet.data && !!amount && isAmountEnough;
+  const isTopUpAvailable =
+    !!selectedCrypto && !!selectedFiat && !!selectedWallet.data && !!amount && !!activeBin && isAmountEnough;
 
   const mainButtonTitle = isAmountEnough ? 'Create card' : 'Not enough funds';
 
@@ -156,56 +157,17 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     setAmount(0);
   }, [activeBin]);
 
-  useEffect(() => {
-    if (backButton) {
-      isOpen && backButton.show();
-      backButton.on('click', () => {
-        closeModal();
-      });
-    }
-
-    if (mainButton && isOpen) {
-      mainButton.show();
-      mainButton.on('click', () => {
-        openConfirmationModal();
-      });
-
-      mainButton.setText(mainButtonTitle);
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
-    mainButton && mainButton.setText(mainButtonTitle);
-  }, [mainButtonTitle]);
-
-  useEffect(() => {
-    if (!mainButton) return;
-
-    isTopUpAvailable ? mainButton.enable() : mainButton.disable();
-  }, [isTopUpAvailable]);
-
   return (
-    <CustomModal
+    <NewCustomModal
       isOpen={isOpen}
       onOpenChange={setIsModalOpen}
       hideCloseButton
       backdrop="opaque"
       scrollBehavior="inside"
       header="Create card"
-      footer={
-        <>
-          {!mainButton && (
-            <Button isDisabled={!isTopUpAvailable} color="primary" radius="md" onClick={openConfirmationModal}>
-              {mainButtonTitle}
-            </Button>
-          )}
-          {!backButton && (
-            <Button onClick={closeModal} className="w-full" color="primary" variant="bordered">
-              Close
-            </Button>
-          )}
-        </>
-      }
+      confirmButtonText={mainButtonTitle}
+      confirmButtonDisabled={!isTopUpAvailable}
+      onConfirm={openConfirmationModal}
     >
       <div className={cn('flex flex-col gap-4', className)}>
         <Select label="Select BIN" onChange={handleSelectChange} selectedKeys={activeBin && [activeBin.code]}>
@@ -264,7 +226,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
           confirmText={topUpConfirmationText}
         />
       </div>
-    </CustomModal>
+    </NewCustomModal>
   );
 };
 
