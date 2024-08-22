@@ -144,17 +144,20 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
 
   const onConfirmButtonDisabledChanged = () => {
     if (!mainButton || !isOpen) return;
+    console.log('confirmButtonDisabledChanged', confirmButtonDisabled);
     confirmButtonDisabled ? mainButton.disable() : mainButton.enable();
   };
 
   const onOnConfirmChanged = () => {
     if (!mainButton || !isOpen) return;
+    console.log('onConfirmChanger', onConfirm);
     mainButton.off('click', confirmHandler);
     mainButton.on('click', confirmHandler);
   };
 
   const onIsLoadingChanged = () => {
     if (!mainButton || !isOpen) return;
+    console.log('onIsLoadingChanged', isLoading);
     isLoading ? mainButton.showLoader() : mainButton.hideLoader();
   };
 
