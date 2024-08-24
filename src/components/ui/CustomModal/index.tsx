@@ -1,7 +1,7 @@
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalProps } from '@nextui-org/react';
 import { useBackButton, useMainButton } from '@telegram-apps/sdk-react';
 import cn from 'classnames';
-import { FC, memo, ReactNode, useEffect } from 'react';
+import { FC, ReactNode, useEffect } from 'react';
 
 import { framerMotionAnimations } from '@/config/animations';
 import { AppEnviroment } from '@/constants';
@@ -9,17 +9,26 @@ import useBreakpoints from '@/hooks/useBreakpoints';
 import { useAppSelector } from '@/store';
 import { selectConfig } from '@/store/selectors';
 
+type HiddenConfirmButtonProps = {
+  hideConfirmButton: true;
+  onConfirm?: never;
+  confirmButtonText?: never;
+};
+
+type VisibleConfirmButtonProps = {
+  hideConfirmButton?: false;
+  onConfirm: () => void;
+  confirmButtonText: string;
+};
+
 type CustomModalProps = ModalProps & {
   header?: ReactNode | string;
   footer?: ReactNode | string;
   contentClassName?: string;
   bodyClassname?: string;
-  confirmButtonText?: string;
   confirmButtonDisabled?: boolean;
-  onConfirm?: () => void;
-  hideConfirmButton?: boolean;
   isLoading?: boolean;
-};
+} & (HiddenConfirmButtonProps | VisibleConfirmButtonProps);
 
 const CustomModal: FC<CustomModalProps> = (props) => {
   const { mdBreakpoint } = useBreakpoints();
@@ -209,6 +218,7 @@ export const WebModal: FC<CustomModalProps> = (props) => {
     onConfirm,
     hideConfirmButton,
     isLoading,
+    hideCloseButton,
     ...otherProps
   } = props;
 
@@ -217,34 +227,38 @@ export const WebModal: FC<CustomModalProps> = (props) => {
   };
 
   return (
-    <Modal {...otherProps} className={cn('overflow-y-auto', className)}>
+    <Modal {...otherProps} className={cn('overflow-y-auto', className)} hideCloseButton>
       <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:static md:max-h-[90vh]', contentClassName)}>
         {!!header && <ModalHeader>{header}</ModalHeader>}
         <ModalBody className={cn('pb-10 shadow-inner sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>
-
-        <ModalFooter
-          className="relative z-10 flex min-h-1 w-full flex-col pb-6 md:pb-4"
-          style={{
-            boxShadow:
-              '0px -10px 6px -3px rgba(255,255,255,0.95), 0px -20px 6px -3px rgba(255,255,255,0.85), 0px -31px 6px -3px rgba(255,255,255,0.8)',
-          }}
-        >
-          {!hideConfirmButton && (
-            <Button
-              isDisabled={confirmButtonDisabled}
-              isLoading={isLoading}
-              color="primary"
-              radius="md"
-              onClick={onConfirm}
+        {!hideConfirmButton ||
+          (!hideCloseButton && (
+            <ModalFooter
+              className="relative z-10 flex min-h-1 w-full flex-col pb-6 md:pb-4"
+              style={{
+                boxShadow:
+                  '0px -10px 6px -3px rgba(255,255,255,0.95), 0px -20px 6px -3px rgba(255,255,255,0.85), 0px -31px 6px -3px rgba(255,255,255,0.8)',
+              }}
             >
-              {confirmButtonText}
-            </Button>
-          )}
+              {!hideConfirmButton && (
+                <Button
+                  isDisabled={confirmButtonDisabled}
+                  isLoading={isLoading}
+                  color="primary"
+                  radius="md"
+                  onClick={onConfirm}
+                >
+                  {confirmButtonText}
+                </Button>
+              )}
 
-          <Button onClick={closeModal} className="w-full" color="primary" variant="bordered">
-            Close
-          </Button>
-        </ModalFooter>
+              {!hideCloseButton && (
+                <Button onClick={closeModal} className="w-full" color="primary" variant="bordered">
+                  Close
+                </Button>
+              )}
+            </ModalFooter>
+          ))}
       </ModalContent>
     </Modal>
   );
@@ -260,6 +274,7 @@ export const NewCustomModal: FC<CustomModalProps> = (props) => {
   const responsiveMotionProps = mdBreakpoint ? { variants: framerMotionAnimations.downEnterExit } : undefined;
   const modalMotionProps = motionProps || responsiveMotionProps;
   const isTelegramEnviroment = appEnviroment === AppEnviroment.TELEGRAM;
+  const disableAnimation = !mdBreakpoint && !motionProps;
 
   useEffect(() => {
     if (isOpen && !mdBreakpoint && window) {
@@ -267,7 +282,7 @@ export const NewCustomModal: FC<CustomModalProps> = (props) => {
     }
   }, [isOpen]);
 
-  const modifiedProps = { ...props, motionProps: modalMotionProps, size: modalSize };
+  const modifiedProps = { ...props, disableAnimation, motionProps: modalMotionProps, size: modalSize };
 
   return isTelegramEnviroment ? <TelegramModal {...modifiedProps} /> : <WebModal {...modifiedProps} />;
 };

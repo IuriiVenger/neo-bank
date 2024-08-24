@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 
 import { API } from '@/api/types';
 import CustomInput from '@/components/ui/CustomInput';
-import CustomModal from '@/components/ui/CustomModal';
+import { NewCustomModal } from '@/components/ui/CustomModal';
 import { deleteDash, getCardExpiryRecord, separateNumbers } from '@/utils/converters';
 
 type CardSensitiveDataModalProps = {
@@ -53,17 +53,13 @@ const CardSensitiveDataModal: FC<CardSensitiveDataModalProps> = (props) => {
   };
 
   return (
-    <CustomModal
+    <NewCustomModal
       isOpen={isOpen}
       onOpenChange={setIsModalOpen}
       onClose={onModalClose}
+      hideConfirmButton
       hideCloseButton
       header="Card details"
-      footer={
-        <Button onClick={closeModal} radius="md" className="w-full" color="primary" variant="bordered">
-          Close
-        </Button>
-      }
     >
       <div className="m-auto flex flex-col gap-6">
         <button type="button" onClick={toogleFocus} className="m-auto w-fit">
@@ -110,7 +106,7 @@ const CardSensitiveDataModal: FC<CardSensitiveDataModalProps> = (props) => {
           </div>
         </div>
       </div>
-    </CustomModal>
+    </NewCustomModal>
   );
 };
 
