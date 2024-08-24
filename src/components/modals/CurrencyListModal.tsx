@@ -3,7 +3,7 @@ import { FC } from 'react';
 
 import { FaCheckCircle } from 'react-icons/fa';
 
-import { NewCustomModal } from '../ui/CustomModal';
+import MainModal from './MainModal';
 
 import { API } from '@/api/types';
 import CurrencyInfo from '@/components/Currency/CurrencyInfo';
@@ -32,7 +32,7 @@ const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
     isChain(currency) ? currency.id : currency.uuid;
 
   return (
-    <NewCustomModal
+    <MainModal
       hideCloseButton
       hideConfirmButton
       bodyClassname="px-0"
@@ -65,7 +65,7 @@ const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
           </div>
         ))}
       </>
-    </NewCustomModal>
+    </MainModal>
   );
 };
 

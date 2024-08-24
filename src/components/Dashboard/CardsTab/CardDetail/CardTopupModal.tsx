@@ -12,7 +12,7 @@ import { API } from '@/api/types';
 import SelectCurrency from '@/components/Currency/SelectCurrency';
 import ConfirmModal from '@/components/modals/ConfirmModal';
 import CurrencyListModal from '@/components/modals/CurrencyListModal';
-import { NewCustomModal } from '@/components/ui/CustomModal';
+import MainModal from '@/components/modals/MainModal';
 import { useRequestStatus } from '@/hooks/useRequestStatus';
 import { deleteDash, getCardExpiryRecord, separateNumbers } from '@/utils/converters';
 import { isCrypto, isFiat } from '@/utils/financial';
@@ -130,7 +130,7 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
   }, [card]);
 
   return (
-    <NewCustomModal
+    <MainModal
       isOpen={isOpen}
       onOpenChange={setIsModalOpen}
       header="Crypto Top Up"
@@ -190,7 +190,7 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
           confirmText={topUpConfirmationText}
         />
       </div>
-    </NewCustomModal>
+    </MainModal>
   );
 };
 

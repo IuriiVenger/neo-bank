@@ -1,8 +1,8 @@
 import { ChangeEvent, FC, useState } from 'react';
 
 import { API } from '@/api/types';
+import MainModal from '@/components/modals/MainModal';
 import CustomInput from '@/components/ui/CustomInput';
-import { NewCustomModal } from '@/components/ui/CustomModal';
 import { useRequestStatus } from '@/hooks/useRequestStatus';
 
 type CardLimitsModalProps = {
@@ -60,7 +60,7 @@ const CardLimitsModal: FC<CardLimitsModalProps> = (props) => {
   };
 
   return (
-    <NewCustomModal
+    <MainModal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       header="Card limits"
@@ -112,7 +112,7 @@ const CardLimitsModal: FC<CardLimitsModalProps> = (props) => {
           onChange={handleLimitChange('lifetime')}
         />
       </div>
-    </NewCustomModal>
+    </MainModal>
   );
 };
 

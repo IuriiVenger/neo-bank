@@ -1,7 +1,7 @@
 import { Select, SelectItem } from '@nextui-org/react';
 import { FC, useState } from 'react';
 
-import { NewCustomModal } from '../ui/CustomModal';
+import MainModal from './MainModal';
 
 import { WalletTypeValues } from '@/constants';
 import { ValueWithLabel } from '@/types';
@@ -37,7 +37,7 @@ const CreateWalletModal: FC<CreateWalletProps> = (props) => {
   };
 
   return (
-    <NewCustomModal
+    <MainModal
       isOpen={isOpen}
       onOpenChange={setIsModalOpen}
       header="Create Wallet"
@@ -58,7 +58,7 @@ const CreateWalletModal: FC<CreateWalletProps> = (props) => {
           </SelectItem>
         ))}
       </Select>
-    </NewCustomModal>
+    </MainModal>
   );
 };
 

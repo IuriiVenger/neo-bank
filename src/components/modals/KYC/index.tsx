@@ -8,7 +8,7 @@ import Kyc from './steps/Kyc';
 import Start from './steps/Start';
 
 import { API } from '@/api/types';
-import CustomModal from '@/components/ui/CustomModal';
+import { CustomModal } from '@/components/modals/MainModal';
 import { framerMotionAnimations } from '@/config/animations';
 import { KYCStatuses } from '@/constants';
 
@@ -69,6 +69,7 @@ const KYCModal: FC<KYCModalProps> = (props) => {
         variants: framerMotionAnimations.downEnterExit,
       }}
       scrollBehavior="inside"
+      size="full"
     >
       <>
         {step === KYCSteps.START && (

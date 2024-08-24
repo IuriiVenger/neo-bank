@@ -9,8 +9,8 @@ import { IoCopyOutline } from 'react-icons/io5';
 import { toast } from 'react-toastify';
 
 import { API } from '@/api/types';
+import MainModal from '@/components/modals/MainModal';
 import CustomInput from '@/components/ui/CustomInput';
-import { NewCustomModal } from '@/components/ui/CustomModal';
 import { deleteDash, getCardExpiryRecord, separateNumbers } from '@/utils/converters';
 
 type CardSensitiveDataModalProps = {
@@ -53,7 +53,7 @@ const CardSensitiveDataModal: FC<CardSensitiveDataModalProps> = (props) => {
   };
 
   return (
-    <NewCustomModal
+    <MainModal
       isOpen={isOpen}
       onOpenChange={setIsModalOpen}
       onClose={onModalClose}
@@ -106,7 +106,7 @@ const CardSensitiveDataModal: FC<CardSensitiveDataModalProps> = (props) => {
           </div>
         </div>
       </div>
-    </NewCustomModal>
+    </MainModal>
   );
 };
 

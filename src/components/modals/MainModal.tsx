@@ -26,14 +26,17 @@ type CustomModalProps = ModalProps & {
   footer?: ReactNode | string;
   contentClassName?: string;
   bodyClassname?: string;
-  confirmButtonDisabled?: boolean;
-  isLoading?: boolean;
-} & (HiddenConfirmButtonProps | VisibleConfirmButtonProps);
+};
 
-const CustomModal: FC<CustomModalProps> = (props) => {
+type MainModalProps = CustomModalProps &
+  (HiddenConfirmButtonProps | VisibleConfirmButtonProps) & {
+    confirmButtonDisabled?: boolean;
+    isLoading?: boolean;
+    showNativeCloseButton?: boolean;
+  };
+
+export const CustomModal: FC<CustomModalProps> = (props) => {
   const { mdBreakpoint } = useBreakpoints();
-  const { appEnviroment } = useAppSelector(selectConfig);
-  const isTelegramEnviroment = appEnviroment === AppEnviroment.TELEGRAM;
 
   const {
     size,
@@ -88,7 +91,7 @@ const CustomModal: FC<CustomModalProps> = (props) => {
   );
 };
 
-export const TelegramModal: FC<CustomModalProps> = (props) => {
+const TelegramModal: FC<MainModalProps> = (props) => {
   const {
     children,
     header,
@@ -205,7 +208,7 @@ export const TelegramModal: FC<CustomModalProps> = (props) => {
   );
 };
 
-export const WebModal: FC<CustomModalProps> = (props) => {
+const WebModal: FC<MainModalProps> = (props) => {
   const {
     children,
     header,
@@ -219,6 +222,7 @@ export const WebModal: FC<CustomModalProps> = (props) => {
     hideConfirmButton,
     isLoading,
     hideCloseButton,
+    showNativeCloseButton,
     ...otherProps
   } = props;
 
@@ -227,7 +231,7 @@ export const WebModal: FC<CustomModalProps> = (props) => {
   };
 
   return (
-    <Modal {...otherProps} className={cn('overflow-y-auto', className)} hideCloseButton>
+    <Modal {...otherProps} className={cn('overflow-y-auto', className)} hideCloseButton={!showNativeCloseButton}>
       <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:static md:max-h-[90vh]', contentClassName)}>
         {!!header && <ModalHeader>{header}</ModalHeader>}
         <ModalBody className={cn('pb-10 shadow-inner sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>
@@ -264,7 +268,7 @@ export const WebModal: FC<CustomModalProps> = (props) => {
   );
 };
 
-export const NewCustomModal: FC<CustomModalProps> = (props) => {
+const MainModal: FC<MainModalProps> = (props) => {
   const { mdBreakpoint } = useBreakpoints();
   const { appEnviroment } = useAppSelector(selectConfig);
   const { size, motionProps, isOpen } = props;
@@ -287,4 +291,4 @@ export const NewCustomModal: FC<CustomModalProps> = (props) => {
   return isTelegramEnviroment ? <TelegramModal {...modifiedProps} /> : <WebModal {...modifiedProps} />;
 };
 
-export default CustomModal;
+export default MainModal;

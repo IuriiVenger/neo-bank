@@ -14,8 +14,8 @@ import { API } from '@/api/types';
 import SelectCurrency from '@/components/Currency/SelectCurrency';
 import ConfirmModal from '@/components/modals/ConfirmModal';
 import CurrencyListModal from '@/components/modals/CurrencyListModal';
+import MainModal from '@/components/modals/MainModal';
 import CustomInput from '@/components/ui/CustomInput';
-import CustomModal, { NewCustomModal } from '@/components/ui/CustomModal';
 import { isCrypto, isFiat } from '@/utils/financial';
 
 type CreateCardModalProps = CardsListProps & {
@@ -158,7 +158,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   }, [activeBin]);
 
   return (
-    <NewCustomModal
+    <MainModal
       isOpen={isOpen}
       onOpenChange={setIsModalOpen}
       hideCloseButton
@@ -226,7 +226,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
           confirmText={topUpConfirmationText}
         />
       </div>
-    </NewCustomModal>
+    </MainModal>
   );
 };
 

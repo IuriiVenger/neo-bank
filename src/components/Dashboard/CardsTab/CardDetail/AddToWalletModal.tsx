@@ -8,8 +8,8 @@ import { IoCopyOutline } from 'react-icons/io5';
 import { toast } from 'react-toastify';
 
 import { API } from '@/api/types';
+import { CustomModal } from '@/components/modals/MainModal';
 import CustomInput from '@/components/ui/CustomInput';
-import CustomModal from '@/components/ui/CustomModal';
 import { useRequestStatus } from '@/hooks/useRequestStatus';
 
 type AddWalletToModalProps = {
