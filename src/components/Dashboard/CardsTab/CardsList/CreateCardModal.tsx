@@ -161,7 +161,6 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     <MainModal
       isOpen={isOpen}
       onOpenChange={setIsModalOpen}
-      hideCloseButton
       backdrop="opaque"
       scrollBehavior="inside"
       header="Create card"

@@ -2,6 +2,7 @@
 
 'use client';
 
+import { Button } from '@nextui-org/react';
 import { useEffect } from 'react';
 
 export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
@@ -11,16 +12,17 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
   }, [error]);
 
   return (
-    <div>
+    <div className="flex h-screen flex-col justify-center gap-6">
       <h2>Something went wrong!</h2>
-      <button
+      <Button
+        color="primary"
         onClick={
           // Attempt to recover by trying to re-render the segment
           () => reset()
         }
       >
         Try again
-      </button>
+      </Button>
     </div>
   );
 }

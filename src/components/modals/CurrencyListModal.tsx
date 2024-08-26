@@ -32,14 +32,7 @@ const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
     isChain(currency) ? currency.id : currency.uuid;
 
   return (
-    <MainModal
-      hideCloseButton
-      hideConfirmButton
-      bodyClassname="px-0"
-      isOpen={isOpen}
-      onOpenChange={setIsModalOpen}
-      header={title}
-    >
+    <MainModal hideConfirmButton bodyClassname="px-0" isOpen={isOpen} onOpenChange={setIsModalOpen} header={title}>
       <>
         {currencies.map((currency, index) => (
           <div

@@ -68,7 +68,6 @@ const CardLimitsModal: FC<CardLimitsModalProps> = (props) => {
       isLoading={requestStatuses.PENDING}
       onConfirm={saveLimits}
       confirmButtonText="Save"
-      hideCloseButton
     >
       <div className="grid grid-cols-2 gap-4">
         <CustomInput

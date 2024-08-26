@@ -28,7 +28,7 @@ const BinInfo: FC<BinInfoProps> = ({ bin, className }) => (
         <strong className="font-bold"> Purposes:</strong> {bin.purposes.join(', ')};
       </span>
       <span>
-        <strong className="font-bold"> KYC:</strong> {bin.requirements.isKycRequired ? 'Yes' : 'No'}
+        <strong className="font-bold"> KYC:</strong> {bin.requirements?.isKycRequired ? 'Yes' : 'No'}
       </span>
     </div>
   </div>

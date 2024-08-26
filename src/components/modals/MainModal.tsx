@@ -1,7 +1,7 @@
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalProps } from '@nextui-org/react';
 import { useBackButton, useMainButton } from '@telegram-apps/sdk-react';
 import cn from 'classnames';
-import { FC, ReactNode, useEffect } from 'react';
+import { FC, memo, ReactNode, useEffect } from 'react';
 
 import { framerMotionAnimations } from '@/config/animations';
 import { AppEnviroment } from '@/constants';
@@ -235,34 +235,33 @@ const WebModal: FC<MainModalProps> = (props) => {
       <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:static md:max-h-[90vh]', contentClassName)}>
         {!!header && <ModalHeader>{header}</ModalHeader>}
         <ModalBody className={cn('pb-10 shadow-inner sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>
-        {!hideConfirmButton ||
-          (!hideCloseButton && (
-            <ModalFooter
-              className="relative z-10 flex min-h-1 w-full flex-col pb-6 md:pb-4"
-              style={{
-                boxShadow:
-                  '0px -10px 6px -3px rgba(255,255,255,0.95), 0px -20px 6px -3px rgba(255,255,255,0.85), 0px -31px 6px -3px rgba(255,255,255,0.8)',
-              }}
-            >
-              {!hideConfirmButton && (
-                <Button
-                  isDisabled={confirmButtonDisabled}
-                  isLoading={isLoading}
-                  color="primary"
-                  radius="md"
-                  onClick={onConfirm}
-                >
-                  {confirmButtonText}
-                </Button>
-              )}
+        {(!hideConfirmButton || !hideCloseButton) && (
+          <ModalFooter
+            className="relative z-10 flex min-h-1 w-full flex-col pb-6 md:pb-4"
+            style={{
+              boxShadow:
+                '0px -10px 6px -3px rgba(255,255,255,0.95), 0px -20px 6px -3px rgba(255,255,255,0.85), 0px -31px 6px -3px rgba(255,255,255,0.8)',
+            }}
+          >
+            {!hideConfirmButton && (
+              <Button
+                isDisabled={confirmButtonDisabled}
+                isLoading={isLoading}
+                color="primary"
+                radius="md"
+                onClick={onConfirm}
+              >
+                {confirmButtonText}
+              </Button>
+            )}
 
-              {!hideCloseButton && (
-                <Button onClick={closeModal} className="w-full" color="primary" variant="bordered">
-                  Close
-                </Button>
-              )}
-            </ModalFooter>
-          ))}
+            {!hideCloseButton && (
+              <Button onClick={closeModal} className="w-full" color="primary" variant="bordered">
+                Close
+              </Button>
+            )}
+          </ModalFooter>
+        )}
       </ModalContent>
     </Modal>
   );
@@ -288,7 +287,9 @@ const MainModal: FC<MainModalProps> = (props) => {
 
   const modifiedProps = { ...props, disableAnimation, motionProps: modalMotionProps, size: modalSize };
 
+  console.log(props);
+
   return isTelegramEnviroment ? <TelegramModal {...modifiedProps} /> : <WebModal {...modifiedProps} />;
 };
 
-export default MainModal;
+export default memo(MainModal);
