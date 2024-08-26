@@ -14,6 +14,7 @@ import Loader from '@/components/ui/Loader';
 import { KYCStatuses, RequestStatus } from '@/constants';
 import { UseExternalCalcData } from '@/hooks/useExternalCalc';
 import { deleteDash, roundToDecimals } from '@/utils/converters';
+import { getCardProvider } from '@/utils/financial';
 
 export type CardsListProps = CardsTabProps & {
   onCardClick: (card_id: string) => void;
@@ -74,7 +75,7 @@ const CardsList: FC<CardsListProps> = (props) => {
               >
                 <Cards
                   name={getCardSubtitile(card)}
-                  issuer={card.bin.provider}
+                  issuer={getCardProvider(card.bin.provider)}
                   number={deleteDash(card.maskedPan)}
                   expiry={'**/**'}
                   cvc="***"
