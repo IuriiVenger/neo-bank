@@ -15,6 +15,7 @@ import ConfirmModal from '@/components/modals/ConfirmModal';
 import CurrencyListModal from '@/components/modals/CurrencyListModal';
 import MainModal from '@/components/modals/MainModal';
 import CustomInput from '@/components/ui/CustomInput';
+import { useRequestStatus } from '@/hooks/useRequestStatus';
 import { isCrypto, isFiat } from '@/utils/financial';
 
 type CreateCardModalProps = CardsListProps & {
@@ -30,7 +31,6 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     createCard,
     selectedWallet,
     className,
-    isTelegramEnviroment,
     selectCrypto,
     selectFiat,
     selectedCrypto,
@@ -48,6 +48,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   const [activeBin, setActiveBin] = useState<API.Cards.Bin | undefined>(bins[0] || {});
   const [cardName, setCardName] = useState<string>('');
   const [topUpConfirmationText, setTopUpConfirmationText] = useState<string | null>(null);
+  const [requestStatuses, setPending, setFullfilled, setRejected] = useRequestStatus();
 
   const { setAmount, amount, offrampCalcData, isOfframpCalcPending } = externalCalcData;
 
@@ -87,10 +88,17 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
       cardBalance: amount,
     };
 
-    const { data } = await createCard(requestData);
-    setIsModalOpen(false);
-    toast.success('Card created successfully');
-    onCardCreate && onCardCreate(data.id);
+    try {
+      setPending();
+      const { data } = await createCard(requestData);
+      setIsModalOpen(false);
+      toast.success('Card created successfully');
+      onCardCreate && onCardCreate(data.id);
+      setFullfilled();
+    } catch (error) {
+      setRejected();
+      throw error;
+    }
   };
 
   const openConfirmationModal = () => {
@@ -142,6 +150,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
       confirmButtonText={mainButtonTitle}
       confirmButtonDisabled={!isTopUpAvailable}
       onConfirm={openConfirmationModal}
+      isLoading={requestStatuses.PENDING}
     >
       <div className={cn('flex flex-col gap-4', className)}>
         <Select label="Select BIN" onChange={handleSelectChange} selectedKeys={activeBin && [activeBin.code]}>

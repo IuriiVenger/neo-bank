@@ -287,8 +287,6 @@ const MainModal: FC<MainModalProps> = (props) => {
 
   const modifiedProps = { ...props, disableAnimation, motionProps: modalMotionProps, size: modalSize };
 
-  console.log(props);
-
   return isTelegramEnviroment ? <TelegramModal {...modifiedProps} /> : <WebModal {...modifiedProps} />;
 };
 
