@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react';
 import { usePopup } from '@telegram-apps/sdk-react';
-import { FC, useEffect, useState } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
 
 import { framerMotionAnimations } from '@/config/animations';
 import { AppEnviroment } from '@/constants';
@@ -25,6 +25,7 @@ type TelegramConfirmModalProps = {
   message: string;
   title: string;
   onConfirm: () => void;
+  onClose: () => void;
 };
 
 enum TelegramPopupButtonId {
@@ -32,8 +33,10 @@ enum TelegramPopupButtonId {
   CANCEL = 'cancel',
 }
 
-const TelegramConfirmModal: FC<TelegramConfirmModalProps> = ({ message, title, onConfirm }) => {
+const TelegramConfirmModal: FC<TelegramConfirmModalProps> = memo(({ message, title, onConfirm, onClose }) => {
   const telegramPopup = usePopup(true);
+
+  console.log('telegramPopup', telegramPopup);
 
   if (telegramPopup) {
     telegramPopup
@@ -48,12 +51,14 @@ const TelegramConfirmModal: FC<TelegramConfirmModalProps> = ({ message, title, o
       .then((buttonId) => {
         if (buttonId === TelegramPopupButtonId.CONFIRM) {
           onConfirm();
+        } else {
+          onClose();
         }
       });
   }
 
   return null;
-};
+});
 
 const ConfirmModal: FC<ConfirmModalProps> = (props) => {
   const { setIsModalOpen, onConfirm, isOpen, title, confirmText } = props;
@@ -97,7 +102,14 @@ const ConfirmModal: FC<ConfirmModalProps> = (props) => {
 
   if (isTelegramEnviroment) {
     return (
-      isOpen && <TelegramConfirmModal message={modalConfirmText} title={modalTitle} onConfirm={handleConfirmModal} />
+      isOpen && (
+        <TelegramConfirmModal
+          message={modalConfirmText}
+          title={modalTitle}
+          onConfirm={handleConfirmModal}
+          onClose={handleClose}
+        />
+      )
     );
   }
 
