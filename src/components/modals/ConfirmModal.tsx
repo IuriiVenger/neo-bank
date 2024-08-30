@@ -79,13 +79,14 @@ const ConfirmModal: FC<ConfirmModalProps> = (props) => {
     try {
       setPending();
       await onConfirm();
-      handleClose();
       setFullfilled();
       setLastRequestFullfilled();
     } catch (error) {
       setRejected();
       setLastRequestRejected();
       throw error;
+    } finally {
+      handleClose();
     }
   };
 
