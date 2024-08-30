@@ -24,7 +24,7 @@ type ConfirmModalProps = ConfirmModalTexts & {
 type TelegramConfirmModalProps = {
   message: string;
   title: string;
-  onConfirm: () => Promise<void> | void;
+  onConfirm: () => void;
   onClose: () => void;
   isOpen: boolean;
 };
@@ -34,34 +34,33 @@ enum TelegramPopupButtonId {
   CANCEL = 'cancel',
 }
 
-const TelegramConfirmModal: FC<TelegramConfirmModalProps> = memo(
-  async ({ message, title, onConfirm, onClose, isOpen }) => {
-    const telegramPopup = usePopup(true);
+const TelegramConfirmModal: FC<TelegramConfirmModalProps> = memo(({ message, title, onConfirm, onClose, isOpen }) => {
+  const telegramPopup = usePopup(true);
 
-    if (!telegramPopup || telegramPopup.isOpened) {
-      return null;
-    }
+  if (!telegramPopup) {
+    return null;
+  }
 
-    if (isOpen) {
-      const buttonId = await telegramPopup.open({
+  if (isOpen && !telegramPopup.isOpened) {
+    telegramPopup
+      .open({
         title,
         message,
         buttons: [
           { id: TelegramPopupButtonId.CONFIRM, type: 'default', text: 'Confirm' },
           { id: TelegramPopupButtonId.CANCEL, type: 'cancel' },
         ],
-      });
-
-      if (buttonId === TelegramPopupButtonId.CONFIRM) {
-        await onConfirm();
-      } else {
+      })
+      .then((buttonId) => {
+        if (buttonId === TelegramPopupButtonId.CONFIRM) {
+          onConfirm();
+        }
         onClose();
-      }
-    }
+      });
+  }
 
-    return null;
-  },
-);
+  return null;
+});
 
 const ConfirmModal: FC<ConfirmModalProps> = (props) => {
   const { setIsModalOpen, onConfirm, isOpen, title, confirmText } = props;
