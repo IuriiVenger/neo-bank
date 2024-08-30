@@ -38,7 +38,7 @@ const TelegramConfirmModal: FC<TelegramConfirmModalProps> = memo(({ message, tit
 
   console.log('telegramPopup', telegramPopup);
 
-  if (telegramPopup) {
+  if (telegramPopup && !telegramPopup.isOpened) {
     telegramPopup
       .open({
         title,
