@@ -37,11 +37,11 @@ enum TelegramPopupButtonId {
 const TelegramConfirmModal: FC<TelegramConfirmModalProps> = memo(({ message, title, onConfirm, onClose, isOpen }) => {
   const telegramPopup = usePopup(true);
 
-  if (!telegramPopup) {
+  if (!telegramPopup || telegramPopup.isOpened) {
     return null;
   }
 
-  if (isOpen && !telegramPopup.isOpened) {
+  if (isOpen) {
     telegramPopup
       .open({
         title,
@@ -79,14 +79,13 @@ const ConfirmModal: FC<ConfirmModalProps> = (props) => {
     try {
       setPending();
       await onConfirm();
+      handleClose();
       setFullfilled();
       setLastRequestFullfilled();
     } catch (error) {
       setRejected();
       setLastRequestRejected();
       throw error;
-    } finally {
-      handleClose();
     }
   };
 
