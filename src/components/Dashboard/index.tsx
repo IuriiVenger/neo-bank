@@ -153,7 +153,7 @@ const Dashboard: FC<DashboardProps> = (props) => {
         </div>
       ) : (
         <>
-          <aside className="row-start-1 row-end-3 hidden w-full flex-shrink-0  flex-col justify-between gap-8 sm:flex-row  md:flex md:max-w-xs md:flex-col md:justify-start ">
+          <aside className="row-start-1 row-end-5 hidden w-full flex-shrink-0  flex-col justify-between gap-8 sm:flex-row  md:flex md:max-w-xs md:flex-col md:justify-start ">
             <WalletList
               wallets={wallets}
               onSelect={selectWallet}

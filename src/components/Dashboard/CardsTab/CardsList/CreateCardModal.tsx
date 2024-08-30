@@ -1,5 +1,4 @@
-import { Button, Select, SelectItem } from '@nextui-org/react';
-import { useBackButton, useMainButton, usePopup } from '@telegram-apps/sdk-react';
+import { Select, SelectItem } from '@nextui-org/react';
 import cn from 'classnames';
 import { FC, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -59,10 +58,6 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     selectedWallet.data &&
     selectedWallet.data.balance.find((balance) => balance.crypto.uuid === selectedCrypto.uuid)?.amount;
 
-  const backButton = isTelegramEnviroment && useBackButton(true);
-  const mainButton = isTelegramEnviroment && useMainButton(true);
-  const telegramPopup = isTelegramEnviroment && usePopup(true);
-
   const isAmountEnough = selectedCryptoAvavilibleToWithdraw && selectedCryptoAvavilibleToWithdraw >= amount;
   const isTopUpAvailable =
     !!selectedCrypto && !!selectedFiat && !!selectedWallet.data && !!amount && !!activeBin && isAmountEnough;
@@ -103,31 +98,11 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
 
     setTopUpConfirmationText(confirmationText);
 
-    if (telegramPopup) {
-      telegramPopup
-        .open({
-          title: 'Top Up confirmation',
-          message: confirmationText,
-          buttons: [
-            { id: 'confirm', type: 'default', text: 'Top Up' },
-            { id: 'cancel', type: 'cancel' },
-          ],
-        })
-        .then((buttonId) => {
-          console.log('Button clicked', buttonId);
-          if (buttonId === 'confirm') {
-            createCardHandler();
-          }
-        });
-    } else {
-      setIsConfirmationModalOpen(true);
-    }
+    setIsConfirmationModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    backButton && backButton.hide();
-    mainButton && mainButton.hide();
   };
 
   const setCardFiatCurrency = () => {
