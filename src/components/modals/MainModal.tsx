@@ -152,7 +152,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
 
     mainButton.hideLoader();
     enableMainButton();
-    onConfirmButtonTextChanged;
+    onConfirmButtonTextChanged();
   };
 
   const onConfirmButtonDisabledChanged = () => {
