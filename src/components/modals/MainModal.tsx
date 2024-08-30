@@ -125,22 +125,44 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     mainButton.setText(confirmButtonText);
   };
 
-  const onConfirmButtonDisabledChanged = () => {
+  const disableMainButton = () => {
     if (!mainButton || !isOpen) return;
 
-    if (confirmButtonDisabled) {
-      mainButton.disable();
-      mainButton.setBgColor(disabledTelegramButtonColor);
-    } else {
-      mainButton.enable();
-      mainButton.setBgColor(mainTelegramButtonColor);
-    }
+    mainButton.disable();
+    mainButton.setBgColor(disabledTelegramButtonColor);
+  };
+
+  const enableMainButton = () => {
+    if (!mainButton || !isOpen) return;
+
+    mainButton.enable();
+    mainButton.setBgColor(mainTelegramButtonColor);
+  };
+
+  const showLoader = () => {
+    if (!mainButton || !isOpen) return;
+
+    mainButton.showLoader();
+    disableMainButton();
+    mainButton.setText('Loading...');
+  };
+
+  const hideLoader = () => {
+    if (!mainButton || !isOpen) return;
+
+    mainButton.hideLoader();
+    enableMainButton();
+    onConfirmButtonTextChanged;
+  };
+
+  const onConfirmButtonDisabledChanged = () => {
+    confirmButtonDisabled ? disableMainButton() : enableMainButton();
   };
 
   const onIsLoadingChanged = () => {
     if (!mainButton || !isOpen) return;
 
-    isLoading ? mainButton.showLoader() : mainButton.hideLoader();
+    isLoading ? showLoader() : hideLoader();
   };
 
   const onOnConfirmChanged = () => {
