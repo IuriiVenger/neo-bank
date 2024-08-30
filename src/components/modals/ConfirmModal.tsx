@@ -26,6 +26,7 @@ type TelegramConfirmModalProps = {
   title: string;
   onConfirm: () => void;
   onClose: () => void;
+  isOpen: boolean;
 };
 
 enum TelegramPopupButtonId {
@@ -33,12 +34,14 @@ enum TelegramPopupButtonId {
   CANCEL = 'cancel',
 }
 
-const TelegramConfirmModal: FC<TelegramConfirmModalProps> = memo(({ message, title, onConfirm, onClose }) => {
+const TelegramConfirmModal: FC<TelegramConfirmModalProps> = memo(({ message, title, onConfirm, onClose, isOpen }) => {
   const telegramPopup = usePopup(true);
 
-  console.log('telegramPopup', telegramPopup);
+  if (!telegramPopup) {
+    return null;
+  }
 
-  if (telegramPopup && !telegramPopup.isOpened) {
+  if (isOpen && !telegramPopup.isOpened) {
     telegramPopup
       .open({
         title,
@@ -103,6 +106,7 @@ const ConfirmModal: FC<ConfirmModalProps> = (props) => {
   if (isTelegramEnviroment) {
     return (
       <TelegramConfirmModal
+        isOpen={isOpen}
         message={modalConfirmText}
         title={modalTitle}
         onConfirm={handleConfirmModal}
