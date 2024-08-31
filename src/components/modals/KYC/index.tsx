@@ -65,9 +65,6 @@ const KYCModal: FC<KYCModalProps> = (props) => {
       isOpen={isOpen}
       onOpenChange={setIsModalOpen}
       onClose={closeHandler}
-      motionProps={{
-        variants: framerMotionAnimations.downEnterExit,
-      }}
       scrollBehavior="inside"
       size="full"
       confirmButtonHidden
