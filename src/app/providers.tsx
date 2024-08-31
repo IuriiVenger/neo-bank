@@ -28,7 +28,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
       <Suspense>
         <AppProgressBar color={tenantMainColor} height="5px" options={{ showSpinner: false }} shallowRouting />
       </Suspense>
-      <GlobalModalContainer />
+      {/* <GlobalModalContainer /> */}
     </NextUIProvider>
   );
 };
