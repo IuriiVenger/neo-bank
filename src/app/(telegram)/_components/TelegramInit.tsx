@@ -76,7 +76,7 @@ const TelegramInit = () => {
       return;
     }
     settingsButton.show();
-    settingsButton.on('click', openSettingsPopup);
+    // settingsButton.on('click', openSettingsPopup);
   };
 
   useEffect(() => {
