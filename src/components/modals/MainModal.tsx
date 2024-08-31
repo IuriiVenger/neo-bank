@@ -34,6 +34,7 @@ type MainModalProps = CustomModalProps &
     confirmButtonDisabled?: boolean;
     isLoading?: boolean;
     showNativeCloseButton?: boolean;
+    isAppFullInitialized?: boolean;
   };
 
 export const CustomModal: FC<CustomModalProps> = (props) => {
@@ -104,9 +105,12 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     confirmButtonText,
     confirmButtonDisabled,
     confirmButtonHidden,
+    isAppFullInitialized,
     isLoading,
     ...otherProps
   } = props;
+
+  if (!isAppFullInitialized) return null;
 
   const backButton = useBackButton();
   const mainButton = useMainButton();
@@ -299,7 +303,7 @@ const WebModal: FC<MainModalProps> = (props) => {
 
 const MainModal: FC<MainModalProps> = (props) => {
   const { mdBreakpoint } = useBreakpoints();
-  const { appEnviroment } = useAppSelector(selectConfig);
+  const { appEnviroment, isAppFullInitialized } = useAppSelector(selectConfig);
   const { size, motionProps, isOpen } = props;
 
   const responsiveSize = mdBreakpoint ? 'md' : 'full';
@@ -315,7 +319,13 @@ const MainModal: FC<MainModalProps> = (props) => {
     }
   }, [isOpen]);
 
-  const modifiedProps = { ...props, disableAnimation, motionProps: modalMotionProps, size: modalSize };
+  const modifiedProps = {
+    ...props,
+    isAppFullInitialized,
+    disableAnimation,
+    motionProps: modalMotionProps,
+    size: modalSize,
+  };
 
   return isTelegramEnviroment ? <TelegramModal {...modifiedProps} /> : <WebModal {...modifiedProps} />;
 };
