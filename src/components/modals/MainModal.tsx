@@ -33,7 +33,6 @@ type MainModalProps = CustomModalProps &
   (HiddenConfirmButtonProps | VisibleConfirmButtonProps) & {
     confirmButtonDisabled?: boolean;
     isLoading?: boolean;
-
     isAppFullInitialized?: boolean;
     nativeCloseButton?: boolean;
   };
@@ -52,6 +51,7 @@ export const CustomModal: FC<CustomModalProps> = (props) => {
     className,
     contentClassName,
     bodyClassname,
+    onOpenChange,
     ...otherProps
   } = props;
 
@@ -59,6 +59,10 @@ export const CustomModal: FC<CustomModalProps> = (props) => {
   const modalSize = size || responsiveSize;
   const responsiveMotionProps = mdBreakpoint ? { variants: framerMotionAnimations.downEnterExit } : undefined;
   const modalMotionProps = motionProps || responsiveMotionProps;
+
+  const closeModal = () => {
+    onOpenChange && onOpenChange(false);
+  };
 
   useEffect(() => {
     if (isOpen && !mdBreakpoint && window) {
@@ -72,11 +76,12 @@ export const CustomModal: FC<CustomModalProps> = (props) => {
       scrollBehavior={scrollBehavior}
       size={modalSize}
       isOpen={isOpen}
+      onClose={closeModal}
       {...otherProps}
       disableAnimation={!mdBreakpoint}
       className={cn('overflow-y-auto', className)}
     >
-      <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:static md:max-h-[90vh]', contentClassName)}>
+      <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:relative md:max-h-[90vh]', contentClassName)}>
         {!!header && <ModalHeader>{header}</ModalHeader>}
         <ModalBody className={cn('pb-10 shadow-inner sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>
 
@@ -235,7 +240,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
 
   return (
     <Modal isOpen={isOpen} hideCloseButton disableAnimation onOpenChange={onOpenChange} {...otherProps}>
-      <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:static md:max-h-[90vh]', contentClassName)}>
+      <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:relative md:max-h-[90vh]', contentClassName)}>
         {!!header && <ModalHeader>{header}</ModalHeader>}
         <ModalBody className={cn('pb-10 shadow-inner sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>
       </ModalContent>
@@ -265,12 +270,19 @@ const WebModal: FC<MainModalProps> = (props) => {
     onOpenChange && onOpenChange(false);
   };
 
+  const nonNativeCloseButtonEnabled = !nativeCloseButton && !hideCloseButton;
+
   return (
-    <Modal {...otherProps} className={cn('overflow-y-auto', className)} hideCloseButton={!nativeCloseButton}>
-      <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:static md:max-h-[90vh]', contentClassName)}>
+    <Modal
+      {...otherProps}
+      className={cn('overflow-y-auto', className)}
+      onClose={closeModal}
+      hideCloseButton={nonNativeCloseButtonEnabled}
+    >
+      <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:relative md:max-h-[90vh]', contentClassName)}>
         {!!header && <ModalHeader>{header}</ModalHeader>}
         <ModalBody className={cn('pb-10 shadow-inner sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>
-        {(!confirmButtonHidden || !hideCloseButton) && (
+        {(!confirmButtonHidden || !nonNativeCloseButtonEnabled) && (
           <ModalFooter
             className="relative z-10 flex min-h-1 w-full flex-col pb-6 md:pb-4"
             style={{
@@ -290,7 +302,7 @@ const WebModal: FC<MainModalProps> = (props) => {
               </Button>
             )}
 
-            {!hideCloseButton && (
+            {nonNativeCloseButtonEnabled && (
               <Button onClick={closeModal} className="w-full" color="primary" variant="bordered">
                 Close
               </Button>

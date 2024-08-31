@@ -66,7 +66,6 @@ const KYCModal: FC<KYCModalProps> = (props) => {
       onOpenChange={setIsModalOpen}
       onClose={closeHandler}
       scrollBehavior="inside"
-      size="full"
       confirmButtonHidden
       nativeCloseButton
     >
