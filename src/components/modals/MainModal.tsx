@@ -11,13 +11,13 @@ import { useAppSelector } from '@/store';
 import { selectConfig } from '@/store/selectors';
 
 type HiddenConfirmButtonProps = {
-  hideConfirmButton: true;
+  confirmButtonHidden: true;
   onConfirm?: never;
   confirmButtonText?: never;
 };
 
 type VisibleConfirmButtonProps = {
-  hideConfirmButton?: false;
+  confirmButtonHidden?: false;
   onConfirm: () => void;
   confirmButtonText: string;
 };
@@ -103,7 +103,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     onConfirm,
     confirmButtonText,
     confirmButtonDisabled,
-    hideConfirmButton,
+    confirmButtonHidden,
     isLoading,
     ...otherProps
   } = props;
@@ -178,7 +178,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
       backButton.show();
 
       backButton.on('click', closeModal);
-      if (!hideConfirmButton) {
+      if (!confirmButtonHidden) {
         mainButton.show();
         onOnConfirmChanged();
         onConfirmButtonTextChanged();
@@ -189,7 +189,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
       backButton.off('click', closeModal);
       mainButton.enable();
       mainButton.hideLoader();
-      if (!hideConfirmButton) {
+      if (!confirmButtonHidden) {
         mainButton.off('click', confirmHandler);
         mainButton.hide();
       }
@@ -249,7 +249,7 @@ const WebModal: FC<MainModalProps> = (props) => {
     confirmButtonText,
     onOpenChange,
     onConfirm,
-    hideConfirmButton,
+    confirmButtonHidden,
     isLoading,
     hideCloseButton,
     showNativeCloseButton,
@@ -265,7 +265,7 @@ const WebModal: FC<MainModalProps> = (props) => {
       <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:static md:max-h-[90vh]', contentClassName)}>
         {!!header && <ModalHeader>{header}</ModalHeader>}
         <ModalBody className={cn('pb-10 shadow-inner sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>
-        {(!hideConfirmButton || !hideCloseButton) && (
+        {(!confirmButtonHidden || !hideCloseButton) && (
           <ModalFooter
             className="relative z-10 flex min-h-1 w-full flex-col pb-6 md:pb-4"
             style={{
@@ -273,7 +273,7 @@ const WebModal: FC<MainModalProps> = (props) => {
                 '0px -10px 6px -3px rgba(255,255,255,0.95), 0px -20px 6px -3px rgba(255,255,255,0.85), 0px -31px 6px -3px rgba(255,255,255,0.8)',
             }}
           >
-            {!hideConfirmButton && (
+            {!confirmButtonHidden && (
               <Button
                 isDisabled={confirmButtonDisabled}
                 isLoading={isLoading}

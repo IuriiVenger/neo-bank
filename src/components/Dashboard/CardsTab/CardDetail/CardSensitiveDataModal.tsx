@@ -57,7 +57,7 @@ const CardSensitiveDataModal: FC<CardSensitiveDataModalProps> = (props) => {
       isOpen={isOpen}
       onOpenChange={setIsModalOpen}
       onClose={onModalClose}
-      hideConfirmButton
+      confirmButtonHidden
       header="Card details"
     >
       <div className="m-auto flex flex-col gap-6">

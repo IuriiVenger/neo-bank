@@ -1,13 +1,14 @@
-import { useInitData, useLaunchParams, useMiniApp } from '@telegram-apps/sdk-react';
+import { useInitData, useLaunchParams, useMiniApp, useSettingsButton } from '@telegram-apps/sdk-react';
 
 import { useEffect } from 'react';
 
-import { AppEnviroment } from '@/constants';
+import { AppEnviroment, ModalNames } from '@/constants';
 import useAuth from '@/hooks/useAuth';
 import useTelegramAuth from '@/hooks/useTelegramAuth';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { selectConfig, selectIsUserLoggedIn } from '@/store/selectors';
 import { setAppEnviroment } from '@/store/slices/config';
+import { setModalVisible } from '@/store/slices/ui';
 
 // eslint-disable-next-line import/order
 // import { mockTelegramEnv, parseInitData } from '@telegram-apps/sdk';
@@ -54,7 +55,7 @@ import { setAppEnviroment } from '@/store/slices/config';
 //   platform: 'tdesktop',
 // });
 
-const TelegramAuth = () => {
+const TelegramInit = () => {
   const { isWebAppInitialized } = useAppSelector(selectConfig);
   const isUserLoggedIn = useAppSelector(selectIsUserLoggedIn);
 
@@ -62,9 +63,21 @@ const TelegramAuth = () => {
   const miniApp = useMiniApp(true);
   const initData = useInitData(true);
   const dispatch = useAppDispatch();
+  const settingsButton = useSettingsButton(true);
   const { initUser } = useAuth(dispatch);
-
   const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, initUser);
+
+  const openSettingsPopup = () => {
+    dispatch(setModalVisible(ModalNames.SETTINGS));
+  };
+
+  const initSettingsButton = () => {
+    if (!settingsButton) {
+      return;
+    }
+    settingsButton.show();
+    settingsButton.on('click', openSettingsPopup);
+  };
 
   useEffect(() => {
     if (isWebAppInitialized && !isUserLoggedIn) {
@@ -74,11 +87,11 @@ const TelegramAuth = () => {
 
   useEffect(() => {
     dispatch(setAppEnviroment(AppEnviroment.TELEGRAM));
-
     localStorage.setItem('app_enviroment', AppEnviroment.TELEGRAM);
+    initSettingsButton();
   }, []);
 
   return null;
 };
 
-export default TelegramAuth;
+export default TelegramInit;
