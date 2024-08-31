@@ -33,8 +33,9 @@ type MainModalProps = CustomModalProps &
   (HiddenConfirmButtonProps | VisibleConfirmButtonProps) & {
     confirmButtonDisabled?: boolean;
     isLoading?: boolean;
-    showNativeCloseButton?: boolean;
+
     isAppFullInitialized?: boolean;
+    nativeCloseButton?: boolean;
   };
 
 export const CustomModal: FC<CustomModalProps> = (props) => {
@@ -256,7 +257,7 @@ const WebModal: FC<MainModalProps> = (props) => {
     confirmButtonHidden,
     isLoading,
     hideCloseButton,
-    showNativeCloseButton,
+    nativeCloseButton,
     ...otherProps
   } = props;
 
@@ -265,7 +266,7 @@ const WebModal: FC<MainModalProps> = (props) => {
   };
 
   return (
-    <Modal {...otherProps} className={cn('overflow-y-auto', className)} hideCloseButton={!showNativeCloseButton}>
+    <Modal {...otherProps} className={cn('overflow-y-auto', className)} hideCloseButton={!nativeCloseButton}>
       <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:static md:max-h-[90vh]', contentClassName)}>
         {!!header && <ModalHeader>{header}</ModalHeader>}
         <ModalBody className={cn('pb-10 shadow-inner sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>

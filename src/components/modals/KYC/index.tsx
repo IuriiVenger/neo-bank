@@ -8,7 +8,7 @@ import Kyc from './steps/Kyc';
 import Start from './steps/Start';
 
 import { API } from '@/api/types';
-import { CustomModal } from '@/components/modals/MainModal';
+import MainModal, { CustomModal } from '@/components/modals/MainModal';
 import { framerMotionAnimations } from '@/config/animations';
 import { KYCStatuses } from '@/constants';
 
@@ -61,7 +61,7 @@ const KYCModal: FC<KYCModalProps> = (props) => {
   };
 
   return (
-    <CustomModal
+    <MainModal
       isOpen={isOpen}
       onOpenChange={setIsModalOpen}
       onClose={closeHandler}
@@ -70,6 +70,8 @@ const KYCModal: FC<KYCModalProps> = (props) => {
       }}
       scrollBehavior="inside"
       size="full"
+      confirmButtonHidden
+      nativeCloseButton
     >
       <>
         {step === KYCSteps.START && (
@@ -77,7 +79,7 @@ const KYCModal: FC<KYCModalProps> = (props) => {
         )}
         {step === KYCSteps.KYC && <Kyc accessToken={accessToken} />}
       </>
-    </CustomModal>
+    </MainModal>
   );
 };
 

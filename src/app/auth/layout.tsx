@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { FC } from 'react';
 
 import logo from '@/assets/svg/header_logo.svg';
-import LayoutModalContainer from '@/components/modals/LayoutModalContainer';
 
 type AuthLayoutProps = Readonly<{ children: React.ReactNode }>;
 
@@ -14,7 +13,6 @@ const AuthLayout: FC<AuthLayoutProps> = ({ children }) => (
       <Image src={logo} height={64} alt="logo" className="mb-6 h-8" />
       {children}
     </div>
-    <LayoutModalContainer />
   </main>
 );
 

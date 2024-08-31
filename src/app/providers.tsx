@@ -6,8 +6,6 @@ import { Suspense, useEffect } from 'react';
 
 import { tenantMainColor } from '../../tailwind.config';
 
-import GlobalModalContainer from '../components/modals/GlobalModalContainer';
-
 import GlobalClientErrorHandler from '@/components/GlobalClientErrorHandler';
 import useInitApp from '@/hooks/useInitApp';
 import { useAppDispatch } from '@/store';
@@ -28,7 +26,6 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
       <Suspense>
         <AppProgressBar color={tenantMainColor} height="5px" options={{ showSpinner: false }} shallowRouting />
       </Suspense>
-      <GlobalModalContainer />
     </NextUIProvider>
   );
 };
