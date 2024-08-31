@@ -38,7 +38,7 @@ const GlobalModalContainer: FC = () => {
         getSumsubToken={kyc.sumsub.generate_token}
         verificationStatus={userData.kyc_status}
       />
-      <SettingsModal isOpen={modalVisibility.settings} setIsModalOpen={setIsModalOpen(ModalNames.SETTINGS)} />
+      {/* <SettingsModal isOpen={modalVisibility.settings} setIsModalOpen={setIsModalOpen(ModalNames.SETTINGS)} /> */}
     </>
   );
 };
