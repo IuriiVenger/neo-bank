@@ -6,6 +6,7 @@ import { FC, Suspense } from 'react';
 
 import TelegramInit from './_components/TelegramInit';
 
+import LayoutModalContainer from '@/components/modals/LayoutModalContainer';
 import { BrandLoader } from '@/components/ui/Loader';
 
 type RootLayoutProps = Readonly<{ children: React.ReactNode }>;
@@ -15,6 +16,7 @@ const MainLayout: FC<RootLayoutProps> = ({ children }) => (
     <SDKProvider>
       <TelegramInit />
       <Suspense fallback={<BrandLoader />}>{children}</Suspense>
+      <LayoutModalContainer />
     </SDKProvider>
   </main>
 );

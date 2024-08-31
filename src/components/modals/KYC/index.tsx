@@ -15,10 +15,10 @@ import { KYCStatuses } from '@/constants';
 type KYCModalProps = {
   onClose: Function;
   isOpen: boolean;
-  user_id: string;
+  user_id?: string;
   setIsModalOpen: (isOpen: boolean) => void;
   getSumsubToken: (userId: string) => Promise<AxiosResponse<API.KYC.Sumsub.GenerateToken.Response>>;
-  verificationStatus: KYCStatuses;
+  verificationStatus?: KYCStatuses;
 };
 
 enum KYCSteps {

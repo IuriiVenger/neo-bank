@@ -2,8 +2,6 @@
 
 import { FC } from 'react';
 
-import SettingsModal from './SettingsModal';
-
 import { kyc } from '@/api/kyc';
 import KYCModal from '@/components/modals/KYC';
 import { ModalNames } from '@/constants';
@@ -12,6 +10,8 @@ import { useAppDispatch, useAppSelector } from '@/store';
 import { selectModalVisibility, selectUser } from '@/store/selectors';
 import { setModalInvisible, setModalVisible } from '@/store/slices/ui';
 import { ModalVisibility } from '@/store/types';
+
+// use only web-modal here
 
 const GlobalModalContainer: FC = () => {
   const dispatch = useAppDispatch();
@@ -24,22 +24,15 @@ const GlobalModalContainer: FC = () => {
     isOpen ? dispatch(setModalVisible(modalName)) : dispatch(setModalInvisible(modalName));
   };
 
-  if (!user || !userData) {
-    return null;
-  }
-
   return (
-    <>
-      <KYCModal
-        isOpen={modalVisibility.kyc}
-        onClose={initUser}
-        setIsModalOpen={setIsModalOpen(ModalNames.KYC)}
-        user_id={user.id}
-        getSumsubToken={kyc.sumsub.generate_token}
-        verificationStatus={userData.kyc_status}
-      />
-      <SettingsModal isOpen={modalVisibility.settings} setIsModalOpen={setIsModalOpen(ModalNames.SETTINGS)} />
-    </>
+    <KYCModal
+      isOpen={modalVisibility.kyc}
+      onClose={initUser}
+      setIsModalOpen={setIsModalOpen(ModalNames.KYC)}
+      user_id={user?.id}
+      getSumsubToken={kyc.sumsub.generate_token}
+      verificationStatus={userData?.kyc_status}
+    />
   );
 };
 
