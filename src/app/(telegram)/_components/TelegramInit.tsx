@@ -88,7 +88,7 @@ const TelegramInit = () => {
   useEffect(() => {
     dispatch(setAppEnviroment(AppEnviroment.TELEGRAM));
     localStorage.setItem('app_enviroment', AppEnviroment.TELEGRAM);
-    initSettingsButton();
+    // initSettingsButton();
   }, []);
 
   return null;
