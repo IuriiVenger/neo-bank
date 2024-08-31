@@ -263,8 +263,11 @@ const WebModal: FC<MainModalProps> = (props) => {
     isLoading,
     hideCloseButton,
     nativeCloseButton,
+    isOpen,
     ...otherProps
   } = props;
+
+  const { mdBreakpoint } = useBreakpoints();
 
   const closeModal = () => {
     onOpenChange && onOpenChange(false);
@@ -272,9 +275,16 @@ const WebModal: FC<MainModalProps> = (props) => {
 
   const nonNativeCloseButtonEnabled = !nativeCloseButton && !hideCloseButton;
 
+  useEffect(() => {
+    if (isOpen && !mdBreakpoint && window) {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, [isOpen]);
+
   return (
     <Modal
       {...otherProps}
+      isOpen={isOpen}
       className={cn('overflow-y-auto', className)}
       onClose={closeModal}
       hideCloseButton={nonNativeCloseButtonEnabled}

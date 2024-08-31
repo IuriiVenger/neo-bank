@@ -68,7 +68,7 @@ const TelegramInit = () => {
   const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, initUser);
 
   const openSettingsPopup = () => {
-    dispatch(setModalVisible(ModalNames.KYC));
+    dispatch(setModalVisible(ModalNames.SETTINGS));
   };
 
   const initSettingsButton = () => {
