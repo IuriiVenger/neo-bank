@@ -16,25 +16,23 @@ const Kyc: FC<KycProps> = ({ accessToken }: KycProps) => {
   };
 
   return (
-    <div className="sumsub-modal flex min-h-96 items-center justify-center">
-      <SumsubWebSdk
-        accessToken={accessToken}
-        expirationHandler={() => Promise.resolve(accessToken)}
-        config={{
-          theme: 'light',
-          i18n: {
-            document: {
-              subTitles: {
-                IDENTITY: 'Upload a document that proves your identity',
-              },
+    <SumsubWebSdk
+      accessToken={accessToken}
+      expirationHandler={() => Promise.resolve(accessToken)}
+      config={{
+        theme: 'light',
+        i18n: {
+          document: {
+            subTitles: {
+              IDENTITY: 'Upload a document that proves your identity',
             },
           },
-        }}
-        options={{ addViewportTag: true, adaptIframeHeight: true, theme: 'light' }}
-        onMessage={messageHandler}
-        onError={errorHandler}
-      />
-    </div>
+        },
+      }}
+      options={{ theme: 'light' }}
+      onMessage={messageHandler}
+      onError={errorHandler}
+    />
   );
 };
 

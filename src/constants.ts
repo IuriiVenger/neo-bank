@@ -114,6 +114,7 @@ export enum CalcType {
 
 export enum ModalNames {
   KYC = 'kyc',
+  SETTINGS = 'settings',
 }
 
 export enum KYCStatuses {

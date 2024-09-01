@@ -19,8 +19,10 @@ import WithdrawForm from './WithdrawTab';
 import { API } from '@/api/types';
 import WalletBalanceList from '@/components/Wallet/WalletBalanceList';
 import WalletList from '@/components/Wallet/WalletList';
+
 import { WhiteLabelConfig } from '@/config/whitelabel';
-import { DashboardTabs, KYCStatuses, RequestStatus, WalletTypeValues } from '@/constants';
+import { AppEnviroment, DashboardTabs, KYCStatuses, RequestStatus, WalletTypeValues } from '@/constants';
+
 import { UseExternalCalcData } from '@/hooks/useExternalCalc';
 import { StoreDataWithStatus, StoreDataWithStatusAndMeta } from '@/store/types';
 import { ValueWithLabel } from '@/types';
@@ -30,6 +32,7 @@ export type DashboardProps = {
   activeCardId: string | null;
   activeDashboardTab: DashboardTabs;
   allowedCryptoToFiatList: API.List.Crypto[];
+  appEnviroment: AppEnviroment;
   availableToExchangeCrypto: API.List.Crypto[];
   bins: API.Cards.Bin[];
   cardTransactions: StoreDataWithStatusAndMeta<API.Cards.TransactionItem[] | null>;
@@ -51,6 +54,7 @@ export type DashboardProps = {
   getOTP: (card_id: string) => Promise<API.Cards.OTP>;
   getSensitiveData: (card_id: string) => Promise<API.Cards.SensitiveData>;
   getWalletAddress: (chain: number, wallet_uuid: string) => Promise<API.Wallets.WalletChain.Response>;
+  isTelegramEnviroment: boolean;
   loadMoreCards: () => void;
   loadMoreCardTransactions: () => void;
   loadMoreWalletTransactions: () => void;
@@ -149,7 +153,7 @@ const Dashboard: FC<DashboardProps> = (props) => {
         </div>
       ) : (
         <>
-          <aside className="row-start-1 row-end-3 hidden w-full flex-shrink-0  flex-col justify-between gap-8 sm:flex-row  md:flex md:max-w-xs md:flex-col md:justify-start ">
+          <aside className="row-start-1 row-end-5 hidden w-full flex-shrink-0  flex-col justify-between gap-8 sm:flex-row  md:flex md:max-w-xs md:flex-col md:justify-start ">
             <WalletList
               wallets={wallets}
               onSelect={selectWallet}

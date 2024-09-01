@@ -1,9 +1,8 @@
-import { Button } from '@nextui-org/react';
 import { ChangeEvent, FC, useState } from 'react';
 
 import { API } from '@/api/types';
+import MainModal from '@/components/modals/MainModal';
 import CustomInput from '@/components/ui/CustomInput';
-import CustomModal from '@/components/ui/CustomModal';
 import { useRequestStatus } from '@/hooks/useRequestStatus';
 
 type CardLimitsModalProps = {
@@ -61,27 +60,14 @@ const CardLimitsModal: FC<CardLimitsModalProps> = (props) => {
   };
 
   return (
-    <CustomModal
+    <MainModal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       header="Card limits"
-      footer={
-        <div className="flex flex-col gap-3">
-          <Button
-            className="w-full"
-            onClick={saveLimits}
-            isLoading={requestStatuses.PENDING}
-            color="primary"
-            isDisabled={isModalsLimitsEqual}
-          >
-            Save
-          </Button>
-          <Button className="w-full" onClick={closeModal} color="primary" variant="bordered">
-            Close
-          </Button>
-        </div>
-      }
-      hideCloseButton
+      confirmButtonDisabled={isModalsLimitsEqual}
+      isLoading={requestStatuses.PENDING}
+      onConfirm={saveLimits}
+      confirmButtonText="Save"
     >
       <div className="grid grid-cols-2 gap-4">
         <CustomInput
@@ -125,7 +111,7 @@ const CardLimitsModal: FC<CardLimitsModalProps> = (props) => {
           onChange={handleLimitChange('lifetime')}
         />
       </div>
-    </CustomModal>
+    </MainModal>
   );
 };
 

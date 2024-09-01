@@ -8,17 +8,17 @@ import Kyc from './steps/Kyc';
 import Start from './steps/Start';
 
 import { API } from '@/api/types';
-import CustomModal from '@/components/ui/CustomModal';
+import MainModal, { CustomModal } from '@/components/modals/MainModal';
 import { framerMotionAnimations } from '@/config/animations';
 import { KYCStatuses } from '@/constants';
 
 type KYCModalProps = {
   onClose: Function;
   isOpen: boolean;
-  user_id: string;
+  user_id?: string;
   setIsModalOpen: (isOpen: boolean) => void;
   getSumsubToken: (userId: string) => Promise<AxiosResponse<API.KYC.Sumsub.GenerateToken.Response>>;
-  verificationStatus: KYCStatuses;
+  verificationStatus?: KYCStatuses;
 };
 
 enum KYCSteps {
@@ -61,14 +61,13 @@ const KYCModal: FC<KYCModalProps> = (props) => {
   };
 
   return (
-    <CustomModal
+    <MainModal
       isOpen={isOpen}
       onOpenChange={setIsModalOpen}
       onClose={closeHandler}
-      motionProps={{
-        variants: framerMotionAnimations.downEnterExit,
-      }}
       scrollBehavior="inside"
+      confirmButtonHidden
+      nativeCloseButton
     >
       <>
         {step === KYCSteps.START && (
@@ -76,7 +75,7 @@ const KYCModal: FC<KYCModalProps> = (props) => {
         )}
         {step === KYCSteps.KYC && <Kyc accessToken={accessToken} />}
       </>
-    </CustomModal>
+    </MainModal>
   );
 };
 

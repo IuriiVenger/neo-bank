@@ -12,7 +12,8 @@ import { API } from '@/api/types';
 import SelectCurrency from '@/components/Currency/SelectCurrency';
 import ConfirmModal from '@/components/modals/ConfirmModal';
 import CurrencyListModal from '@/components/modals/CurrencyListModal';
-import CustomModal from '@/components/ui/CustomModal';
+import MainModal from '@/components/modals/MainModal';
+import { useRequestStatus } from '@/hooks/useRequestStatus';
 import { deleteDash, getCardExpiryRecord, separateNumbers } from '@/utils/converters';
 import { isCrypto, isFiat } from '@/utils/financial';
 
@@ -46,8 +47,8 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
 
   const [isCryptoModalOpen, setIsCryptoModalOpen] = useState(false);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
-
   const [topUpConfirmationText, setTopUpConfirmationText] = useState<string | null>(null);
+  const [topUpRequestStatuses, setTopUpPending, setTopUpFullfilled, setTopUpRejected] = useRequestStatus();
 
   const selectedWalletBalance = selectedWallet.data?.balance;
   const selectedCryptoWalletBalance =
@@ -86,17 +87,25 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
 
   const topUpCard = async () => {
     if (!selectedWallet.data) return;
-    await createInternalTopUpOrder({
-      amount,
-      crypto_uuid: selectedCrypto.uuid,
-      fiat_uuid: selectedFiat.uuid,
-      wallet_uuid: selectedWallet.data.uuid,
-      is_subsctract: true,
-      card_id: card.id,
-    });
-    toast.success('Card successfully topped up');
-    selectCard(card.id);
-    setIsModalOpen(false);
+    try {
+      setTopUpPending();
+
+      await createInternalTopUpOrder({
+        amount,
+        crypto_uuid: selectedCrypto.uuid,
+        fiat_uuid: selectedFiat.uuid,
+        wallet_uuid: selectedWallet.data.uuid,
+        is_subsctract: true,
+        card_id: card.id,
+      });
+      toast.success('Card successfully topped up');
+      selectCard(card.id);
+      setIsModalOpen(false);
+      setTopUpFullfilled();
+    } catch (error) {
+      setTopUpRejected();
+      throw error;
+    }
   };
 
   const closeModal = () => {
@@ -121,21 +130,14 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
   }, [card]);
 
   return (
-    <CustomModal
+    <MainModal
       isOpen={isOpen}
       onOpenChange={setIsModalOpen}
-      hideCloseButton
       header="Crypto Top Up"
-      footer={
-        <div className="flex flex-col gap-3">
-          <Button isDisabled={!isTopUpAvailable} color="primary" radius="md" onClick={openConfirmationModal}>
-            {isAmountEnough ? 'Top Up' : 'Not enough funds'}
-          </Button>
-          <Button onClick={closeModal} className="w-full" color="primary" variant="bordered">
-            Close
-          </Button>
-        </div>
-      }
+      confirmButtonDisabled={!isTopUpAvailable}
+      confirmButtonText={isAmountEnough ? 'Top Up' : 'Not enough funds'}
+      isLoading={topUpRequestStatuses.PENDING}
+      onConfirm={openConfirmationModal}
     >
       <div className={cn('flex  flex-col gap-4', className)}>
         <div className="flex gap-4">
@@ -188,7 +190,7 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
           confirmText={topUpConfirmationText}
         />
       </div>
-    </CustomModal>
+    </MainModal>
   );
 };
 

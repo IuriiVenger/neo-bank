@@ -9,7 +9,7 @@ type StartProps = {
   nextStep: () => void;
   isPending: boolean;
   isError: boolean;
-  verificationStatus: KYCStatuses;
+  verificationStatus?: KYCStatuses;
   setIsModalOpen: (isOpen: boolean) => void;
 };
 

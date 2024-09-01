@@ -1,4 +1,4 @@
-import { Button, Select, SelectItem } from '@nextui-org/react';
+import { Select, SelectItem } from '@nextui-org/react';
 import cn from 'classnames';
 import { FC, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -13,8 +13,9 @@ import { API } from '@/api/types';
 import SelectCurrency from '@/components/Currency/SelectCurrency';
 import ConfirmModal from '@/components/modals/ConfirmModal';
 import CurrencyListModal from '@/components/modals/CurrencyListModal';
+import MainModal from '@/components/modals/MainModal';
 import CustomInput from '@/components/ui/CustomInput';
-import CustomModal from '@/components/ui/CustomModal';
+import { useRequestStatus } from '@/hooks/useRequestStatus';
 import { isCrypto, isFiat } from '@/utils/financial';
 
 type CreateCardModalProps = CardsListProps & {
@@ -44,9 +45,10 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
 
   const [isCryptoModalOpen, setIsCryptoModalOpen] = useState(false);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
-  const [activeBin, setActiveBin] = useState<API.Cards.Bin | undefined>(bins[0]);
+  const [activeBin, setActiveBin] = useState<API.Cards.Bin | undefined>(bins[0] || {});
   const [cardName, setCardName] = useState<string>('');
   const [topUpConfirmationText, setTopUpConfirmationText] = useState<string | null>(null);
+  const [requestStatuses, setPending, setFullfilled, setRejected] = useRequestStatus();
 
   const { setAmount, amount, offrampCalcData, isOfframpCalcPending } = externalCalcData;
 
@@ -58,7 +60,10 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     selectedWallet.data.balance.find((balance) => balance.crypto.uuid === selectedCrypto.uuid)?.amount;
 
   const isAmountEnough = selectedCryptoAvavilibleToWithdraw && selectedCryptoAvavilibleToWithdraw >= amount;
-  const isTopUpAvailable = !!selectedCrypto && !!selectedFiat && !!selectedWallet.data && !!amount && isAmountEnough;
+  const isTopUpAvailable =
+    !!selectedCrypto && !!selectedFiat && !!selectedWallet.data && !!amount && !!activeBin && isAmountEnough;
+
+  const mainButtonTitle = isAmountEnough ? 'Create card' : 'Not enough funds';
 
   const selectCurrency = (currency: API.List.Crypto | API.List.Fiat | API.List.Chains) => {
     if (isFiat(currency)) {
@@ -70,13 +75,6 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   };
 
   const openCryptoModal = () => setIsCryptoModalOpen(true);
-
-  const openConfirmationModal = () => {
-    const confirmationText = `Are you sure you want to create card and top up it with ${amount} ${selectedCrypto.symbol}?`;
-
-    setTopUpConfirmationText(confirmationText);
-    setIsConfirmationModalOpen(true);
-  };
 
   const createCardHandler = async () => {
     if (!selectedWallet.data || !activeBin) {
@@ -90,10 +88,25 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
       cardBalance: amount,
     };
 
-    const { data } = await createCard(requestData);
-    setIsModalOpen(false);
-    toast.success('Card created successfully');
-    onCardCreate && onCardCreate(data.id);
+    try {
+      setPending();
+      const { data } = await createCard(requestData);
+      setIsModalOpen(false);
+      toast.success('Card created successfully');
+      onCardCreate && onCardCreate(data.id);
+      setFullfilled();
+    } catch (error) {
+      setRejected();
+      throw error;
+    }
+  };
+
+  const openConfirmationModal = () => {
+    const confirmationText = `Are you sure you want to create card and top up it with ${amount} ${selectedCrypto.symbol}?`;
+
+    setTopUpConfirmationText(confirmationText);
+
+    setIsConfirmationModalOpen(true);
   };
 
   const closeModal = () => {
@@ -128,23 +141,16 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   }, [activeBin]);
 
   return (
-    <CustomModal
+    <MainModal
       isOpen={isOpen}
       onOpenChange={setIsModalOpen}
-      hideCloseButton
       backdrop="opaque"
       scrollBehavior="inside"
       header="Create card"
-      footer={
-        <>
-          <Button isDisabled={!isTopUpAvailable} color="primary" radius="md" onClick={openConfirmationModal}>
-            {isAmountEnough ? 'Create card' : 'Not enough funds'}
-          </Button>
-          <Button onClick={closeModal} className="w-full" color="primary" variant="bordered">
-            Close
-          </Button>
-        </>
-      }
+      confirmButtonText={mainButtonTitle}
+      confirmButtonDisabled={!isTopUpAvailable}
+      onConfirm={openConfirmationModal}
+      isLoading={requestStatuses.PENDING}
     >
       <div className={cn('flex flex-col gap-4', className)}>
         <Select label="Select BIN" onChange={handleSelectChange} selectedKeys={activeBin && [activeBin.code]}>
@@ -203,7 +209,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
           confirmText={topUpConfirmationText}
         />
       </div>
-    </CustomModal>
+    </MainModal>
   );
 };
 

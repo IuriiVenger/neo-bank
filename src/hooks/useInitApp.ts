@@ -69,16 +69,12 @@ const useInitApp = (dispatch: AppDispatch) => {
 
     try {
       await initWebApp();
+      isAuthTokensExist && (await initUser());
     } catch (error) {
       toast.error('Error during app initialization');
       console.error('Error during initWebApp:', error);
     } finally {
       dispatch(setWebAppInitialized(true));
-    }
-
-    try {
-      isAuthTokensExist && (await initUser());
-    } finally {
       isWebEnviroment && dispatch(setAppFullInitialized(true));
     }
   };

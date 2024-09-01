@@ -30,6 +30,7 @@ import { UseExternalCalcData } from '@/hooks/useExternalCalc';
 import { useRequestsStatus } from '@/hooks/useRequestStatus';
 import { StoreDataWithStatusAndMeta } from '@/store/types';
 import { deleteDash } from '@/utils/converters';
+import { getCardProvider } from '@/utils/financial';
 
 export type CardDetailProps = CardsTabProps & {
   card: API.Cards.CardDetailItem;
@@ -140,7 +141,7 @@ const CardDetail: FC<CardDetailProps> = (props) => {
             <button type="button" className={cn(!isActive && 'grayscale')} onClick={showSensitiveDataModal}>
               <Cards
                 name={card.cardName}
-                issuer={card.bin.provider}
+                issuer={getCardProvider(card.bin.provider)}
                 number={deleteDash(card.maskedPan)}
                 expiry={'**/**'}
                 cvc="***"

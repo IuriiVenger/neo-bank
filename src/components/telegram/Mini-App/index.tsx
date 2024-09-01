@@ -1,4 +1,4 @@
-import DashboardPage from '@/app/(main_layout)/dashboard/page';
+import DashboardPage from '@/app/(web_layout)/dashboard/page';
 
 const MiniApp = () => <DashboardPage />;
 

@@ -88,7 +88,7 @@ export namespace API {
           unit: string;
         };
       };
-      requirements: {
+      requirements?: {
         isKycRequired: boolean;
       };
     }
@@ -183,7 +183,7 @@ export namespace API {
             unit: string;
           };
         };
-        requirements: {
+        requirements?: {
           isKycRequired: boolean;
         };
       };

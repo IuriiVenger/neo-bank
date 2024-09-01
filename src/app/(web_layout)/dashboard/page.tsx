@@ -20,6 +20,7 @@ import {
   allowedCryptoToFiatUuid,
   cardInitialPaginationParams,
   cardLoadMoreDefaultLimit,
+  AppEnviroment,
 } from '@/constants';
 import useExternalCalc from '@/hooks/useExternalCalc';
 import useOrder from '@/hooks/useOrder';
@@ -62,7 +63,7 @@ const DashboardPage = () => {
     selectedCardTransactions,
   } = useAppSelector(selectFinanceData);
 
-  const { isWebAppInitialized } = useAppSelector(selectConfig);
+  const { isWebAppInitialized, appEnviroment } = useAppSelector(selectConfig);
 
   const { userData } = useAppSelector(selectUser);
   const availableToExchangeCrypto = useAppSelector(selectActiveFiatAvailableCrypto);
@@ -81,6 +82,7 @@ const DashboardPage = () => {
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
 
   const walletTypes = Object.values(walletType);
+  const isTelegramEnviroment = appEnviroment === AppEnviroment.TELEGRAM;
 
   const selectChain = (chain: API.List.Chains) => dispatch(setSelectedChain(chain));
   const selectCrypto = (currency: API.List.Crypto) => dispatch(setSelectedCrypto(currency));
@@ -219,6 +221,7 @@ const DashboardPage = () => {
     activeCardId,
     activeDashboardTab,
     allowedCryptoToFiatList,
+    appEnviroment,
     availableToExchangeCrypto,
     bins,
     cardTransactions: selectedCardTransactions,
@@ -240,6 +243,7 @@ const DashboardPage = () => {
     getOTP,
     getSensitiveData,
     getWalletAddress,
+    isTelegramEnviroment,
     loadMoreCards: loadMoreCardsHandler,
     loadMoreCardTransactions: loadMoreCardTransactionsHandler,
     loadMoreWalletTransactions: loadMoreWalletTransactionsHandler,

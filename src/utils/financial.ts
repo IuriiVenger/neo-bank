@@ -100,3 +100,16 @@ export const getActiveFiatAvailableCrypto = (fiatExchangeRate: API.Exchange.F2C[
 
   return availableCrypto;
 };
+
+export const getCardProvider = (provider: string) => {
+  const normalizedProvider = provider.replace(/[-_ ]/g, '').toUpperCase();
+
+  switch (normalizedProvider) {
+    case 'VISA':
+      return 'Visa';
+    case 'MASTERCARD':
+      return 'Mastercard';
+    default:
+      return provider;
+  }
+};
