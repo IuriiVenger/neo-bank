@@ -63,31 +63,31 @@ const TelegramInit = () => {
   const miniApp = useMiniApp(true);
   const initData = useInitData(true);
   const dispatch = useAppDispatch();
-  const settingsButton = useSettingsButton(true);
+  // const settingsButton = useSettingsButton(true);
   const { initUser } = useAuth(dispatch);
   const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, initUser);
 
-  const openSettingsPopup = () => {
-    dispatch(setModalVisible(ModalNames.SETTINGS));
-  };
+  // const openSettingsPopup = () => {
+  //   dispatch(setModalVisible(ModalNames.SETTINGS));
+  // };
 
-  const initSettingsButton = () => {
-    if (!settingsButton) {
-      return;
-    }
-    settingsButton.show();
-    settingsButton.on('click', openSettingsPopup);
-  };
+  // const initSettingsButton = () => {
+  //   if (!settingsButton) {
+  //     return;
+  //   }
+  //   settingsButton.show();
+  //   settingsButton.on('click', openSettingsPopup);
+  // };
+
+  // useEffect(() => {
+  //   initSettingsButton();
+  // }, [settingsButton]);
 
   useEffect(() => {
     if (isWebAppInitialized && !isUserLoggedIn) {
       initTelegramAuth();
     }
   }, [isWebAppInitialized, isUserLoggedIn]);
-
-  useEffect(() => {
-    initSettingsButton();
-  }, [settingsButton]);
 
   useEffect(() => {
     dispatch(setAppEnviroment(AppEnviroment.TELEGRAM));
