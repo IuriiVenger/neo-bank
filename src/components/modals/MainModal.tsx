@@ -113,6 +113,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     confirmButtonHidden,
     isAppFullInitialized,
     isLoading,
+    onClose,
     ...otherProps
   } = props;
 
@@ -127,6 +128,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
 
   const closeModal = () => {
     onOpenChange && onOpenChange(false);
+    onClose && onClose();
   };
 
   const onConfirmButtonTextChanged = () => {
@@ -264,6 +266,7 @@ const WebModal: FC<MainModalProps> = (props) => {
     hideCloseButton,
     nativeCloseButton,
     isOpen,
+    onClose,
     ...otherProps
   } = props;
 
@@ -271,6 +274,7 @@ const WebModal: FC<MainModalProps> = (props) => {
 
   const closeModal = () => {
     onOpenChange && onOpenChange(false);
+    onClose && onClose();
   };
 
   const nonNativeCloseButtonEnabled = !nativeCloseButton && !hideCloseButton;

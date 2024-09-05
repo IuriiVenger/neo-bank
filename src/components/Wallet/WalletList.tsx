@@ -21,7 +21,12 @@ type WalletMenuProps = {
 };
 
 const WalletList: FC<WalletMenuProps> = ({ wallets, onSelect, activeWallet, className, openCreateWalletModal }) => {
-  const handleSelectWallet = (e: React.ChangeEvent<HTMLSelectElement>) => onSelect(e.target.value);
+  const handleSelectWallet = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (!e.target.value) {
+      return;
+    }
+    onSelect(e.target.value);
+  };
 
   return (
     <section className={cn('flex flex-col gap-1', className)}>
