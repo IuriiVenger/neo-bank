@@ -28,9 +28,9 @@ const LandingTitle: FC<LandingTitleProps> = ({ id, isUserLoggedIn }) => (
         We make crypto
       </h1>
       <div className="mt-3 flex max-w-full gap-3 whitespace-nowrap leading-[100%] tracking-tighter max-md:text-4xl">
-        <Highlight text="clear" bgColor=" bg-light-primary" textColor="text-white" />
+        <Highlight text="clear" bgColor=" bg-primary y" textColor="text-white" />
         <span className="flex items-center text-neutral-950 max-md:text-4xl">&</span>
-        <Highlight text="simple" bgColor="bg-white" textColor="text-light-primary shadow-lg" />
+        <Highlight text="simple" bgColor="bg-white" textColor="text-primary  shadow-lg" />
       </div>
       <Button
         as={Link}

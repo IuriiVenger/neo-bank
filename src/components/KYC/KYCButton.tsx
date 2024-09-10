@@ -26,7 +26,7 @@ const KYCButton: FC<KYCButtonProps> = ({ onClick, disabled, className, status })
       radius="sm"
       className={cn(
         className,
-        'h-9 flex-shrink-0 border  border-light-primary bg-light-secondary text-sm font-medium text-light-primary',
+        'h-9 flex-shrink-0 border  border-primary bg-secondary text-sm font-medium text-primary   ',
       )}
     >
       {buttonText}

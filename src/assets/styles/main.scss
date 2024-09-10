@@ -1,6 +1,8 @@
+@import './globals.scss';
 @import './variables.scss';
 @import 'react-credit-cards/lib/styles.scss';
 @import './cards.scss';
+@import './colors.scss';
 
 .small-fontsize-input {
   input[type='text'] {

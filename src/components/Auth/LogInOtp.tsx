@@ -101,7 +101,7 @@ const LogInOtp: FC<LogInOtpProps> = (props) => {
         {buttonText}
       </Button>
       {!isOtpRequested && (
-        <Link className="m-auto mt-2 block w-fit text-center text-light-primary underline" href="/">
+        <Link className="m-auto mt-2 block w-fit text-center text-primary underline " href="/">
           Back to main page
         </Link>
       )}

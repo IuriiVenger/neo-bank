@@ -52,9 +52,7 @@ const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
               chains={chains}
               hideShevron
             />
-            {getCurrencyId(currency) === getCurrencyId(activeCurrency) && (
-              <FaCheckCircle className="text-light-primary" />
-            )}
+            {getCurrencyId(currency) === getCurrencyId(activeCurrency) && <FaCheckCircle className="text-primary " />}
           </div>
         ))}
       </>

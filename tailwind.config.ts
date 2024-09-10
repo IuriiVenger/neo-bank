@@ -14,6 +14,7 @@ const config: Config = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/assets/styles/**/*.{css,scss,sass}',
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
@@ -41,11 +42,11 @@ const config: Config = {
       },
       colors: {
         'light-foreground': themes.light.baseColors.foreground,
-        'light-foreground2': themes.light.baseColors.foreground2,
-        'light-foreground3': themes.light.baseColors.foreground3,
+        'light-foreground-2': themes.light.baseColors.foreground2,
+        'light-foreground-3': themes.light.baseColors.foreground3,
         'light-background': themes.light.baseColors.background,
-        'light-background2': themes.light.baseColors.background2,
-        'light-background3': themes.light.baseColors.background3,
+        'light-background-2': themes.light.baseColors.background2,
+        'light-background-3': themes.light.baseColors.background3,
         'light-primary': themes.light.brandColors.primary.DEFAULT,
         'light-secondary': themes.light.brandColors.secondary.DEFAULT,
         'light-primary-foreground': themes.light.brandColors.primary.foreground,
@@ -55,11 +56,11 @@ const config: Config = {
         'light-success': themes.light.brandColors.success.DEFAULT,
         'light-success-foreground': themes.light.brandColors.success.foreground,
         'dark-foreground': themes.dark.baseColors.foreground,
-        'dark-foreground2': themes.dark.baseColors.foreground2,
-        'dark-foreground3': themes.dark.baseColors.foreground3,
+        'dark-foreground-2': themes.dark.baseColors.foreground2,
+        'dark-foreground-3': themes.dark.baseColors.foreground3,
         'dark-background': themes.dark.baseColors.background,
-        'dark-background2': themes.dark.baseColors.background2,
-        'dark-background3': themes.dark.baseColors.background3,
+        'dark-background-2': themes.dark.baseColors.background2,
+        'dark-background-3': themes.dark.baseColors.background3,
         'dark-primary': themes.dark.brandColors.primary.DEFAULT,
         'dark-secondary': themes.dark.brandColors.secondary.DEFAULT,
         'dark-primary-foreground': themes.dark.brandColors.primary.foreground,
@@ -112,10 +113,18 @@ const config: Config = {
             secondary: themes.dark.brandColors.secondary,
             success: themes.dark.brandColors.success,
             danger: themes.dark.brandColors.danger,
+            default: {},
           },
         },
       },
     }),
+    function ({ addComponents }) {
+      addComponents({
+        '.border-background-3': {
+          '@apply border-light-background-3 dark:border-dark-background-3': {},
+        },
+      });
+    },
   ],
 };
 export default config;
