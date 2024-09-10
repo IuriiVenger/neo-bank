@@ -34,7 +34,9 @@ const CardsList: FC<CardsListProps> = (props) => {
     fiatList.find((item) => item.code === currentCard.bin.currencyCode)?.symbol || '';
 
   const getCardSubtitile = (currentCard: API.Cards.CardDetailItem) =>
-    `${currentCard.cardName} / balance:${roundToDecimals(currentCard.balance.available, 2)}${getCardCurrencySymbol(currentCard)}`;
+    `${currentCard.cardName} / balance:${roundToDecimals(currentCard.balance.available, 2)}${getCardCurrencySymbol(
+      currentCard,
+    )}`;
 
   const openCreateCardModal = () => {
     setIsCreateCardModalOpen(true);
@@ -56,10 +58,10 @@ const CardsList: FC<CardsListProps> = (props) => {
         <button
           type="button"
           onClick={createCardButtonClickHandler}
-          className="rccs__card flex h-full w-full cursor-pointer flex-col items-center justify-center border border-tenant-main bg-tenant-main-light transition-all hover:scale-[102%]"
+          className="rccs__card flex h-full w-full cursor-pointer flex-col items-center justify-center border border-light-primary bg-light-secondary transition-all hover:scale-[102%]"
         >
-          <GoPlusCircle className="text-xl text-tenant-main xs:text-2xl" />
-          <p className="text-sm text-tenant-main xs:text-base">Add new card</p>
+          <GoPlusCircle className="text-xl text-light-primary xs:text-2xl" />
+          <p className="text-sm text-light-primary xs:text-base">Add new card</p>
         </button>
         {!isFirstItemsLoading && data ? (
           <>

@@ -1,13 +1,13 @@
 import { nextui } from '@nextui-org/react';
 
+import { themes } from './src/config/themes';
+
 import type { Config } from 'tailwindcss';
 
 const defaultTheme = require('tailwindcss/defaultTheme');
 
-const lightBlueGradient = 'linear-gradient(125deg, #71A9ED 0%, #436CB6 100%)';
-const lightLavanderGradient = 'linear-gradient(32.49deg, rgba(255, 255, 255, 1) 0.15%, rgba(183, 182, 255, 0.2) 100%)';
-export const tenantMainColor = '#FD5744';
-export const tenantMainColorLight = '#ff1a001f';
+const customBlueGradient = 'linear-gradient(125deg, #71A9ED 0%, #436CB6 100%)';
+const customLavanderGradient = 'linear-gradient(32.49deg, rgba(255, 255, 255, 1) 0.15%, rgba(183, 182, 255, 0.2) 100%)';
 
 const config: Config = {
   content: [
@@ -36,12 +36,40 @@ const config: Config = {
         '20': 'repeat(20, minmax(0, 1fr))',
       },
       backgroundImage: {
-        'light-blue-gradient': lightBlueGradient,
-        'light-lavander-gradient': lightLavanderGradient,
+        'custom-blue-gradient': customBlueGradient,
+        'custom-lavander-gradient': customLavanderGradient,
       },
       colors: {
-        'tenant-main': tenantMainColor,
-        'tenant-main-light': tenantMainColorLight,
+        'light-foreground': themes.light.baseColors.foreground,
+        'light-foreground2': themes.light.baseColors.foreground2,
+        'light-foreground3': themes.light.baseColors.foreground3,
+        'light-background': themes.light.baseColors.background,
+        'light-background2': themes.light.baseColors.background2,
+        'light-background3': themes.light.baseColors.background3,
+        'light-primary': themes.light.brandColors.primary.DEFAULT,
+        'light-secondary': themes.light.brandColors.secondary.DEFAULT,
+        'light-primary-foreground': themes.light.brandColors.primary.foreground,
+        'light-secondary-foreground': themes.light.brandColors.secondary.foreground,
+        'light-danger': themes.light.brandColors.danger.DEFAULT,
+        'light-danger-foreground': themes.light.brandColors.danger.foreground,
+        'light-success': themes.light.brandColors.success.DEFAULT,
+        'light-success-foreground': themes.light.brandColors.success.foreground,
+        'dark-foreground': themes.dark.baseColors.foreground,
+        'dark-foreground2': themes.dark.baseColors.foreground2,
+        'dark-foreground3': themes.dark.baseColors.foreground3,
+        'dark-background': themes.dark.baseColors.background,
+        'dark-background2': themes.dark.baseColors.background2,
+        'dark-background3': themes.dark.baseColors.background3,
+        'dark-primary': themes.dark.brandColors.primary.DEFAULT,
+        'dark-secondary': themes.dark.brandColors.secondary.DEFAULT,
+        'dark-primary-foreground': themes.dark.brandColors.primary.foreground,
+        'dark-secondary-foreground': themes.dark.brandColors.secondary.foreground,
+        'dark-danger': themes.dark.brandColors.danger.DEFAULT,
+        'dark-danger-foreground': themes.dark.brandColors.danger.foreground,
+        'dark-success': themes.dark.brandColors.success.DEFAULT,
+        'dark-success-foreground': themes.dark.brandColors.success.foreground,
+        'telegram-main-button-color': themes.light.telegramColors.mainButton.color,
+        'telegram-main-button-disabled-color': themes.light.telegramColors.mainButton.disabledColor,
         indigo: {
           50: '#EEEEFF',
         },
@@ -68,12 +96,22 @@ const config: Config = {
       themes: {
         light: {
           colors: {
-            primary: {
-              DEFAULT: tenantMainColor,
-            },
-            secondary: {
-              DEFAULT: tenantMainColorLight,
-            },
+            background: themes.light.baseColors.background,
+            foreground: themes.light.baseColors.foreground,
+            primary: themes.light.brandColors.primary,
+            secondary: themes.light.brandColors.secondary,
+            success: themes.light.brandColors.success,
+            danger: themes.light.brandColors.danger,
+          },
+        },
+        dark: {
+          colors: {
+            background: themes.dark.baseColors.background,
+            foreground: themes.dark.baseColors.foreground,
+            primary: themes.dark.brandColors.primary,
+            secondary: themes.dark.brandColors.secondary,
+            success: themes.dark.brandColors.success,
+            danger: themes.dark.brandColors.danger,
           },
         },
       },

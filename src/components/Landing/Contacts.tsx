@@ -12,7 +12,7 @@ type ContactsProps = {
 };
 
 const Contacts: FC<ContactsProps> = ({ id }) => (
-  <div className="flex w-full justify-center bg-tenant-main-light" id={id}>
+  <div className="flex w-full justify-center bg-light-secondary" id={id}>
     <div className="flex max-w-screen-xl  gap-5 px-16 pt-16 max-md:flex-col max-md:gap-0 max-md:px-5 max-md:pt-5">
       <div className="flex w-2/5 flex-col pb-6 max-md:ml-0 max-md:w-full">
         <div className="flex flex-col text-lg leading-7 text-neutral-950 max-md:mt-10">
@@ -25,7 +25,7 @@ const Contacts: FC<ContactsProps> = ({ id }) => (
           </div>
           <Button
             onClick={mailToSupport}
-            className="mt-4 justify-center self-start whitespace-nowrap rounded bg-tenant-main px-4 py-2 text-sm text-white"
+            className="mt-4 justify-center self-start whitespace-nowrap rounded bg-light-primary px-4 py-2 text-sm text-white"
           >
             {supportEmail}
           </Button>

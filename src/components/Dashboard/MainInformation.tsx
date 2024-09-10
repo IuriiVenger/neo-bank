@@ -43,14 +43,8 @@ const MainInformation: FC<MainInformationProps> = (props) => {
           <div className="flex flex-col items-center justify-center gap-2" key={index}>
             <Button
               isIconOnly
-              color="primary"
-              className={cn(
-                'bg-inherit lg:w-fit',
-                button.disabled ? '!cursor-not-allowed opacity-50 hover:!opacity-50' : ' hover:!bg-gray-200',
-                activeDashboardTab === button.id
-                  ? 'bg-tenant-main text-white hover:!bg-tenant-main hover:!text-white'
-                  : 'bg-tenant-main-light text-tenant-main hover:!bg-tenant-main-light hover:!text-tenant-main',
-              )}
+              color={activeDashboardTab === button.id ? 'primary' : 'default'}
+              className={cn('lg:w-fit', button.disabled && '!cursor-not-allowed opacity-50 hover:!opacity-50')}
               radius="full"
               onClick={button.onClick}
               disabled={button?.disabled}

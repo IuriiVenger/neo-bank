@@ -182,3 +182,8 @@ export enum AppEnviroment {
   WEB = 'web',
   TELEGRAM = 'telegram',
 }
+
+export enum CustomTheme {
+  LIGHT = 'light',
+  DARK = 'dark',
+}

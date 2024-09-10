@@ -1,4 +1,3 @@
-import { Button } from '@nextui-org/react';
 import copy from 'copy-to-clipboard';
 import { FC, useState } from 'react';
 

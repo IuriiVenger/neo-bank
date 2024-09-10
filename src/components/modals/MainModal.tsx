@@ -4,7 +4,8 @@ import cn from 'classnames';
 import { FC, memo, ReactNode, useEffect } from 'react';
 
 import { framerMotionAnimations } from '@/config/animations';
-import { disabledTelegramButtonColor, mainTelegramButtonColor } from '@/config/colors';
+
+import { themes } from '@/config/themes';
 import { AppEnviroment } from '@/constants';
 import useBreakpoints from '@/hooks/useBreakpoints';
 import { useAppSelector } from '@/store';
@@ -141,14 +142,15 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     if (!mainButton || !isOpen) return;
 
     mainButton.disable();
-    mainButton.setBgColor(disabledTelegramButtonColor);
+
+    mainButton.setBgColor(themes.light.telegramColors.mainButton.color);
   };
 
   const enableMainButton = () => {
     if (!mainButton || !isOpen) return;
 
     mainButton.enable();
-    mainButton.setBgColor(mainTelegramButtonColor);
+    mainButton.setBgColor(themes.light.telegramColors.mainButton.color);
   };
 
   const showLoader = () => {

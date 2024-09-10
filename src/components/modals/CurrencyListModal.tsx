@@ -40,7 +40,7 @@ const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
               'flex cursor-pointer items-center justify-between px-4  py-2 transition-background md:border-b ',
               getCurrencyId(currency) === getCurrencyId(activeCurrency)
                 ? 'bg-gray-100'
-                : 'hover:bg-light-lavander-gradient',
+                : 'hover:bg-custom-lavander-gradient',
             )}
             key={index}
             onClick={() => handleCurrencyClick(currency)}
@@ -53,7 +53,7 @@ const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
               hideShevron
             />
             {getCurrencyId(currency) === getCurrencyId(activeCurrency) && (
-              <FaCheckCircle className="text-tenant-main" />
+              <FaCheckCircle className="text-light-primary" />
             )}
           </div>
         ))}

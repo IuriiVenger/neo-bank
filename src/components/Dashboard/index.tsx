@@ -142,7 +142,7 @@ const Dashboard: FC<DashboardProps> = (props) => {
         <div className="col-span-2 row-span-4 flex h-full w-full flex-col items-center justify-center">
           <h1 className="mb-6 text-xl">You don&apos;t have any wallets yet</h1>
           <Button
-            className="self-center bg-tenant-main-light text-tenant-main md:flex"
+            className="self-center bg-light-secondary text-light-primary md:flex"
             color="primary"
             onClick={openCreateWalletModal}
             variant="flat"

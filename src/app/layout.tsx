@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import { Inter } from 'next/font/google';
 import '@/assets/styles/globals.css';
 import '@/assets/styles/main.scss';
@@ -30,8 +31,8 @@ type RootLayoutProps = Readonly<{ children: React.ReactNode }>;
 
 const RootLayout: FC<RootLayoutProps> = ({ children }) => (
   <StoreProvider>
-    <html lang="en" className="light">
-      <body className={font.className}>
+    <html lang="en" className="dark">
+      <body className={cn(font.className, 'bg-background text-foreground')}>
         <Providers>{children}</Providers>
         <ToastContainer
           position="top-right"

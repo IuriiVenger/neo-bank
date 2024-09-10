@@ -62,7 +62,9 @@ const InfoTab: FC<InfoTabProps> = (props) => {
                   </div>
                 }
                 subtitle={
-                  <p className="mt-2 flex items-center gap-1">{`${getDate(transaction.created_at)}, ${transaction.type}`}</p>
+                  <p className="mt-2 flex items-center gap-1">{`${getDate(transaction.created_at)}, ${
+                    transaction.type
+                  }`}</p>
                 }
               >
                 <div className="pl-2">

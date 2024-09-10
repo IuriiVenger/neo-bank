@@ -46,23 +46,23 @@ const AuthButtons: FC<UserProps> = ({ className }) => {
             </NavbarItem>
           )}
           <NavbarItem>
-            <Link className="w-full text-sm text-tenant-main hover:underline" href="/dashboard">
+            <Link className="w-full text-sm text-light-primary hover:underline" href="/dashboard">
               Dashboard
             </Link>
           </NavbarItem>
-          <span className="w-fit cursor-pointer bg-inherit p-0 text-tenant-main hover:underline" onClick={signOut}>
+          <span className="w-fit cursor-pointer bg-inherit p-0 text-light-primary hover:underline" onClick={signOut}>
             Logout
           </span>
         </>
       ) : (
         <div className="flex gap-8">
           <NavbarItem>
-            <Link className="bg-inherit text-sm text-tenant-main hover:underline" href="/auth/login/otp">
+            <Link className="bg-inherit text-sm text-light-primary hover:underline" href="/auth/login/otp">
               Sign up
             </Link>
           </NavbarItem>
           <NavbarItem>
-            <Link className="bg-inherit text-sm text-tenant-main hover:underline" href="/auth/login/otp">
+            <Link className="bg-inherit text-sm text-light-primary hover:underline" href="/auth/login/otp">
               Log in
             </Link>
           </NavbarItem>

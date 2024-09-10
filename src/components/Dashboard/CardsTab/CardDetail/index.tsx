@@ -174,7 +174,7 @@ const CardDetail: FC<CardDetailProps> = (props) => {
         <Button
           color="primary"
           variant="flat"
-          className=" bg-tenant-main-light text-tenant-main"
+          className=" bg-light-secondary text-light-primary"
           isLoading={requestStatuses[cardDetailRequests.SENSITIVE_DATA].PENDING}
           onClick={showSensitiveDataModal}
           radius="sm"
@@ -184,7 +184,7 @@ const CardDetail: FC<CardDetailProps> = (props) => {
         <Button
           color="primary"
           variant="flat"
-          className=" bg-tenant-main-light text-tenant-main"
+          className=" bg-light-secondary text-light-primary"
           onClick={showTopupModal}
           radius="sm"
           isLoading={requestStatuses[cardDetailRequests.TOP_UP].PENDING}
@@ -196,7 +196,7 @@ const CardDetail: FC<CardDetailProps> = (props) => {
         <Button
           color="primary"
           variant="flat"
-          className=" bg-tenant-main-light text-tenant-main"
+          className=" bg-light-secondary text-light-primary"
           isLoading={requestStatuses[cardDetailRequests.LIMITS].PENDING}
           onClick={showLimitsModal}
           radius="sm"
@@ -207,7 +207,7 @@ const CardDetail: FC<CardDetailProps> = (props) => {
         </Button>
         <Dropdown isDisabled={card.status === CardStatus.CLOSED}>
           <DropdownTrigger>
-            <Button color="primary" className=" bg-tenant-main-light  text-tenant-main " radius="sm">
+            <Button color="primary" className=" bg-light-secondary  text-light-primary " radius="sm">
               <PiListThin />
               Other
             </Button>

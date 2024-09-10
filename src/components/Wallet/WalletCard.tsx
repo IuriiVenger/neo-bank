@@ -9,7 +9,7 @@ type WalletCardProps = {
 };
 
 const WalletCard: FC<WalletCardProps> = ({ wallet }) => (
-  <Card className="min-h-60 max-w-sm  bg-light-blue-gradient p-4 text-white" fullWidth radius="sm">
+  <Card className="min-h-60 max-w-sm  bg-custom-blue-gradient p-4 text-white" fullWidth radius="sm">
     <CardHeader>Wallet {prettyId(wallet.uuid)}</CardHeader>
     <CardBody>
       {wallet.balance.map(({ amount, crypto, uuid }) => (

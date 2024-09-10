@@ -39,7 +39,7 @@ const orderStatusesInfo: OrderStatusesInfo = {
     description: 'Your order has been completed.',
     icon: GoVerified,
     buttonColor: 'primary',
-    iconColorClassname: 'text-tenant-main',
+    iconColorClassname: 'text-light-primary',
   },
   [OrderStatuses.CANCELED]: {
     title: 'Canceled',

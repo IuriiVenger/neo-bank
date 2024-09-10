@@ -48,7 +48,9 @@ const WalletList: FC<WalletMenuProps> = ({ wallets, onSelect, activeWallet, clas
           <div
             className={cn(
               'flex cursor-pointer items-center gap-4 rounded px-4 py-2 transition-background',
-              wallet.uuid === activeWallet?.uuid ? 'bg-tenant-main text-white' : 'hover:bg-gray-100',
+              wallet.uuid === activeWallet?.uuid
+                ? 'bg-light-primary text-white dark:bg-dark-primary'
+                : 'hover:bg-gray-100',
             )}
             key={wallet.uuid}
             onClick={() => onSelect(wallet.uuid)}
@@ -79,7 +81,7 @@ const WalletList: FC<WalletMenuProps> = ({ wallets, onSelect, activeWallet, clas
         </Select>
       </div>
       <Button
-        className="mt-2 hidden w-fit self-center bg-tenant-main-light text-tenant-main md:flex"
+        className="mt-2 hidden w-fit self-center bg-light-secondary text-light-primary md:flex"
         color="primary"
         onClick={openCreateWalletModal}
         variant="flat"

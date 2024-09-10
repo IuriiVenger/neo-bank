@@ -55,7 +55,7 @@ const Feature: FC<FeatureProps> = (props) => {
       <div className="flex h-full flex-col items-center justify-between gap-2 text-center lg:items-start lg:gap-0 lg:text-start">
         <h4 className="text-xl font-medium lg:whitespace-pre lg:text-2.5xl">{title}</h4>
         <p className="text-sm lg:whitespace-pre lg:text-base">{description}</p>
-        <Button onClick={onClick} className="mt-2 w-fit rounded bg-tenant-main px-4 py-2 text-sm text-white lg:mt-0">
+        <Button onClick={onClick} className="mt-2 w-fit rounded bg-light-primary px-4 py-2 text-sm text-white lg:mt-0">
           {buttonTitle}
         </Button>
       </div>
@@ -68,7 +68,7 @@ type HaveMoreQuestionsProps = {
 };
 
 const HaveMoreQuestions: FC<HaveMoreQuestionsProps> = ({ id }) => (
-  <section className="flex w-full flex-col bg-light-lavander-gradient" id={id}>
+  <section className="flex w-full flex-col bg-custom-lavander-gradient" id={id}>
     <div className="px-4 py-12 lg:px-12 lg:py-24">
       <h3 className="m-auto max-w-xs text-center text-xl font-medium text-neutral-950 sm:max-w-none lg:text-2.5xl xl:text-4xl">
         Cryptocurrencies available on PPrince platform
@@ -79,7 +79,7 @@ const HaveMoreQuestions: FC<HaveMoreQuestionsProps> = ({ id }) => (
         ))}
       </div>
     </div>
-    <div className=" flex h-60 w-full items-center justify-center bg-tenant-main py-6 sm:py-12">
+    <div className=" flex h-60 w-full items-center justify-center bg-light-primary py-6 sm:py-12">
       <div className="flex flex-col gap-6 sm:flex-row sm:gap-20">
         <h3 className="self-center whitespace-nowrap text-center text-3xl font-bold leading-[54px] tracking-tighter text-white sm:text-4xl">
           Have more questions?

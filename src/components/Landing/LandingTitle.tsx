@@ -20,7 +20,7 @@ const Highlight: React.FC<HighlightProps> = ({ text, bgColor, textColor }) => (
 
 const LandingTitle: FC<LandingTitleProps> = ({ id, isUserLoggedIn }) => (
   <div
-    className="flex w-full items-center justify-center bg-light-lavander-gradient py-12 text-6xl font-semibold max-md:px-5 max-md:text-4xl lg:px-12 lg:py-24"
+    className="flex w-full items-center justify-center bg-custom-lavander-gradient py-12 text-6xl font-semibold max-md:px-5 max-md:text-4xl lg:px-12 lg:py-24"
     id={id}
   >
     <section className="flex w-[848px] max-w-full flex-col items-center max-md:text-4xl">
@@ -28,9 +28,9 @@ const LandingTitle: FC<LandingTitleProps> = ({ id, isUserLoggedIn }) => (
         We make crypto
       </h1>
       <div className="mt-3 flex max-w-full gap-3 whitespace-nowrap leading-[100%] tracking-tighter max-md:text-4xl">
-        <Highlight text="clear" bgColor=" bg-tenant-main" textColor="text-white" />
+        <Highlight text="clear" bgColor=" bg-light-primary" textColor="text-white" />
         <span className="flex items-center text-neutral-950 max-md:text-4xl">&</span>
-        <Highlight text="simple" bgColor="bg-white" textColor="text-tenant-main shadow-lg" />
+        <Highlight text="simple" bgColor="bg-white" textColor="text-light-primary shadow-lg" />
       </div>
       <Button
         as={Link}
