@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 import { nextui } from '@nextui-org/react';
 
 import { themes } from './src/config/themes';

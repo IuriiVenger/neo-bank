@@ -1,15 +1,12 @@
 import { Button, Select, SelectItem } from '@nextui-org/react';
 import cn from 'classnames';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 import { CiCirclePlus } from 'react-icons/ci';
 import { HiOutlineSelector } from 'react-icons/hi';
 import { LiaWalletSolid } from 'react-icons/lia';
 
 import { API } from '@/api/types';
-import CreateWalletModal from '@/components/modals/CreateWalletModal';
-import { WalletTypeValues } from '@/constants';
-import { ValueWithLabel } from '@/types';
 import { getWalletTypeLabel } from '@/utils/helpers';
 
 type WalletMenuProps = {
