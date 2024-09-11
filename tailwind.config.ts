@@ -118,10 +118,44 @@ const config: Config = {
         },
       },
     }),
-    function ({ addComponents }) {
+    function ({ addComponents }: { addComponents: Function }) {
       addComponents({
         '.border-background-3': {
           '@apply border-light-background-3 dark:border-dark-background-3': {},
+        },
+
+        '.bg-foreground-2': {
+          '@apply bg-light-foreground-2 dark:bg-dark-foreground-2': {},
+        },
+        '.text-foreground-2': {
+          '@apply text-light-foreground-2 dark:text-dark-foreground-2': {},
+        },
+        '.border-foreground-2': {
+          '@apply border-light-foreground-2 dark:border-dark-foreground-2': {},
+        },
+        '.bg-foreground-3': {
+          '@apply bg-light-foreground-3 dark:bg-dark-foreground-3': {},
+        },
+        '.text-foreground-3': {
+          '@apply text-light-foreground-3 dark:text-dark-foreground-3': {},
+        },
+        '.border-foreground-3': {
+          '@apply border-light-foreground-3 dark:border-dark-foreground-3': {},
+        },
+        '.bg-background-2': {
+          '@apply bg-light-background-2 dark:bg-dark-background-2': {},
+        },
+        '.text-background-2': {
+          '@apply text-light-background-2 dark:text-dark-background-2': {},
+        },
+        '.border-background-2': {
+          '@apply border-light-background-2 dark:border-dark-background-2': {},
+        },
+        '.bg-background-3': {
+          '@apply bg-light-background-3 dark:bg-dark-background-3': {},
+        },
+        '.text-background-3': {
+          '@apply text-light-background-3 dark:text-dark-background-3': {},
         },
       });
     },

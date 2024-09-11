@@ -79,7 +79,7 @@ const WalletList: FC<WalletMenuProps> = ({ wallets, onSelect, activeWallet, clas
         </Select>
       </div>
       <Button
-        className=" mt-2 hidden w-fit self-center text-secondary md:flex"
+        className=" mt-2 hidden w-fit self-center md:flex"
         onClick={openCreateWalletModal}
         radius="sm"
         color="primary"

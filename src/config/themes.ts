@@ -70,7 +70,7 @@ export const themes: Themes = {
         foreground: '#FFFFFF',
       },
       secondary: {
-        DEFAULT: '#F2F2F2',
+        DEFAULT: '#A1A1AA',
         foreground: '#FFFFFF',
       },
       danger: {
@@ -104,7 +104,7 @@ export const themes: Themes = {
         foreground: '#FFFFFF',
       },
       secondary: {
-        DEFAULT: '#F2F2F2',
+        DEFAULT: '#A1A1AA',
         foreground: '#FFFFFF',
       },
       danger: {
