@@ -4,13 +4,12 @@ import { FC, useEffect, useState } from 'react';
 
 import { PiCreditCard, PiWallet } from 'react-icons/pi';
 
-import SelectCurrency from '../Currency/SelectCurrency';
+import { DashboardProps } from '..';
+import SelectCurrency from '../../Currency/SelectCurrency';
 
-import ExternalExhangeInput from './ExternalExchangeInput';
-import ExternalWithdrawInput from './ExternalWithdrawIpnut';
-import SelectPaymentMethod from './SelectPaymentMethod';
-
-import { DashboardProps } from '.';
+import ExternalExhangeInput from '../ExternalExchangeInput';
+import ExternalWithdrawInput from '../ExternalWithdrawIpnut';
+import SelectPaymentMethod from '../SelectPaymentMethod';
 
 import { API } from '@/api/types';
 import ConfirmModal from '@/components/modals/ConfirmModal';

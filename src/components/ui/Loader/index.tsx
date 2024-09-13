@@ -3,7 +3,7 @@ import cn from 'classnames';
 import Image from 'next/image';
 import { FC } from 'react';
 
-import logo from '@/assets/svg/header_logo.svg';
+import logo from '@/assets/svg/tenant/header_logo.svg';
 
 type LoaderProps = {
   className?: string;

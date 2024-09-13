@@ -11,9 +11,9 @@ type LogInOtpProps = {
   otp: string;
   email: string;
   setEmail: (email: string) => void;
-  getOtp: () => Promise<any>;
+  getEmailOtp: () => Promise<any>;
   setOtp: (otp: string) => void;
-  signInByOtp: () => Promise<any>;
+  signInByEmailOtp: () => Promise<any>;
   isOtpRequested: boolean;
   isLoading?: boolean;
 };
@@ -21,7 +21,7 @@ type LogInOtpProps = {
 const timeCount = 60;
 
 const LogInOtp: FC<LogInOtpProps> = (props) => {
-  const { otp, email, setOtp, signInByOtp, setEmail, isOtpRequested, getOtp, isLoading } = props;
+  const { otp, email, setOtp, signInByEmailOtp, setEmail, isOtpRequested, getEmailOtp, isLoading } = props;
   const [isTimerDisabled, setIsTimerDisabled] = useState(false);
   const timeKey = useMemo(() => `get-otp-start-timer-time-${email.length}`, [email]);
 
@@ -42,18 +42,18 @@ const LogInOtp: FC<LogInOtpProps> = (props) => {
     setEmail(e.target.value);
   };
 
-  const handleSignInByOtp = async () => {
-    await signInByOtp();
+  const handlesignInByEmailOtp = async () => {
+    await signInByEmailOtp();
     setIsTimerDisabled(true);
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    isOtpRequested ? handleSignInByOtp() : getOtp();
+    isOtpRequested ? handlesignInByEmailOtp() : getEmailOtp();
   };
 
   const resendOtp = async () => {
-    await getOtp();
+    await getEmailOtp();
     restart(getStartTimeForTimer(timeCount, timeKey));
   };
 

@@ -20,7 +20,7 @@ const Highlight: React.FC<HighlightProps> = ({ text, bgColor, textColor }) => (
 
 const LandingTitle: FC<LandingTitleProps> = ({ id, isUserLoggedIn }) => (
   <div
-    className="flex w-full items-center justify-center bg-custom-lavander-gradient py-12 text-6xl font-semibold max-md:px-5 max-md:text-4xl lg:px-12 lg:py-24"
+    className="flex w-full items-center justify-center bg-custom-lavander-gradient py-12 text-6xl font-semibold lg:px-12 lg:py-24 max-md:px-5 max-md:text-4xl"
     id={id}
   >
     <section className="flex w-[848px] max-w-full flex-col items-center max-md:text-4xl">

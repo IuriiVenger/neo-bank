@@ -3,16 +3,14 @@ import Image from 'next/image';
 
 import { FC } from 'react';
 
-import logo from '@/assets/svg/header_logo.svg';
+import logo from '@/assets/svg/tenant/header_logo.svg';
 
 type AuthLayoutProps = Readonly<{ children: React.ReactNode }>;
 
 const AuthLayout: FC<AuthLayoutProps> = ({ children }) => (
-  <main className="flex flex-grow pt-10 sm:items-center sm:pt-0">
-    <div className="flex flex-col items-center rounded-lg border-b-gray-400  p-6 sm:border sm:shadow-md">
-      <Image src={logo} height={64} alt="logo" className="mb-6 h-8" />
-      {children}
-    </div>
+  <main className="flex flex-grow flex-col items-center pt-20 sm:justify-center sm:pt-0">
+    <Image src={logo} height={64} alt="logo" className="mb-6 h-12" />
+    {children}
   </main>
 );
 

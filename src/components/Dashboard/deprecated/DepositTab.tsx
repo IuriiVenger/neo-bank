@@ -2,15 +2,14 @@ import { Button } from '@nextui-org/react';
 import cn from 'classnames';
 import { FC, useEffect, useState } from 'react';
 
-import SelectCurrency from '../Currency/SelectCurrency';
-import CurrencyListModal from '../modals/CurrencyListModal';
+import { DashboardProps } from '..';
+import SelectCurrency from '../../Currency/SelectCurrency';
+import CurrencyListModal from '../../modals/CurrencyListModal';
 
-import ChainInfo from './ChainInfo';
+import ChainInfo from '../ChainInfo';
 
-import ExternalExhangeInput from './ExternalExchangeInput';
-import SelectPaymentMethod from './SelectPaymentMethod';
-
-import { DashboardProps } from '.';
+import ExternalExhangeInput from '../ExternalExchangeInput';
+import SelectPaymentMethod from '../SelectPaymentMethod';
 
 import { API } from '@/api/types';
 import { PaymentMethod, ResponseStatus } from '@/constants';

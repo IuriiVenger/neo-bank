@@ -247,6 +247,7 @@ export namespace API {
     }
 
     export interface CardsList {
+      length: number;
       items: CardDetailItem[];
       totalCount: number;
     }

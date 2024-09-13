@@ -1,14 +1,20 @@
 /* eslint-disable func-names */
 import { nextui } from '@nextui-org/react';
 
-import { themes } from './src/config/themes';
+import { themes, layout } from './src/config/themes';
 
 import type { Config } from 'tailwindcss';
 
-const defaultTheme = require('tailwindcss/defaultTheme');
-
 const customBlueGradient = 'linear-gradient(125deg, #71A9ED 0%, #436CB6 100%)';
 const customLavanderGradient = 'linear-gradient(32.49deg, rgba(255, 255, 255, 1) 0.15%, rgba(183, 182, 255, 0.2) 100%)';
+const cardBlueGradient =
+  'radial-gradient(104.12% 134.72% at -3.11% -1.41%, rgba(177, 180, 206, 0.24) 0%, rgba(177, 180, 206, 0.00) 100%), linear-gradient(153deg, #2460A8 -17.53%, #5594DF 103.31%)';
+const cardTurquoiseGradient =
+  'radial-gradient(104.12% 134.72% at -3.11% -1.41%, rgba(177, 180, 206, 0.24) 0%, rgba(177, 180, 206, 0.00) 100%), linear-gradient(153deg, #3EA5A5 -17.53%, #75D4D4 103.31%)';
+const cardGreyGradient =
+  'radial-gradient(82.2% 82.88% at 0% 9.77%, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.00) 100%), radial-gradient(104.12% 134.72% at -3.11% -1.41%, rgba(0, 0, 0, 0.24) 0%, rgba(0, 0, 0, 0.00) 100%), linear-gradient(124deg, rgba(203, 205, 204, 0.80) 20.08%, rgba(188, 188, 188, 0.80) 140.46%)';
+const cardLavanderGradient =
+  'radial-gradient(104.12% 134.72% at -3.11% -1.41%, rgba(177, 180, 206, 0.24) 0%, rgba(177, 180, 206, 0.00) 100%), linear-gradient(153deg, #878EC5 -17.53%, #AAB0E3 103.31%)';
 
 const config: Config = {
   content: [
@@ -19,27 +25,30 @@ const config: Config = {
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    screens: {
-      xs: '480px',
-      'max-xs': { max: '479px' },
-      'max-sm': { max: '639px' },
-      'max-md': { max: '767px' },
-      'max-lg': { max: '1023px' },
-      'max-xl': { max: '1279px' },
-      'max-2xl': { max: '1535px' },
-      'sm-height': { raw: '(min-height: 640px)' },
-      'md-height': { raw: '(min-height: 768px)' },
-      'sm-only': { min: '640px', max: '767px' },
-      'md-only': { min: '768px', max: '1023px' },
-      ...defaultTheme.screens,
-    },
     extend: {
+      screens: {
+        xs: '480px',
+        'max-xs': { max: '479px' },
+        'max-sm': { max: '639px' },
+        'max-md': { max: '767px' },
+        'max-lg': { max: '1023px' },
+        'max-xl': { max: '1279px' },
+        'max-2xl': { max: '1535px' },
+        'sm-height': { raw: '(min-height: 640px)' },
+        'md-height': { raw: '(min-height: 768px)' },
+        'sm-only': { min: '640px', max: '767px' },
+        'md-only': { min: '768px', max: '1023px' },
+      },
       gridTemplateColumns: {
         '20': 'repeat(20, minmax(0, 1fr))',
       },
       backgroundImage: {
         'custom-blue-gradient': customBlueGradient,
         'custom-lavander-gradient': customLavanderGradient,
+        'card-blue-gradient': cardBlueGradient,
+        'card-turquoise-gradient': cardTurquoiseGradient,
+        'card-grey-gradient': cardGreyGradient,
+        'card-lavander-gradient': cardLavanderGradient,
       },
       colors: {
         'light-foreground': themes.light.baseColors.foreground,
@@ -84,17 +93,32 @@ const config: Config = {
             fontWeight: 500,
           },
         ],
+        '3xl': [
+          '2rem',
+          {
+            lineHeight: '2.5rem',
+            fontWeight: 500,
+          },
+        ],
+      },
+      spacing: {
+        0.5: '0.125rem',
+        1.5: '0.375rem',
+        2.5: '0.625rem',
+        4.5: '1.125rem',
+        5.5: '1.375rem',
+        15: '3.75rem',
+        49: '12.25rem',
+        57: '14.25rem',
+        78: '19.5rem',
+        90: '22.5rem',
       },
     },
   },
   darkMode: 'class',
   plugins: [
     nextui({
-      layout: {
-        radius: {
-          small: '0.25rem',
-        },
-      },
+      layout,
       themes: {
         light: {
           colors: {

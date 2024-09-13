@@ -29,3 +29,5 @@ export const isOddNumber = (num: number) => num % 2 !== 0;
 export const isMultipleOf = (multiple: number, num: number) => num % multiple === 0;
 
 export const isSettledPromiseFullfilled = (promise: PromiseSettledResult<any>) => promise.status === 'fulfilled';
+
+export const createArray = (n: number): number[] => [...Array(n)].map((_, i) => i);

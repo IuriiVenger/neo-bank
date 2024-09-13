@@ -2,7 +2,7 @@ import cn from 'classnames';
 import { FC, useEffect, useRef, useState } from 'react';
 import VisibilitySensor from 'react-visibility-sensor';
 
-import { DashboardProps } from '..';
+import { DashboardProps } from '../..';
 
 import CardDetail from './CardDetail';
 import CardsList from './CardsList';

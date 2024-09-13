@@ -63,6 +63,13 @@ export enum DashboardTabs {
   EXCHANGE = 'exchange',
   INFO = 'info',
   CARDS = 'cards',
+
+  // new
+
+  MAIN = 'main',
+  CARD = 'card',
+  WALLET = 'wallet',
+  TRANSACTIONS = 'transactions',
 }
 
 export enum WalletTypeValues {
@@ -94,7 +101,7 @@ export const defaultPaginationParams = {
 };
 
 export const cardInitialPaginationParams = {
-  limit: 11,
+  limit: 1,
   offset: 0,
   isLastPage: false,
 };

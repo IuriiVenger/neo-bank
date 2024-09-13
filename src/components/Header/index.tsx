@@ -19,7 +19,7 @@ import KYCButton from '../KYC/KYCButton';
 
 import AuthButtons from './AuthButtons';
 
-import headerLogo from '@/assets/svg/header_logo.svg';
+import headerLogo from '@/assets/svg/tenant/header_logo.svg';
 import whiteLabelConfig from '@/config/whitelabel';
 import { ModalNames, requestKYCStatuses } from '@/constants';
 import useAuth from '@/hooks/useAuth';

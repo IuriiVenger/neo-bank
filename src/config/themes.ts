@@ -124,3 +124,11 @@ export const themes: Themes = {
     },
   },
 };
+
+export const layout = {
+  radius: {
+    small: '0.5rem',
+    medium: '1rem',
+    large: '1.5rem',
+  },
+};
