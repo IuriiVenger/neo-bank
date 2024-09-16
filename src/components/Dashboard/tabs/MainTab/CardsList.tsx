@@ -68,13 +68,13 @@ const CardsList: FC<CardsListProps> = (props) => {
     }
   };
 
-  const getCardCurrencySymbol = (currentCard: API.Cards.CardDetailItem) =>
-    fiatList.find((item) => item.code === currentCard.bin.currencyCode)?.symbol || '';
+  // const getCardCurrencySymbol = (currentCard: API.Cards.CardDetailItem) =>
+  //   fiatList.find((item) => item.code === currentCard.bin.currencyCode)?.symbol || '';
 
-  const getCardSubtitile = (currentCard: API.Cards.CardDetailItem) =>
-    `${currentCard.cardName} / balance:${roundToDecimals(currentCard.balance.available, 2)}${getCardCurrencySymbol(
-      currentCard,
-    )}`;
+  // const getCardSubtitile = (currentCard: API.Cards.CardDetailItem) =>
+  //   `${currentCard.name_on_card} / balance:${roundToDecimals(currentCard.balance.available, 2)}${getCardCurrencySymbol(
+  //     currentCard,
+  //   )}`;
 
   const openCreateCardModal = () => {
     setIsCreateCardModalOpen(true);
@@ -153,22 +153,22 @@ const CardsList: FC<CardsListProps> = (props) => {
       >
         {!isFirstItemsLoading && data ? (
           <>
-            {data.map((card) => (
+            {data.map((card, index) => (
               <button
-                key={card.id}
+                key={`${card.card_id}_${index}`}
                 type="button"
-                onClick={() => onCardClick(card.id)}
+                onClick={() => onCardClick(card.card_id)}
                 className={cn(
                   'cursor-pointer transition-all hover:opacity-hover',
-                  card.status !== 'ACTIVE' && 'grayscale',
+                  card.card_status !== 'ACTIVE' && 'grayscale',
                 )}
               >
                 <Card
                   className="mt-2"
                   color="blue"
                   size={cardSize}
-                  provider={card.bin.provider}
-                  cardNumber={deleteDash(card.maskedPan)}
+                  provider={card.brand}
+                  cardNumber={deleteDash(card.card_number)}
                   CVV="***"
                   expirationDate="**/**"
                   masked

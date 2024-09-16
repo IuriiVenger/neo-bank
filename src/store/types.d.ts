@@ -8,9 +8,9 @@ import { CalcType, ModalNames } from '@/constants';
 export type RootState = ReturnType<typeof store.getState>;
 export type AppSelector = TypedUseSelectorHook<RootState>;
 export type AppDispatch = typeof store.dispatch;
-export type AppAction<T, P> = {
+export type AppAction<P, T = string> = {
+  readonly payload: P;
   readonly type: T;
-  readonly payload?: P;
 };
 
 export type SupabasePaginationParams = {

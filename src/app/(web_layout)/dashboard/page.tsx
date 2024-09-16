@@ -3,8 +3,9 @@
 import { useQueryState } from 'nuqs';
 import { useEffect, useState } from 'react';
 
+import { issuing } from '@/api/issuing';
 import { API } from '@/api/types';
-import { vcards } from '@/api/vcards';
+
 import { wallets } from '@/api/wallets';
 import Dashboard, { DashboardProps } from '@/components/Dashboard';
 import privateRoute from '@/components/privateRoute';
@@ -138,7 +139,7 @@ const DashboardPage = () => {
     selectedCard.data &&
     dispatch(
       loadMoreCardTransactions({
-        card_id: selectedCard.data.cardId,
+        card_id: selectedCard.data.card_id,
         limit: selectedCardTransactions.meta.limit,
         offset: selectedCardTransactions.meta.offset,
       }),
@@ -158,13 +159,13 @@ const DashboardPage = () => {
   };
 
   const getOTP = async (card_id: string) => {
-    const { data } = await vcards.cards.sensitiveData.otp.get(card_id);
+    const { data } = await issuing.cards.sensitiveData.otp.get(card_id);
 
     return data;
   };
 
   const getSensitiveData = async (card_id: string) => {
-    const { data } = await vcards.cards.sensitiveData.get(card_id);
+    const { data } = await issuing.cards.sensitiveData.get(card_id);
 
     return data;
   };
@@ -203,10 +204,10 @@ const DashboardPage = () => {
       onWalletTotalAmountUpdate(selectedWallet.data);
   };
 
-  const createCard = async (data: API.Cards.Create.Request) => vcards.cards.create(data);
+  const createCard = async (data: API.Cards.Create.Request) => issuing.cards.create(data);
 
   const updateCard = async (card_id: string, data: API.Cards.Update.Request) => {
-    await vcards.cards.update(card_id, data);
+    await issuing.cards.update(card_id, data);
     dispatch(
       loadCards({
         wallet_uuid: selectedWallet.data?.uuid || '',

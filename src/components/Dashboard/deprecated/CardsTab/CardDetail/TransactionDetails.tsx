@@ -10,12 +10,12 @@ type TransactionInfoProps = {
 
 const TransactionDetails: FC<TransactionInfoProps> = ({ transaction, className }) => {
   const detailsData = [
-    { title: 'ID:', value: transaction.id },
-    { title: 'DATE:', value: getDateAndTime(transaction.createdAt) },
-    { title: 'TYPE:', value: transaction.type },
-    { title: 'STATUS:', value: transaction.status },
-    { title: 'DIRECTION:', value: transaction.direction },
-    { title: 'DESCRIPTION:', value: transaction.description },
+    { title: 'ID:', value: (transaction as any).id },
+    { title: 'DATE:', value: getDateAndTime((transaction as any).createdAt) },
+    { title: 'TYPE:', value: (transaction as any).type },
+    { title: 'STATUS:', value: (transaction as any).status },
+    { title: 'DIRECTION:', value: (transaction as any).direction },
+    { title: 'DESCRIPTION:', value: (transaction as any).description },
   ];
 
   return (

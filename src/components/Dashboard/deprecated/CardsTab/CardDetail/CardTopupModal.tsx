@@ -4,7 +4,7 @@ import { FC, useEffect, useState } from 'react';
 import Cards from 'react-credit-cards';
 import { toast } from 'react-toastify';
 
-import ExternalExhangeInput from '../../ExternalExchangeInput';
+import ExternalExhangeInput from '../../../ExternalExchangeInput';
 
 import { CardDetailProps } from '.';
 
@@ -60,9 +60,9 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
   const isAmountEnough = selectedCryptoAvavilibleToWithdraw && selectedCryptoAvavilibleToWithdraw >= amount;
   const isTopUpAvailable = !!selectedCrypto && !!selectedFiat && !!selectedWallet.data && !!amount && isAmountEnough;
 
-  const cardholderName = sensitiveData?.name_on_card || card.cardName;
-  const cardNumber = sensitiveData?.card_number || deleteDash(card.maskedPan);
-  const cardFormatedNum = sensitiveData ? separateNumbers(+sensitiveData.card_number, '-', 4) : card.maskedPan;
+  const cardholderName = sensitiveData?.name_on_card || (card as any).cardName;
+  const cardNumber = sensitiveData?.card_number || deleteDash((card as any).maskedPan);
+  const cardFormatedNum = sensitiveData ? separateNumbers(+sensitiveData.card_number, '-', 4) : (card as any).maskedPan;
   const expiryDate = sensitiveData?.expiry_month
     ? getCardExpiryRecord(sensitiveData.expiry_month, sensitiveData.expiry_year)
     : '**/**';
@@ -96,10 +96,10 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
         fiat_uuid: selectedFiat.uuid,
         wallet_uuid: selectedWallet.data.uuid,
         is_subsctract: true,
-        card_id: card.id,
+        card_id: (card as any).id,
       });
       toast.success('Card successfully topped up');
-      selectCard(card.id);
+      selectCard((card as any).id);
       setIsModalOpen(false);
       setTopUpFullfilled();
     } catch (error) {
@@ -113,7 +113,7 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
   };
 
   const setCardFiatCurrency = () => {
-    const cardCurrency = fiatList.find((fiat) => fiat.code === card.walletInfo.currencyCode);
+    const cardCurrency = fiatList.find((fiat) => fiat.code === (card as any).walletInfo.currencyCode);
 
     if (cardCurrency) {
       selectFiat(cardCurrency);

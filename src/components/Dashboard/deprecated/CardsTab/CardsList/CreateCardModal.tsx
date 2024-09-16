@@ -3,14 +3,13 @@ import cn from 'classnames';
 import { FC, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import ExternalExhangeInput from '../../ExternalExchangeInput';
-
-import BinInfo from './BinInfo';
+import ProgramInfo from './BinInfo';
 
 import { CardsListProps } from '.';
 
 import { API } from '@/api/types';
 import SelectCurrency from '@/components/Currency/SelectCurrency';
+import ExternalExhangeInput from '@/components/Dashboard/ExternalExchangeInput';
 import ConfirmModal from '@/components/modals/ConfirmModal';
 import CurrencyListModal from '@/components/modals/CurrencyListModal';
 import MainModal from '@/components/modals/MainModal';
@@ -45,7 +44,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
 
   const [isCryptoModalOpen, setIsCryptoModalOpen] = useState(false);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
-  const [activeBin, setActiveBin] = useState<API.Cards.Bin | undefined>(bins[0] || {});
+  const [activeBin, setActiveBin] = useState<any | undefined>(bins[0] || {});
   const [cardName, setCardName] = useState<string>('');
   const [topUpConfirmationText, setTopUpConfirmationText] = useState<string | null>(null);
   const [requestStatuses, setPending, setFullfilled, setRejected] = useRequestStatus();
@@ -81,7 +80,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
       return;
     }
 
-    const requestData: API.Cards.Create.Request = {
+    const requestData: any = {
       binCode: activeBin.code,
       cardName,
       wallet_uuid: selectedWallet.data.uuid,
@@ -93,7 +92,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
       const { data } = await createCard(requestData);
       setIsModalOpen(false);
       toast.success('Card created successfully');
-      onCardCreate && onCardCreate(data.id);
+      onCardCreate && onCardCreate((data as any).id); // deprecated
       setFullfilled();
     } catch (error) {
       setRejected();
@@ -128,7 +127,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   };
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const bin = bins?.find((item) => item.code === e.target.value);
+    const bin = bins?.find((item) => (item as any).code === e.target.value);
     if (!bin) {
       return;
     }
@@ -156,13 +155,13 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
         <Select label="Select BIN" onChange={handleSelectChange} selectedKeys={activeBin && [activeBin.code]}>
           {bins?.map((bin) => (
             <SelectItem
-              key={bin.code}
+              key={(bin as any).code}
               onClick={() => setActiveBin(bin)}
-              value={bin.code}
+              value={(bin as any).code}
               className="border-b border-gray-200 p-2 text-xs"
-              textValue={`${bin.code}, ${bin.provider}, ${bin.currencyCode}`}
+              textValue={`${(bin as any).code}, ${(bin as any).provider}, ${(bin as any).currencyCode}`}
             >
-              <BinInfo bin={bin} />
+              <ProgramInfo bin={bin} />
             </SelectItem>
           ))}
         </Select>

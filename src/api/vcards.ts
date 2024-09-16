@@ -24,7 +24,7 @@ export const vcards = {
     getByCardId: (card_id: string, limit = defaultPaginationParams.limit, offset = defaultPaginationParams.offset) =>
       getRequest<API.Cards.TransactionsList>(`/vcards/transactions/${card_id}`, { params: { limit, offset } }),
   },
-  bins: {
-    getAll: () => getRequest<API.Cards.Bin[]>('/vcards/bins').then(({ data }) => data),
-  },
+  // bins: {
+  //   getAll: () => getRequest<API.Cards.Bin[]>('/vcards/bins').then(({ data }) => data),
+  // },
 };

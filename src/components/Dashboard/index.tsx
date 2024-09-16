@@ -24,9 +24,9 @@ export interface DashboardProps {
   allowedCryptoToFiatList: API.List.Crypto[];
   appEnviroment: AppEnviroment;
   availableToExchangeCrypto: API.List.Crypto[];
-  bins: API.Cards.Bin[];
+  bins: API.Cards.CardConfig[];
   cardTransactions: StoreDataWithStatusAndMeta<API.Cards.TransactionItem[] | null>;
-  cards: StoreDataWithStatusAndMeta<API.Cards.CardDetailItem[] | null>;
+  cards: StoreDataWithStatusAndMeta<API.Cards.CardListItem[] | null>;
   chainList: API.List.Chains[];
   changeActiveCard: (card_id: string | null) => void;
   changeDashboardTab: (tab: DashboardTabs) => void;

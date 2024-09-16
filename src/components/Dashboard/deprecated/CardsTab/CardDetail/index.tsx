@@ -60,9 +60,9 @@ const CardDetail: FC<CardDetailProps> = (props) => {
     Object.values(cardDetailRequests),
   );
 
-  const cardTitle = `${card.bin.provider}, ${card.bin.currencyCode}`;
-  const isActive = card.status === CardStatus.ACTIVE;
-  const isClosed = card.status === CardStatus.CLOSED;
+  const cardTitle = `${(card as any).bin.provider}, ${(card as any).bin.currencyCode}`;
+  const isActive = (card as any).status === CardStatus.ACTIVE;
+  const isClosed = (card as any).status === CardStatus.CLOSED;
   const isMobileWalletDevice = isIOS || isAndroid;
 
   const backToCardsList = () => {
@@ -77,7 +77,7 @@ const CardDetail: FC<CardDetailProps> = (props) => {
   const showSensitiveDataModal = async () => {
     try {
       setPending(cardDetailRequests.SENSITIVE_DATA);
-      await loadSensitiveData(card.id);
+      await loadSensitiveData((card as any).id);
       setFullfilled(cardDetailRequests.SENSITIVE_DATA);
       setIsSensitiveDataModalOpen(true);
     } catch (error) {
@@ -93,7 +93,7 @@ const CardDetail: FC<CardDetailProps> = (props) => {
   const showTopupModal = async () => {
     try {
       setPending(cardDetailRequests.TOP_UP);
-      await loadSensitiveData(card.id);
+      await loadSensitiveData((card as any).id);
       setFullfilled(cardDetailRequests.TOP_UP);
       setIsTopupModalOpen(true);
     } catch (error) {
@@ -112,7 +112,7 @@ const CardDetail: FC<CardDetailProps> = (props) => {
   };
 
   const closeCard = async () => {
-    await updateCard(card.id, { ...card, status: CardStatus.CLOSED });
+    await updateCard((card as any).id, { ...card, status: CardStatus.CLOSED } as any);
   };
 
   return (
@@ -131,7 +131,7 @@ const CardDetail: FC<CardDetailProps> = (props) => {
           >
             {isClosed ? <IoCloseCircle /> : <FaCircleCheck />}
 
-            <small className="capitalize">{card.status}</small>
+            <small className="capitalize">{(card as any).status}</small>
           </div>
         </div>
       </div>
@@ -140,9 +140,9 @@ const CardDetail: FC<CardDetailProps> = (props) => {
           <div className="flex origin-top-left scale-[85%] flex-col gap-4 xs:scale-100 ">
             <button type="button" className={cn(!isActive && 'grayscale')} onClick={showSensitiveDataModal}>
               <Cards
-                name={card.cardName}
-                issuer={getCardProvider(card.bin.provider)}
-                number={deleteDash(card.maskedPan)}
+                name={(card as any).cardName}
+                issuer={getCardProvider((card as any).bin.provider)}
+                number={deleteDash((card as any).maskedPan)}
                 expiry={'**/**'}
                 cvc="***"
                 preview
@@ -160,11 +160,11 @@ const CardDetail: FC<CardDetailProps> = (props) => {
           <div className="flex flex-col text-neutral-500">
             <p>Balance:</p>
             <p className="text-lg font-medium text-black lg:text-2xl">
-              {card.balance.available} <small>{card.bin.currencyCode}</small>
+              {(card as any).balance.available} <small>{(card as any).bin.currencyCode}</small>
             </p>
             <p className="mt-1 xs:mt-3">Blocked:</p>
             <p className="text-lg lg:text-2xl">
-              {card.balance.pending} <small>{card.bin.currencyCode}</small>
+              {(card as any).balance.pending} <small>{(card as any).bin.currencyCode}</small>
             </p>
           </div>
         </div>
@@ -188,7 +188,7 @@ const CardDetail: FC<CardDetailProps> = (props) => {
           onClick={showTopupModal}
           radius="sm"
           isLoading={requestStatuses[cardDetailRequests.TOP_UP].PENDING}
-          isDisabled={card.status === CardStatus.CLOSED}
+          isDisabled={(card as any).status === CardStatus.CLOSED}
         >
           <MdCurrencyExchange />
           Top up
@@ -200,12 +200,12 @@ const CardDetail: FC<CardDetailProps> = (props) => {
           isLoading={requestStatuses[cardDetailRequests.LIMITS].PENDING}
           onClick={showLimitsModal}
           radius="sm"
-          isDisabled={card.status === CardStatus.CLOSED}
+          isDisabled={(card as any).status === CardStatus.CLOSED}
         >
           <FaMoneyBillTrendUp />
           Change limits
         </Button>
-        <Dropdown isDisabled={card.status === CardStatus.CLOSED}>
+        <Dropdown isDisabled={(card as any).status === CardStatus.CLOSED}>
           <DropdownTrigger>
             <Button color="primary" className=" bg-secondary text-primary    " radius="sm">
               <PiListThin />
@@ -231,7 +231,7 @@ const CardDetail: FC<CardDetailProps> = (props) => {
         {...props}
       />
       <CardLimitsModal
-        limits={card.limits}
+        limits={(card as any).limits}
         isOpen={isLimitsModalOpen}
         setIsModalOpen={setIsLimitsModalOpen}
         {...props}
@@ -253,7 +253,7 @@ const CardDetail: FC<CardDetailProps> = (props) => {
         isOpen={isAddToWalletModalOpen}
         setIsModalOpen={setIsAddToWalletModalOpen}
         getOTP={getOTP}
-        cardId={card.id}
+        cardId={(card as any).id}
       />
     </section>
   );

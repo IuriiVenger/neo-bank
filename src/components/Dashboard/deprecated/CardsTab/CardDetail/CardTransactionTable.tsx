@@ -47,7 +47,7 @@ const getTransactionDirectionSymbol = (type: CardTransactionDirection) => {
 
 const getTransactionDirectionColor = (transaction: API.Cards.TransactionItem) => {
   if (
-    transaction.direction === CardTransactionDirection.OUTGOING &&
+    (transaction as any).direction === CardTransactionDirection.OUTGOING &&
     transaction.status === CardTransationStatus.SUCCESS
   ) {
     return 'text-green-500';
@@ -62,7 +62,7 @@ const getTransactionData = (transaction: API.Cards.TransactionItem) => {
   const transactionData = {
     transactionIcon: getCardTransactionStatusIcon(transaction),
     transactionColorClass: getTransactionDirectionColor(transaction),
-    transactionSymbol: getTransactionDirectionSymbol(transaction.direction),
+    transactionSymbol: getTransactionDirectionSymbol((transaction as any).direction),
   };
 
   return transactionData;
@@ -87,17 +87,17 @@ const CardTransactionTable: FC<CardTransactionTableProps> = (props) => {
               const { transactionColorClass, transactionSymbol, transactionIcon } = getTransactionData(transaction);
               return (
                 <AccordionItem
-                  key={transaction.id}
+                  key={(transaction as any).id}
                   isCompact
                   title={
                     <div className={cn(transactionColorClass, 'flex items-center gap-2 text-xl font-bold')}>
                       {transactionSymbol}
-                      {transaction.amount} {transaction.currencyCode}
+                      {(transaction as any).amount} {(transaction as any).currencyCode}
                     </div>
                   }
                   subtitle={
                     <p className="mt-2 flex items-center gap-1">
-                      {getDate(transaction.createdAt)} {transactionIcon}
+                      {getDate((transaction as any).createdAt)} {transactionIcon}
                     </p>
                   }
                 >

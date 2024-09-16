@@ -101,7 +101,7 @@ export const defaultPaginationParams = {
 };
 
 export const cardInitialPaginationParams = {
-  limit: 1,
+  limit: 10,
   offset: 0,
   isLastPage: false,
 };

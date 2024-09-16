@@ -5,20 +5,17 @@ import { FC, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { DashboardProps } from '../../Dashboard';
-import ExternalExhangeInput from '../../Dashboard/ExternalExchangeInput';
 
-import BinInfo from './BinInfo';
+import ProgramInfo from './ProgramInfo';
 
 import { API } from '@/api/types';
-import SelectCurrency from '@/components/Currency/SelectCurrency';
+
 import ConfirmModal from '@/components/modals/ConfirmModal';
-import CurrencyListModal from '@/components/modals/CurrencyListModal';
+
 import MainModal from '@/components/modals/MainModal';
 import CustomInput from '@/components/ui/CustomInput';
 
 import { useRequestStatus } from '@/hooks/useRequestStatus';
-
-import { isCrypto, isFiat } from '@/utils/financial';
 
 type CreateCardModalProps = DashboardProps & {
   className?: string;
@@ -28,56 +25,15 @@ type CreateCardModalProps = DashboardProps & {
 };
 
 const CreateCardModal: FC<CreateCardModalProps> = (props) => {
-  const {
-    allowedCryptoToFiatList,
-    bins,
-    createCard,
-    selectedWallet,
-    className,
-    selectCrypto,
-    selectFiat,
-    selectedCrypto,
-    selectedFiat,
-    fiatList,
-    chainList,
-    externalCalcData,
-    setIsModalOpen,
-    isOpen,
-    onCardCreate,
-  } = props;
+  const { bins, createCard, selectedWallet, className, setIsModalOpen, isOpen, onCardCreate } = props;
 
-  const [isCryptoModalOpen, setIsCryptoModalOpen] = useState(false);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
-  const [activeBin, setActiveBin] = useState<API.Cards.Bin | undefined>(bins[0] || {});
+  const [activeBin, setActiveBin] = useState<API.Cards.CardConfig | undefined>(bins[0] || {});
   const [cardName, setCardName] = useState<string>('');
   const [topUpConfirmationText, setTopUpConfirmationText] = useState<string | null>(null);
   const [requestStatuses, setPending, setFullfilled, setRejected] = useRequestStatus();
 
-  const { setAmount, amount, offrampCalcData, isOfframpCalcPending } = externalCalcData;
-
-  const selectedWalletBalance = selectedWallet.data?.balance;
-  const selectedCryptoWalletBalance =
-    selectedWalletBalance?.find((balance) => balance.crypto.uuid === selectedCrypto.uuid)?.amount || 0;
-  const selectedCryptoAvavilibleToWithdraw =
-    selectedWallet.data &&
-    selectedWallet.data.balance.find((balance) => balance.crypto.uuid === selectedCrypto.uuid)?.amount;
-
-  const isAmountEnough = selectedCryptoAvavilibleToWithdraw && selectedCryptoAvavilibleToWithdraw >= amount;
-  const isTopUpAvailable =
-    !!selectedCrypto && !!selectedFiat && !!selectedWallet.data && !!amount && !!activeBin && isAmountEnough;
-
-  const mainButtonTitle = isAmountEnough ? 'Create card' : 'Not enough funds';
-
-  const selectCurrency = (currency: API.List.Crypto | API.List.Fiat | API.List.Chains) => {
-    if (isFiat(currency)) {
-      selectFiat(currency);
-    }
-    if (isCrypto(currency)) {
-      selectCrypto(currency);
-    }
-  };
-
-  const openCryptoModal = () => setIsCryptoModalOpen(true);
+  const mainButtonTitle = 'Create card';
 
   const createCardHandler = async () => {
     if (!selectedWallet.data || !activeBin) {
@@ -85,10 +41,12 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     }
 
     const requestData: API.Cards.Create.Request = {
-      binCode: activeBin.code,
-      cardName,
-      wallet_uuid: selectedWallet.data.uuid,
-      cardBalance: amount,
+      program_id: activeBin.id,
+      name_on_card: cardName,
+      nick_name: cardName,
+      wallet_id: selectedWallet.data.uuid,
+      purpose: activeBin.purposes[0],
+      request_id: crypto.randomUUID(),
     };
 
     try {
@@ -96,7 +54,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
       const { data } = await createCard(requestData);
       setIsModalOpen(false);
       toast.success('Card created successfully');
-      onCardCreate && onCardCreate(data.id);
+      onCardCreate && onCardCreate(data.card_id);
       setFullfilled();
     } catch (error) {
       setRejected();
@@ -105,43 +63,18 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   };
 
   const openConfirmationModal = () => {
-    const confirmationText = `Are you sure you want to create card and top up it with ${amount} ${selectedCrypto.symbol}?`;
-
+    const confirmationText = `Are you sure you want to create card with name ${cardName}?`;
     setTopUpConfirmationText(confirmationText);
-
     setIsConfirmationModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const setCardFiatCurrency = () => {
-    if (!activeBin) {
-      return;
-    }
-    const cardCurrency = fiatList.find((fiat) => fiat.code === activeBin.currencyCode);
-
-    if (cardCurrency) {
-      selectFiat(cardCurrency);
-    } else {
-      closeModal();
-      toast.error('Card currency not found');
-    }
-  };
-
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const bin = bins?.find((item) => item.code === e.target.value);
+    const bin = bins?.find((item) => item.id === e.target.value);
     if (!bin) {
       return;
     }
     setActiveBin(bin);
   };
-
-  useEffect(() => {
-    setCardFiatCurrency();
-    setAmount(0);
-  }, [activeBin]);
 
   return (
     <MainModal
@@ -151,21 +84,20 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
       scrollBehavior="inside"
       header="Create card"
       confirmButtonText={mainButtonTitle}
-      confirmButtonDisabled={!isTopUpAvailable}
       onConfirm={openConfirmationModal}
       isLoading={requestStatuses.PENDING}
     >
       <div className={cn('flex flex-col gap-4', className)}>
-        <Select label="Select BIN" onChange={handleSelectChange} selectedKeys={activeBin && [activeBin.code]}>
+        <Select label="Select BIN" onChange={handleSelectChange} selectedKeys={activeBin && [activeBin.id]}>
           {bins?.map((bin) => (
             <SelectItem
-              key={bin.code}
+              key={bin.id}
               onClick={() => setActiveBin(bin)}
-              value={bin.code}
+              value={bin.id}
               className="border-b border-gray-200 p-2 text-xs"
-              textValue={`${bin.code}, ${bin.provider}, ${bin.currencyCode}`}
+              textValue={` ${bin.brand}, ${bin.allowed_currencies.join(', ')}`}
             >
-              <BinInfo bin={bin} />
+              <ProgramInfo config={bin} />
             </SelectItem>
           ))}
         </Select>
@@ -174,34 +106,6 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
           value={cardName}
           onChange={(e) => setCardName(e.target.value)}
           placeholder="Enter card name"
-        />
-        <SelectCurrency
-          label="Top Up from"
-          labelClassName="!text-base font-medium mb-2"
-          onClick={openCryptoModal}
-          currency={selectedCrypto}
-          balance={selectedCryptoWalletBalance}
-          chains={chainList}
-        />
-
-        <ExternalExhangeInput
-          externalLabel="Top Up amount"
-          buyingCurrency={selectedFiat}
-          sellingCurrency={selectedCrypto}
-          calcData={offrampCalcData}
-          sellValue={amount}
-          setSellValue={setAmount}
-          isCalculating={isOfframpCalcPending}
-          isWithdraw
-        />
-
-        <CurrencyListModal
-          isOpen={isCryptoModalOpen}
-          setIsModalOpen={setIsCryptoModalOpen}
-          activeCurrency={selectedCrypto}
-          currencies={allowedCryptoToFiatList}
-          onSelect={selectCurrency}
-          chains={chainList}
         />
 
         <ConfirmModal

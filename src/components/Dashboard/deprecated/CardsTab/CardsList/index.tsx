@@ -31,10 +31,10 @@ const CardsList: FC<CardsListProps> = (props) => {
   const isLoadMoreAvailible = !meta.isLastPage;
 
   const getCardCurrencySymbol = (currentCard: API.Cards.CardDetailItem) =>
-    fiatList.find((item) => item.code === currentCard.bin.currencyCode)?.symbol || '';
+    fiatList.find((item: any) => item.code === (currentCard as any).bin.currencyCode)?.symbol || '';
 
   const getCardSubtitile = (currentCard: API.Cards.CardDetailItem) =>
-    `${currentCard.cardName} / balance:${roundToDecimals(currentCard.balance.available, 2)}${getCardCurrencySymbol(
+    `${(currentCard as any).cardName} / balance:${roundToDecimals((currentCard as any).balance.available, 2)}${getCardCurrencySymbol(
       currentCard,
     )}`;
 
@@ -65,7 +65,7 @@ const CardsList: FC<CardsListProps> = (props) => {
         </button>
         {!isFirstItemsLoading && data ? (
           <>
-            {data.map((card) => (
+            {data.map((card: any) => (
               <button
                 key={card.id}
                 type="button"

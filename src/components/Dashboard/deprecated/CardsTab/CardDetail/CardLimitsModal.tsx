@@ -46,11 +46,11 @@ const CardLimitsModal: FC<CardLimitsModalProps> = (props) => {
   };
 
   const saveLimits = async () => {
-    const newCardsData: API.Cards.Update.Request = { ...card, limits: modalLimits };
+    const newCardsData: any = { ...card, limits: modalLimits };
 
     try {
       setPending();
-      await updateCard(card.id, newCardsData);
+      await updateCard((card as any).id, newCardsData);
       setFullfilled();
       closeModal();
     } catch (error) {

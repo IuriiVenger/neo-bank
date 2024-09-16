@@ -59,14 +59,12 @@ export namespace API {
   }
 
   export namespace Cards {
-    export interface Bin {
-      code: string;
-      countryCode: string;
-      currencyCode: string;
-      provider: string;
+    export interface CardConfig {
+      id: string;
+      allowed_currencies: string[];
+      brand: string;
       billingAddress: string;
-      paymentServices: string[];
-      merchants: string[];
+      form_factor: string;
       purposes: string[];
       fees: {
         issue: {
@@ -87,9 +85,6 @@ export namespace API {
           feeAmount: number;
           unit: string;
         };
-      };
-      requirements?: {
-        isKycRequired: boolean;
       };
     }
     export interface User {
@@ -136,171 +131,89 @@ export namespace API {
     }
 
     export interface CardDetailItem {
-      status: CardStatus;
-      cardName: string;
-      limits: Limits;
-      autoTopUp: {
-        thresholdAmount: number;
-        topUpAmount: number;
-      };
-      isFavorite: boolean;
-      wallet_id: string;
-      walletInfo: {
-        id: string;
-        code: string;
-        purpose: string;
-        name: string;
-        currencyCode: string;
-        availableBalance: number;
-      };
-      id: string;
-      maskedPan: string;
-      bin: {
-        code: string;
-        countryCode: string;
-        currencyCode: string;
-        provider: string;
-        billingAddress: string;
-        paymentServices: string[];
-        purposes: string[];
-        fees: {
-          issue: {
-            feeAmount: number;
-            unit: string;
-          };
-          authorization: {
-            minAmount: number;
-            maxAmount: number;
-            feeAmount: number;
-            unit: string;
+      authorization_controls: {
+        allowed_currencies: string[];
+        allowed_merchant_categories: string[];
+        allowed_transaction_count: string;
+        transaction_limits: {
+          currency: string;
+          limits: {
+            amount: number;
+            interval: string;
           }[];
-          decline: {
-            feeAmount: number;
-            unit: string;
-          };
-          zeroAuth: {
-            feeAmount: number;
-            unit: string;
-          };
-        };
-        requirements?: {
-          isKycRequired: boolean;
         };
       };
-      createdAt: string;
-      balance: {
-        available: number;
-        spent: number;
-        pending: number;
+      brand: string;
+      card_id: string;
+      card_number: string;
+      card_status: string;
+      created_at: string;
+      created_by: string;
+      form_factor: string;
+      issue_to: string;
+      name_on_card: string;
+      nick_name: string;
+      primary_contact_details: {
+        date_of_birth: string;
+        full_name: string;
+        mobile_number: string;
       };
-      user: {
-        id: string;
-        nickname: string;
-        email: string;
-      };
-      cardId: string;
+      purpose: string;
+      request_id: string;
+      program_id: string;
+      wallet_id: string;
+      updated_at: string;
     }
     export interface CardListItem {
-      id: string;
-      userId: string;
-      walletId: string;
-      createdAt: string;
-      type: string;
-      amount: number;
-      availableBalance: number;
-      currencyCode: string;
-      description: string;
-      status: string;
-      direction: string;
-      user: {
-        id: string;
-        role: string;
-        status: string;
-        firstName: string;
-        lastName: string;
-        nickname: string;
-        email: string;
-        balance: {
-          currencyCode: string;
-          available: number;
-          reserved: number;
-          pending: number;
-          total: number;
-        };
-      };
-      walletInfo: {
-        id: string;
-        code: string;
-        name: string;
-        currencyCode: string;
-      };
-      details: {
-        binInfo: {
-          code: string;
-          countryCode: string;
-          currencyCode: string;
-          provider: string;
-        };
-        maskedPan: string;
-        cardName: string;
-      };
+      brand: string;
+      card_id: string;
+      card_number: string;
+      card_status: string;
+      cardholder_id: string;
+      created_at: string;
+      nick_name: string;
+      updated_at: string;
+      wallet_id: string;
+      program_uuid: string;
     }
 
     export interface CardsList {
-      length: number;
-      items: CardDetailItem[];
-      totalCount: number;
+      count: number;
+      data: CardListItem[];
     }
 
     export interface TransactionItem {
-      id: string;
-      userId: string;
-      walletId: string;
-      createdAt: string;
-      type: string;
-      amount: number;
-      availableBalance: number;
-      currencyCode: string;
-      description: string;
-      status: CardTransationStatus;
-      direction: CardTransactionDirection;
-      user: {
-        id: string;
-        role: string;
-        status: string;
-        firstName: string;
-        lastName: string;
-        nickname: string;
-        email: string;
-        balance: {
-          currencyCode: string;
-          available: number;
-          reserved: number;
-          pending: number;
-          total: number;
-        };
-      };
-      walletInfo: {
-        id: string;
-        code: string;
+      auth_code: string;
+      billing_amount: number;
+      billing_currency: string;
+      card_id: string;
+      wallet_id: string;
+      card_nickname: string;
+      client_data: string;
+      digital_wallet_token_id: string;
+      failure_reason: string;
+      masked_card_number: string;
+      matched_authorizations: string[];
+      merchant: {
+        category_code: string;
+        city: string;
+        country: string;
         name: string;
-        currencyCode: string;
       };
-      details: {
-        binInfo: {
-          code: string;
-          countryCode: string;
-          currencyCode: string;
-          provider: string;
-        };
-        maskedPan: string;
-        cardName: string;
-      };
+      network_transaction_id: string;
+      posted_date: string;
+      retrieval_ref: string;
+      status: string;
+      transaction_amount: number;
+      transaction_currency: string;
+      transaction_date: string;
+      transaction_id: string;
+      transaction_type: string;
     }
 
     export interface TransactionsList {
       items: TransactionItem[];
-      totalCount: number;
+      has_more: boolean;
     }
 
     export interface SensitiveData {
@@ -318,20 +231,27 @@ export namespace API {
       valid_to: number;
     }
 
+    export type AuthorizationControls = {
+      allowed_merchant_categories: string[];
+      allowed_transaction_count: 'MULTIPLE';
+      transaction_limits: {
+        currency: string;
+        limits: Array<{
+          amount: number;
+          interval: 'PER_TRANSACTION' | 'MONTHLY' | 'WEEKLY' | 'DAILY';
+        }>;
+      };
+    };
+
     export namespace Create {
       export interface Request {
-        wallet_uuid: string;
-        binCode: string;
-        cardName: string;
-        limits?: Limits;
-        cardBalance: number;
-        cardsCount?: number;
-        autoTopUp?: {
-          thresholdAmount: number;
-          topUpAmount: number;
-        };
-        walletId?: string;
-        ownerId?: string;
+        authorization_controls?: AuthorizationControls;
+        name_on_card: string;
+        nick_name: string;
+        purpose: string;
+        request_id: string;
+        program_id: string;
+        wallet_id: string;
       }
 
       export type Response = CardDetailItem;
@@ -376,6 +296,15 @@ export namespace API {
       to_symbol: string;
       rate: number;
       min_amount: string;
+    }
+  }
+
+  export namespace Issuing {
+    export namespace Programs {
+      export type Response = {
+        count: number;
+        data: API.Cards.CardConfig[];
+      };
     }
   }
 

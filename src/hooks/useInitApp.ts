@@ -5,6 +5,7 @@ import useAuth from './useAuth';
 
 import { exchange } from '@/api/exchange';
 
+import { issuing } from '@/api/issuing';
 import { list } from '@/api/list';
 import { vcards } from '@/api/vcards';
 import { AppEnviroment, defaultCurrency } from '@/constants';
@@ -30,7 +31,7 @@ const useInitApp = (dispatch: AppDispatch) => {
 
   const initWebApp = async () => {
     const [binsData, fiatsData, cryptoData, chainsData, fiatExchangeRateData] = await Promise.allSettled([
-      vcards.bins.getAll(),
+      issuing.bins.getAll(),
       list.fiats.getAll(),
       list.crypto.getAll(),
       list.chains.getAll(),
@@ -46,7 +47,7 @@ const useInitApp = (dispatch: AppDispatch) => {
       return results;
     });
 
-    binsData.status === 'fulfilled' && dispatch(setBins(binsData.value));
+    binsData.status === 'fulfilled' && dispatch(setBins(binsData.value.data));
     fiatsData.status === 'fulfilled' && dispatch(setFiats(fiatsData.value));
     cryptoData.status === 'fulfilled' && dispatch(setCrypto(cryptoData.value));
     chainsData.status === 'fulfilled' && dispatch(setChains(chainsData.value));
