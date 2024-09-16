@@ -1,7 +1,7 @@
 import { Button } from '@nextui-org/react';
 import cn from 'classnames';
 import { FC, useEffect, useRef, useState } from 'react';
-import Cards from 'react-credit-cards';
+
 import 'react-indiana-drag-scroll/dist/style.css';
 
 import { RiAddFill, RiArrowLeftSLine, RiArrowRightSLine } from 'react-icons/ri';
@@ -11,15 +11,13 @@ import ReactVisibilitySensor from 'react-visibility-sensor';
 
 import { DashboardProps } from '../..';
 
-import { API } from '@/api/types';
 import CreateCardModal from '@/components/modals/CreateCardModal';
 
 import Card, { CardSizes } from '@/components/ui/Card';
 import Loader from '@/components/ui/Loader';
 import { KYCStatuses, RequestStatus } from '@/constants';
 
-import { deleteDash, roundToDecimals } from '@/utils/converters';
-import { getCardProvider } from '@/utils/financial';
+import { deleteDash } from '@/utils/converters';
 
 export type CardsListProps = DashboardProps & {
   onCardClick: (card_id: string) => void;
@@ -67,14 +65,6 @@ const CardsList: FC<CardsListProps> = (props) => {
       });
     }
   };
-
-  // const getCardCurrencySymbol = (currentCard: API.Cards.CardDetailItem) =>
-  //   fiatList.find((item) => item.code === currentCard.bin.currencyCode)?.symbol || '';
-
-  // const getCardSubtitile = (currentCard: API.Cards.CardDetailItem) =>
-  //   `${currentCard.name_on_card} / balance:${roundToDecimals(currentCard.balance.available, 2)}${getCardCurrencySymbol(
-  //     currentCard,
-  //   )}`;
 
   const openCreateCardModal = () => {
     setIsCreateCardModalOpen(true);

@@ -1,17 +1,14 @@
-import { Button, code } from '@nextui-org/react';
+import { Button } from '@nextui-org/react';
 import cn from 'classnames';
 import { hasCookie } from 'cookies-next';
-import Image from 'next/image';
 import Link from 'next/link';
-import { ChangeEvent, FC, useEffect, useMemo, useState } from 'react';
-import { PhoneInput } from 'react-international-phone';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useTimer } from 'react-timer-hook';
 
 import CustomPhoneInput from '../ui/CustomPhoneInput';
 
 import InputCode from '../ui/InputCode';
 
-import logo from '@/assets/svg/tenant/header_logo.svg';
 import { getStartTimeForTimer } from '@/utils/helpers';
 import 'react-international-phone/style.css';
 import { isPhoneValid } from '@/utils/validators';
@@ -48,10 +45,6 @@ const LogInOtpPhone: FC<LogInOtpPhoneProps> = (props) => {
     expiryTimestamp: memouzedStartTime,
     autoStart: false,
   });
-
-  // const handleEmailInput = (e: ChangeEvent<HTMLInputElement>) => {
-  //   setEmail(e.target.value);
-  // };
 
   const handleSignInByPhoneOtp = async () => {
     await signInByPhoneOtp();

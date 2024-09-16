@@ -1,6 +1,6 @@
-import { Accordion, AccordionItem, Button, Selection } from '@nextui-org/react';
+import { Accordion, AccordionItem, Button } from '@nextui-org/react';
 import cn from 'classnames';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 import { API } from '@/api/types';
 import { DashboardProps } from '@/components/Dashboard';
@@ -16,7 +16,7 @@ type InfoTabProps = DashboardProps & {
 };
 
 const WalletTransactions: FC<InfoTabProps> = (props) => {
-  const { walletTransactions, loadMoreWalletTransactions, chainList, selectedWallet, cryptoList } = props;
+  const { walletTransactions, loadMoreWalletTransactions } = props;
   const { data, status, meta } = walletTransactions;
 
   const isTransactionsLoading = status === RequestStatus.PENDING;

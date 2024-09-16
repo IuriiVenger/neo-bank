@@ -1,7 +1,7 @@
 import { Select, SelectItem } from '@nextui-org/react';
 
 import cn from 'classnames';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { DashboardProps } from '../../Dashboard';

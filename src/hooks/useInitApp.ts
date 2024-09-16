@@ -7,7 +7,7 @@ import { exchange } from '@/api/exchange';
 
 import { issuing } from '@/api/issuing';
 import { list } from '@/api/list';
-import { vcards } from '@/api/vcards';
+
 import { AppEnviroment, defaultCurrency } from '@/constants';
 
 import { useAppSelector } from '@/store';

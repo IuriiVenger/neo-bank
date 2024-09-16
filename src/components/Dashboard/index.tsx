@@ -1,8 +1,8 @@
-import { Button } from '@nextui-org/react';
+// import { Button } from '@nextui-org/react';
 import { AxiosResponse } from 'axios';
 import cn from 'classnames';
 import { FC, useState } from 'react';
-import { CiCirclePlus } from 'react-icons/ci';
+// import { CiCirclePlus } from 'react-icons/ci';
 
 import CreateWalletModal from '../modals/CreateWalletModal';
 import Loader from '../ui/Loader';

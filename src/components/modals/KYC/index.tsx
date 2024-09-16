@@ -7,8 +7,8 @@ import { toast } from 'react-toastify';
 import { API } from '@/api/types';
 import Kyc from '@/components/KYC/steps/Kyc';
 import Start from '@/components/KYC/steps/Start';
-import MainModal, { CustomModal } from '@/components/modals/MainModal';
-import { framerMotionAnimations } from '@/config/animations';
+import MainModal from '@/components/modals/MainModal';
+
 import { KYCStatuses } from '@/constants';
 
 type KYCModalProps = {
