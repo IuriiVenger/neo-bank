@@ -12,11 +12,6 @@ const tenantId = process.env.TENANT_ID;
 export const instance = axios.create({
   baseURL: baseURL || '/api/',
   timeout: 60000,
-  headers: {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'X-Tenant-Id': tenantId,
-  },
 });
 
 instance.interceptors.request.use((config) => {
@@ -26,6 +21,9 @@ instance.interceptors.request.use((config) => {
   const modifiedHeaders = {
     ...config.headers,
     'App-Enviroment': appEnviroment,
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'X-Tenant-Id': tenantId,
   };
 
   if (access_token) {
