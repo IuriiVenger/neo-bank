@@ -34,9 +34,10 @@ const CardsList: FC<CardsListProps> = (props) => {
     fiatList.find((item: any) => item.code === (currentCard as any).bin.currencyCode)?.symbol || '';
 
   const getCardSubtitile = (currentCard: API.Cards.CardDetailItem) =>
-    `${(currentCard as any).cardName} / balance:${roundToDecimals((currentCard as any).balance.available, 2)}${getCardCurrencySymbol(
-      currentCard,
-    )}`;
+    `${(currentCard as any).cardName} / balance:${roundToDecimals(
+      (currentCard as any).balance.available,
+      2,
+    )}${getCardCurrencySymbol(currentCard)}`;
 
   const openCreateCardModal = () => {
     setIsCreateCardModalOpen(true);

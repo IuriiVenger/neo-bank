@@ -1,6 +1,6 @@
 import { getCookie, setCookie } from 'cookies-next';
 
-import { supportEmail, walletType } from '@/constants';
+import { supportEmail, walletType } from '../constants';
 
 export const getWalletTypeLabel = (type: string) => walletType[type]?.label || type;
 
@@ -31,3 +31,15 @@ export const isMultipleOf = (multiple: number, num: number) => num % multiple ==
 export const isSettledPromiseFullfilled = (promise: PromiseSettledResult<any>) => promise.status === 'fulfilled';
 
 export const createArray = (n: number): number[] => [...Array(n)].map((_, i) => i);
+
+export const genereateTailwindThemeClasses = (className: string, lightClassName: string, darkClassName: string) => {
+  const generatedThemesClassnames = `@apply ${lightClassName} dark:${darkClassName}`;
+  return {
+    [`.${className}`]: {
+      [generatedThemesClassnames]: {},
+    },
+    [`.important-${className}`]: {
+      [`${generatedThemesClassnames} !important`]: {},
+    },
+  };
+};

@@ -1,6 +1,6 @@
 import { User } from '@supabase/supabase-js';
 
-import { KYCStatuses, OrderStatuses, OrderTypes } from '@/constants';
+import { CardFormFactor, CardType, KYCStatuses, OrderStatuses, OrderTypes } from '@/constants';
 
 export namespace API {
   export namespace Auth {
@@ -57,7 +57,7 @@ export namespace API {
       allowed_currencies: string[];
       brand: string;
       billingAddress: string;
-      form_factor: string;
+      form_factor: CardFormFactor;
       purposes: string[];
       fees: {
         issue: {
@@ -79,6 +79,7 @@ export namespace API {
           unit: string;
         };
       };
+      type: CardType; // MOCK
     }
     export interface User {
       email: string;

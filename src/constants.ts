@@ -194,3 +194,37 @@ export enum CustomTheme {
   LIGHT = 'light',
   DARK = 'dark',
 }
+
+export enum CardFormFactor {
+  VIRTUAL = 'VIRTUAL',
+  PHYSICAL = 'PHYSICAL',
+}
+
+export enum CardType {
+  CREDIT = 'CREDIT',
+  DEBIT = 'DEBIT',
+}
+
+export const cardFormFactorsData: Record<CardFormFactor, { title: string; description: string; shortTitle: string }> = {
+  [CardFormFactor.VIRTUAL]: {
+    title: 'Virtual card',
+    shortTitle: 'Virtual',
+    description: 'Digital version of your card will be instantly available',
+  },
+  [CardFormFactor.PHYSICAL]: {
+    title: 'Physical card',
+    shortTitle: 'Physical',
+    description: 'Plastic card that you can use for in-store purchases.',
+  },
+};
+
+export const cardTypeData: Record<CardType, { title: string; shortTitle: string }> = {
+  [CardType.DEBIT]: {
+    title: 'Debit card',
+    shortTitle: 'Debit',
+  },
+  [CardType.CREDIT]: {
+    title: 'Credit card',
+    shortTitle: 'Credit',
+  },
+};

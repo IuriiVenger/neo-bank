@@ -5,7 +5,6 @@ import { RiAddFill, RiCornerLeftDownFill, RiCornerRightUpFill, RiMore2Fill } fro
 
 import MainInformation from './MainInformation';
 
-import WalletBalanceList from './WalletBalanceList';
 import WalletTransactions from './WalletTransactions';
 
 import { DashboardProps } from '@/components/Dashboard';
@@ -41,7 +40,7 @@ const actionButtons = [
 ];
 
 const MainTab: FC<InfoTabProps> = (props) => {
-  const { className, selectedWallet, fiatList, chainList, cryptoList } = props;
+  const { className, selectedWallet, fiatList } = props;
 
   const currentWalletBalanceAmount = separateNumbers(roundToDecimals(selectedWallet.data?.total_amount || 0));
   const currentWalletBalanceCurrency =
@@ -65,7 +64,7 @@ const MainTab: FC<InfoTabProps> = (props) => {
             Show all
           </button>
         </div>
-        <WalletBalanceList chains={chainList} wallet={selectedWallet.data} cryptoList={cryptoList} />
+        {/* <WalletBalanceList chains={chainList} wallet={selectedWallet.data} cryptoList={cryptoList} /> */}
       </DefaultContainer>
       <DefaultContainer className="col-span-3 lg:col-span-2">
         <div className="mb-4 flex items-center justify-between">

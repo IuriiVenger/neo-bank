@@ -1,20 +1,22 @@
-import { Select, SelectItem } from '@nextui-org/react';
-
 import cn from 'classnames';
-import { FC, useState } from 'react';
-import { toast } from 'react-toastify';
+import { FC, useEffect, useMemo, useState } from 'react';
 
 import { DashboardProps } from '../../Dashboard';
 
-import ProgramInfo from './ProgramInfo';
+import ConfirmModal from '../ConfirmModal';
+
+import CardDetailsStep, { CardDetailsStepProps } from './steps/CardDetailsStep';
+import CardFormFactorStep, { CardFormFactorStepProps } from './steps/CardFormFactorStep';
+
+import CardProgramStep, { CardProgramStepProps } from './steps/CardProgramStep';
+import CardSusccessStep from './steps/CardSuccessStep';
+import CardTypeStep, { CardTypeStepProps } from './steps/CardTypeStep';
 
 import { API } from '@/api/types';
 
-import ConfirmModal from '@/components/modals/ConfirmModal';
-
 import MainModal from '@/components/modals/MainModal';
-import CustomInput from '@/components/ui/CustomInput';
 
+import { CardFormFactor, cardFormFactorsData, CardType, cardTypeData } from '@/constants';
 import { useRequestStatus } from '@/hooks/useRequestStatus';
 
 type CreateCardModalProps = DashboardProps & {
@@ -24,37 +26,176 @@ type CreateCardModalProps = DashboardProps & {
   onCardCreate?: (card_id: string) => void;
 };
 
+enum CreateCardSteps {
+  FORM_FACTOR = 'form_factor',
+  TYPE = 'type',
+  PROGRAM = 'program',
+  DETAILS = 'details',
+  SUCCESS = 'success',
+}
+
+type CreateCartStepsMap = {
+  [key in CreateCardSteps]: {
+    title?: string;
+    subtitle?: string;
+    Component: FC<any>;
+    mainButtonText: string;
+    onMainButtonClick: () => void;
+    onBackButtonClick?: () => void;
+    isDisabled?: boolean;
+  };
+};
+
+type CreateCardStepsProps = CardDetailsStepProps & CardProgramStepProps & CardTypeStepProps & CardFormFactorStepProps;
+
+const getCardTypesData = (programs: API.Cards.CardConfig[]) => {
+  const types = programs.map((program) => ({
+    title: cardTypeData[program.type].title,
+    value: program.type as CardType,
+  }));
+
+  return types;
+};
+
+const getCardFormFactorsData = (programs: API.Cards.CardConfig[]) => {
+  const formFactors = programs.map((program) => ({
+    title: cardFormFactorsData[program.form_factor].title,
+    description: program.allowed_currencies.join(', '),
+    value: program.form_factor as CardFormFactor,
+  }));
+
+  return formFactors;
+};
+
 const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   const { bins, createCard, selectedWallet, className, setIsModalOpen, isOpen, onCardCreate } = props;
 
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
-  const [activeBin, setActiveBin] = useState<API.Cards.CardConfig | undefined>(bins[0] || {});
-  const [cardName, setCardName] = useState<string>('');
+  const [selectedProgram, setSelectedProgram] = useState<API.Cards.CardConfig | null>(null);
+
   const [topUpConfirmationText, setTopUpConfirmationText] = useState<string | null>(null);
   const [requestStatuses, setPending, setFullfilled, setRejected] = useRequestStatus();
 
-  const mainButtonTitle = 'Create card';
+  const [cardFormFactor, setCardFormFactor] = useState<CardFormFactor | null>(null);
+  const [cardType, setCardType] = useState<CardType | null>(null);
+  const [currentStep, setCurrentStep] = useState<CreateCardSteps>(CreateCardSteps.FORM_FACTOR);
+  const [cardName, setCardName] = useState<string | null>(null);
+  const [cardholderName, setCardholderName] = useState<string | null>(null);
+
+  const availablePrograms = useMemo(() => {
+    if (currentStep === CreateCardSteps.FORM_FACTOR) {
+      return bins;
+    }
+
+    if (currentStep === CreateCardSteps.TYPE) {
+      return bins.filter((program) => cardFormFactor === program.form_factor);
+    }
+
+    if (currentStep === CreateCardSteps.PROGRAM) {
+      return bins.filter((program) => cardType === program.type && cardFormFactor === program.form_factor);
+    }
+
+    return bins.filter(
+      (program) =>
+        cardType === program.type && cardFormFactor === program.form_factor && selectedProgram?.id === program.id,
+    );
+  }, [currentStep, bins, cardFormFactor, cardType, selectedProgram]);
+
+  const cardTypes = useMemo(() => getCardTypesData(availablePrograms), [availablePrograms]);
+  const cardFormFactors = useMemo(() => getCardFormFactorsData(availablePrograms), [availablePrograms]);
+
+  const openConfirmationModal = () => {
+    if (!cardFormFactor || !cardType || !selectedProgram || !cardName || !cardholderName) {
+      return;
+    }
+    const confirmationText = `Are you sure you want to create ${cardFormFactorsData[
+      cardFormFactor
+    ].shortTitle.toLowerCase()} ${selectedProgram.brand}  ${cardTypeData[cardType].shortTitle.toLowerCase()} card?`;
+    setTopUpConfirmationText(confirmationText);
+    setIsConfirmationModalOpen(true);
+  };
+
+  const createCardStepsMap: CreateCartStepsMap = useMemo(
+    () => ({
+      [CreateCardSteps.FORM_FACTOR]: {
+        title: 'Create card',
+        subtitle: 'Please select the card form factor',
+        Component: CardFormFactorStep,
+        mainButtonText: 'Next',
+        onMainButtonClick: () => setCurrentStep(CreateCardSteps.TYPE),
+        isDisabled: !cardFormFactor,
+      },
+      [CreateCardSteps.TYPE]: {
+        title: 'Create card',
+        subtitle: 'Please select the card type',
+        Component: CardTypeStep,
+        mainButtonText: 'Next',
+        onMainButtonClick: () => setCurrentStep(CreateCardSteps.PROGRAM),
+        onBackButtonClick: () => setCurrentStep(CreateCardSteps.FORM_FACTOR),
+        isDisabled: !cardType,
+      },
+      [CreateCardSteps.PROGRAM]: {
+        title: 'Create card',
+        subtitle: 'Please select the card program',
+        Component: CardProgramStep,
+        mainButtonText: 'Next',
+        onMainButtonClick: () => setCurrentStep(CreateCardSteps.DETAILS),
+        onBackButtonClick: () => setCurrentStep(CreateCardSteps.TYPE),
+        isDisabled: !selectedProgram,
+      },
+      [CreateCardSteps.DETAILS]: {
+        title: 'Create card',
+        subtitle: 'Please enter card details',
+        Component: CardDetailsStep,
+        mainButtonText: 'Create card',
+        onMainButtonClick: openConfirmationModal,
+        onBackButtonClick: () => setCurrentStep(CreateCardSteps.PROGRAM),
+        isDisabled: !cardName || !cardholderName,
+      },
+      [CreateCardSteps.SUCCESS]: {
+        Component: CardSusccessStep,
+        mainButtonText: 'Close',
+        onMainButtonClick: () => setIsModalOpen(false),
+      },
+    }),
+    [cardFormFactor, cardType, selectedProgram, cardName, cardholderName],
+  );
+
+  const stepsProps: CreateCardStepsProps = {
+    cardFormFactor,
+    setCardFormFactor,
+    cardFormFactors,
+    cardTypes,
+    cardType,
+    setCardType,
+    availablePrograms,
+    selectedProgram,
+    setSelectedProgram,
+    cardName,
+    setCardName,
+    cardholderName,
+    setCardholderName,
+  };
 
   const createCardHandler = async () => {
-    if (!selectedWallet.data || !activeBin) {
+    if (!selectedWallet.data || !selectedProgram || !cardName || !cardholderName) {
       return;
     }
 
     const requestData: API.Cards.Create.Request = {
-      program_id: activeBin.id,
-      name_on_card: cardName,
+      program_id: selectedProgram.id,
+      name_on_card: cardholderName,
       nick_name: cardName,
       wallet_id: selectedWallet.data.uuid,
-      purpose: activeBin.purposes[0],
+      purpose: selectedProgram.purposes[0],
       request_id: crypto.randomUUID(),
     };
 
     try {
       setPending();
       const { data } = await createCard(requestData);
-      setIsModalOpen(false);
-      toast.success('Card created successfully');
       onCardCreate && onCardCreate(data.card_id);
+      setCurrentStep(CreateCardSteps.SUCCESS);
       setFullfilled();
     } catch (error) {
       setRejected();
@@ -62,57 +203,46 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     }
   };
 
-  const openConfirmationModal = () => {
-    const confirmationText = `Are you sure you want to create card with name ${cardName}?`;
-    setTopUpConfirmationText(confirmationText);
-    setIsConfirmationModalOpen(true);
+  const onClose = () => {
+    setCurrentStep(CreateCardSteps.FORM_FACTOR);
+    setCardFormFactor(null);
+    setCardType(null);
+    setSelectedProgram(null);
   };
 
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const bin = bins?.find((item) => item.id === e.target.value);
-    if (!bin) {
-      return;
+  useEffect(() => {
+    if (isOpen) {
+      onClose();
     }
-    setActiveBin(bin);
-  };
+  }, [isOpen]);
+
+  const ActiveStep = createCardStepsMap[currentStep].Component;
 
   return (
     <MainModal
       isOpen={isOpen}
+      onClose={onClose}
       onOpenChange={setIsModalOpen}
+      confirmButtonDisabled={createCardStepsMap[currentStep].isDisabled}
       backdrop="opaque"
       scrollBehavior="inside"
-      header="Create card"
-      confirmButtonText={mainButtonTitle}
-      onConfirm={openConfirmationModal}
+      nativeCloseButton
+      confirmButtonText={createCardStepsMap[currentStep].mainButtonText}
+      onConfirm={createCardStepsMap[currentStep].onMainButtonClick}
       isLoading={requestStatuses.PENDING}
+      className=" md:h-[750px]"
     >
       <div className={cn('flex flex-col gap-4', className)}>
-        <Select label="Select BIN" onChange={handleSelectChange} selectedKeys={activeBin && [activeBin.id]}>
-          {bins?.map((bin) => (
-            <SelectItem
-              key={bin.id}
-              onClick={() => setActiveBin(bin)}
-              value={bin.id}
-              className="border-b border-gray-200 p-2 text-xs"
-              textValue={` ${bin.brand}, ${bin.allowed_currencies.join(', ')}`}
-            >
-              <ProgramInfo config={bin} />
-            </SelectItem>
-          ))}
-        </Select>
-        <CustomInput
-          label="Card name"
-          value={cardName}
-          onChange={(e) => setCardName(e.target.value)}
-          placeholder="Enter card name"
-        />
-
+        <h3 className="text-3xl">{createCardStepsMap[currentStep].title}</h3>
+        <p className="text-foreground-2">{createCardStepsMap[currentStep].subtitle}</p>
+        <div className="mt-6">
+          <ActiveStep {...stepsProps} />
+        </div>
         <ConfirmModal
           isOpen={isConfirmationModalOpen}
           setIsModalOpen={setIsConfirmationModalOpen}
           onConfirm={createCardHandler}
-          title="Top Up confirmation"
+          title="Create card confirmation"
           confirmText={topUpConfirmationText}
         />
       </div>

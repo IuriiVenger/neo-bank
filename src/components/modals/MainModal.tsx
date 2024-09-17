@@ -295,17 +295,11 @@ const WebModal: FC<MainModalProps> = (props) => {
       onClose={closeModal}
       hideCloseButton={nonNativeCloseButtonEnabled}
     >
-      <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:relative md:max-h-[90vh]', contentClassName)}>
-        {!!header && <ModalHeader>{header}</ModalHeader>}
-        <ModalBody className={cn('pb-10 shadow-inner sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>
+      <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:relative  md:max-h-[85vh]', contentClassName)}>
+        {header || (nativeCloseButton && !hideCloseButton && <ModalHeader className="">{header}</ModalHeader>)}
+        <ModalBody className={cn('pb-10 shadow-none sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>
         {(!confirmButtonHidden || !nonNativeCloseButtonEnabled) && (
-          <ModalFooter
-            className="relative z-10 flex min-h-1 w-full flex-col pb-6 md:pb-4"
-            style={{
-              boxShadow:
-                '0px -10px 6px -3px rgba(255,255,255,0.95), 0px -20px 6px -3px rgba(255,255,255,0.85), 0px -31px 6px -3px rgba(255,255,255,0.8)',
-            }}
-          >
+          <ModalFooter className="relative z-10 flex min-h-1 w-full flex-col pb-6">
             {!confirmButtonHidden && (
               <Button
                 isDisabled={confirmButtonDisabled}
@@ -333,7 +327,7 @@ const WebModal: FC<MainModalProps> = (props) => {
 const MainModal: FC<MainModalProps> = (props) => {
   const { mdBreakpoint } = useBreakpoints();
   const { appEnviroment, isAppFullInitialized } = useAppSelector(selectConfig);
-  const { size, motionProps, isOpen } = props;
+  const { size, motionProps, isOpen, className } = props;
 
   const responsiveSize = mdBreakpoint ? 'md' : 'full';
   const modalSize = size || responsiveSize;
@@ -354,6 +348,7 @@ const MainModal: FC<MainModalProps> = (props) => {
     disableAnimation,
     motionProps: modalMotionProps,
     size: modalSize,
+    className: cn('bg-background', className),
   };
 
   return isTelegramEnviroment ? <TelegramModal {...modifiedProps} /> : <WebModal {...modifiedProps} />;

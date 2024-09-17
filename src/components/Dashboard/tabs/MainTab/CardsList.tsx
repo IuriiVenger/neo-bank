@@ -33,7 +33,6 @@ const CardsList: FC<CardsListProps> = (props) => {
     loadMoreCards,
     openKYC,
     verificationStatus,
-    fiatList,
     className,
     cardSize,
   } = props;

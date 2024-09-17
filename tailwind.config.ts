@@ -3,6 +3,8 @@ import { nextui } from '@nextui-org/react';
 
 import { themes, layout } from './src/config/themes';
 
+import { genereateTailwindThemeClasses } from './src/utils/helpers';
+
 import type { Config } from 'tailwindcss';
 
 const customBlueGradient = 'linear-gradient(125deg, #71A9ED 0%, #436CB6 100%)';
@@ -100,6 +102,13 @@ const config: Config = {
             fontWeight: 500,
           },
         ],
+        '4.25xl': [
+          '2.5rem',
+          {
+            lineHeight: '3.5rem',
+            fontWeight: 500,
+          },
+        ],
       },
       spacing: {
         0.5: '0.125rem',
@@ -138,50 +147,35 @@ const config: Config = {
             secondary: themes.dark.brandColors.secondary,
             success: themes.dark.brandColors.success,
             danger: themes.dark.brandColors.danger,
-            default: {},
           },
         },
       },
     }),
     function ({ addComponents }: { addComponents: Function }) {
       addComponents({
-        '.border-background-3': {
-          '@apply border-light-background-3 dark:border-dark-background-3': {},
-        },
-
-        '.bg-foreground-2': {
-          '@apply bg-light-foreground-2 dark:bg-dark-foreground-2': {},
-        },
-        '.text-foreground-2': {
-          '@apply text-light-foreground-2 dark:text-dark-foreground-2': {},
-        },
-        '.border-foreground-2': {
-          '@apply border-light-foreground-2 dark:border-dark-foreground-2': {},
-        },
-        '.bg-foreground-3': {
-          '@apply bg-light-foreground-3 dark:bg-dark-foreground-3': {},
-        },
-        '.text-foreground-3': {
-          '@apply text-light-foreground-3 dark:text-dark-foreground-3': {},
-        },
-        '.border-foreground-3': {
-          '@apply border-light-foreground-3 dark:border-dark-foreground-3': {},
-        },
-        '.bg-background-2': {
-          '@apply bg-light-background-2 dark:bg-dark-background-2': {},
-        },
-        '.text-background-2': {
-          '@apply text-light-background-2 dark:text-dark-background-2': {},
-        },
-        '.border-background-2': {
-          '@apply border-light-background-2 dark:border-dark-background-2': {},
-        },
-        '.bg-background-3': {
-          '@apply bg-light-background-3 dark:bg-dark-background-3': {},
-        },
-        '.text-background-3': {
-          '@apply text-light-background-3 dark:text-dark-background-3': {},
-        },
+        ...genereateTailwindThemeClasses('bg-foreground-2', 'bg-light-foreground-2', 'bg-dark-foreground-2'),
+        ...genereateTailwindThemeClasses('bg-foreground-3', 'bg-light-foreground-3', 'bg-dark-foreground-3'),
+        ...genereateTailwindThemeClasses('bg-background-2', 'bg-light-background-2', 'bg-dark-background-2'),
+        ...genereateTailwindThemeClasses('bg-background-3', 'bg-light-background-3', 'bg-dark-background-3'),
+        ...genereateTailwindThemeClasses('text-foreground-2', 'text-light-foreground-2', 'text-dark-foreground-2'),
+        ...genereateTailwindThemeClasses('text-foreground-3', 'text-light-foreground-3', 'text-dark-foreground-3'),
+        ...genereateTailwindThemeClasses('text-background-2', 'text-light-background-2', 'text-dark-background-2'),
+        ...genereateTailwindThemeClasses('text-background-3', 'text-light-background-3', 'text-dark-background-3'),
+        ...genereateTailwindThemeClasses(
+          'border-foreground-2',
+          'border-light-foreground-2',
+          'border-dark-foreground-2',
+        ),
+        ...genereateTailwindThemeClasses(
+          'border-foreground-3',
+          'border-light-foreground-3',
+          'border-dark-foreground-3',
+        ),
+        ...genereateTailwindThemeClasses(
+          'border-background-2',
+          'border-light-background-2',
+          'border-dark-background-2',
+        ),
       });
     },
   ],
