@@ -158,10 +158,10 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   };
 
   const onClose = () => {
-    setCurrentStep(CreateCardSteps.FORM_FACTOR);
-    setCardFormFactor(null);
-    setCardType(null);
-    setSelectedProgram(null);
+    // setCurrentStep(CreateCardSteps.FORM_FACTOR);
+    // setCardFormFactor(null);
+    // setCardType(null);
+    // setSelectedProgram(null);
   };
 
   // useEffect(() => {
