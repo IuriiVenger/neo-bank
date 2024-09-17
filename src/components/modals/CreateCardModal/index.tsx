@@ -219,34 +219,36 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   const ActiveStep = createCardStepsMap[currentStep].Component;
 
   return (
-    <MainModal
-      isOpen={isOpen}
-      onClose={onClose}
-      onOpenChange={setIsModalOpen}
-      confirmButtonDisabled={createCardStepsMap[currentStep].isDisabled}
-      backdrop="opaque"
-      scrollBehavior="inside"
-      nativeCloseButton
-      confirmButtonText={createCardStepsMap[currentStep].mainButtonText}
-      onConfirm={createCardStepsMap[currentStep].onMainButtonClick}
-      isLoading={requestStatuses.PENDING}
-      className=" md:h-[750px]"
-    >
-      <div className={cn('flex flex-col gap-4', className)}>
-        <h3 className="text-3xl">{createCardStepsMap[currentStep].title}</h3>
-        <p className="text-foreground-2">{createCardStepsMap[currentStep].subtitle}</p>
-        <div className="mt-6">
-          <ActiveStep {...stepsProps} />
+    <>
+      <MainModal
+        isOpen={isOpen}
+        onClose={onClose}
+        onOpenChange={setIsModalOpen}
+        confirmButtonDisabled={createCardStepsMap[currentStep].isDisabled}
+        backdrop="opaque"
+        scrollBehavior="inside"
+        nativeCloseButton
+        confirmButtonText={createCardStepsMap[currentStep].mainButtonText}
+        onConfirm={createCardStepsMap[currentStep].onMainButtonClick}
+        isLoading={requestStatuses.PENDING}
+        className=" md:h-[750px]"
+      >
+        <div className={cn('flex flex-col gap-4', className)}>
+          <h3 className="text-3xl">{createCardStepsMap[currentStep].title}</h3>
+          <p className="text-foreground-2">{createCardStepsMap[currentStep].subtitle}</p>
+          <div className="mt-6">
+            <ActiveStep {...stepsProps} />
+          </div>
         </div>
-        <ConfirmModal
-          isOpen={isConfirmationModalOpen}
-          setIsModalOpen={setIsConfirmationModalOpen}
-          onConfirm={createCardHandler}
-          title="Create card confirmation"
-          confirmText={topUpConfirmationText}
-        />
-      </div>
-    </MainModal>
+      </MainModal>
+      <ConfirmModal
+        isOpen={isConfirmationModalOpen}
+        setIsModalOpen={setIsConfirmationModalOpen}
+        onConfirm={createCardHandler}
+        title="Create card confirmation"
+        confirmText={topUpConfirmationText}
+      />
+    </>
   );
 };
 
