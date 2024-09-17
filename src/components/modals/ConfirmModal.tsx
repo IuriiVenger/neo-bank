@@ -102,17 +102,17 @@ const ConfirmModal: FC<ConfirmModalProps> = (props) => {
     }
   }, [isOpen]);
 
-  // if (isTelegramEnviroment) {
-  //   return (
-  //     <TelegramConfirmModal
-  //       isOpen={isOpen}
-  //       message={modalConfirmText}
-  //       title={modalTitle}
-  //       onConfirm={handleConfirmModal}
-  //       onClose={handleClose}
-  //     />
-  //   );
-  // }
+  if (isTelegramEnviroment) {
+    return (
+      <TelegramConfirmModal
+        isOpen={isOpen}
+        message={modalConfirmText}
+        title={modalTitle}
+        onConfirm={handleConfirmModal}
+        onClose={handleClose}
+      />
+    );
+  }
 
   return (
     <Modal
