@@ -68,7 +68,7 @@ const getCardFormFactorsData = (programs: API.Cards.CardConfig[]) => {
 };
 
 const CreateCardModal: FC<CreateCardModalProps> = (props) => {
-  const { bins, createCard, selectedWallet, className, setIsModalOpen, isOpen, onCardCreate } = props;
+  const { bins, createCard, selectedWallet, className, setIsModalOpen, isOpen, onCardCreate, openKYC } = props;
 
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState<API.Cards.CardConfig | null>(null);
@@ -203,7 +203,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
         subtitle: 'Please enter card details',
         Component: CardDetailsStep,
         mainButtonText: 'Create card',
-        onMainButtonClick: openConfirmationModal,
+        onMainButtonClick: openKYC,
         onBackButtonClick: () => setCurrentStep(CreateCardSteps.PROGRAM),
         isDisabled: !cardName || !cardholderName,
       },
