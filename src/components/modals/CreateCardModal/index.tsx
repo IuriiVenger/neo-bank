@@ -136,8 +136,6 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
       return;
     }
 
-    console.log('selectedProgram', selectedProgram);
-
     const requestData: API.Cards.Create.Request = {
       program_id: selectedProgram.id,
       name_on_card: cardholderName,
@@ -157,6 +155,10 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
       setRejected();
       throw error;
     }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   const onClose = () => {
@@ -211,7 +213,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     [CreateCardSteps.SUCCESS]: {
       Component: CardSusccessStep,
       mainButtonText: 'Close',
-      onMainButtonClick: onClose,
+      onMainButtonClick: closeModal,
     },
   };
 
