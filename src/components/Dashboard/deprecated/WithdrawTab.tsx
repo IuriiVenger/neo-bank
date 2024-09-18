@@ -58,11 +58,11 @@ const WithdrawTab: FC<WithdrawTabProps> = (props) => {
 
   const selectedWalletBalance = selectedWallet.data?.balance;
   const selectedCryptoWalletBalance =
-    selectedWalletBalance?.find((balance) => balance.crypto.uuid === selectedCrypto.uuid)?.amount || 0;
+    selectedWalletBalance?.find((balance: any) => balance.crypto.uuid === selectedCrypto.uuid)?.amount || 0;
 
   const selectedCryptoAvavilibleToWithdraw =
     selectedWallet.data &&
-    selectedWallet.data.balance.find((balance) => balance.crypto.uuid === selectedCrypto.uuid)?.amount;
+    selectedWallet.data.balance.find((balance: any) => balance.crypto.uuid === selectedCrypto.uuid)?.amount;
   const isAmountEnough = selectedCryptoAvavilibleToWithdraw && selectedCryptoAvavilibleToWithdraw >= amount;
 
   const isWIthdrawAvailible =

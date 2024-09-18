@@ -15,7 +15,7 @@ type WalletBalanceListProps = {
 const WalletBalanceList: FC<WalletBalanceListProps> = (props) => {
   const { wallet, cryptoList, chains, className } = props;
   const cryptoListWithBalance = cryptoList.map((crypto) => {
-    const balance = wallet?.balance.find((walletBalance) => walletBalance.crypto.uuid === crypto.uuid);
+    const balance = wallet?.balance.find((walletBalance: any) => walletBalance.crypto.uuid === crypto.uuid);
     return { ...crypto, balance: balance?.amount || null };
   });
 
