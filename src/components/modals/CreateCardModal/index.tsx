@@ -170,51 +170,48 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   //   }
   // }, [isOpen]);
 
-  const createCardStepsMap: CreateCartStepsMap = useMemo(
-    () => ({
-      [CreateCardSteps.FORM_FACTOR]: {
-        title: 'Create card',
-        subtitle: 'Please select the card form factor',
-        Component: CardFormFactorStep,
-        mainButtonText: 'Next',
-        onMainButtonClick: () => setCurrentStep(CreateCardSteps.TYPE),
-        isDisabled: !cardFormFactor,
-      },
-      [CreateCardSteps.TYPE]: {
-        title: 'Create card',
-        subtitle: 'Please select the card type',
-        Component: CardTypeStep,
-        mainButtonText: 'Next',
-        onMainButtonClick: () => setCurrentStep(CreateCardSteps.PROGRAM),
-        onBackButtonClick: () => setCurrentStep(CreateCardSteps.FORM_FACTOR),
-        isDisabled: !cardType,
-      },
-      [CreateCardSteps.PROGRAM]: {
-        title: 'Create card',
-        subtitle: 'Please select the card program',
-        Component: CardProgramStep,
-        mainButtonText: 'Next',
-        onMainButtonClick: () => setCurrentStep(CreateCardSteps.DETAILS),
-        onBackButtonClick: () => setCurrentStep(CreateCardSteps.TYPE),
-        isDisabled: !selectedProgram,
-      },
-      [CreateCardSteps.DETAILS]: {
-        title: 'Create card',
-        subtitle: 'Please enter card details',
-        Component: CardDetailsStep,
-        mainButtonText: 'Create card',
-        onMainButtonClick: openConfirmationModal,
-        onBackButtonClick: () => setCurrentStep(CreateCardSteps.PROGRAM),
-        isDisabled: !cardName || !cardholderName,
-      },
-      [CreateCardSteps.SUCCESS]: {
-        Component: CardSusccessStep,
-        mainButtonText: 'Close',
-        onMainButtonClick: onClose,
-      },
-    }),
-    [cardFormFactor, cardType, selectedProgram, cardName, cardholderName],
-  );
+  const createCardStepsMap: CreateCartStepsMap = {
+    [CreateCardSteps.FORM_FACTOR]: {
+      title: 'Create card',
+      subtitle: 'Please select the card form factor',
+      Component: CardFormFactorStep,
+      mainButtonText: 'Next',
+      onMainButtonClick: () => setCurrentStep(CreateCardSteps.TYPE),
+      isDisabled: !cardFormFactor,
+    },
+    [CreateCardSteps.TYPE]: {
+      title: 'Create card',
+      subtitle: 'Please select the card type',
+      Component: CardTypeStep,
+      mainButtonText: 'Next',
+      onMainButtonClick: () => setCurrentStep(CreateCardSteps.PROGRAM),
+      onBackButtonClick: () => setCurrentStep(CreateCardSteps.FORM_FACTOR),
+      isDisabled: !cardType,
+    },
+    [CreateCardSteps.PROGRAM]: {
+      title: 'Create card',
+      subtitle: 'Please select the card program',
+      Component: CardProgramStep,
+      mainButtonText: 'Next',
+      onMainButtonClick: () => setCurrentStep(CreateCardSteps.DETAILS),
+      onBackButtonClick: () => setCurrentStep(CreateCardSteps.TYPE),
+      isDisabled: !selectedProgram,
+    },
+    [CreateCardSteps.DETAILS]: {
+      title: 'Create card',
+      subtitle: 'Please enter card details',
+      Component: CardDetailsStep,
+      mainButtonText: 'Create card',
+      onMainButtonClick: openConfirmationModal,
+      onBackButtonClick: () => setCurrentStep(CreateCardSteps.PROGRAM),
+      isDisabled: !cardName || !cardholderName,
+    },
+    [CreateCardSteps.SUCCESS]: {
+      Component: CardSusccessStep,
+      mainButtonText: 'Close',
+      onMainButtonClick: onClose,
+    },
+  };
 
   const ActiveStep = createCardStepsMap[currentStep].Component;
 
@@ -241,6 +238,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
       >
         <div className={cn('flex flex-col gap-4', className)}>
           {count}
+
           <h3 className="text-3xl">{createCardStepsMap[currentStep].title}</h3>
           <p className="text-foreground-2">{createCardStepsMap[currentStep].subtitle}</p>
           <div className="mt-6">
