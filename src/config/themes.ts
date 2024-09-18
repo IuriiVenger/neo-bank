@@ -1,3 +1,10 @@
+import cardsEmptyStateDark from '../assets/svg/theme-illustrations/dark/card-empty-state.svg';
+import transactionsEmptyStateDark from '../assets/svg/theme-illustrations/dark/transactions-empty-state.svg';
+import walletEmptyStateDark from '../assets/svg/theme-illustrations/dark/wallet-empty-state.svg';
+import cardsEmptyStateLight from '../assets/svg/theme-illustrations/light/card-empty-state.svg';
+import transactionsEmptyStateLight from '../assets/svg/theme-illustrations/light/transactions-empty-state.svg';
+import walletEmptyStateLight from '../assets/svg/theme-illustrations/light/wallet-empty-state.svg';
+
 import { CustomTheme } from '../constants';
 import { HexColor, RGBAColor, RGBColor } from '../types';
 
@@ -221,3 +228,19 @@ export const layout = {
     large: '1.5rem',
   },
 };
+// export const themeIllustrations = {
+//   emptyState: {
+//     cards: {
+//       lightSrc: cardsEmptyStateLight?.src,
+//       darkSrc: cardsEmptyStateDark?.src,
+//     },
+//     transactions: {
+//       lightSrc: transactionsEmptyStateLight?.src,
+//       darkSrc: transactionsEmptyStateDark?.src,
+//     },
+//     wallet: {
+//       lightSrc: walletEmptyStateLight?.src,
+//       darkSrc: walletEmptyStateDark?.src,
+//     },
+//   },
+// };

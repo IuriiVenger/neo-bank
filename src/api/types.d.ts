@@ -341,11 +341,28 @@ export namespace API {
   }
 
   export namespace Wallets {
-    export interface WalletBalance {
+    export interface WallletBalanceCryptoDetails {
       uuid: string;
-      amount: number;
-      crypto: List.Crypto;
+      crypto: {
+        icon: string;
+        name: string;
+        type: string;
+        uuid: string;
+        chain: number;
+        symbol: string;
+        enabled: boolean;
+        contract: string;
+      };
+      crypto_id: string;
+      wallet_id: string;
     }
+    export interface WalletBalanceItem {
+      symbol: string;
+      amount: number;
+      details: WallletBalanceCryptoDetails[];
+    }
+
+    export type WalletBalance = WalletBalanceItem[];
 
     export interface Wallet {
       created_at: string;
@@ -353,7 +370,7 @@ export namespace API {
       uuid: string;
       type: string;
       base_fiat: string;
-      balance: WalletBalance[];
+      balance: WalletBalance;
     }
 
     export namespace WalletChain {

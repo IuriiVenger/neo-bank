@@ -3,8 +3,12 @@ import cn from 'classnames';
 import { FC } from 'react';
 
 import { API } from '@/api/types';
+import transactionsEmptyStateDark from '@/assets/svg/theme-illustrations/dark/transactions-empty-state.svg';
+import transactionsEmptyStateLight from '@/assets/svg/theme-illustrations/light/transactions-empty-state.svg';
+
 import { DashboardProps } from '@/components/Dashboard';
 
+import EmptyState from '@/components/ui/EmptyState';
 import Loader from '@/components/ui/Loader';
 
 import { RequestStatus } from '@/constants';
@@ -27,7 +31,13 @@ const WalletTransactions: FC<InfoTabProps> = (props) => {
     <section className="flex min-h-96 flex-col overflow-scroll">
       {!isFirstTransactionsLoading && data ? (
         <>
-          {!data.length && <p className="text-neutral-500">No transactions to display.</p>}
+          {!data.length && (
+            <EmptyState
+              darkImage={transactionsEmptyStateDark}
+              lightImage={transactionsEmptyStateLight}
+              title="No transactions yet"
+            />
+          )}
           <Accordion>
             {data.map((transaction) => (
               <AccordionItem

@@ -93,6 +93,8 @@ export const getCurrencyIconSrc = (currency: API.List.Crypto | API.List.Fiat | A
     ? currencyFlag[currency.code.toLowerCase() as keyof typeof currencyFlag]
     : cryptoIcons[currency.symbol.toLowerCase()] || cryptoIcons.btc;
 
+export const getCryptoIconSrc = (symbol: string): string => cryptoIcons[symbol.toLowerCase()] || cryptoIcons.btc;
+
 export const getActiveFiatAvailableCrypto = (fiatExchangeRate: API.Exchange.F2C[], crypto: API.List.Crypto[]) => {
   const availableToExchangeCryptoUuid = fiatExchangeRate.map((item) => item.crypto_uuid);
 

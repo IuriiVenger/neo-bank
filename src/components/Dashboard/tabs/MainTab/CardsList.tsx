@@ -11,9 +11,11 @@ import ReactVisibilitySensor from 'react-visibility-sensor';
 
 import { DashboardProps } from '../..';
 
+import cardsEmptyStateDark from '@/assets/svg/theme-illustrations/dark/card-empty-state.svg';
+import cardsEmptyStateLight from '@/assets/svg/theme-illustrations/light/card-empty-state.svg';
 import CreateCardModal from '@/components/modals/CreateCardModal';
-
 import Card, { CardSizes } from '@/components/ui/Card';
+import EmptyState from '@/components/ui/EmptyState';
 import Loader from '@/components/ui/Loader';
 import { KYCStatuses, RequestStatus } from '@/constants';
 
@@ -70,8 +72,7 @@ const CardsList: FC<CardsListProps> = (props) => {
   };
 
   const createCardButtonClickHandler = () => {
-    // verificationStatus === KYCStatuses.APPROVED ? openCreateCardModal() : openKYC();
-    openCreateCardModal();
+    verificationStatus === KYCStatuses.APPROVED ? openCreateCardModal() : openKYC();
   };
 
   const onCardCreate = (card_id: string) => {
@@ -143,6 +144,19 @@ const CardsList: FC<CardsListProps> = (props) => {
       >
         {!isFirstItemsLoading && data ? (
           <>
+            {!data.length && (
+              <EmptyState
+                darkImage={cardsEmptyStateDark}
+                lightImage={cardsEmptyStateLight}
+                title={
+                  <div className="flex items-center gap-1">
+                    Order your first card <RiArrowRightSLine className="text-lg hover:opacity-hover" />
+                  </div>
+                }
+                description="Top up and manage crypto easily by our cards"
+                onTitleClick={createCardButtonClickHandler}
+              />
+            )}
             {data.map((card, index) => (
               <button
                 key={`${card.card_id}_${index}`}
@@ -165,7 +179,6 @@ const CardsList: FC<CardsListProps> = (props) => {
                 />
               </button>
             ))}
-
             {isLoadMoreAvailible && (
               <ReactVisibilitySensor onChange={setIsEndCardsListVisible}>
                 <div className="m-auto w-fit flex-shrink-0">

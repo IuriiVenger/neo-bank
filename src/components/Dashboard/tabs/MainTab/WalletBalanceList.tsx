@@ -2,7 +2,11 @@ import cn from 'classnames';
 import { FC } from 'react';
 
 import { API } from '@/api/types';
+import cryptoEmptyStateDark from '@/assets/svg/theme-illustrations/dark/crypto-empty-state.svg';
+import cryptoEmptyStateLight from '@/assets/svg/theme-illustrations/light/crypto-empty-state.svg';
+import CryptoInfo from '@/components/Currency/CryptoInfo';
 import CurrencyInfo from '@/components/Currency/CurrencyInfo';
+import EmptyState from '@/components/ui/EmptyState';
 import { roundToDecimals } from '@/utils/converters';
 
 type WalletBalanceListProps = {
@@ -14,22 +18,24 @@ type WalletBalanceListProps = {
 
 const WalletBalanceList: FC<WalletBalanceListProps> = (props) => {
   const { wallet, cryptoList, chains, className } = props;
-  const cryptoListWithBalance = cryptoList.map((crypto) => {
-    const balance = wallet?.balance.find((walletBalance) => walletBalance.crypto.uuid === crypto.uuid);
-    return { ...crypto, balance: balance?.amount || null };
-  });
+  // const cryptoListWithBalance = cryptoList.map((crypto) => {
+  //   const balance = wallet?.balance.find((walletBalance) => walletBalance.crypto.uuid === crypto.uuid);
+  //   return { ...crypto, balance: balance?.amount || null };
+  // });
 
-  const filteredCryptoList = cryptoListWithBalance.filter((crypto) => crypto.balance !== null);
+  // const filteredCryptoList = cryptoListWithBalance.filter((crypto) => crypto.balance !== null);
 
   return (
-    <section className={cn(className, 'flex flex-col')}>
-      {filteredCryptoList.map((crypto) => (
-        <section key={crypto.uuid} className="flex items-center justify-between gap-4">
-          <CurrencyInfo hideShevron key={crypto.uuid} currency={crypto} chains={chains} />
-          <p className="font-medium text-gray-500">{crypto.balance ? roundToDecimals(crypto.balance, 2) : 0}</p>
-        </section>
-      ))}
-      {!filteredCryptoList.length && <p className="text-gray-500">Your balance is empty</p>}
+    <section className={cn(className, 'flex h-full flex-grow flex-col gap-4')}>
+      {wallet?.balance.map((crypto, index) => <CryptoInfo key={index} crypto={crypto} />)}
+      {!wallet?.balance.length && (
+        <EmptyState
+          darkImage={cryptoEmptyStateDark}
+          lightImage={cryptoEmptyStateLight}
+          title="No crypto yet"
+          description={'Buy USDT, Bitcoin, Ethereum \nand other crypto easily.'}
+        />
+      )}
     </section>
   );
 };
