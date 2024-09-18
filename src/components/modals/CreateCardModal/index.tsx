@@ -158,17 +158,17 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   };
 
   const onClose = () => {
-    // setCurrentStep(CreateCardSteps.FORM_FACTOR);
-    // setCardFormFactor(null);
-    // setCardType(null);
-    // setSelectedProgram(null);
+    setCurrentStep(CreateCardSteps.FORM_FACTOR);
+    setCardFormFactor(null);
+    setCardType(null);
+    setSelectedProgram(null);
   };
 
-  // useEffect(() => {
-  //   if (isOpen) {
-  //     onClose();
-  //   }
-  // }, [isOpen]);
+  useEffect(() => {
+    if (isOpen) {
+      onClose();
+    }
+  }, [isOpen]);
 
   const createCardStepsMap: CreateCartStepsMap = {
     [CreateCardSteps.FORM_FACTOR]: {
@@ -177,7 +177,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
       Component: CardFormFactorStep,
       mainButtonText: 'Next',
       onMainButtonClick: () => setCurrentStep(CreateCardSteps.TYPE),
-      isDisabled: !cardFormFactor,
+      isDisabled: true,
     },
     [CreateCardSteps.TYPE]: {
       title: 'Create card',
@@ -215,12 +215,6 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
 
   const ActiveStep = createCardStepsMap[currentStep].Component;
 
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    setCount(count + 1);
-  }, [cardFormFactor, cardType, selectedProgram, cardName, cardholderName]);
-
   return (
     <>
       <MainModal
@@ -237,8 +231,6 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
         className=" md:h-[750px]"
       >
         <div className={cn('flex flex-col gap-4', className)}>
-          {count}
-
           <h3 className="text-3xl">{createCardStepsMap[currentStep].title}</h3>
           <p className="text-foreground-2">{createCardStepsMap[currentStep].subtitle}</p>
           <div className="mt-6">
