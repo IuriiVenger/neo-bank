@@ -143,7 +143,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
 
     mainButton.disable();
 
-    mainButton.setBgColor(themes.light.telegramColors.mainButton.color);
+    mainButton.setBgColor(themes.light.telegramColors.mainButton.disabledColor);
   };
 
   const enableMainButton = () => {

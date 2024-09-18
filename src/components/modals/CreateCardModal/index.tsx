@@ -177,7 +177,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
       Component: CardFormFactorStep,
       mainButtonText: 'Next',
       onMainButtonClick: () => setCurrentStep(CreateCardSteps.TYPE),
-      isDisabled: true,
+      isDisabled: !cardFormFactor,
     },
     [CreateCardSteps.TYPE]: {
       title: 'Create card',

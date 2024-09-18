@@ -139,8 +139,8 @@ export const themes: Themes = {
     },
     telegramColors: {
       mainButton: {
-        color: '#0088CC',
-        disabledColor: '#B0B0B0',
+        color: '#000000',
+        disabledColor: '#A1A1AA',
       },
     },
   },
@@ -207,8 +207,8 @@ export const themes: Themes = {
     },
     telegramColors: {
       mainButton: {
-        color: '#0088CC',
-        disabledColor: '#B0B0B0',
+        color: '#000000',
+        disabledColor: '#A1A1AA',
       },
     },
   },
