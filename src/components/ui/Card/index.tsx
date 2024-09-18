@@ -95,7 +95,7 @@ const Card: FC<CardProps> = (props) => {
   return (
     <section className={cn(CardColorsMap[color], cardSizesMap[size].card, className, 'flex flex-col justify-between')}>
       <div className="flex justify-between">
-        <Image className={cardSizesMap[size].tenantLogo} src={mainLogo} alt="Tenant logo" width={40} height={20} />
+        <Image className={cardSizesMap[size].tenantLogo} src={mainLogo} alt="Tenant logo" />
       </div>
       <div className="flex items-center justify-between">
         <p className={cn(cardSizesMap[size].cardNumber, 'text-white')}>{printedCardNumber}</p>
