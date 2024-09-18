@@ -136,6 +136,8 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
       return;
     }
 
+    console.log('selectedProgram', selectedProgram);
+
     const requestData: API.Cards.Create.Request = {
       program_id: selectedProgram.id,
       name_on_card: cardholderName,
