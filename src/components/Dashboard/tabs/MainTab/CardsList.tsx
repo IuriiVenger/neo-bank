@@ -138,7 +138,7 @@ const CardsList: FC<CardsListProps> = (props) => {
         </div>
       </div>
       <ScrollContainer
-        className="flex h-40 gap-6 px-4 py-5 lg:h-60 lg:px-8 lg:pt-6"
+        className="flex min-h-40 gap-6 px-4 py-5 lg:h-60 lg:px-8 lg:pt-6"
         ref={scrollContainer as any}
         onScroll={onContainerResizeAndScroll}
       >
