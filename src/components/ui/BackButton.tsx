@@ -23,7 +23,7 @@ const TelegramBackButton: FC<Omit<BackButtonProps, 'text' & 'className'>> = ({ o
       backButton?.hide();
       backButton?.off('click', onClick);
     };
-  }, []);
+  }, [backButton]);
 
   return null;
 };
