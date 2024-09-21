@@ -14,10 +14,11 @@ type WalletBalanceListProps = {
   cryptoList: API.List.Crypto[];
   chains: API.List.Chains[];
   className?: string;
+  selectedWalletBalanceCurrency: string;
 };
 
 const WalletBalanceList: FC<WalletBalanceListProps> = (props) => {
-  const { wallet, cryptoList, chains, className } = props;
+  const { wallet, cryptoList, chains, className, selectedWalletBalanceCurrency } = props;
   // const cryptoListWithBalance = cryptoList.map((crypto) => {
   //   const balance = wallet?.balance.find((walletBalance) => walletBalance.crypto.uuid === crypto.uuid);
   //   return { ...crypto, balance: balance?.amount || null };
@@ -27,7 +28,9 @@ const WalletBalanceList: FC<WalletBalanceListProps> = (props) => {
 
   return (
     <section className={cn(className, 'flex h-full flex-grow flex-col gap-4')}>
-      {wallet?.balance.map((crypto, index) => <CryptoInfo key={index} crypto={crypto} />)}
+      {wallet?.balance.map((crypto, index) => (
+        <CryptoInfo key={index} crypto={crypto} fiatSymbol={selectedWalletBalanceCurrency} />
+      ))}
       {!wallet?.balance.length && (
         <EmptyState
           darkImage={cryptoEmptyStateDark}

@@ -332,6 +332,11 @@ export namespace API {
       chain: number;
     }
 
+    export interface CryptoBySymbol {
+      symbol: string;
+      items: Crypto[];
+    }
+
     export interface Chains {
       id: number;
       enabled: boolean;
@@ -355,10 +360,13 @@ export namespace API {
       };
       crypto_id: string;
       wallet_id: string;
+      amount: number;
+      fiat_amount: number;
     }
     export interface WalletBalanceItem {
       symbol: string;
       amount: number;
+      fiat_amount: number;
       details: WallletBalanceCryptoDetails[];
     }
 

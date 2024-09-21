@@ -12,7 +12,8 @@
     "lint:fix": "npx eslint . --ext .tsx --ext .ts --ext .js --fix",
     "prepare": "husky",
     "format": "prettier .  --check",
-    "format:fix": "prettier .  --write"
+    "format:fix": "prettier .  --write",
+    "check-types": "tsc --noemit"
   },
   "dependencies": {
     "@nextui-org/react": "^2.4.2",

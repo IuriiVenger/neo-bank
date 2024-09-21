@@ -27,7 +27,13 @@ import useExternalCalc from '@/hooks/useExternalCalc';
 import useOrder from '@/hooks/useOrder';
 import useWallet from '@/hooks/useWallet';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { selectActiveFiatAvailableCrypto, selectConfig, selectFinanceData, selectUser } from '@/store/selectors';
+import {
+  selectActiveFiatAvailableCrypto,
+  selectConfig,
+  selectCurrentWalletBalanceCurrency,
+  selectFinanceData,
+  selectUser,
+} from '@/store/selectors';
 import {
   loadCards,
   loadMoreWalletTransactions,
@@ -57,6 +63,7 @@ const DashboardPage = () => {
     chains,
     fiats,
     crypto,
+    cryptoBySymbol,
     userWallets,
     fiatExchangeRate,
     selectedWalletTransactions,
@@ -67,6 +74,7 @@ const DashboardPage = () => {
   const { isWebAppInitialized, appEnviroment } = useAppSelector(selectConfig);
 
   const { userData } = useAppSelector(selectUser);
+  const selectedWalletBalanceCurrency = useAppSelector(selectCurrentWalletBalanceCurrency);
   const availableToExchangeCrypto = useAppSelector(selectActiveFiatAvailableCrypto);
   const { createOnRampOrder, createOffRampOrder, createCrypto2CryptoOrder, createInternalTopUpOrder } = useOrder();
   const { getWalletAddress, createWalletAddress } = useWallet();
@@ -238,6 +246,7 @@ const DashboardPage = () => {
     createWallet,
     createWalletAddress,
     cryptoList: crypto,
+    cryptoBySymbol,
     externalCalcData,
     fiatList: fiats,
     exchangeRate: fiatExchangeRate,
@@ -260,6 +269,7 @@ const DashboardPage = () => {
     selectCrypto,
     selectFiat,
     selectWallet,
+    selectedWalletBalanceCurrency,
     verificationStatus: userData?.kyc_status,
     walletTransactions: selectedWalletTransactions,
     walletTypes,
@@ -279,7 +289,7 @@ const DashboardPage = () => {
   }, [selectedWallet]);
 
   useEffect(() => {
-    queryDashboardTab && setActiveDashboardTab(queryDashboardTab as DashboardTabs);
+    setActiveDashboardTab((queryDashboardTab as DashboardTabs) || DashboardTabs.MAIN);
   }, [queryDashboardTab]);
 
   useEffect(() => {

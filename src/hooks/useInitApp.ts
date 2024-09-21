@@ -17,6 +17,7 @@ import {
   setBins,
   setChains,
   setCrypto,
+  setCryptoBySymbol,
   setFiatExchangeRate,
   setFiats,
   setSelectedCrypto,
@@ -30,26 +31,29 @@ const useInitApp = (dispatch: AppDispatch) => {
   const isWebEnviroment = appEnviroment === AppEnviroment.WEB;
 
   const initWebApp = async () => {
-    const [binsData, fiatsData, cryptoData, chainsData, fiatExchangeRateData] = await Promise.allSettled([
-      issuing.bins.getAll(),
-      list.fiats.getAll(),
-      list.crypto.getAll(),
-      list.chains.getAll(),
-      exchange.fiat2crypto.getByUuid(defaultCurrency.fiat.uuid),
-    ]).then((results) => {
-      results.forEach((result) => {
-        if (result.status === 'rejected') {
-          toast.error(`Error during app initialization in request ${result.reason.config.url}`);
-          console.error('Error during initWebApp:', result.reason);
-        }
-      });
+    const [binsData, fiatsData, cryptoData, chainsData, fiatExchangeRateData, cryptoBySymbolData] =
+      await Promise.allSettled([
+        issuing.bins.getAll(),
+        list.fiats.getAll(),
+        list.crypto.getAll(),
+        list.chains.getAll(),
+        exchange.fiat2crypto.getByUuid(defaultCurrency.fiat.uuid),
+        list.crypto.bySymbol(),
+      ]).then((results) => {
+        results.forEach((result) => {
+          if (result.status === 'rejected') {
+            toast.error(`Error during app initialization in request ${result.reason.config.url}`);
+            console.error('Error during initWebApp:', result.reason);
+          }
+        });
 
-      return results;
-    });
+        return results;
+      });
 
     binsData.status === 'fulfilled' && dispatch(setBins(binsData.value.data));
     fiatsData.status === 'fulfilled' && dispatch(setFiats(fiatsData.value));
     cryptoData.status === 'fulfilled' && dispatch(setCrypto(cryptoData.value));
+    cryptoBySymbolData.status === 'fulfilled' && dispatch(setCryptoBySymbol(cryptoBySymbolData.value));
     chainsData.status === 'fulfilled' && dispatch(setChains(chainsData.value));
     fiatExchangeRateData.status === 'fulfilled' && dispatch(setFiatExchangeRate(fiatExchangeRateData.value));
 

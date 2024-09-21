@@ -9,6 +9,8 @@ import Loader from '../ui/Loader';
 
 import MainTab from './tabs/MainTab';
 
+import WalletTab from './tabs/WalletTab';
+
 import { API } from '@/api/types';
 
 import { WhiteLabelConfig } from '@/config/whitelabel';
@@ -38,6 +40,7 @@ export interface DashboardProps {
   createWallet: (wallet_type: WalletTypeValues) => Promise<void>;
   createWalletAddress: (data: API.Wallets.WalletChain.Request) => Promise<API.Wallets.WalletChain.Response>;
   cryptoList: API.List.Crypto[];
+  cryptoBySymbol: API.List.CryptoBySymbol[];
   exchangeRate: API.Exchange.F2C[];
   externalCalcData: UseExternalCalcData;
   fiatList: API.List.Fiat[];
@@ -60,6 +63,7 @@ export interface DashboardProps {
   selectedCrypto: API.List.Crypto;
   selectedFiat: API.List.Fiat;
   selectedWallet: StoreDataWithStatus<API.Wallets.ExtendWallet | null>;
+  selectedWalletBalanceCurrency: string;
   updateCard: (card_id: string, data: API.Cards.Update.Request) => Promise<void>;
   verificationStatus?: KYCStatuses;
   walletTransactions: StoreDataWithStatusAndMeta<API.WalletTransactions.Transaction[] | null>;
@@ -106,6 +110,7 @@ const Dashboard: FC<DashboardProps> = (props) => {
                 {activeDashboardTab === DashboardTabs.INFO && <InfoTab {...props} />}
                 {activeDashboardTab === DashboardTabs.CARDS && <CardsTab {...props} />} */}
             {activeDashboardTab === DashboardTabs.MAIN && <MainTab {...props} />}
+            {activeDashboardTab === DashboardTabs.WALLET && <WalletTab {...props} />}
           </>
         )}
       </div>

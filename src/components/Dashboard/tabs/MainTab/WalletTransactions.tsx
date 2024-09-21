@@ -28,7 +28,7 @@ const WalletTransactions: FC<InfoTabProps> = (props) => {
   const isLoadMoreAvailible = !meta.isLastPage;
 
   return (
-    <section className="flex min-h-96 flex-col overflow-scroll">
+    <section className="flex flex-col overflow-scroll">
       {!isFirstTransactionsLoading && data ? (
         <>
           {!data.length && (
@@ -96,43 +96,6 @@ const WalletTransactions: FC<InfoTabProps> = (props) => {
           )}
         </>
       ) : (
-        // <>
-        //
-        //   <Table removeWrapper aria-label="Wallet transactions" className="overflow-scroll">
-        //     <TableHeader>
-        //       <TableColumn>ID</TableColumn>
-        //       <TableColumn>Date</TableColumn>
-        //       <TableColumn>Type</TableColumn>
-        //       <TableColumn>Amount</TableColumn>
-        //       <TableColumn>Status</TableColumn>
-        //     </TableHeader>
-        //     <TableBody emptyContent="No transactions to display.">
-        //       {data.map((transaction) => (
-        //         <TableRow key={transaction.id}>
-        //           <TableCell>{transaction.id}</TableCell>
-        //           <TableCell>{getDateAndTime(transaction.created_at)}</TableCell>
-        //           <TableCell>{transaction.type}</TableCell>
-        //           <TableCell className="whitespace-nowrap">
-        //             {transaction.amount} {transaction.crypto?.symbol}
-        //           </TableCell>
-        //           <TableCell>{transaction.status}</TableCell>
-        //         </TableRow>
-        //       ))}
-        //     </TableBody>
-        //   </Table>
-        //   {isLoadMoreAvailible && (
-        //     <Button
-        //       color="primary"
-        //       variant="bordered"
-        //       radius="sm"
-        //       className="mt-4 w-full max-w-32 self-center "
-        //       onClick={loadMoreWalletTransactions}
-        //       isLoading={isTransactionsLoading}
-        //     >
-        //       Load more
-        //     </Button>
-        //   )}
-        // </>
         <Loader />
       )}
     </section>

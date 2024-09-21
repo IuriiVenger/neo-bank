@@ -11,6 +11,7 @@ import WalletTransactions from './WalletTransactions';
 import { DashboardProps } from '@/components/Dashboard';
 import CardsList from '@/components/Dashboard/tabs/MainTab/CardsList';
 import DefaultContainer from '@/components/ui/DefaultContainer';
+import { DashboardTabs } from '@/constants';
 import { roundToDecimals, separateNumbers } from '@/utils/converters';
 
 type InfoTabProps = DashboardProps & {
@@ -41,16 +42,25 @@ const actionButtons = [
 ];
 
 const MainTab: FC<InfoTabProps> = (props) => {
-  const { className, selectedWallet, fiatList, chainList, cryptoList } = props;
+  const {
+    className,
+    selectedWallet,
+    fiatList,
+    chainList,
+    cryptoList,
+    changeDashboardTab,
+    selectedWalletBalanceCurrency,
+  } = props;
 
   const currentWalletBalanceAmount = separateNumbers(roundToDecimals(selectedWallet.data?.total_amount || 0));
-  const currentWalletBalanceCurrency =
-    fiatList.find((item) => item.uuid === selectedWallet.data?.base_fiat)?.symbol || '€';
-  const currentWalletBalance = `${currentWalletBalanceCurrency} ${currentWalletBalanceAmount}`;
+
+  const currentWalletBalance = `${selectedWalletBalanceCurrency} ${currentWalletBalanceAmount}`;
 
   const onCardClick = (card_id: string) => {
     console.log(card_id);
   };
+
+  const openWalletTab = () => changeDashboardTab(DashboardTabs.WALLET);
 
   return (
     <section className={cn(className, 'bg-custom-turquoise-gradient grid max-w-screen-xl grid-cols-3 gap-4')}>
@@ -61,11 +71,16 @@ const MainTab: FC<InfoTabProps> = (props) => {
       <DefaultContainer className="col-span-3 row-span-2 flex flex-col lg:col-span-1">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl lg:text-2xl">Wallet</h2>
-          <button type="button" className="text-foreground-2 text-small hover:opacity-hover ">
+          <button onClick={openWalletTab} type="button" className="text-foreground-2 text-small hover:opacity-hover ">
             Show all
           </button>
         </div>
-        <WalletBalanceList chains={chainList} wallet={selectedWallet.data} cryptoList={cryptoList} />
+        <WalletBalanceList
+          selectedWalletBalanceCurrency={selectedWalletBalanceCurrency}
+          chains={chainList}
+          wallet={selectedWallet.data}
+          cryptoList={cryptoList}
+        />
       </DefaultContainer>
       <DefaultContainer className="col-span-3 lg:col-span-2">
         <div className="mb-4 flex items-center justify-between">

@@ -12,7 +12,6 @@ import {
 
 import { issuing } from '@/api/issuing';
 import { orders } from '@/api/orders';
-import { transactions } from '@/api/transactions';
 import { API } from '@/api/types';
 import { wallets } from '@/api/wallets';
 import {
@@ -28,6 +27,7 @@ type FinanceState = {
   bins: API.Cards.CardConfig[];
   chains: API.List.Chains[];
   crypto: API.List.Crypto[];
+  cryptoBySymbol: API.List.CryptoBySymbol[];
   fiats: API.List.Fiat[];
   fiatExchangeRate: API.Exchange.F2C[];
   onrampCalc: StoreDataWithStatus<StoreOnrampCalcData[] | null>;
@@ -59,6 +59,7 @@ const initialState: FinanceState = {
   bins: [],
   chains: [],
   crypto: [],
+  cryptoBySymbol: [],
   fiats: [],
   fiatExchangeRate: [],
   onrampCalc: emptyStoreDataWithStatus,
@@ -117,7 +118,11 @@ export const loadWalletTransactions = createAsyncThunk(
       offset: offset || initialState.selectedWalletTransactions.meta.offset,
     };
 
-    const { data } = await transactions.getByWalletUuid(requestData.wallet_uuid, requestData.limit, requestData.offset);
+    const { data } = await wallets.transactions.getByWalletUuid(
+      requestData.wallet_uuid,
+      requestData.limit,
+      requestData.offset,
+    );
 
     return data;
   },
@@ -127,7 +132,7 @@ export const loadMoreWalletTransactions = createAsyncThunk(
   'finanse/moreTransactions',
   async (props: LoadWithLimit<{ wallet_uuid: string }> & SupabasePaginationParams['meta']) => {
     const { wallet_uuid, limit, offset } = props;
-    const { data } = await transactions.getByWalletUuid(wallet_uuid, limit, offset);
+    const { data } = await wallets.transactions.getByWalletUuid(wallet_uuid, limit, offset);
 
     return data;
   },
@@ -210,6 +215,9 @@ const financeSlice = createSlice({
     },
     setCrypto: (state, action: AppAction<API.List.Crypto[]>) => {
       state.crypto = action.payload;
+    },
+    setCryptoBySymbol: (state, action: AppAction<API.List.CryptoBySymbol[]>) => {
+      state.cryptoBySymbol = action.payload;
     },
     setFiats: (state, action: AppAction<API.List.Fiat[]>) => {
       state.fiats = action.payload;
@@ -390,6 +398,7 @@ export const {
   setChains,
   setFiats,
   setCrypto,
+  setCryptoBySymbol,
   setSelectedChain,
   setSelectedCrypto,
   setSelectedFiat,

@@ -12,6 +12,7 @@ export const list = {
   },
   crypto: {
     getAll: (params?: AxiosRequestConfig) => getRequest<API.List.Crypto[]>('/crypto', params).then(({ data }) => data),
+    bySymbol: () => getRequest<API.List.CryptoBySymbol[]>('/crypto/by_symbol').then(({ data }) => data),
   },
   chains: {
     getAll: (params?: AxiosRequestConfig) => getRequest<API.List.Chains[]>('/chains', params).then(({ data }) => data),
