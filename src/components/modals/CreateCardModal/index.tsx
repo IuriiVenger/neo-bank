@@ -171,7 +171,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   };
 
   const closeAndHandleOnCardCreate = () => {
-    onClose();
+    closeModal();
     onCardCreate && createdCardId && onCardCreate(createdCardId);
   };
 

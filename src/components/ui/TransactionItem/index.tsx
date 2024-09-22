@@ -43,7 +43,7 @@ const TransactionItem: React.FC<TransactionItemProps> = ({ transaction, tableVie
     <div
       onClick={handleDetailsOpen}
       className={cn(
-        'grid w-full cursor-pointer grid-cols-2 items-center justify-between hover:opacity-hover',
+        'grid w-full cursor-pointer grid-cols-[repeat(2,max-content)] items-center justify-between hover:opacity-hover',
         tableView && 'lg:grid-cols-3',
       )}
     >
