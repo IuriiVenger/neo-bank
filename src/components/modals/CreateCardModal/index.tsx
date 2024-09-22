@@ -172,7 +172,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
 
   const closeAndHandleOnCardCreate = () => {
     closeModal();
-    setTimeout(() => onCardCreate && createdCardId && onCardCreate(createdCardId), 500);
+    setTimeout(() => onCardCreate && createdCardId && onCardCreate(createdCardId));
   };
 
   useEffect(() => {
