@@ -23,7 +23,7 @@ const ProgramInfo: FC<ConfigInfoProps> = ({ config, className }) => (
     </div>
     <div>
       <span className=" whitespace-normal break-all">
-        <strong className="font-bold"> Purposes:</strong> {config.purposes.join(', ')};
+        <strong className="font-bold"> Purposes:</strong> {config.purposes?.join(', ')};
       </span>
     </div>
   </div>

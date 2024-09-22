@@ -1,6 +1,14 @@
 import { User } from '@supabase/supabase-js';
 
-import { CardFormFactor, CardType, KYCStatuses, OrderStatuses, OrderTypes } from '@/constants';
+import {
+  CardFormFactor,
+  CardType,
+  KYCStatuses,
+  OrderStatuses,
+  OrderTypes,
+  WalletTransactionMethod,
+  WalletTransactionType,
+} from '@/constants';
 
 export namespace API {
   export namespace Auth {
@@ -58,7 +66,7 @@ export namespace API {
       brand: string;
       billingAddress: string;
       form_factor: CardFormFactor;
-      purposes: string[];
+      purposes: string[] | null;
       fees: {
         issue: {
           feeAmount: number;
@@ -125,38 +133,27 @@ export namespace API {
     }
 
     export interface CardDetailItem {
-      authorization_controls: {
-        allowed_currencies: string[];
-        allowed_merchant_categories: string[];
-        allowed_transaction_count: string;
-        transaction_limits: {
-          currency: string;
-          limits: {
-            amount: number;
-            interval: string;
-          }[];
-        };
-      };
       brand: string;
       card_id: string;
       card_number: string;
       card_status: string;
-      created_at: string;
-      created_by: string;
       form_factor: string;
-      issue_to: string;
       name_on_card: string;
       nick_name: string;
-      primary_contact_details: {
-        date_of_birth: string;
-        full_name: string;
-        mobile_number: string;
-      };
-      purpose: string;
-      request_id: string;
       program_id: string;
       wallet_id: string;
-      updated_at: string;
+      type: string;
+      transaction_limits: {
+        amount: number;
+        interval: string;
+      }[];
+      authorization_controls: {
+        id: string;
+        card_id: string;
+        allowed_currencies: string[];
+        allowed_transaction_count: string;
+        allowed_merchant_categories: string | null; // Может быть строкой или null
+      };
     }
     export interface CardListItem {
       brand: string;
@@ -206,7 +203,7 @@ export namespace API {
     }
 
     export interface TransactionsList {
-      items: TransactionItem[];
+      data: TransactionItem[];
       has_more: boolean;
     }
 
@@ -227,22 +224,21 @@ export namespace API {
 
     export type AuthorizationControls = {
       allowed_merchant_categories: string[];
-      allowed_transaction_count: 'MULTIPLE';
-      transaction_limits: {
-        currency: string;
-        limits: Array<{
-          amount: number;
-          interval: 'PER_TRANSACTION' | 'MONTHLY' | 'WEEKLY' | 'DAILY';
-        }>;
-      };
+      allowed_transaction_count: string;
+    };
+
+    export type TransactionLimit = {
+      amount: number;
+      interval: string;
     };
 
     export namespace Create {
       export interface Request {
-        authorization_controls?: AuthorizationControls;
+        authorization_controls: AuthorizationControls;
+        transaction_limits: TransactionLimit[];
         name_on_card: string;
         nick_name: string;
-        purpose: string;
+        purpose?: string;
         request_id: string;
         program_id: string;
         wallet_id: string;
@@ -613,7 +609,8 @@ export namespace API {
     export interface Transaction {
       id: number;
       created_at: string;
-      type: string;
+      type: WalletTransactionType;
+      method: WalletTransactionMethod;
       status: string;
       amount: number;
       from: string;

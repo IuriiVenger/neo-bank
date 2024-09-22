@@ -29,6 +29,17 @@ export const getDateAndTime = (date: string) => {
   return dateObj.toLocaleString('ru-RU');
 };
 
+export const getDateAndTimeShort = (date: string) => {
+  const dateObj = new Date(date);
+
+  return dateObj.toLocaleString('en-EN', {
+    hour: 'numeric',
+    minute: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+};
+
 export const getDate = (date: string) => {
   const dateObj = new Date(date);
 

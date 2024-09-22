@@ -308,10 +308,10 @@ const financeSlice = createSlice({
     });
     builder.addCase(loadCardTransactions.fulfilled, (state, action) => {
       state.selectedCardTransactions.status = RequestStatus.FULLFILLED;
-      state.selectedCardTransactions.data = action.payload.items;
+      state.selectedCardTransactions.data = action.payload.data;
       state.selectedCardTransactions.meta.offset = state.selectedCardTransactions.data.length;
       state.selectedCardTransactions.meta.isLastPage =
-        action.payload.items.length < state.selectedCardTransactions.meta.limit;
+        action.payload.data.length < state.selectedCardTransactions.meta.limit;
     });
     builder.addCase(loadCardTransactions.rejected, (state) => {
       state.selectedCardTransactions.status = RequestStatus.REJECTED;
@@ -322,10 +322,10 @@ const financeSlice = createSlice({
     builder.addCase(loadMoreCardTransactions.fulfilled, (state, action) => {
       state.selectedCardTransactions.status = RequestStatus.FULLFILLED;
       state.selectedCardTransactions.data = state.selectedCardTransactions.data
-        ? [...state.selectedCardTransactions.data, ...action.payload.items]
-        : action.payload.items;
-      state.selectedCardTransactions.meta.offset += action.payload.items.length;
-      if (action.payload.items.length < state.selectedCardTransactions.meta.limit) {
+        ? [...state.selectedCardTransactions.data, ...action.payload.data]
+        : action.payload.data;
+      state.selectedCardTransactions.meta.offset += action.payload.data.length;
+      if (action.payload.data.length < state.selectedCardTransactions.meta.limit) {
         state.selectedCardTransactions.meta.isLastPage = true;
       }
     });

@@ -24,7 +24,7 @@ export const issuing = {
   },
   transactions: {
     getByCardId: (card_id: string, limit = defaultPaginationParams.limit, offset = defaultPaginationParams.offset) =>
-      getRequest<API.Cards.TransactionsList>(`/issuing/transactions/${card_id}`, { params: { limit, offset } }),
+      getRequest<API.Cards.TransactionsList>(`/issuing/transactions/`, { params: { limit, offset, card_id } }),
   },
   bins: {
     getAll: () => getRequest<API.Issuing.Programs.Response>('/issuing/config/programs').then(({ data }) => data),

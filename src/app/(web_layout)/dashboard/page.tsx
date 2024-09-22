@@ -51,6 +51,7 @@ import {
   hiddenLoadSelectedWallet,
 } from '@/store/slices/finance';
 import { setModalVisible } from '@/store/slices/ui';
+import { ChangeDashboardTabAdditionalParams } from '@/types';
 
 const DashboardPage = () => {
   const {
@@ -83,6 +84,7 @@ const DashboardPage = () => {
   const dispatch = useAppDispatch();
 
   const [queryDashboardTab, setQueryDashboardTab] = useQueryState('tab');
+  const [queryCardId, setQueryCardId] = useQueryState('card_id');
 
   const initialDasboardTab = (queryDashboardTab as DashboardTabs) || DashboardTabs.MAIN;
   const allowedCryptoToFiatList = crypto.filter((item) => allowedCryptoToFiatUuid.includes(item.uuid));
@@ -111,9 +113,14 @@ const DashboardPage = () => {
     await selectCard(card_id);
   };
 
-  const changeDashboardTab = (tab: DashboardTabs) => {
+  const changeDashboardTab = (tab: DashboardTabs, additionalRouteParams?: ChangeDashboardTabAdditionalParams) => {
     setActiveDashboardTab(tab);
     setQueryDashboardTab(tab);
+
+    if (additionalRouteParams?.card_id !== undefined) {
+      setQueryCardId(additionalRouteParams.card_id);
+    }
+
     activeCardId && changeActiveCard(null);
   };
 
@@ -290,7 +297,12 @@ const DashboardPage = () => {
 
   useEffect(() => {
     setActiveDashboardTab((queryDashboardTab as DashboardTabs) || DashboardTabs.MAIN);
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }, [queryDashboardTab]);
+
+  useEffect(() => {
+    changeActiveCard(queryCardId as string);
+  }, [queryCardId]);
 
   useEffect(() => {
     activeCardId && selectCard(activeCardId);

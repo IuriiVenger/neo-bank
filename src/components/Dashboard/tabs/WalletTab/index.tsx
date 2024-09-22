@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
 import { API } from '@/api/types';
-import CryptoInfo from '@/components/Currency/CryptoInfo';
 import BackButton from '@/components/ui/BackButton';
+import CryptoInfo from '@/components/ui/CryptoInfo';
 import DefaultContainer from '@/components/ui/DefaultContainer';
 import { DashboardTabs } from '@/constants';
 import { StoreDataWithStatus } from '@/store/types';
@@ -40,7 +40,7 @@ const WalletTab: FC<WalletTabProps> = (props) => {
   return (
     <>
       <BackButton onClick={goToMainTab} text="Back to main" />
-      <DefaultContainer className="max-lg:bg-inherit max-lg:p-0">
+      <DefaultContainer className="h-full max-lg:bg-inherit max-lg:p-0">
         <h1 className="mb-8 text-2xl font-medium">Wallet</h1>
         <div className="flex flex-col justify-between gap-4">
           <div className="grid grid-cols-3 text-sm text-secondary max-lg:hidden">

@@ -1,7 +1,6 @@
 import { Card, CardBody, CardFooter, CardHeader } from '@nextui-org/react';
 import { FC } from 'react';
 
-import { API } from '@/api/types';
 import { prettyId, roundToDecimals } from '@/utils/converters';
 
 type WalletCardProps = {

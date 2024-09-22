@@ -1,3 +1,10 @@
+// import { IconType } from 'react-icons';
+// import { RiAddFill, RiArrowUpLine } from 'react-icons/ri';
+
+import { IconType } from 'react-icons';
+
+import { RiArrowDownLine, RiArrowUpLine } from 'react-icons/ri';
+
 import { WalletType } from './types';
 
 export enum RequestStatus {
@@ -226,5 +233,103 @@ export const cardTypeData: Record<CardType, { title: string; shortTitle: string 
   [CardType.CREDIT]: {
     title: 'Credit card',
     shortTitle: 'Credit',
+  },
+};
+
+export enum WalletTransactionType {
+  DEPOSIT = 'deposit',
+  WITHDRAWAL = 'withdrawal',
+}
+
+// p2p, crypto, bank_transfer, exchange, sbp
+
+export enum WalletTransactionMethod {
+  P2P = 'p2p',
+  CRYPTO = 'crypto',
+  BANK_TRANSFER = 'bank_transfer',
+  EXCHANGE = 'exchange',
+  SBP = 'sbp',
+}
+
+export const walletTransactionTypeData: Record<
+  WalletTransactionType,
+  Record<
+    WalletTransactionMethod,
+    { title: string; methodName: string; typeName: string; direction: string; Icon: IconType }
+  >
+> = {
+  [WalletTransactionType.DEPOSIT]: {
+    [WalletTransactionMethod.P2P]: {
+      title: 'P2P',
+      methodName: 'p2p',
+      typeName: 'deposit',
+      direction: 'incoming',
+      Icon: RiArrowDownLine,
+    },
+    [WalletTransactionMethod.CRYPTO]: {
+      title: 'Crypto',
+      methodName: 'crypto',
+      typeName: 'deposit',
+      direction: 'incoming',
+      Icon: RiArrowDownLine,
+    },
+    [WalletTransactionMethod.BANK_TRANSFER]: {
+      title: 'Bank Transfer',
+      methodName: 'bank_transfer',
+      typeName: 'deposit',
+      direction: 'incoming',
+      Icon: RiArrowDownLine,
+    },
+    [WalletTransactionMethod.EXCHANGE]: {
+      title: 'Exchange',
+      methodName: 'exchange',
+      typeName: 'deposit',
+      direction: 'incoming',
+      Icon: RiArrowDownLine,
+    },
+    [WalletTransactionMethod.SBP]: {
+      title: 'SBP',
+      methodName: 'sbp',
+      typeName: 'deposit',
+      direction: 'incoming',
+      Icon: RiArrowDownLine,
+    },
+  },
+  [WalletTransactionType.WITHDRAWAL]: {
+    [WalletTransactionMethod.P2P]: {
+      title: 'P2P',
+      methodName: 'p2p',
+      typeName: 'withdrawal',
+      direction: 'outgoing',
+      Icon: RiArrowUpLine,
+    },
+    [WalletTransactionMethod.CRYPTO]: {
+      title: 'Crypto',
+      methodName: 'crypto',
+      typeName: 'withdrawal',
+      direction: 'outgoing',
+      Icon: RiArrowUpLine,
+    },
+    [WalletTransactionMethod.BANK_TRANSFER]: {
+      title: 'Bank Transfer',
+      methodName: 'bank_transfer',
+      typeName: 'withdrawal',
+      direction: 'outgoing',
+      Icon: RiArrowUpLine,
+    },
+    [WalletTransactionMethod.EXCHANGE]: {
+      title: 'Exchange',
+      methodName: 'exchange',
+      typeName: 'withdrawal',
+      direction: 'outgoing',
+      Icon: RiArrowUpLine,
+    },
+    [WalletTransactionMethod.SBP]: {
+      title: 'SBP',
+      methodName: 'sbp',
+      typeName: 'withdrawal',
+      direction: 'outgoing',
+      Icon: RiArrowUpLine,
+    },
   },
 };

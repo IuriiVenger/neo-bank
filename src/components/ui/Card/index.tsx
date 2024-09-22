@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { cn } from '@nextui-org/react';
 import Image from 'next/image';
 import { FC } from 'react';

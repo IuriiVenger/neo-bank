@@ -36,6 +36,7 @@ type MainModalProps = CustomModalProps &
     isLoading?: boolean;
     isAppFullInitialized?: boolean;
     nativeCloseButton?: boolean;
+    saveScrollPosition?: boolean;
   };
 
 export const CustomModal: FC<CustomModalProps> = (props) => {
@@ -272,20 +273,12 @@ const WebModal: FC<MainModalProps> = (props) => {
     ...otherProps
   } = props;
 
-  const { mdBreakpoint } = useBreakpoints();
-
   const closeModal = () => {
     onOpenChange && onOpenChange(false);
     onClose && onClose();
   };
 
   const nonNativeCloseButtonEnabled = !nativeCloseButton && !hideCloseButton;
-
-  useEffect(() => {
-    if (isOpen && !mdBreakpoint && window) {
-      window.scrollTo({ top: 0, behavior: 'instant' });
-    }
-  }, [isOpen]);
 
   return (
     <Modal
@@ -298,7 +291,7 @@ const WebModal: FC<MainModalProps> = (props) => {
       <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:relative  md:max-h-[85vh]', contentClassName)}>
         {header || (nativeCloseButton && !hideCloseButton && <ModalHeader className="">{header}</ModalHeader>)}
         <ModalBody className={cn('pb-10 shadow-none sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>
-        {(!confirmButtonHidden || !nonNativeCloseButtonEnabled) && (
+        {(!confirmButtonHidden || nonNativeCloseButtonEnabled) && (
           <ModalFooter className="relative z-10 flex min-h-1 w-full flex-col pb-6">
             {!confirmButtonHidden && (
               <Button
@@ -327,7 +320,7 @@ const WebModal: FC<MainModalProps> = (props) => {
 const MainModal: FC<MainModalProps> = (props) => {
   const { mdBreakpoint } = useBreakpoints();
   const { appEnviroment, isAppFullInitialized } = useAppSelector(selectConfig);
-  const { size, motionProps, isOpen, className } = props;
+  const { size, motionProps, isOpen, className, nativeCloseButton = true, saveScrollPosition } = props;
 
   const responsiveSize = mdBreakpoint ? 'md' : 'full';
   const modalSize = size || responsiveSize;
@@ -337,13 +330,14 @@ const MainModal: FC<MainModalProps> = (props) => {
   const disableAnimation = !mdBreakpoint && !motionProps;
 
   useEffect(() => {
-    if (isOpen && !mdBreakpoint && window) {
+    if (isOpen && !mdBreakpoint && window && !saveScrollPosition) {
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
   }, [isOpen]);
 
   const modifiedProps = {
     ...props,
+    nativeCloseButton,
     isAppFullInitialized,
     disableAnimation,
     motionProps: modalMotionProps,

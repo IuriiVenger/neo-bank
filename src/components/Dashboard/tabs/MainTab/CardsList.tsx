@@ -104,6 +104,8 @@ const CardsList: FC<CardsListProps> = (props) => {
     }
   };
 
+  const handleCardClick = (card_id: string) => () => onCardClick(card_id);
+
   return (
     <div className={className}>
       <div className="flex items-center justify-between gap-3 px-4 lg:px-8">
@@ -161,7 +163,7 @@ const CardsList: FC<CardsListProps> = (props) => {
               <button
                 key={`${card.card_id}_${index}`}
                 type="button"
-                onClick={() => onCardClick(card.card_id)}
+                onClick={handleCardClick(card.card_id)}
                 className={cn(
                   'cursor-pointer transition-all hover:opacity-hover',
                   card.card_status !== 'ACTIVE' && 'grayscale',

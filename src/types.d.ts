@@ -10,3 +10,8 @@ export type WalletType = {
 export type HexColor = `#${string}`;
 export type RGBAColor = `rgba(${string})`;
 export type RGBColor = `rgb(${string})`;
+
+type ChangeDashboardTabAdditionalParams = {
+  wallet_uuid?: string;
+  card_id?: string | null;
+};

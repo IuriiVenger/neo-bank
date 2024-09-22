@@ -137,11 +137,12 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     }
 
     const requestData: API.Cards.Create.Request = {
+      authorization_controls: {} as API.Cards.AuthorizationControls,
+      transaction_limits: [] as API.Cards.TransactionLimit[],
       program_id: selectedProgram.id,
       name_on_card: cardholderName,
       nick_name: cardName,
       wallet_id: selectedWallet.data.uuid,
-      purpose: selectedProgram.purposes[0],
       request_id: crypto.randomUUID(),
     };
 

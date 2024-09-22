@@ -43,3 +43,31 @@ export const genereateTailwindThemeClasses = (className: string, lightClassName:
     },
   };
 };
+
+export const getDirectionSymbol = (direction: string) => {
+  switch (direction) {
+    case 'incoming':
+      return '+';
+    case 'outgoing':
+      return '-';
+    default:
+      return '';
+  }
+};
+
+export const getRoundedClassName = (rounded: 'none' | 'sm' | 'md' | 'lg' | 'full') => {
+  switch (rounded) {
+    case 'none':
+      return 'rounded-none';
+    case 'sm':
+      return 'rounded-small';
+    case 'md':
+      return 'rounded-medium';
+    case 'lg':
+      return 'rounded-large';
+    case 'full':
+      return 'rounded-full';
+    default:
+      return 'rounded-none';
+  }
+};

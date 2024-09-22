@@ -1,21 +1,12 @@
-import { Button } from '@nextui-org/react';
 import cn from 'classnames';
 import { FC } from 'react';
 
 import DefaultContainer from '@/components/ui/DefaultContainer';
-
-type ButtonAction = {
-  id?: string | null;
-  title: string;
-  icon: JSX.Element;
-  onClick: () => void;
-  disabled?: boolean;
-  active?: boolean;
-};
+import RoundButton, { RoundButtonProps } from '@/components/ui/RoundButton';
 
 type MainInformationProps = {
   className?: string;
-  actionButtons: ButtonAction[];
+  actionButtons: RoundButtonProps[];
   balance: string;
   // activeDashboardTab: DashboardTabs | null;
 };
@@ -36,25 +27,7 @@ const MainInformation: FC<MainInformationProps> = (props) => {
       </div>
       <div className="flex gap-4 md:gap-9 max-md:justify-between max-md:px-2">
         {actionButtons.map((button, index) => (
-          <div className="flex flex-col items-center justify-center gap-1.5" key={index}>
-            <Button
-              isIconOnly
-              color={button.active ? 'primary' : 'default'}
-              className={cn(
-                'h-16 w-16 text-2xl',
-                !button.active && 'bg-white md:bg-background',
-                button.disabled && '!cursor-not-allowed opacity-50 hover:!opacity-50',
-              )}
-              radius="full"
-              onClick={button.onClick}
-              disabled={button?.disabled}
-            >
-              {/* <div className="ml-2 flex-shrink-0 ">{button.icon}</div>
-            <span className="capitalize">{button.title}</span>  */}
-              {button.icon}
-            </Button>
-            <span className="flex-shrink-0 text-sm font-medium capitalize">{button.title}</span>
-          </div>
+          <RoundButton buttonClassname="md:bg-background" key={button.id || index} {...button} />
         ))}
       </div>
     </DefaultContainer>

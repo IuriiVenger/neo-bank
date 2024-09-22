@@ -115,3 +115,5 @@ export const getCardProvider = (provider: string) => {
       return provider;
   }
 };
+
+export const getCryptoByUuid = (uuid: string, crypto: API.List.Crypto[]) => crypto.find((item) => item.uuid === uuid);

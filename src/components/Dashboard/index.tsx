@@ -1,14 +1,15 @@
 // import { Button } from '@nextui-org/react';
 import { AxiosResponse } from 'axios';
-import cn from 'classnames';
 import { FC, useState } from 'react';
 // import { CiCirclePlus } from 'react-icons/ci';
 
 import CreateWalletModal from '../modals/CreateWalletModal';
 import Loader from '../ui/Loader';
 
+import CardTab from './tabs/CardTab';
 import MainTab from './tabs/MainTab';
 
+import TransactionTab from './tabs/TransactionsTab';
 import WalletTab from './tabs/WalletTab';
 
 import { API } from '@/api/types';
@@ -18,7 +19,7 @@ import { AppEnviroment, DashboardTabs, KYCStatuses, RequestStatus, WalletTypeVal
 
 import { UseExternalCalcData } from '@/hooks/useExternalCalc';
 import { StoreDataWithStatus, StoreDataWithStatusAndMeta } from '@/store/types';
-import { ValueWithLabel } from '@/types';
+import { ChangeDashboardTabAdditionalParams, ValueWithLabel } from '@/types';
 
 export interface DashboardProps {
   activeCardId: string | null;
@@ -31,7 +32,7 @@ export interface DashboardProps {
   cards: StoreDataWithStatusAndMeta<API.Cards.CardListItem[] | null>;
   chainList: API.List.Chains[];
   changeActiveCard: (card_id: string | null) => void;
-  changeDashboardTab: (tab: DashboardTabs) => void;
+  changeDashboardTab: (tab: DashboardTabs, additionRouteParams?: ChangeDashboardTabAdditionalParams) => void;
   createCard: (data: API.Cards.Create.Request) => Promise<AxiosResponse<API.Cards.Create.Response, any>>;
   createCrypto2CryptoOrder: (requestData: API.Orders.Crypto.Withdrawal.Request) => Promise<void | null>;
   createCrypto2FiatOrder: (requestData: API.Orders.OffRamp.Request) => Promise<void | null>;
@@ -73,47 +74,25 @@ export interface DashboardProps {
 }
 
 const Dashboard: FC<DashboardProps> = (props) => {
-  const { wallets, selectedWallet, createWallet, walletTypes, activeDashboardTab } = props;
+  const { selectedWallet, createWallet, walletTypes, activeDashboardTab } = props;
 
   const [isCreateWalletModalOpen, setIsCreateWalletModalOpen] = useState(false);
 
-  const openCreateWalletModal = () => setIsCreateWalletModalOpen(true);
-
-  const isInfoTab = activeDashboardTab === DashboardTabs.INFO;
-
   const isWalletPending = selectedWallet.status === RequestStatus.PENDING;
-  const isWalletsExist = wallets.length > 0;
 
   return (
-    <section className="flex w-full max-w-screen-xl flex-col  gap-x-12  gap-y-4 lg:gap-x-20 xl:gap-x-40">
-      {/* {!isWalletsExist ? (
-        <div className="col-span-2 row-span-4 flex h-full w-full flex-col items-center justify-center">
-          <h1 className="mb-6 text-xl">You don&apos;t have any wallets yet</h1>
-          <Button
-            className="self-center bg-secondary text-primary   md:flex"
-            color="primary"
-            onClick={openCreateWalletModal}
-            variant="flat"
-            radius="sm"
-          >
-            Create new wallet <CiCirclePlus />
-          </Button>
-        </div>
-      ) : ( */}
-      <div className={cn('order-4  md:order-3 md:col-start-2 md:col-end-4 md:mt-4', isInfoTab && 'overflow-scroll')}>
-        {isWalletPending ? (
-          <Loader />
-        ) : (
-          <>
-            {/* {activeDashboardTab === DashboardTabs.DEPOSIT && <DepositForm {...props} />}
-                {activeDashboardTab === DashboardTabs.WITHDRAW && <WithdrawForm {...props} />}
-                {activeDashboardTab === DashboardTabs.INFO && <InfoTab {...props} />}
-                {activeDashboardTab === DashboardTabs.CARDS && <CardsTab {...props} />} */}
-            {activeDashboardTab === DashboardTabs.MAIN && <MainTab {...props} />}
-            {activeDashboardTab === DashboardTabs.WALLET && <WalletTab {...props} />}
-          </>
-        )}
-      </div>
+    <section className="flex w-full max-w-screen-xl flex-col  [&>:first-child:not(.back-button)]:mt-10">
+      {isWalletPending ? (
+        <Loader />
+      ) : (
+        <>
+          {activeDashboardTab === DashboardTabs.MAIN && <MainTab {...props} />}
+          {activeDashboardTab === DashboardTabs.WALLET && <WalletTab {...props} />}
+          {activeDashboardTab === DashboardTabs.CARD && <CardTab {...props} />}
+          {activeDashboardTab === DashboardTabs.TRANSACTIONS && <TransactionTab {...props} />}
+        </>
+      )}
+
       {/* )} */}
       <CreateWalletModal
         isOpen={isCreateWalletModalOpen}

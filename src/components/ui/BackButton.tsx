@@ -39,7 +39,7 @@ const BackButton: FC<BackButtonProps> = ({ onClick, text = 'Back', className }) 
     <button
       type="button"
       onClick={onClick}
-      className={cn(' text-foreground-2 mb-4 flex items-center gap-2 hover:opacity-hover lg:mb-8', className)}
+      className={cn('back-button text-foreground-2 mb-4 flex h-6 items-center gap-2 hover:opacity-hover ', className)}
     >
       <RiArrowLeftSLine />
       <span>{text}</span>

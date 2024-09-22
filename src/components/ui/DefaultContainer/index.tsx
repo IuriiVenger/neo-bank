@@ -1,13 +1,20 @@
 import cn from 'classnames';
 import { DetailedHTMLProps, FC, HTMLAttributes, PropsWithChildren } from 'react';
 
-type DefaultContainerProps = PropsWithChildren & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
+import { getRoundedClassName } from '@/utils/helpers';
+
+type DefaultContainerProps = PropsWithChildren &
+  DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
+    rounded?: 'sm' | 'md' | 'lg';
+  };
 
 const DefaultContainer: FC<DefaultContainerProps> = (props) => {
-  const { children, className, ...rest } = props;
+  const { children, className, rounded = 'lg', ...rest } = props;
+
+  const roundedClassName = getRoundedClassName(rounded);
 
   return (
-    <div className={cn('bg-background-2 rounded-large p-4 lg:p-8', className)} {...rest}>
+    <div className={cn('bg-background-2 p-4 lg:p-8', className, roundedClassName)} {...rest}>
       {children}
     </div>
   );
