@@ -204,10 +204,8 @@ const TelegramModal: FC<MainModalProps> = (props) => {
       backButton.off('click', closeModal);
       mainButton.enable();
       mainButton.hideLoader();
-      if (!confirmButtonHidden) {
-        mainButton.off('click', confirmHandler);
-        mainButton.hide();
-      }
+      mainButton.off('click', confirmHandler);
+      mainButton.hide();
     }
   };
 
