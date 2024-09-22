@@ -81,6 +81,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   const [currentStep, setCurrentStep] = useState<CreateCardSteps>(CreateCardSteps.FORM_FACTOR);
   const [cardName, setCardName] = useState<string | null>(null);
   const [cardholderName, setCardholderName] = useState<string | null>(null);
+  const [createdCardId, setCreatedCardId] = useState<string | null>(null);
 
   const availablePrograms = useMemo(() => {
     if (currentStep === CreateCardSteps.FORM_FACTOR) {
@@ -149,7 +150,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     try {
       setPending();
       const { data } = await createCard(requestData);
-      onCardCreate && onCardCreate(data.card_id);
+      setCreatedCardId(data.card_id);
       setCurrentStep(CreateCardSteps.SUCCESS);
       setFullfilled();
     } catch (error) {
@@ -167,6 +168,11 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     setCardFormFactor(null);
     setCardType(null);
     setSelectedProgram(null);
+  };
+
+  const closeAndHandleOnCardCreate = () => {
+    onClose();
+    onCardCreate && createdCardId && onCardCreate(createdCardId);
   };
 
   useEffect(() => {
@@ -214,7 +220,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     [CreateCardSteps.SUCCESS]: {
       Component: CardSusccessStep,
       mainButtonText: 'Close',
-      onMainButtonClick: closeModal,
+      onMainButtonClick: closeAndHandleOnCardCreate,
     },
   };
 
