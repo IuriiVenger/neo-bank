@@ -174,12 +174,6 @@ export enum CardStatus {
   CLOSED = 'CLOSED',
 }
 
-export enum CardTransationStatus {
-  PENDING = 'PENDING',
-  SUCCESS = 'SUCCESS',
-  DECLINE = 'DECLINE',
-}
-
 export enum CardTransactionDirection {
   INCOMING = 'INCOMING',
   OUTGOING = 'OUTGOING',
@@ -236,12 +230,63 @@ export const cardTypeData: Record<CardType, { title: string; shortTitle: string 
   },
 };
 
+export enum CardTransactionType {
+  AUTHORIZATION = 'AUTHORIZATION',
+  CLEARING = 'CLEARING',
+  REFUND = 'REFUND',
+  REVERSAL = 'REVERSAL',
+  ORIGINAL_CREDIT = 'ORIGINAL_CREDIT',
+}
+
+export enum CardTransactionStatus {
+  APPROVED = 'APPROVED',
+  CLEARED = 'CLEARED',
+  EXPIRED = 'EXPIRED',
+  FAILED = 'FAILED',
+  PENDING = 'PENDING',
+  REVERSED = 'REVERSED',
+}
+
+export const cardTransactionTypeData: Record<
+  CardTransactionType,
+  { title: string; Icon: IconType; direction: string; typeName: string }
+> = {
+  [CardTransactionType.AUTHORIZATION]: {
+    title: 'Authorization',
+    Icon: RiArrowDownLine,
+    direction: 'outgoing',
+    typeName: 'authorization',
+  },
+  [CardTransactionType.CLEARING]: {
+    title: 'Clearing',
+    Icon: RiArrowUpLine,
+    direction: 'outgoing',
+    typeName: 'clearing',
+  },
+  [CardTransactionType.REFUND]: {
+    title: 'Refund',
+    Icon: RiArrowUpLine,
+    direction: 'incoming',
+    typeName: 'refund',
+  },
+  [CardTransactionType.REVERSAL]: {
+    title: 'Reversal',
+    Icon: RiArrowUpLine,
+    direction: 'incoming',
+    typeName: 'reversal',
+  },
+  [CardTransactionType.ORIGINAL_CREDIT]: {
+    title: 'Original Credit',
+    Icon: RiArrowUpLine,
+    direction: 'incoming',
+    typeName: 'original_credit',
+  },
+};
+
 export enum WalletTransactionType {
   DEPOSIT = 'deposit',
   WITHDRAWAL = 'withdrawal',
 }
-
-// p2p, crypto, bank_transfer, exchange, sbp
 
 export enum WalletTransactionMethod {
   P2P = 'p2p',

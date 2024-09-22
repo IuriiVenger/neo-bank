@@ -88,6 +88,11 @@ export const isCrypto = (currency: API.List.Crypto | API.List.Fiat | API.List.Ch
 export const isChain = (currency: API.List.Crypto | API.List.Fiat | API.List.Chains): currency is API.List.Chains =>
   (currency as API.List.Chains).id !== undefined && (currency as API.List.Chains).enabled !== undefined;
 
+export const isWalletTransaction = (
+  transaction: API.WalletTransactions.Transaction | API.Cards.TransactionItem,
+): transaction is API.WalletTransactions.Transaction =>
+  (transaction as API.WalletTransactions.Transaction).txid !== undefined;
+
 export const getCurrencyIconSrc = (currency: API.List.Crypto | API.List.Fiat | API.List.Chains): string =>
   isFiat(currency)
     ? currencyFlag[currency.code.toLowerCase() as keyof typeof currencyFlag]

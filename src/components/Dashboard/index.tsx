@@ -28,7 +28,6 @@ export interface DashboardProps {
   appEnviroment: AppEnviroment;
   availableToExchangeCrypto: API.List.Crypto[];
   bins: API.Cards.CardConfig[];
-  cardTransactions: StoreDataWithStatusAndMeta<API.Cards.TransactionItem[] | null>;
   cards: StoreDataWithStatusAndMeta<API.Cards.CardListItem[] | null>;
   chainList: API.List.Chains[];
   changeActiveCard: (card_id: string | null) => void;
@@ -55,6 +54,7 @@ export interface DashboardProps {
   loadSelectedWalletCards: () => void;
   openKYC: () => void;
   selectCard: (card_id: string) => void;
+  selectedCardTransactions: StoreDataWithStatusAndMeta<API.Cards.TransactionItem[] | null>;
   selectChain: (chain: API.List.Chains) => void;
   selectCrypto: (crypto: API.List.Crypto) => void;
   selectFiat: (fiat: API.List.Fiat) => void;

@@ -240,7 +240,7 @@ const DashboardPage = () => {
     appEnviroment,
     availableToExchangeCrypto,
     bins,
-    cardTransactions: selectedCardTransactions,
+    selectedCardTransactions,
     cards: selectedWalletCards,
     chainList: chains,
     changeActiveCard,

@@ -139,7 +139,7 @@ export const loadMoreWalletTransactions = createAsyncThunk(
 );
 
 export const loadCardTransactions = createAsyncThunk(
-  'finanse/cardTransactions',
+  'finanse/selectedCardTransactions',
   async ({ card_id, limit, offset }: LoadWithLimit<{ card_id: string }>) => {
     const { data } = await issuing.transactions.getByCardId(card_id, limit, offset);
 

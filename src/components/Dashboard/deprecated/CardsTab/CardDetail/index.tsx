@@ -34,7 +34,7 @@ import { getCardProvider } from '@/utils/financial';
 
 export type CardDetailProps = CardsTabProps & {
   card: API.Cards.CardDetailItem;
-  cardTransactions: StoreDataWithStatusAndMeta<API.Cards.TransactionItem[] | null>;
+  selectedCardTransactions: StoreDataWithStatusAndMeta<API.Cards.TransactionItem[] | null>;
   setCardTabMode: (mode: CardsTabMode) => void;
   externalCalcData: UseExternalCalcData;
 };

@@ -16,7 +16,7 @@ import { StoreDataWithStatus, StoreDataWithStatusAndMeta } from '@/store/types';
 export type CardsTabProps = DashboardProps & {
   className?: string;
   selectedCard: StoreDataWithStatus<API.Cards.CardDetailItem | null>;
-  cardTransactions: StoreDataWithStatusAndMeta<API.Cards.TransactionItem[] | null>;
+  selectedCardTransactions: StoreDataWithStatusAndMeta<API.Cards.TransactionItem[] | null>;
   createInternalTopUpOrder: (requestData: API.Orders.VCards.Topup.Internal.Request) => Promise<void | null>;
   externalCalcData: UseExternalCalcData;
 };

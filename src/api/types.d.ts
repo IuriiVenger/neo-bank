@@ -2,6 +2,8 @@ import { User } from '@supabase/supabase-js';
 
 import {
   CardFormFactor,
+  CardTransactionStatus,
+  CardTransactionType,
   CardType,
   KYCStatuses,
   OrderStatuses,
@@ -179,6 +181,7 @@ export namespace API {
       billing_currency: string;
       card_id: string;
       wallet_id: string;
+      fiat_account_id: string;
       card_nickname: string;
       client_data: string;
       digital_wallet_token_id: string;
@@ -194,12 +197,12 @@ export namespace API {
       network_transaction_id: string;
       posted_date: string;
       retrieval_ref: string;
-      status: string;
+      status: CardTransactionStatus;
       transaction_amount: number;
       transaction_currency: string;
       transaction_date: string;
       transaction_id: string;
-      transaction_type: string;
+      transaction_type: CardTransactionType;
     }
 
     export interface TransactionsList {

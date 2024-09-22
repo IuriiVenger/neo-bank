@@ -8,26 +8,26 @@ import TransactionDetails from './TransactionDetails';
 
 import { API } from '@/api/types';
 import Loader from '@/components/ui/Loader';
-import { CardTransactionDirection, CardTransationStatus, RequestStatus } from '@/constants';
+import { CardTransactionDirection, CardTransactionStatus, RequestStatus } from '@/constants';
 import { StoreDataWithStatusAndMeta } from '@/store/types';
 import { getDate } from '@/utils/converters';
 
 type CardTransactionTableProps = {
   className?: string;
-  cardTransactions: StoreDataWithStatusAndMeta<API.Cards.TransactionItem[] | null>;
+  selectedCardTransactions: StoreDataWithStatusAndMeta<API.Cards.TransactionItem[] | null>;
   loadMoreCardTransactions: () => void;
 };
 
 const getCardTransactionStatusIcon = (transaction: API.Cards.TransactionItem) => {
-  if (transaction.status === CardTransationStatus.SUCCESS) {
+  if (transaction.status === CardTransactionStatus.APPROVED) {
     return <FaCircleCheck />;
   }
 
-  if (transaction.status === CardTransationStatus.DECLINE) {
+  if (transaction.status === CardTransactionStatus.FAILED) {
     return <FaCircleXmark />;
   }
 
-  if (transaction.status === CardTransationStatus.PENDING) {
+  if (transaction.status === CardTransactionStatus.PENDING) {
     return <FaClock />;
   }
 
@@ -48,11 +48,11 @@ const getTransactionDirectionSymbol = (type: CardTransactionDirection) => {
 const getTransactionDirectionColor = (transaction: API.Cards.TransactionItem) => {
   if (
     (transaction as any).direction === CardTransactionDirection.OUTGOING &&
-    transaction.status === CardTransationStatus.SUCCESS
+    transaction.status === CardTransactionStatus.APPROVED
   ) {
     return 'text-green-500';
   }
-  if (transaction.status === CardTransationStatus.DECLINE) {
+  if (transaction.status === CardTransactionStatus.FAILED) {
     return 'text-red-500';
   }
   return null;
@@ -69,9 +69,9 @@ const getTransactionData = (transaction: API.Cards.TransactionItem) => {
 };
 
 const CardTransactionTable: FC<CardTransactionTableProps> = (props) => {
-  const { cardTransactions, loadMoreCardTransactions, className } = props;
+  const { selectedCardTransactions, loadMoreCardTransactions, className } = props;
 
-  const { data, meta, status } = cardTransactions;
+  const { data, meta, status } = selectedCardTransactions;
   const isLoadMoreAvailible = !meta.isLastPage;
   const isTransactionsLoading = status === RequestStatus.PENDING;
   const isFirstTransactionsLoading = isTransactionsLoading && !data?.length;
