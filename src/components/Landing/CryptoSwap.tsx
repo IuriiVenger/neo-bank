@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CryptoForm from '../CryptoForm/CryptoForm';
+import CryptoForm from '../ExchangeForm/deprecated/CryptoForm/Offline/OfflineCryptoForm';
 
 import { API } from '@/api/types';
 import { UseExchangeData } from '@/hooks/useExchange';

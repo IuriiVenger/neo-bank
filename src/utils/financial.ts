@@ -14,6 +14,8 @@ import usdt from 'cryptocurrency-icons/svg/icon/usdt.svg';
 import xrp from 'cryptocurrency-icons/svg/icon/xrp.svg';
 import currencyFlag from 'react-currency-flags/dist/flags';
 
+import { roundToDecimals } from './converters';
+
 import { API } from '@/api/types';
 import acalaNetwork from '@/assets/svg/landing-cryptocurrency-icons/acala-network.svg';
 import achain from '@/assets/svg/landing-cryptocurrency-icons/achain.svg';
@@ -35,6 +37,7 @@ import cream from '@/assets/svg/landing-cryptocurrency-icons/cream.svg';
 import cryptoCom from '@/assets/svg/landing-cryptocurrency-icons/cryptoCom.svg';
 import currencyCom from '@/assets/svg/landing-cryptocurrency-icons/currencyCom.svg';
 import dash from '@/assets/svg/landing-cryptocurrency-icons/dash.svg';
+import { WithAmount } from '@/types';
 
 type CryptoIcons = {
   [key: string]: string;
@@ -122,3 +125,19 @@ export const getCardProvider = (provider: string) => {
 };
 
 export const getCryptoByUuid = (uuid: string, crypto: API.List.Crypto[]) => crypto.find((item) => item.uuid === uuid);
+
+export const getCardBalance = (card: API.Cards.CardDetailItem | API.Cards.CardListItem) => {
+  const balanceAmount = roundToDecimals(+card.fiat_account.balance || 0, 2);
+  const balance = `${card.fiat_account.fiat.symbol}${balanceAmount} `;
+
+  return balance;
+};
+
+export const convertWalletBalanceToCryptoWithAmount = (walletBalance: API.Wallets.WalletBalance) => {
+  const cryptoWithBalance: WithAmount<API.List.Crypto>[] = walletBalance
+    .filter((balance) => balance.details.find((detail) => detail.amount > 0))
+    .map((balance) => balance.details.map((detail) => ({ ...detail.crypto, amount: detail.amount })))
+    .flat();
+
+  return cryptoWithBalance;
+};

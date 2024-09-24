@@ -4,12 +4,12 @@ import { FC, useEffect, useState } from 'react';
 
 import { DashboardProps } from '..';
 import SelectCurrency from '../../Currency/SelectCurrency';
+
+import ChainInfo from '../../ExchangeForm/deprecated/ChainInfo';
+
+import ExternalExhangeInput from '../../ExchangeForm/deprecated/ExternalExchangeInput';
+import SelectPaymentMethod from '../../ExchangeForm/deprecated/SelectPaymentMethod';
 import CurrencyListModal from '../../modals/CurrencyListModal';
-
-import ChainInfo from '../ChainInfo';
-
-import ExternalExhangeInput from '../ExternalExchangeInput';
-import SelectPaymentMethod from '../SelectPaymentMethod';
 
 import { API } from '@/api/types';
 import { PaymentMethod, ResponseStatus } from '@/constants';

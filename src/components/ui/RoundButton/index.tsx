@@ -5,22 +5,37 @@ import { IconType } from 'react-icons';
 export type RoundButtonProps = {
   id?: string;
   onClick?: () => void;
-  title: string;
+  title?: string;
   Icon: IconType;
   wrapperClassname?: string;
   buttonClassname?: string;
   titleClassname?: string;
+  iconClassname?: string;
   active?: boolean;
   disabled?: boolean;
+  isLoading?: boolean;
 };
 
 const RoundButton: FC<RoundButtonProps> = (props) => {
-  const { id, onClick, title, Icon, active, disabled, titleClassname, wrapperClassname, buttonClassname } = props;
+  const {
+    id,
+    onClick,
+    title,
+    Icon,
+    active,
+    disabled,
+    titleClassname,
+    wrapperClassname,
+    buttonClassname,
+    isLoading,
+    iconClassname,
+  } = props;
 
   return (
     <div key={id} className={cn('flex flex-col items-center justify-center gap-1.5', wrapperClassname)}>
       <Button
         isIconOnly
+        isLoading={isLoading}
         color={active ? 'primary' : 'default'}
         className={cn(
           'h-16 w-16 text-2xl',
@@ -32,9 +47,11 @@ const RoundButton: FC<RoundButtonProps> = (props) => {
         onClick={onClick}
         disabled={disabled}
       >
-        <Icon />
+        <Icon className={iconClassname} />
       </Button>
-      <span className={cn('flex-shrink-0 text-sm font-medium capitalize', titleClassname)}>{title}</span>
+      {title !== undefined && (
+        <span className={cn('flex-shrink-0 text-sm font-medium capitalize', titleClassname)}>{title}</span>
+      )}
     </div>
   );
 };

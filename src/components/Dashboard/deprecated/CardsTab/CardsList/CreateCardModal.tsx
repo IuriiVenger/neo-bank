@@ -9,7 +9,7 @@ import { CardsListProps } from '.';
 
 import { API } from '@/api/types';
 import SelectCurrency from '@/components/Currency/SelectCurrency';
-import ExternalExhangeInput from '@/components/Dashboard/ExternalExchangeInput';
+import ExternalExhangeInput from '@/components/ExchangeForm/deprecated/ExternalExchangeInput';
 import ConfirmModal from '@/components/modals/ConfirmModal';
 import CurrencyListModal from '@/components/modals/CurrencyListModal';
 import MainModal from '@/components/modals/MainModal';

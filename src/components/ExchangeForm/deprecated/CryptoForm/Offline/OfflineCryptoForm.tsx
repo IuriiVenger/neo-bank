@@ -10,17 +10,17 @@ import { FC } from 'react';
 
 import { MdInfoOutline, MdOutlineArrowCircleRight } from 'react-icons/md';
 
-import CryptoFormField from './CryptoFormField';
+import OfflineCryptoFormField from './OfflineCryptoFormField';
 
 import { API } from '@/api/types';
 import mastercard from '@/assets/svg/payment-systems/mastercard.svg';
 import visa from '@/assets/svg/payment-systems/visa.svg';
 import logo from '@/assets/svg/tenant/logo.svg';
-import { CryptoFormFieldAction } from '@/constants';
+import { OfflineCryptoFormFieldAction } from '@/constants';
 import { UseExchangeData } from '@/hooks/useExchange';
 import { getActiveFiatAvailableCrypto, isCrypto, isFiat } from '@/utils/financial';
 
-type CryptoFormProps = {
+type OfflineCryptoFormProps = {
   selectCrypto: (crypto: API.List.Crypto) => void;
   selectFiat: (fiat: API.List.Fiat) => void;
   selectedCrypto: API.List.Crypto;
@@ -32,7 +32,7 @@ type CryptoFormProps = {
   exchangeData: UseExchangeData;
 };
 
-const CryptoForm: FC<CryptoFormProps> = (props) => {
+const OfflineCryptoForm: FC<OfflineCryptoFormProps> = (props) => {
   const {
     selectedCrypto,
     selectedFiat,
@@ -70,8 +70,8 @@ const CryptoForm: FC<CryptoFormProps> = (props) => {
       </div>
 
       <div className="flex flex-col gap-3">
-        <CryptoFormField
-          action={CryptoFormFieldAction.SELL}
+        <OfflineCryptoFormField
+          action={OfflineCryptoFormFieldAction.SELL}
           currency={selectedFiat}
           currencies={fiatList}
           setValue={setSellValue}
@@ -80,8 +80,8 @@ const CryptoForm: FC<CryptoFormProps> = (props) => {
           onInputBlur={checkMinSellValue}
           onChangeCurrency={selectCurrency}
         />
-        <CryptoFormField
-          action={CryptoFormFieldAction.BUY}
+        <OfflineCryptoFormField
+          action={OfflineCryptoFormFieldAction.BUY}
           currency={selectedCrypto}
           currencies={availableCrypto}
           value={fiat2CryptoValue}
@@ -108,4 +108,4 @@ const CryptoForm: FC<CryptoFormProps> = (props) => {
   );
 };
 
-export default CryptoForm;
+export default OfflineCryptoForm;

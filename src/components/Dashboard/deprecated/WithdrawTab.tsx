@@ -7,9 +7,9 @@ import { PiCreditCard, PiWallet } from 'react-icons/pi';
 import { DashboardProps } from '..';
 import SelectCurrency from '../../Currency/SelectCurrency';
 
-import ExternalExhangeInput from '../ExternalExchangeInput';
-import ExternalWithdrawInput from '../ExternalWithdrawIpnut';
-import SelectPaymentMethod from '../SelectPaymentMethod';
+import ExternalExhangeInput from '../../ExchangeForm/deprecated/ExternalExchangeInput';
+import ExternalWithdrawInput from '../../ExchangeForm/deprecated/ExternalWithdrawIpnut';
+import SelectPaymentMethod from '../../ExchangeForm/deprecated/SelectPaymentMethod';
 
 import { API } from '@/api/types';
 import ConfirmModal from '@/components/modals/ConfirmModal';

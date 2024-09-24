@@ -4,7 +4,7 @@ import { FC, useEffect, useState } from 'react';
 import Cards from 'react-credit-cards';
 import { toast } from 'react-toastify';
 
-import ExternalExhangeInput from '../../../ExternalExchangeInput';
+import ExternalExhangeInput from '../../../../ExchangeForm/deprecated/ExternalExchangeInput';
 
 import { CardDetailProps } from '.';
 

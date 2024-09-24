@@ -49,12 +49,12 @@ export const defaultCurrency = {
   },
 };
 
-export enum CryptoFormTabs {
+export enum OfflineCryptoFormTabs {
   BUY = 'buy',
   EXCHANGE = 'exchange',
 }
 
-export enum CryptoFormFieldAction {
+export enum OfflineCryptoFormFieldAction {
   BUY = 'buy',
   SELL = 'sell',
 }

@@ -2,8 +2,8 @@ import { Card, CardBody, CardFooter } from '@nextui-org/react';
 import cn from 'classnames';
 import { FC, useMemo } from 'react';
 
-import CustomInput from '../ui/CustomInput';
-import Loader from '../ui/Loader';
+import CustomInput from '../../ui/CustomInput';
+import Loader from '../../ui/Loader';
 
 import { API } from '@/api/types';
 import { CalcType } from '@/constants';

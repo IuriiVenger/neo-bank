@@ -20,7 +20,7 @@ export const issuing = {
     },
 
     update: (card_id: string, data: API.Cards.Update.Request) =>
-      patchRequest<API.Cards.CardDetailItem>(`/issuing/cards/${card_id}`, { data }),
+      patchRequest<API.Cards.CardDetailItem>(`/issuing/cards/${card_id}/update`, { data }),
   },
   transactions: {
     getByCardId: (card_id: string, limit = defaultPaginationParams.limit, offset = defaultPaginationParams.offset) =>

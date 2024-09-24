@@ -2,6 +2,7 @@ import { User } from '@supabase/supabase-js';
 
 import {
   CardFormFactor,
+  CardStatus,
   CardTransactionStatus,
   CardTransactionType,
   CardType,
@@ -62,6 +63,12 @@ export namespace API {
   }
 
   export namespace Cards {
+    export interface FiatAccount {
+      id: string;
+      fiat: API.List.Fiat;
+      balance: number;
+      nick_name: string | null;
+    }
     export interface CardConfig {
       id: string;
       allowed_currencies: string[];
@@ -136,15 +143,16 @@ export namespace API {
 
     export interface CardDetailItem {
       brand: string;
+      f;
       card_id: string;
       card_number: string;
-      card_status: string;
+      card_status: CardStatus;
       form_factor: string;
       name_on_card: string;
       nick_name: string;
       program_id: string;
       wallet_id: string;
-      type: string;
+      type: CardType;
       transaction_limits: {
         amount: number;
         interval: string;
@@ -154,8 +162,9 @@ export namespace API {
         card_id: string;
         allowed_currencies: string[];
         allowed_transaction_count: string;
-        allowed_merchant_categories: string | null; // Может быть строкой или null
+        allowed_merchant_categories: string | null;
       };
+      fiat_account: FiatAccount;
     }
     export interface CardListItem {
       brand: string;
@@ -168,6 +177,7 @@ export namespace API {
       updated_at: string;
       wallet_id: string;
       program_uuid: string;
+      fiat_account: FiatAccount;
     }
 
     export interface CardsList {
@@ -252,6 +262,9 @@ export namespace API {
 
     export namespace Update {
       export interface Request {
+        card_status?: CardStatus;
+      }
+      export interface DeprecatedRequest {
         status: string;
         cardName: string;
         limits: Limits;
@@ -327,7 +340,7 @@ export namespace API {
       symbol: string;
       icon: string;
       contract: string;
-      decimal: number;
+      decimal?: number;
       chain: number;
     }
 

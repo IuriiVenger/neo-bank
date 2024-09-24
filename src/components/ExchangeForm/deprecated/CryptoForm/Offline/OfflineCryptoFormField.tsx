@@ -5,11 +5,11 @@ import { FC, useState } from 'react';
 import { API } from '@/api/types';
 import CurrencyInfo from '@/components/Currency/CurrencyInfo';
 import CurrencyListModal from '@/components/modals/CurrencyListModal';
-import { CryptoFormFieldAction } from '@/constants';
+import { OfflineCryptoFormFieldAction } from '@/constants';
 import { roundToDecimals } from '@/utils/converters';
 
-type CryptoFormFieldProps = {
-  action: CryptoFormFieldAction;
+type OfflineCryptoFormFieldProps = {
+  action: OfflineCryptoFormFieldAction;
   currency: API.List.Crypto | API.List.Fiat;
   currencies: API.List.Crypto[] | API.List.Fiat[];
   onChangeCurrency: (currency: API.List.Crypto | API.List.Fiat | API.List.Chains) => void;
@@ -21,11 +21,11 @@ type CryptoFormFieldProps = {
 };
 
 const title = {
-  [CryptoFormFieldAction.BUY]: 'You are buying',
-  [CryptoFormFieldAction.SELL]: 'You are selling',
+  [OfflineCryptoFormFieldAction.BUY]: 'You are buying',
+  [OfflineCryptoFormFieldAction.SELL]: 'You are selling',
 };
 
-const CryptoFormField: FC<CryptoFormFieldProps> = (props) => {
+const OfflineCryptoFormField: FC<OfflineCryptoFormFieldProps> = (props) => {
   const { action, currencies, value, currency, onChangeCurrency, setValue, onInputBlur, minValue, chains } = props;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toogleIsModalOpen = () => setIsModalOpen((prev) => !prev);
@@ -63,4 +63,4 @@ const CryptoFormField: FC<CryptoFormFieldProps> = (props) => {
   );
 };
 
-export default CryptoFormField;
+export default OfflineCryptoFormField;

@@ -187,6 +187,14 @@ const DashboardPage = () => {
 
   const onWalletChange = async (wallet: API.Wallets.ExtendWallet) => {
     setLastActiveWallet(wallet);
+    const isSelectedCryptoInWallet = wallet.balance.some((balance) =>
+      balance.details.some((details) => details.crypto.uuid === selectedCrypto.uuid),
+    );
+
+    if (wallet.balance.length && !isSelectedCryptoInWallet) {
+      dispatch(setSelectedCrypto(wallet.balance[0].details[0].crypto));
+    }
+
     dispatch(loadWalletTransactions({ wallet_uuid: wallet.uuid }));
     dispatch(
       loadCards({

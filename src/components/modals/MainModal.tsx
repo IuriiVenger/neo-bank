@@ -290,7 +290,9 @@ const WebModal: FC<MainModalProps> = (props) => {
       onClose={closeModal}
       hideCloseButton={nonNativeCloseButtonEnabled}
     >
-      <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:relative  md:max-h-[85vh]', contentClassName)}>
+      <ModalContent
+        className={cn('fixed left-0 top-0 max-h-svh min-h-96  md:relative md:max-h-[85vh]', contentClassName)}
+      >
         {header || (nativeCloseButton && !hideCloseButton && <ModalHeader className="">{header}</ModalHeader>)}
         <ModalBody className={cn('pb-10 shadow-none sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>
         {(!confirmButtonHidden || nonNativeCloseButtonEnabled) && (

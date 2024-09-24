@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import cn from 'classnames';
 import { FC } from 'react';
 

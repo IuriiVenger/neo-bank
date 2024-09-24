@@ -20,6 +20,7 @@ import Loader from '@/components/ui/Loader';
 import { KYCStatuses, RequestStatus } from '@/constants';
 
 import { deleteDash } from '@/utils/converters';
+import { getCardBalance } from '@/utils/financial';
 
 export type CardsListProps = DashboardProps & {
   onCardClick: (card_id: string) => void;
@@ -175,8 +176,7 @@ const CardsList: FC<CardsListProps> = (props) => {
                   size={cardSize}
                   provider={card.brand}
                   cardNumber={deleteDash(card.card_number)}
-                  CVV="***"
-                  expirationDate="**/**"
+                  balance={getCardBalance(card)}
                   masked
                 />
               </button>

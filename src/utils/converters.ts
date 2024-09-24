@@ -50,7 +50,7 @@ export const deleteDash = (str: string) => str.replace(/-/g, '');
 
 export const getCardExpiryRecord = (month: number, year: number) => {
   const monthStr = month < 10 ? `0${month}` : month;
-  const yearStr = year.toString().slice(2);
+  const yearStr = year.toString().slice(-2);
 
   return `${monthStr}/${yearStr}`;
 };

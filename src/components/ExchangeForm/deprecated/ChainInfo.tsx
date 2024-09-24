@@ -7,7 +7,7 @@ import { FaRegCopy } from 'react-icons/fa6';
 import QRCode from 'react-qr-code';
 import { toast } from 'react-toastify';
 
-import CustomInput from '../ui/CustomInput';
+import CustomInput from '../../ui/CustomInput';
 
 import { API } from '@/api/types';
 import Loader from '@/components/ui/Loader';

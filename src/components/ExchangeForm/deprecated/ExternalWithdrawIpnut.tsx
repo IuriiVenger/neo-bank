@@ -2,7 +2,7 @@ import { Card, CardBody, CardFooter } from '@nextui-org/react';
 import cn from 'classnames';
 import { FC } from 'react';
 
-import CustomInput from '../ui/CustomInput';
+import CustomInput from '../../ui/CustomInput';
 
 import { API } from '@/api/types';
 import Loader from '@/components/ui/Loader';

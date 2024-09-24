@@ -11,7 +11,7 @@ type LoaderProps = {
 };
 
 const Loader: FC<LoaderProps> = ({ className, size }) => (
-  <Spinner size={size} className={cn(className, 'flex w-full justify-center')} color="primary" />
+  <Spinner size={size} className={cn('flex w-full justify-center', className)} color="primary" />
 );
 
 export const BrandLoader: FC = () => (

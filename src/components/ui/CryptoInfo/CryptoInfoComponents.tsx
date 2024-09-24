@@ -2,6 +2,7 @@ import cn from 'classnames';
 import Image from 'next/image';
 import { FC } from 'react';
 
+import { roundToDecimals } from '@/utils/converters';
 import { getCryptoIconSrc } from '@/utils/financial';
 
 type CryptoLabelProps = {
@@ -40,12 +41,15 @@ export const CryptoLabel: FC<CryptoLabelProps> = ({ crypto, currencyNameLabel })
 export const CryptoInfoAmount: FC<CryptoInfoAmountProps> = (props) => {
   const { crypto, withoutFiat, fiatSymbol, isTable, className } = props;
 
+  const fiatAmount = roundToDecimals(crypto.fiat_amount, 2);
+  const cryptoAmount = roundToDecimals(crypto.amount, 8);
+
   return (
     <div className={cn('flex', className, isTable ? 'justify-between' : 'justify-end')}>
       {isTable && (
         <span className={cn('text-foreground-2 text-sm leading-4 max-lg:hidden')}>
           {fiatSymbol}
-          {crypto.fiat_amount}
+          {cryptoAmount}
         </span>
       )}
       <div className="flex flex-col items-end">
@@ -55,7 +59,7 @@ export const CryptoInfoAmount: FC<CryptoInfoAmountProps> = (props) => {
         {!withoutFiat && (
           <span className={cn('text-foreground-2 text-sm leading-4', isTable && 'lg:hidden')}>
             {fiatSymbol}
-            {crypto.fiat_amount}
+            {fiatAmount}
           </span>
         )}
       </div>

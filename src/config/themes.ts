@@ -9,14 +9,17 @@ import { HexColor, RGBAColor, RGBColor } from '../types';
 // export const lightForegroundColor = '#000000';
 // export const lightDefaultForegroundColor = '#000000';
 
-type BaseColors = {
-  foreground: HexColor | RGBAColor | RGBColor;
-  foreground2: HexColor | RGBAColor | RGBColor;
-  foreground3: HexColor | RGBAColor | RGBColor;
-  background: HexColor | RGBAColor | RGBColor;
-  background2: HexColor | RGBAColor | RGBColor;
-  background3: HexColor | RGBAColor | RGBColor;
-};
+type BaseColorsKeys =
+  | 'foreground'
+  | 'foreground2'
+  | 'foreground3'
+  | 'foreground4'
+  | 'background'
+  | 'background2'
+  | 'background3'
+  | 'background4';
+
+type BaseColors = Record<BaseColorsKeys, HexColor | RGBAColor | RGBColor>;
 
 type BrandColorsKeys = 'primary' | 'secondary' | 'danger' | 'success';
 type BrandColorsValues =
@@ -61,17 +64,21 @@ export const baseColorsTheme: Record<CustomTheme, BaseColors> = {
     foreground: '#000000',
     foreground2: '#71717A',
     foreground3: '#FFFFFF',
+    foreground4: '#FFFFFF',
     background: '#F2F2F2',
     background2: '#FFFFFF',
     background3: 'rgba(0, 0, 0, 0.07)',
+    background4: '#A1A1AA',
   },
   [CustomTheme.DARK]: {
     foreground: '#000000',
     foreground2: '#71717A',
     foreground3: '#FFFFFF',
+    foreground4: '#FFFFFF',
     background: '#F2F2F2',
     background2: '#FFFFFF',
     background3: 'rgba(0, 0, 0, 0.07)',
+    background4: '#A1A1AA',
   },
 };
 

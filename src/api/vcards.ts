@@ -17,7 +17,7 @@ export const vcards = {
       },
     },
 
-    update: (card_id: string, data: API.Cards.Update.Request) =>
+    update: (card_id: string, data: API.Cards.Update.DeprecatedRequest) =>
       patchRequest<API.Cards.CardDetailItem>(`/vcards/cards/${card_id}`, { data }),
   },
   transactions: {
