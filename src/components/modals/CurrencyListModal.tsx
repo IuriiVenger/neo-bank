@@ -1,13 +1,12 @@
 import cn from 'classnames';
 import { FC } from 'react';
 
-import { FaCheckCircle } from 'react-icons/fa';
-
 import MainModal from './MainModal';
 
 import { API } from '@/api/types';
 import CurrencyInfo from '@/components/Currency/CurrencyInfo';
 
+import { WithAmount } from '@/types';
 import { isChain } from '@/utils/financial';
 
 type CurrencyListModalProps = {
@@ -16,7 +15,7 @@ type CurrencyListModalProps = {
   chains?: API.List.Chains[];
   title?: string;
   onSelect: (currency: API.List.Crypto | API.List.Fiat | API.List.Chains) => void;
-  currencies: API.List.Crypto[] | API.List.Fiat[] | API.List.Chains[];
+  currencies: WithAmount<API.List.Crypto>[] | WithAmount<API.List.Fiat>[] | WithAmount<API.List.Chains>[];
   activeCurrency: API.List.Crypto | API.List.Fiat | API.List.Chains;
 };
 
@@ -32,15 +31,16 @@ const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
     isChain(currency) ? currency.id : currency.uuid;
 
   return (
-    <MainModal confirmButtonHidden bodyClassname="px-0" isOpen={isOpen} onOpenChange={setIsModalOpen} header={title}>
-      <>
+    <MainModal confirmButtonHidden bodyClassname="px-0" isOpen={isOpen} onOpenChange={setIsModalOpen}>
+      <div>
+        <h2 className="mb-4 px-4 text-2xl font-medium">{title}</h2>
         {currencies.map((currency, index) => (
           <div
             className={cn(
-              'flex cursor-pointer items-center justify-between px-4  py-2 transition-background md:border-b ',
+              'flex cursor-pointer items-center justify-between px-4 py-2 transition-background md:border-b ',
               getCurrencyId(currency) === getCurrencyId(activeCurrency)
                 ? 'bg-gray-100'
-                : 'hover:bg-light-lavander-gradient',
+                : 'hover:bg-custom-lavander-gradient',
             )}
             key={index}
             onClick={() => handleCurrencyClick(currency)}
@@ -52,12 +52,16 @@ const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
               chains={chains}
               hideShevron
             />
-            {getCurrencyId(currency) === getCurrencyId(activeCurrency) && (
-              <FaCheckCircle className="text-tenant-main" />
+            {currency.amount !== undefined && (
+              <div className="flex flex-col items-end">
+                <span className="font-medium leading-5">
+                  {currency.amount} {currency.symbol}
+                </span>
+              </div>
             )}
           </div>
         ))}
-      </>
+      </div>
     </MainModal>
   );
 };

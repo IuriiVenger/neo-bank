@@ -9,6 +9,10 @@ export const auth = {
       otp: (email: string) =>
         postRequest<API.Auth.SupabaseGetSessionResponse>('/auth/signin/email/otp', { data: { email } }),
     },
+    phone: {
+      otp: (phone: string) =>
+        postRequest<API.Auth.SupabaseGetSessionResponse>('/auth/signin/phone/otp', { data: { phone } }),
+    },
     password: (email: string, password: string) =>
       postRequest<API.Auth.SupabaseGetSessionResponse>('/auth/signin/password', { data: { email, password } }),
   },
@@ -16,6 +20,10 @@ export const auth = {
     email: {
       otp: (email: string, token: string) =>
         postRequest<API.Auth.VerifyOtp.Response>('/auth/verify/email/otp', { data: { email, token } }),
+    },
+    phone: {
+      otp: (phone: string, token: string) =>
+        postRequest<API.Auth.VerifyOtp.Response>('/auth/verify/phone/otp', { data: { phone, token } }),
     },
   },
   signUp: {

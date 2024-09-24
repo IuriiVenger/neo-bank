@@ -19,7 +19,7 @@ import KYCButton from '../KYC/KYCButton';
 
 import AuthButtons from './AuthButtons';
 
-import headerLogo from '@/assets/svg/header_logo.svg';
+import headerLogo from '@/assets/svg/tenant/header_logo.svg';
 import whiteLabelConfig from '@/config/whitelabel';
 import { ModalNames, requestKYCStatuses } from '@/constants';
 import useAuth from '@/hooks/useAuth';
@@ -84,7 +84,7 @@ const Header: FC = () => {
         <div className="flex w-full  justify-center gap-8">
           {filtredMenuItems.map((item, index) => (
             <NavbarItem key={`${item}-${index}`}>
-              <Link className="text-sm text-tenant-main hover:underline" href={item.href}>
+              <Link className="text-sm text-primary hover:underline " href={item.href}>
                 {item.title}
               </Link>
             </NavbarItem>
@@ -97,7 +97,7 @@ const Header: FC = () => {
         {filtredMenuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
             <Link
-              className="w-full text-tenant-main"
+              className="w-full text-primary "
               color={index === menuItems.length - 1 ? 'danger' : 'foreground'}
               href={item.href}
               onClick={closeMenu}
@@ -110,12 +110,12 @@ const Header: FC = () => {
         {isUserSignedIn ? (
           <>
             <NavbarMenuItem>
-              <Link className="w-full text-tenant-main" href="/dashboard" onClick={closeMenu}>
+              <Link className="w-full text-primary " href="/dashboard" onClick={closeMenu}>
                 Dashboard
               </Link>
             </NavbarMenuItem>
             <NavbarMenuItem>
-              <button type="button" className="text-tenant-main" onClick={signOut}>
+              <button type="button" className="text-primary " onClick={signOut}>
                 Logout
               </button>
             </NavbarMenuItem>
@@ -123,7 +123,7 @@ const Header: FC = () => {
         ) : (
           authItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
-              <Link className="w-full text-tenant-main" href={item.href} onClick={closeMenu}>
+              <Link className="w-full text-primary " href={item.href} onClick={closeMenu}>
                 {item.title}
               </Link>
             </NavbarMenuItem>

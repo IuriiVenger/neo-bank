@@ -15,3 +15,6 @@ export const selectActiveFiatAvailableCrypto = (state: RootState) => {
 
   return availableCrypto;
 };
+
+export const selectCurrentWalletBalanceCurrency = (state: RootState) =>
+  state.finance.fiats.find((item) => item.uuid === state.finance.selectedWallet.data?.base_fiat)?.symbol || 'N/A';

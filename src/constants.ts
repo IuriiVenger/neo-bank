@@ -1,3 +1,10 @@
+// import { IconType } from 'react-icons';
+// import { RiAddFill, RiArrowUpLine } from 'react-icons/ri';
+
+import { IconType } from 'react-icons';
+
+import { RiArrowDownLine, RiArrowUpLine } from 'react-icons/ri';
+
 import { WalletType } from './types';
 
 export enum RequestStatus {
@@ -42,12 +49,12 @@ export const defaultCurrency = {
   },
 };
 
-export enum CryptoFormTabs {
+export enum OfflineCryptoFormTabs {
   BUY = 'buy',
   EXCHANGE = 'exchange',
 }
 
-export enum CryptoFormFieldAction {
+export enum OfflineCryptoFormFieldAction {
   BUY = 'buy',
   SELL = 'sell',
 }
@@ -63,6 +70,13 @@ export enum DashboardTabs {
   EXCHANGE = 'exchange',
   INFO = 'info',
   CARDS = 'cards',
+
+  // new
+
+  MAIN = 'main',
+  CARD = 'card',
+  WALLET = 'wallet',
+  TRANSACTIONS = 'transactions',
 }
 
 export enum WalletTypeValues {
@@ -94,7 +108,7 @@ export const defaultPaginationParams = {
 };
 
 export const cardInitialPaginationParams = {
-  limit: 11,
+  limit: 10,
   offset: 0,
   isLastPage: false,
 };
@@ -160,12 +174,6 @@ export enum CardStatus {
   CLOSED = 'CLOSED',
 }
 
-export enum CardTransationStatus {
-  PENDING = 'PENDING',
-  SUCCESS = 'SUCCESS',
-  DECLINE = 'DECLINE',
-}
-
 export enum CardTransactionDirection {
   INCOMING = 'INCOMING',
   OUTGOING = 'OUTGOING',
@@ -182,3 +190,191 @@ export enum AppEnviroment {
   WEB = 'web',
   TELEGRAM = 'telegram',
 }
+
+export enum CustomTheme {
+  LIGHT = 'light',
+  DARK = 'dark',
+}
+
+export enum CardFormFactor {
+  VIRTUAL = 'VIRTUAL',
+  PHYSICAL = 'PHYSICAL',
+}
+
+export enum CardType {
+  CREDIT = 'CREDIT',
+  DEBIT = 'DEBIT',
+}
+
+export const cardFormFactorsData: Record<CardFormFactor, { title: string; description: string; shortTitle: string }> = {
+  [CardFormFactor.VIRTUAL]: {
+    title: 'Virtual card',
+    shortTitle: 'Virtual',
+    description: 'Digital version of your card will be instantly available',
+  },
+  [CardFormFactor.PHYSICAL]: {
+    title: 'Physical card',
+    shortTitle: 'Physical',
+    description: 'Plastic card that you can use for in-store purchases.',
+  },
+};
+
+export const cardTypeData: Record<CardType, { title: string; shortTitle: string }> = {
+  [CardType.DEBIT]: {
+    title: 'Debit card',
+    shortTitle: 'Debit',
+  },
+  [CardType.CREDIT]: {
+    title: 'Credit card',
+    shortTitle: 'Credit',
+  },
+};
+
+export enum CardTransactionType {
+  AUTHORIZATION = 'AUTHORIZATION',
+  CLEARING = 'CLEARING',
+  REFUND = 'REFUND',
+  REVERSAL = 'REVERSAL',
+  ORIGINAL_CREDIT = 'ORIGINAL_CREDIT',
+}
+
+export enum CardTransactionStatus {
+  APPROVED = 'APPROVED',
+  CLEARED = 'CLEARED',
+  EXPIRED = 'EXPIRED',
+  FAILED = 'FAILED',
+  PENDING = 'PENDING',
+  REVERSED = 'REVERSED',
+}
+
+export const cardTransactionTypeData: Record<
+  CardTransactionType,
+  { title: string; Icon: IconType; direction: string; typeName: string }
+> = {
+  [CardTransactionType.AUTHORIZATION]: {
+    title: 'Authorization',
+    Icon: RiArrowDownLine,
+    direction: 'outgoing',
+    typeName: 'authorization',
+  },
+  [CardTransactionType.CLEARING]: {
+    title: 'Clearing',
+    Icon: RiArrowUpLine,
+    direction: 'outgoing',
+    typeName: 'clearing',
+  },
+  [CardTransactionType.REFUND]: {
+    title: 'Refund',
+    Icon: RiArrowUpLine,
+    direction: 'incoming',
+    typeName: 'refund',
+  },
+  [CardTransactionType.REVERSAL]: {
+    title: 'Reversal',
+    Icon: RiArrowUpLine,
+    direction: 'incoming',
+    typeName: 'reversal',
+  },
+  [CardTransactionType.ORIGINAL_CREDIT]: {
+    title: 'Original Credit',
+    Icon: RiArrowUpLine,
+    direction: 'incoming',
+    typeName: 'original_credit',
+  },
+};
+
+export enum WalletTransactionType {
+  DEPOSIT = 'deposit',
+  WITHDRAWAL = 'withdrawal',
+}
+
+export enum WalletTransactionMethod {
+  P2P = 'p2p',
+  CRYPTO = 'crypto',
+  BANK_TRANSFER = 'bank_transfer',
+  EXCHANGE = 'exchange',
+  SBP = 'sbp',
+}
+
+export const walletTransactionTypeData: Record<
+  WalletTransactionType,
+  Record<
+    WalletTransactionMethod,
+    { title: string; methodName: string; typeName: string; direction: string; Icon: IconType }
+  >
+> = {
+  [WalletTransactionType.DEPOSIT]: {
+    [WalletTransactionMethod.P2P]: {
+      title: 'P2P',
+      methodName: 'p2p',
+      typeName: 'deposit',
+      direction: 'incoming',
+      Icon: RiArrowDownLine,
+    },
+    [WalletTransactionMethod.CRYPTO]: {
+      title: 'Crypto',
+      methodName: 'crypto',
+      typeName: 'deposit',
+      direction: 'incoming',
+      Icon: RiArrowDownLine,
+    },
+    [WalletTransactionMethod.BANK_TRANSFER]: {
+      title: 'Bank Transfer',
+      methodName: 'bank_transfer',
+      typeName: 'deposit',
+      direction: 'incoming',
+      Icon: RiArrowDownLine,
+    },
+    [WalletTransactionMethod.EXCHANGE]: {
+      title: 'Exchange',
+      methodName: 'exchange',
+      typeName: 'deposit',
+      direction: 'incoming',
+      Icon: RiArrowDownLine,
+    },
+    [WalletTransactionMethod.SBP]: {
+      title: 'SBP',
+      methodName: 'sbp',
+      typeName: 'deposit',
+      direction: 'incoming',
+      Icon: RiArrowDownLine,
+    },
+  },
+  [WalletTransactionType.WITHDRAWAL]: {
+    [WalletTransactionMethod.P2P]: {
+      title: 'P2P',
+      methodName: 'p2p',
+      typeName: 'withdrawal',
+      direction: 'outgoing',
+      Icon: RiArrowUpLine,
+    },
+    [WalletTransactionMethod.CRYPTO]: {
+      title: 'Crypto',
+      methodName: 'crypto',
+      typeName: 'withdrawal',
+      direction: 'outgoing',
+      Icon: RiArrowUpLine,
+    },
+    [WalletTransactionMethod.BANK_TRANSFER]: {
+      title: 'Bank Transfer',
+      methodName: 'bank_transfer',
+      typeName: 'withdrawal',
+      direction: 'outgoing',
+      Icon: RiArrowUpLine,
+    },
+    [WalletTransactionMethod.EXCHANGE]: {
+      title: 'Exchange',
+      methodName: 'exchange',
+      typeName: 'withdrawal',
+      direction: 'outgoing',
+      Icon: RiArrowUpLine,
+    },
+    [WalletTransactionMethod.SBP]: {
+      title: 'SBP',
+      methodName: 'sbp',
+      typeName: 'withdrawal',
+      direction: 'outgoing',
+      Icon: RiArrowUpLine,
+    },
+  },
+};

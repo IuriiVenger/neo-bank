@@ -13,11 +13,6 @@ const tenantId = process.env.TENANT_ID;
 export const instance = axios.create({
   baseURL: baseURL || '/api/',
   timeout: 60000,
-  headers: {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'X-Tenant-Id': tenantId,
-  },
 });
 
 instance.interceptors.request.use((config) => {
@@ -27,6 +22,9 @@ instance.interceptors.request.use((config) => {
   const modifiedHeaders = {
     ...config.headers,
     'App-Enviroment': appEnviroment,
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'X-Tenant-Id': tenantId,
   };
 
   if (access_token) {
@@ -52,9 +50,7 @@ instance.interceptors.response.use(
       if (response.config?.url.includes('/auth/refresh/refresh_token') || !refreshToken) {
         if (typeof window !== 'undefined') {
           toast.error(error?.response?.data?.message || defaultErrorMessageForUnauthorized);
-          appEnviroment === AppEnviroment.TELEGRAM
-            ? (window.location.href = '/auth/telegram/login')
-            : (window.location.href = '/auth/login');
+          appEnviroment === AppEnviroment.TELEGRAM ? navigate('/auth/telegram/login') : navigate('/auth/login');
         }
         deleteTokens();
         requestQueue = [];

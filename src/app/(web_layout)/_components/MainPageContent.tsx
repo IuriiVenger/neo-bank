@@ -12,7 +12,7 @@ const MainPageCryptoForm = () => {
   const isUserLoggedIn = useAppSelector(selectIsUserLoggedIn);
 
   const dispatch = useAppDispatch();
-  const setCrypto = (currency: API.List.Crypto) => dispatch(setSelectedCrypto(currency));
+  const selectCrypto = (currency: API.List.Crypto) => dispatch(setSelectedCrypto(currency));
   const setFiat = (currency: API.List.Fiat) => dispatch(setSelectedFiat(currency));
   const exchangeData = useExchange(fiatExchangeRate, selectedCrypto);
 
@@ -23,7 +23,7 @@ const MainPageCryptoForm = () => {
       chainList={chains}
       fiatList={fiats}
       cryptoList={crypto}
-      selectCrypto={setCrypto}
+      selectCrypto={selectCrypto}
       selectFiat={setFiat}
       exchangeData={exchangeData}
       isUserLoggedIn={isUserLoggedIn}

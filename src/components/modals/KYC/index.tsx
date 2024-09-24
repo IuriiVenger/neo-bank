@@ -4,12 +4,11 @@ import { AxiosResponse } from 'axios';
 import { FC, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import Kyc from './steps/Kyc';
-import Start from './steps/Start';
-
 import { API } from '@/api/types';
-import MainModal, { CustomModal } from '@/components/modals/MainModal';
-import { framerMotionAnimations } from '@/config/animations';
+import Kyc from '@/components/KYC/steps/Kyc';
+import Start from '@/components/KYC/steps/Start';
+import MainModal from '@/components/modals/MainModal';
+
 import { KYCStatuses } from '@/constants';
 
 type KYCModalProps = {

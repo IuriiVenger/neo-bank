@@ -3,7 +3,7 @@ import cn from 'classnames';
 import Image from 'next/image';
 import { FC } from 'react';
 
-import logo from '@/assets/svg/header_logo.svg';
+import logo from '@/assets/svg/tenant/header_logo.svg';
 
 type LoaderProps = {
   className?: string;
@@ -11,7 +11,7 @@ type LoaderProps = {
 };
 
 const Loader: FC<LoaderProps> = ({ className, size }) => (
-  <Spinner size={size} className={cn(className, 'flex w-full justify-center')} color="primary" />
+  <Spinner size={size} className={cn('flex w-full justify-center', className)} color="primary" />
 );
 
 export const BrandLoader: FC = () => (

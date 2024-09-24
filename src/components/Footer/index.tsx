@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { FC } from 'react';
 
-import logo from '@/assets/svg/footer_logo.svg';
+import logo from '@/assets/svg/tenant/footer_logo.svg';
 import whiteLabelConfig from '@/config/whitelabel';
 
 interface ImageProps {
@@ -15,7 +15,7 @@ const Image: FC<ImageProps> = ({ src, alt, className }) => (
 );
 
 const Footer: FC = () => (
-  <footer className="flex items-center justify-center self-stretch bg-black px-16 py-10 max-md:px-5 md:py-20">
+  <footer className="flex items-center justify-center self-stretch bg-primary px-16 py-10 md:py-20 max-md:px-5">
     <div className="flex w-full max-w-screen-xl flex-col gap-16">
       <div className="flex w-full justify-between gap-5 gap-y-16 max-md:max-w-full max-md:flex-wrap">
         <Image src={logo.src} alt="Company Logo" className="aspect-[4.55] w-36 max-w-full shrink-0" />

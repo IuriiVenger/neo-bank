@@ -4,9 +4,9 @@ import { NextUIProvider } from '@nextui-org/react';
 import { AppProgressBar } from 'next-nprogress-bar';
 import { Suspense, useEffect } from 'react';
 
-import { tenantMainColor } from '../../tailwind.config';
-
 import GlobalClientErrorHandler from '@/components/GlobalClientErrorHandler';
+
+import { themes } from '@/config/themes';
 import useInitApp from '@/hooks/useInitApp';
 import { useAppDispatch } from '@/store';
 
@@ -24,7 +24,12 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
       <GlobalClientErrorHandler />
       {children}
       <Suspense>
-        <AppProgressBar color={tenantMainColor} height="5px" options={{ showSpinner: false }} shallowRouting />
+        <AppProgressBar
+          color={themes.light.brandColors.primary.DEFAULT}
+          height="5px"
+          options={{ showSpinner: false }}
+          shallowRouting
+        />
       </Suspense>
     </NextUIProvider>
   );

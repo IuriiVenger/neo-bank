@@ -3,8 +3,9 @@
 import { useQueryState } from 'nuqs';
 import { useEffect, useState } from 'react';
 
+import { issuing } from '@/api/issuing';
 import { API } from '@/api/types';
-import { vcards } from '@/api/vcards';
+
 import { wallets } from '@/api/wallets';
 import Dashboard, { DashboardProps } from '@/components/Dashboard';
 import privateRoute from '@/components/privateRoute';
@@ -26,7 +27,13 @@ import useExternalCalc from '@/hooks/useExternalCalc';
 import useOrder from '@/hooks/useOrder';
 import useWallet from '@/hooks/useWallet';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { selectActiveFiatAvailableCrypto, selectConfig, selectFinanceData, selectUser } from '@/store/selectors';
+import {
+  selectActiveFiatAvailableCrypto,
+  selectConfig,
+  selectCurrentWalletBalanceCurrency,
+  selectFinanceData,
+  selectUser,
+} from '@/store/selectors';
 import {
   loadCards,
   loadMoreWalletTransactions,
@@ -44,6 +51,7 @@ import {
   hiddenLoadSelectedWallet,
 } from '@/store/slices/finance';
 import { setModalVisible } from '@/store/slices/ui';
+import { ChangeDashboardTabAdditionalParams } from '@/types';
 
 const DashboardPage = () => {
   const {
@@ -56,6 +64,7 @@ const DashboardPage = () => {
     chains,
     fiats,
     crypto,
+    cryptoBySymbol,
     userWallets,
     fiatExchangeRate,
     selectedWalletTransactions,
@@ -66,6 +75,7 @@ const DashboardPage = () => {
   const { isWebAppInitialized, appEnviroment } = useAppSelector(selectConfig);
 
   const { userData } = useAppSelector(selectUser);
+  const selectedWalletBalanceCurrency = useAppSelector(selectCurrentWalletBalanceCurrency);
   const availableToExchangeCrypto = useAppSelector(selectActiveFiatAvailableCrypto);
   const { createOnRampOrder, createOffRampOrder, createCrypto2CryptoOrder, createInternalTopUpOrder } = useOrder();
   const { getWalletAddress, createWalletAddress } = useWallet();
@@ -74,8 +84,9 @@ const DashboardPage = () => {
   const dispatch = useAppDispatch();
 
   const [queryDashboardTab, setQueryDashboardTab] = useQueryState('tab');
+  const [queryCardId, setQueryCardId] = useQueryState('card_id');
 
-  const initialDasboardTab = (queryDashboardTab as DashboardTabs) || DashboardTabs.CARDS;
+  const initialDasboardTab = (queryDashboardTab as DashboardTabs) || DashboardTabs.MAIN;
   const allowedCryptoToFiatList = crypto.filter((item) => allowedCryptoToFiatUuid.includes(item.uuid));
 
   const [activeDashboardTab, setActiveDashboardTab] = useState<DashboardTabs>(initialDasboardTab);
@@ -102,9 +113,14 @@ const DashboardPage = () => {
     await selectCard(card_id);
   };
 
-  const changeDashboardTab = (tab: DashboardTabs) => {
+  const changeDashboardTab = (tab: DashboardTabs, additionalRouteParams?: ChangeDashboardTabAdditionalParams) => {
     setActiveDashboardTab(tab);
     setQueryDashboardTab(tab);
+
+    if (additionalRouteParams?.card_id !== undefined) {
+      setQueryCardId(additionalRouteParams.card_id);
+    }
+
     activeCardId && changeActiveCard(null);
   };
 
@@ -138,7 +154,7 @@ const DashboardPage = () => {
     selectedCard.data &&
     dispatch(
       loadMoreCardTransactions({
-        card_id: selectedCard.data.cardId,
+        card_id: selectedCard.data.card_id,
         limit: selectedCardTransactions.meta.limit,
         offset: selectedCardTransactions.meta.offset,
       }),
@@ -158,19 +174,27 @@ const DashboardPage = () => {
   };
 
   const getOTP = async (card_id: string) => {
-    const { data } = await vcards.cards.sensitiveData.otp.get(card_id);
+    const { data } = await issuing.cards.sensitiveData.otp.get(card_id);
 
     return data;
   };
 
   const getSensitiveData = async (card_id: string) => {
-    const { data } = await vcards.cards.sensitiveData.get(card_id);
+    const { data } = await issuing.cards.sensitiveData.get(card_id);
 
     return data;
   };
 
   const onWalletChange = async (wallet: API.Wallets.ExtendWallet) => {
     setLastActiveWallet(wallet);
+    const isSelectedCryptoInWallet = wallet.balance.some((balance) =>
+      balance.details.some((details) => details.crypto.uuid === selectedCrypto.uuid),
+    );
+
+    if (wallet.balance.length && !isSelectedCryptoInWallet) {
+      dispatch(setSelectedCrypto(wallet.balance[0].details[0].crypto));
+    }
+
     dispatch(loadWalletTransactions({ wallet_uuid: wallet.uuid }));
     dispatch(
       loadCards({
@@ -203,10 +227,10 @@ const DashboardPage = () => {
       onWalletTotalAmountUpdate(selectedWallet.data);
   };
 
-  const createCard = async (data: API.Cards.Create.Request) => vcards.cards.create(data);
+  const createCard = async (data: API.Cards.Create.Request) => issuing.cards.create(data);
 
   const updateCard = async (card_id: string, data: API.Cards.Update.Request) => {
-    await vcards.cards.update(card_id, data);
+    await issuing.cards.update(card_id, data);
     dispatch(
       loadCards({
         wallet_uuid: selectedWallet.data?.uuid || '',
@@ -224,7 +248,7 @@ const DashboardPage = () => {
     appEnviroment,
     availableToExchangeCrypto,
     bins,
-    cardTransactions: selectedCardTransactions,
+    selectedCardTransactions,
     cards: selectedWalletCards,
     chainList: chains,
     changeActiveCard,
@@ -237,6 +261,7 @@ const DashboardPage = () => {
     createWallet,
     createWalletAddress,
     cryptoList: crypto,
+    cryptoBySymbol,
     externalCalcData,
     fiatList: fiats,
     exchangeRate: fiatExchangeRate,
@@ -259,6 +284,7 @@ const DashboardPage = () => {
     selectCrypto,
     selectFiat,
     selectWallet,
+    selectedWalletBalanceCurrency,
     verificationStatus: userData?.kyc_status,
     walletTransactions: selectedWalletTransactions,
     walletTypes,
@@ -278,8 +304,13 @@ const DashboardPage = () => {
   }, [selectedWallet]);
 
   useEffect(() => {
-    queryDashboardTab && setActiveDashboardTab(queryDashboardTab as DashboardTabs);
+    setActiveDashboardTab((queryDashboardTab as DashboardTabs) || DashboardTabs.MAIN);
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }, [queryDashboardTab]);
+
+  useEffect(() => {
+    changeActiveCard(queryCardId as string);
+  }, [queryCardId]);
 
   useEffect(() => {
     activeCardId && selectCard(activeCardId);

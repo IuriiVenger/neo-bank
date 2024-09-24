@@ -6,7 +6,7 @@ import fs from 'fs/promises';
 import path from 'path';
 
 dotenv.config({
-  path: path.resolve('./', './.env.local', './.env'),
+  path: path.resolve('./', './.env.local'),
 });
 
 const updateTenantInfo = async () => {

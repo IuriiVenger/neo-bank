@@ -4,7 +4,8 @@ import cn from 'classnames';
 import { FC, memo, ReactNode, useEffect } from 'react';
 
 import { framerMotionAnimations } from '@/config/animations';
-import { disabledTelegramButtonColor, mainTelegramButtonColor } from '@/config/colors';
+
+import { themes } from '@/config/themes';
 import { AppEnviroment } from '@/constants';
 import useBreakpoints from '@/hooks/useBreakpoints';
 import { useAppSelector } from '@/store';
@@ -35,6 +36,7 @@ type MainModalProps = CustomModalProps &
     isLoading?: boolean;
     isAppFullInitialized?: boolean;
     nativeCloseButton?: boolean;
+    saveScrollPosition?: boolean;
   };
 
 export const CustomModal: FC<CustomModalProps> = (props) => {
@@ -141,14 +143,15 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     if (!mainButton || !isOpen) return;
 
     mainButton.disable();
-    mainButton.setBgColor(disabledTelegramButtonColor);
+
+    mainButton.setBgColor(themes.light.telegramColors.mainButton.disabledColor);
   };
 
   const enableMainButton = () => {
     if (!mainButton || !isOpen) return;
 
     mainButton.enable();
-    mainButton.setBgColor(mainTelegramButtonColor);
+    mainButton.setBgColor(themes.light.telegramColors.mainButton.color);
   };
 
   const showLoader = () => {
@@ -221,6 +224,8 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     };
   }, [isOpen]);
 
+  useEffect(() => () => onOpenChangeHandler(), []);
+
   useEffect(() => {
     onConfirmButtonTextChanged();
   }, [confirmButtonText]);
@@ -270,20 +275,12 @@ const WebModal: FC<MainModalProps> = (props) => {
     ...otherProps
   } = props;
 
-  const { mdBreakpoint } = useBreakpoints();
-
   const closeModal = () => {
     onOpenChange && onOpenChange(false);
     onClose && onClose();
   };
 
   const nonNativeCloseButtonEnabled = !nativeCloseButton && !hideCloseButton;
-
-  useEffect(() => {
-    if (isOpen && !mdBreakpoint && window) {
-      window.scrollTo({ top: 0, behavior: 'instant' });
-    }
-  }, [isOpen]);
 
   return (
     <Modal
@@ -293,17 +290,13 @@ const WebModal: FC<MainModalProps> = (props) => {
       onClose={closeModal}
       hideCloseButton={nonNativeCloseButtonEnabled}
     >
-      <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:relative md:max-h-[90vh]', contentClassName)}>
-        {!!header && <ModalHeader>{header}</ModalHeader>}
-        <ModalBody className={cn('pb-10 shadow-inner sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>
-        {(!confirmButtonHidden || !nonNativeCloseButtonEnabled) && (
-          <ModalFooter
-            className="relative z-10 flex min-h-1 w-full flex-col pb-6 md:pb-4"
-            style={{
-              boxShadow:
-                '0px -10px 6px -3px rgba(255,255,255,0.95), 0px -20px 6px -3px rgba(255,255,255,0.85), 0px -31px 6px -3px rgba(255,255,255,0.8)',
-            }}
-          >
+      <ModalContent
+        className={cn('fixed left-0 top-0 max-h-svh min-h-96  md:relative md:max-h-[85vh]', contentClassName)}
+      >
+        {header || (nativeCloseButton && !hideCloseButton && <ModalHeader className="">{header}</ModalHeader>)}
+        <ModalBody className={cn('pb-10 shadow-none sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>
+        {(!confirmButtonHidden || nonNativeCloseButtonEnabled) && (
+          <ModalFooter className="relative z-10 flex min-h-1 w-full flex-col pb-6">
             {!confirmButtonHidden && (
               <Button
                 isDisabled={confirmButtonDisabled}
@@ -331,7 +324,7 @@ const WebModal: FC<MainModalProps> = (props) => {
 const MainModal: FC<MainModalProps> = (props) => {
   const { mdBreakpoint } = useBreakpoints();
   const { appEnviroment, isAppFullInitialized } = useAppSelector(selectConfig);
-  const { size, motionProps, isOpen } = props;
+  const { size, motionProps, isOpen, className, nativeCloseButton = true, saveScrollPosition } = props;
 
   const responsiveSize = mdBreakpoint ? 'md' : 'full';
   const modalSize = size || responsiveSize;
@@ -341,17 +334,19 @@ const MainModal: FC<MainModalProps> = (props) => {
   const disableAnimation = !mdBreakpoint && !motionProps;
 
   useEffect(() => {
-    if (isOpen && !mdBreakpoint && window) {
+    if (isOpen && !mdBreakpoint && window && !saveScrollPosition) {
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
   }, [isOpen]);
 
   const modifiedProps = {
     ...props,
+    nativeCloseButton,
     isAppFullInitialized,
     disableAnimation,
     motionProps: modalMotionProps,
     size: modalSize,
+    className: cn('bg-background', className),
   };
 
   return isTelegramEnviroment ? <TelegramModal {...modifiedProps} /> : <WebModal {...modifiedProps} />;
