@@ -9,7 +9,7 @@ type DefaultContainerProps = PropsWithChildren &
   };
 
 const DefaultContainer: FC<DefaultContainerProps> = (props) => {
-  const { children, className, rounded = 'lg', ...rest } = props;
+  const { children, className, rounded = 'md', ...rest } = props;
 
   const roundedClassName = getRoundedClassName(rounded);
 

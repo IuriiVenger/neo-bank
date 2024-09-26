@@ -53,10 +53,10 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
 
   const selectedWalletBalance = selectedWallet.data?.balance;
   const selectedCryptoWalletBalance =
-    selectedWalletBalance?.find((balance: any) => balance.crypto.uuid === selectedCrypto.uuid)?.amount || 0;
+    selectedWalletBalance?.find((balance: any) => balance.crypto.uuid === selectedCrypto?.uuid)?.amount || 0;
   const selectedCryptoAvavilibleToWithdraw =
     selectedWallet.data &&
-    selectedWallet.data.balance.find((balance: any) => balance.crypto.uuid === selectedCrypto.uuid)?.amount;
+    selectedWallet.data.balance.find((balance: any) => balance.crypto.uuid === selectedCrypto?.uuid)?.amount;
 
   const isAmountEnough = selectedCryptoAvavilibleToWithdraw && selectedCryptoAvavilibleToWithdraw >= amount;
   const isTopUpAvailable =
@@ -101,7 +101,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   };
 
   const openConfirmationModal = () => {
-    const confirmationText = `Are you sure you want to create card and top up it with ${amount} ${selectedCrypto.symbol}?`;
+    const confirmationText = `Are you sure you want to create card and top up it with ${amount} ${selectedCrypto?.symbol}?`;
 
     setTopUpConfirmationText(confirmationText);
 
@@ -175,15 +175,15 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
           label="Top Up from"
           labelClassName="!text-base font-medium mb-2"
           onClick={openCryptoModal}
-          currency={selectedCrypto}
+          currency={selectedCrypto as any}
           balance={selectedCryptoWalletBalance}
           chains={chainList}
         />
 
         <ExternalExhangeInput
           externalLabel="Top Up amount"
-          buyingCurrency={selectedFiat}
-          sellingCurrency={selectedCrypto}
+          buyingCurrency={selectedFiat as any}
+          sellingCurrency={selectedCrypto as any}
           calcData={offrampCalcData}
           sellValue={amount}
           setSellValue={setAmount}

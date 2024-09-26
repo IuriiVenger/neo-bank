@@ -43,10 +43,10 @@ const CurrencyInfo: FC<CurrencyInfoProps> = (props) => {
     <div className={cn(className, 'flex shrink-0 items-center gap-2')}>
       <Badge
         className="border-none bg-none p-0"
-        content={chainIcon && <Image className="h-3 w-3" height={32} width={32} alt="" src={chainIcon} />}
+        content={chainIcon && <Image className="h-5 w-5" height={32} width={32} alt="" src={chainIcon} />}
       >
         <Image
-          className="h-8 w-8 rounded-full object-cover"
+          className="h-[42px] w-[42px] rounded-full object-cover"
           src={getCurrencyIconSrc(currency)}
           alt="currency label"
           height={64}

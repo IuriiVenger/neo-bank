@@ -1,7 +1,5 @@
 import copy from 'copy-to-clipboard';
-import { FC, useState } from 'react';
-
-import ReactCreditCard, { Focused } from 'react-credit-cards';
+import { FC } from 'react';
 
 import { IoCopyOutline } from 'react-icons/io5';
 
@@ -24,21 +22,13 @@ type CardSensitiveDataModalProps = {
 
 const CardSensitiveDataModal: FC<CardSensitiveDataModalProps> = (props) => {
   const { setIsModalOpen, isOpen, sensitiveData, selectedCard } = props;
-  const [focus, setFocus] = useState<Focused>('number');
 
-  const isCVVFocused = focus === 'cvc';
-
-  const toogleFocus = () => {
-    setFocus(isCVVFocused ? 'number' : 'cvc');
-  };
   if (!sensitiveData) {
     return null;
   }
 
   const expiry = getCardExpiryRecord(sensitiveData.expiry_month, sensitiveData.expiry_year);
   const numberMask = separateNumbers(+sensitiveData.card_number, '-', 4);
-
-  const onModalClose = () => setFocus('number');
 
   const copyCVVToClipboard = () => {
     copy(sensitiveData.cvv);
@@ -51,7 +41,7 @@ const CardSensitiveDataModal: FC<CardSensitiveDataModalProps> = (props) => {
   };
 
   return (
-    <MainModal isOpen={isOpen} onOpenChange={setIsModalOpen} onClose={onModalClose} confirmButtonHidden>
+    <MainModal isOpen={isOpen} onOpenChange={setIsModalOpen} confirmButtonHidden>
       <div className="m-auto flex flex-col gap-10">
         {/* <ReactCreditCard
             number={deleteDash(sensitiveData.card_number)}

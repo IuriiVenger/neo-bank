@@ -18,7 +18,6 @@ import {
   CalcType,
   RequestStatus,
   cardInitialPaginationParams,
-  defaultCurrency,
   defaultPaginationParams,
   emptyStoreDataWithStatus,
 } from '@/constants';
@@ -33,10 +32,10 @@ type FinanceState = {
   onrampCalc: StoreDataWithStatus<StoreOnrampCalcData[] | null>;
   offrampCalc: StoreDataWithStatus<StoreOfframpCalcData[] | null>;
   withdrawCalc: StoreDataWithStatus<API.Orders.Crypto.Withdrawal.Calc.Response | null>;
-  selectedChain: API.List.Chains;
-  selectedCrypto: API.List.Crypto;
+  selectedChain: null | API.List.Chains;
+  selectedCrypto: null | API.List.Crypto;
   selectedCard: StoreDataWithStatus<API.Cards.CardDetailItem | null>;
-  selectedFiat: API.List.Fiat;
+  selectedFiat: null | API.List.Fiat;
   selectedWallet: StoreDataWithStatus<API.Wallets.ExtendWallet | null>;
   selectedWalletTransactions: StoreDataWithStatusAndMeta<API.WalletTransactions.Transaction[] | null> &
     SupabasePaginationParams;
@@ -65,9 +64,9 @@ const initialState: FinanceState = {
   onrampCalc: emptyStoreDataWithStatus,
   offrampCalc: emptyStoreDataWithStatus,
   withdrawCalc: emptyStoreDataWithStatus,
-  selectedChain: defaultCurrency.chain,
-  selectedCrypto: defaultCurrency.crypto,
-  selectedFiat: defaultCurrency.fiat,
+  selectedChain: null,
+  selectedCrypto: null,
+  selectedFiat: null,
   selectedWallet: emptyStoreDataWithStatus,
   selectedCard: emptyStoreDataWithStatus,
   selectedCardTransactions: {

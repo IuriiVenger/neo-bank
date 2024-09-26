@@ -1,16 +1,11 @@
 import { FC } from 'react';
 
 import { API } from '@/api/types';
+import CoinList from '@/components/CoinList';
 import BackButton from '@/components/ui/BackButton';
-import CryptoInfo from '@/components/ui/CryptoInfo';
 import DefaultContainer from '@/components/ui/DefaultContainer';
 import { DashboardTabs } from '@/constants';
 import { StoreDataWithStatus } from '@/store/types';
-
-type CryptoBySymbolWithBalance = {
-  crypto: Omit<API.Wallets.WalletBalanceItem, 'details'> & { amount: number };
-  currencyName: string;
-};
 
 type WalletTabProps = {
   cryptoBySymbol: API.List.CryptoBySymbol[];
@@ -21,19 +16,6 @@ type WalletTabProps = {
 
 const WalletTab: FC<WalletTabProps> = (props) => {
   const { cryptoBySymbol, selectedWallet, selectedWalletBalanceCurrency, changeDashboardTab } = props;
-
-  const cryptoBySymbolWithBalance: CryptoBySymbolWithBalance[] = cryptoBySymbol.map((crypto) => {
-    const balance = selectedWallet.data?.balance.find((wallet) => wallet.symbol === crypto.symbol);
-
-    return {
-      crypto: {
-        ...crypto,
-        amount: balance?.amount ?? 0,
-        fiat_amount: balance?.fiat_amount ?? 0,
-      },
-      currencyName: crypto.symbol,
-    };
-  });
 
   const goToMainTab = () => changeDashboardTab(DashboardTabs.MAIN);
 
@@ -50,9 +32,11 @@ const WalletTab: FC<WalletTabProps> = (props) => {
               <p className="font-medium">Amount</p>
             </div>
           </div>
-          {cryptoBySymbolWithBalance.map((crypto, index) => (
-            <CryptoInfo hideEmptyBalance key={index} {...crypto} fiatSymbol={selectedWalletBalanceCurrency} isTable />
-          ))}
+          <CoinList
+            cryptoBySymbol={cryptoBySymbol}
+            selectedWallet={selectedWallet}
+            selectedWalletBalanceCurrency={selectedWalletBalanceCurrency}
+          />
         </div>
       </DefaultContainer>
     </>
