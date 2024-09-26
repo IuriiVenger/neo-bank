@@ -34,6 +34,7 @@ const CoinList: FC<CoinListProps> = (props) => {
     <div className={cn(className, 'flex flex-col justify-between gap-4')}>
       {cryptoBySymbolWithBalance.map((crypto, index) => (
         <CryptoInfo
+          className="hover:opacity-hover"
           onCurrencyClick={handleCurrencyClick(crypto.crypto.symbol)}
           hideEmptyBalance
           key={index}

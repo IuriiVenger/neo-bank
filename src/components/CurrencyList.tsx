@@ -28,7 +28,7 @@ const CurrenciesList: FC<CurrenciesListProps> = (props) => {
             'flex cursor-pointer items-center justify-between transition-background md:border-b ',
             activeCurrency && getCurrencyId(currency) === getCurrencyId(activeCurrency)
               ? 'bg-gray-100'
-              : 'hover:bg-custom-lavander-gradient',
+              : 'hover:opacity-hover',
           )}
           key={index}
           onClick={() => handleCurrencyClick && handleCurrencyClick(currency)}
