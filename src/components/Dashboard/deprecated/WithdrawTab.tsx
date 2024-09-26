@@ -58,11 +58,11 @@ const WithdrawTab: FC<WithdrawTabProps> = (props) => {
 
   const selectedWalletBalance = selectedWallet.data?.balance;
   const selectedCryptoWalletBalance =
-    selectedWalletBalance?.find((balance: any) => balance.crypto.uuid === selectedCrypto.uuid)?.amount || 0;
+    selectedWalletBalance?.find((balance: any) => balance.crypto.uuid === selectedCrypto?.uuid)?.amount || 0;
 
   const selectedCryptoAvavilibleToWithdraw =
     selectedWallet.data &&
-    selectedWallet.data.balance.find((balance: any) => balance.crypto.uuid === selectedCrypto.uuid)?.amount;
+    selectedWallet.data.balance.find((balance: any) => balance.crypto.uuid === selectedCrypto?.uuid)?.amount;
   const isAmountEnough = selectedCryptoAvavilibleToWithdraw && selectedCryptoAvavilibleToWithdraw >= amount;
 
   const isWIthdrawAvailible =
@@ -73,8 +73,8 @@ const WithdrawTab: FC<WithdrawTabProps> = (props) => {
   const withdrawTargetWithoutSpaces = withdrawTarget.replace(/\s/g, '');
   const openWithdrawModal = () => {
     const confirmationText = isFiatPayment
-      ? `Are you sure you want to withdraw ${amount} ${selectedCrypto.symbol} to card ${withdrawTarget}?`
-      : `Are you sure you want to send ${amount} ${selectedCrypto.symbol} to address ${withdrawTarget}?`;
+      ? `Are you sure you want to withdraw ${amount} ${selectedCrypto?.symbol} to card ${withdrawTarget}?`
+      : `Are you sure you want to send ${amount} ${selectedCrypto?.symbol} to address ${withdrawTarget}?`;
 
     setWithdrawConfirmationText(confirmationText);
     setIsWithdrawModalOpen(true);
@@ -89,13 +89,13 @@ const WithdrawTab: FC<WithdrawTabProps> = (props) => {
   };
 
   const clickButtonHandler = () => {
-    if (!selectedWallet.data) return;
+    if (!selectedWallet.data || !selectedCrypto || !selectedFiat) return;
 
     if (isFiatPayment) {
       return createCrypto2FiatOrder({
         amount,
-        fiat_uuid: selectedFiat?.uuid,
-        crypto_uuid: selectedCrypto?.uuid,
+        fiat_uuid: selectedFiat.uuid,
+        crypto_uuid: selectedCrypto.uuid,
         wallet_uuid: selectedWallet.data.uuid,
         card_number: withdrawTargetWithoutSpaces,
         is_subsctract: true,
@@ -137,11 +137,11 @@ const WithdrawTab: FC<WithdrawTabProps> = (props) => {
       <SelectCurrency
         label="Withdraw from"
         onClick={openCryptoModal}
-        currency={selectedCrypto}
+        currency={selectedCrypto as any}
         balance={selectedCryptoWalletBalance}
         chains={chainList}
       />
-      {isFiatPayment && <SelectCurrency label="Withdraw to" onClick={openFiatModal} currency={selectedFiat} />}
+      {isFiatPayment && <SelectCurrency label="Withdraw to" onClick={openFiatModal} currency={selectedFiat as any} />}
 
       <CustomInput
         className="-mt-4"
@@ -159,8 +159,8 @@ const WithdrawTab: FC<WithdrawTabProps> = (props) => {
 
       {isFiatPayment ? (
         <ExternalExhangeInput
-          buyingCurrency={selectedFiat}
-          sellingCurrency={selectedCrypto}
+          buyingCurrency={selectedFiat as any}
+          sellingCurrency={selectedCrypto as any}
           calcData={offrampCalcData}
           sellValue={amount}
           setSellValue={setAmount}

@@ -1,9 +1,11 @@
 /* eslint-disable no-alert */
 import cn from 'classnames';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 import { RiAddFill, RiCornerLeftDownFill, RiCornerRightUpFill, RiMore2Fill } from 'react-icons/ri';
 
+import CreateCardModal from '../../CreateCardModal';
+import ReceiveCryptoModal from '../../ReceiveCryptoModal';
 import WalletTransactions from '../../WalletTransactions';
 
 import MainInformation from './MainInformation';
@@ -16,52 +18,87 @@ import { RoundButtonProps } from '@/components/ui/RoundButton';
 import { DashboardTabs } from '@/constants';
 import { roundToDecimals, separateNumbers } from '@/utils/converters';
 
-type InfoTabProps = DashboardProps & {
+type MainTabProps = {
   className?: string;
+  selectedWallet: DashboardProps['selectedWallet'];
+  selectedWalletBalanceCurrency: string;
+  changeDashboardTab: DashboardProps['changeDashboardTab'];
+  chainList: DashboardProps['chainList'];
+  cards: DashboardProps['cards'];
+  loadSelectedWalletCards: DashboardProps['loadSelectedWalletCards'];
+  loadMoreCards: DashboardProps['loadMoreCards'];
+  loadMoreWalletTransactions: DashboardProps['loadMoreWalletTransactions'];
+  createCard: DashboardProps['createCard'];
+  createCrypto2CryptoOrder: DashboardProps['createCrypto2CryptoOrder'];
+  createCrypto2FiatOrder: DashboardProps['createCrypto2FiatOrder'];
+  walletTransactions: DashboardProps['walletTransactions'];
+  selectedCrypto: DashboardProps['selectedCrypto'];
+  cryptoBySymbol: DashboardProps['cryptoBySymbol'];
+  bins: DashboardProps['bins'];
+  verificationStatus?: DashboardProps['verificationStatus'];
+  openKYC: DashboardProps['openKYC'];
+  getWalletAddress: DashboardProps['getWalletAddress'];
+  createWalletAddress: DashboardProps['createWalletAddress'];
+  selectCrypto: DashboardProps['selectCrypto'];
 };
 
-const actionButtons: RoundButtonProps[] = [
-  {
-    title: 'Buy',
-    Icon: RiAddFill,
-    onClick: () => alert('Buy'),
-  },
-  {
-    title: 'Receive',
-    Icon: RiCornerLeftDownFill,
-    onClick: () => alert('Receive'),
-  },
-  {
-    title: 'Send',
-    Icon: RiCornerRightUpFill,
-    onClick: () => alert('Send'),
-  },
-  {
-    title: 'Other',
-    Icon: RiMore2Fill,
-    onClick: () => alert('Other'),
-  },
-];
+const MainTab: FC<MainTabProps> = (props) => {
+  const {
+    className,
+    selectedWallet,
+    changeDashboardTab,
+    selectedWalletBalanceCurrency,
+    chainList,
+    loadSelectedWalletCards,
+  } = props;
 
-const MainTab: FC<InfoTabProps> = (props) => {
-  const { className, selectedWallet, changeDashboardTab, selectedWalletBalanceCurrency } = props;
+  const [isReceiveCryptoModalOpen, setIsReceiveCryptoModalOpen] = useState(false);
+  const [isCreateCardModalOpen, setIsCreateCardModalOpen] = useState(false);
 
   const currentWalletBalanceAmount = separateNumbers(roundToDecimals(selectedWallet.data?.total_amount || 0));
-
   const currentWalletBalance = `${selectedWalletBalanceCurrency} ${currentWalletBalanceAmount}`;
 
   const onCardClick = (card_id: string) => {
     changeDashboardTab(DashboardTabs.CARD, { card_id });
   };
-
   const openWalletTab = () => changeDashboardTab(DashboardTabs.WALLET);
   const openTransactionsTab = () => changeDashboardTab(DashboardTabs.TRANSACTIONS);
+  const openReceiveCryptoModal = () => setIsReceiveCryptoModalOpen(true);
+  const openCreateCardModal = () => setIsCreateCardModalOpen(true);
+
+  const onCardCreate = (card_id: string) => {
+    onCardClick(card_id);
+    loadSelectedWalletCards();
+  };
+
+  const actionButtons: RoundButtonProps[] = [
+    {
+      title: 'Create card',
+      Icon: RiAddFill,
+      onClick: openCreateCardModal,
+    },
+    {
+      title: 'Receive',
+      Icon: RiCornerLeftDownFill,
+      onClick: openReceiveCryptoModal,
+    },
+    {
+      title: 'Send',
+      Icon: RiCornerRightUpFill,
+      onClick: () => alert('Send'),
+    },
+    {
+      title: 'Other',
+      Icon: RiMore2Fill,
+      onClick: () => alert('Other'),
+    },
+  ];
 
   return (
     <section className={cn(className, 'bg-custom-turquoise-gradient grid max-w-screen-xl grid-cols-3 gap-4')}>
       <MainInformation className="col-span-3" balance={currentWalletBalance} actionButtons={actionButtons} />
       <DefaultContainer className={cn(className, 'col-span-3 lg:col-span-2 xs:px-0 max-xs:px-0')}>
-        <CardsList onCardClick={onCardClick} cardSize="adaptive" {...props} />
+        <CardsList openCreateCardModal={openCreateCardModal} onCardClick={onCardClick} cardSize="adaptive" {...props} />
       </DefaultContainer>
       <DefaultContainer className="col-span-3 row-span-2 flex flex-col lg:col-span-1">
         <div className="mb-4 flex items-center justify-between">
@@ -85,6 +122,18 @@ const MainTab: FC<InfoTabProps> = (props) => {
         </div>
         <WalletTransactions disableLoadMore {...props} />
       </DefaultContainer>
+      <ReceiveCryptoModal
+        isOpen={isReceiveCryptoModalOpen}
+        setIsModalOpen={setIsReceiveCryptoModalOpen}
+        chains={chainList}
+        {...props}
+      />
+      <CreateCardModal
+        isOpen={isCreateCardModalOpen}
+        setIsModalOpen={setIsCreateCardModalOpen}
+        onCardCreate={onCardCreate}
+        {...props}
+      />
     </section>
   );
 };

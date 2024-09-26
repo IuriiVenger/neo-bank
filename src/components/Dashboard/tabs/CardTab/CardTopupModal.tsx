@@ -8,7 +8,7 @@ import ExchangeForm from '@/components/ExchangeForm';
 import ConfirmModal from '@/components/modals/ConfirmModal';
 import CurrencyListModal from '@/components/modals/CurrencyListModal';
 import MainModal from '@/components/modals/MainModal';
-import { convertWalletBalanceToCryptoWithAmount, isCrypto, isFiat } from '@/utils/financial';
+import { getCurrencyListWithAmount, isCrypto, isFiat } from '@/utils/financial';
 
 type CardTopupModalProps = {
   allowedCryptoToFiatList: DashboardProps['allowedCryptoToFiatList'];
@@ -55,26 +55,21 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
   const selectedWalletBalance = selectedWallet.data?.balance;
   const selectedCryptoWalletBalance =
     selectedWalletBalance?.find((balance) =>
-      balance.details.find((balanceDetails) => balanceDetails.crypto.uuid === selectedCrypto.uuid),
+      balance.details.find((balanceDetails) => balanceDetails.crypto.uuid === selectedCrypto?.uuid),
     )?.amount || 0;
 
   const selectedCryptoAvavilibleToWithdraw =
     selectedWallet.data &&
     selectedWallet.data.balance.find((balance) =>
-      balance.details.find((details) => details.crypto.uuid === selectedCrypto.uuid),
+      balance.details.find((details) => details.crypto.uuid === selectedCrypto?.uuid),
     )?.amount;
 
   const isAmountEnough = selectedCryptoAvavilibleToWithdraw && selectedCryptoAvavilibleToWithdraw >= amount;
   const isTopUpAvailable = !!selectedCrypto && !!selectedFiat && !!selectedWallet.data && !!amount && isAmountEnough;
-  const walletCryptoWithBalance =
-    (selectedWallet.data?.balance && convertWalletBalanceToCryptoWithAmount(selectedWallet.data.balance)) || [];
 
-  const availableCryptoToWithdraw = allowedCryptoToFiatList
-    .map((crypto) => {
-      const walletCrypto = walletCryptoWithBalance.find((item) => item.uuid === crypto.uuid);
-      return { ...crypto, amount: walletCrypto?.amount || 0 };
-    })
-    .filter((crypto) => crypto.amount > 0);
+  const availableCryptoToWithdraw = selectedWallet.data
+    ? getCurrencyListWithAmount(allowedCryptoToFiatList, selectedWallet.data.balance)
+    : [];
 
   const selectCurrency = (currency: API.List.Crypto | API.List.Fiat | API.List.Chains) => {
     if (isFiat(currency)) {
@@ -88,14 +83,14 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
   const openCryptoModal = () => setIsCryptoModalOpen(true);
 
   const openConfirmationModal = () => {
-    const confirmationText = `Are you sure you want to topup ${amount} ${selectedCrypto.symbol}?`;
+    const confirmationText = `Are you sure you want to topup ${amount} ${selectedCrypto?.symbol}?`;
 
     setTopUpConfirmationText(confirmationText);
     setIsConfirmationModalOpen(true);
   };
 
   const topUpCard = async () => {
-    if (!selectedWallet.data || !selectedCard.data) return;
+    if (!selectedWallet.data || !selectedCard.data || !selectedCrypto || !selectedFiat) return;
 
     await createInternalTopUpOrder({
       amount,
@@ -146,7 +141,7 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
         <ExchangeForm
           chains={chainList}
           sellingTitleLabel="From"
-          sellingTitleValue={`Available: ${selectedCryptoWalletBalance} ${selectedCrypto.symbol}`}
+          sellingTitleValue={`Available: ${selectedCryptoWalletBalance} ${selectedCrypto?.symbol}`}
           sellingCurrency={selectedCrypto}
           sellingAmount={amount}
           handleSellingAmountInput={handleAmountInput}

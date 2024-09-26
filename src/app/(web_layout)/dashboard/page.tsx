@@ -18,7 +18,6 @@ import {
   defaultPaginationParams,
   ModalNames,
   DashboardTabs,
-  allowedCryptoToFiatUuid,
   cardInitialPaginationParams,
   cardLoadMoreDefaultLimit,
   AppEnviroment,
@@ -87,6 +86,7 @@ const DashboardPage = () => {
   const [queryCardId, setQueryCardId] = useQueryState('card_id');
 
   const initialDasboardTab = (queryDashboardTab as DashboardTabs) || DashboardTabs.MAIN;
+  const allowedCryptoToFiatUuid = fiatExchangeRate.map((item) => item.crypto_uuid);
   const allowedCryptoToFiatList = crypto.filter((item) => allowedCryptoToFiatUuid.includes(item.uuid));
 
   const [activeDashboardTab, setActiveDashboardTab] = useState<DashboardTabs>(initialDasboardTab);
@@ -188,7 +188,7 @@ const DashboardPage = () => {
   const onWalletChange = async (wallet: API.Wallets.ExtendWallet) => {
     setLastActiveWallet(wallet);
     const isSelectedCryptoInWallet = wallet.balance.some((balance) =>
-      balance.details.some((details) => details.crypto.uuid === selectedCrypto.uuid),
+      balance.details.some((details) => details.crypto.uuid === selectedCrypto?.uuid),
     );
 
     if (wallet.balance.length && !isSelectedCryptoInWallet) {

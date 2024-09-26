@@ -60,9 +60,9 @@ export interface DashboardProps {
   selectFiat: (fiat: API.List.Fiat) => void;
   selectWallet: (wallet_uuid: string) => void;
   selectedCard: StoreDataWithStatus<API.Cards.CardDetailItem | null>;
-  selectedChain: API.List.Chains;
-  selectedCrypto: API.List.Crypto;
-  selectedFiat: API.List.Fiat;
+  selectedChain: null | API.List.Chains;
+  selectedCrypto: null | API.List.Crypto;
+  selectedFiat: null | API.List.Fiat;
   selectedWallet: StoreDataWithStatus<API.Wallets.ExtendWallet | null>;
   selectedWalletBalanceCurrency: string;
   updateCard: (card_id: string, data: API.Cards.Update.Request) => Promise<void>;

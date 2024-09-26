@@ -1,10 +1,6 @@
 import cn from 'classnames';
 import { FC, useEffect, useMemo, useState } from 'react';
 
-import { DashboardProps } from '../../Dashboard';
-
-import ConfirmModal from '../ConfirmModal';
-
 import CardDetailsStep, { CardDetailsStepProps } from './steps/CardDetailsStep';
 import CardFormFactorStep, { CardFormFactorStepProps } from './steps/CardFormFactorStep';
 
@@ -13,17 +9,23 @@ import CardSusccessStep from './steps/CardSuccessStep';
 import CardTypeStep, { CardTypeStepProps } from './steps/CardTypeStep';
 
 import { API } from '@/api/types';
+import { DashboardProps } from '@/components/Dashboard';
+import ConfirmModal from '@/components/modals/ConfirmModal';
 
 import MainModal from '@/components/modals/MainModal';
 
 import { CardFormFactor, cardFormFactorsData, CardType, cardTypeData } from '@/constants';
 import { useRequestStatus } from '@/hooks/useRequestStatus';
+import { TitleDescriptionValue } from '@/types';
 
-type CreateCardModalProps = DashboardProps & {
+type CreateCardModalProps = {
   className?: string;
   setIsModalOpen: (isOpen: boolean) => void;
   isOpen: boolean;
   onCardCreate?: (card_id: string) => void;
+  bins: DashboardProps['bins'];
+  selectedWallet: DashboardProps['selectedWallet'];
+  createCard: DashboardProps['createCard'];
 };
 
 enum CreateCardSteps {
@@ -33,12 +35,13 @@ enum CreateCardSteps {
   DETAILS = 'details',
   SUCCESS = 'success',
 }
+type CreateCardStepsProps = CardDetailsStepProps & CardProgramStepProps & CardTypeStepProps & CardFormFactorStepProps;
 
 type CreateCartStepsMap = {
   [key in CreateCardSteps]: {
     title?: string;
     subtitle?: string;
-    Component: FC<any>;
+    Component: FC<CreateCardStepsProps>;
     mainButtonText: string;
     onMainButtonClick: () => void;
     onBackButtonClick?: () => void;
@@ -46,25 +49,43 @@ type CreateCartStepsMap = {
   };
 };
 
-type CreateCardStepsProps = CardDetailsStepProps & CardProgramStepProps & CardTypeStepProps & CardFormFactorStepProps;
+type FormFactorsMap = { [key: string]: TitleDescriptionValue<string, string, CardFormFactor> };
+type CardTypesMap = { [key: string]: TitleDescriptionValue<string, string, CardType> };
 
 const getCardTypesData = (programs: API.Cards.CardConfig[]) => {
-  const types = programs.map((program) => ({
-    title: cardTypeData[program.type].title,
-    value: program.type as CardType,
-  }));
+  const types = programs.reduce((acc: CardTypesMap, program) => {
+    if (acc[program.type]) {
+      acc[program.type].description += `, ${program.allowed_currencies.join('/')}`;
+    } else {
+      acc[program.type] = {
+        title: cardTypeData[program.type].title,
+        description: program.allowed_currencies.join('/'),
+        value: program.type,
+      };
+    }
 
-  return types;
+    return acc;
+  }, {});
+
+  return Object.values(types);
 };
 
 const getCardFormFactorsData = (programs: API.Cards.CardConfig[]) => {
-  const formFactors = programs.map((program) => ({
-    title: cardFormFactorsData[program.form_factor].title,
-    description: program.allowed_currencies.join(', '),
-    value: program.form_factor as CardFormFactor,
-  }));
+  const formFactorsMap = programs.reduce((acc: FormFactorsMap, program) => {
+    if (acc[program.form_factor]) {
+      acc[program.form_factor].description += `, ${program.allowed_currencies.join('/')}`;
+    } else {
+      acc[program.form_factor] = {
+        title: cardFormFactorsData[program.form_factor].title,
+        description: program.allowed_currencies.join('/'),
+        value: program.form_factor,
+      };
+    }
 
-  return formFactors;
+    return acc;
+  }, {});
+
+  return Object.values(formFactorsMap);
 };
 
 const CreateCardModal: FC<CreateCardModalProps> = (props) => {
@@ -111,7 +132,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     }
     const confirmationText = `Are you sure you want to create ${cardFormFactorsData[
       cardFormFactor
-    ].shortTitle.toLowerCase()} ${selectedProgram.brand}  ${cardTypeData[cardType].shortTitle.toLowerCase()} card?`;
+    ].shortTitle.toLowerCase()} ${cardTypeData[cardType].shortTitle.toLowerCase()} ${selectedProgram.brand} card?`;
     setTopUpConfirmationText(confirmationText);
     setIsConfirmationModalOpen(true);
   };
@@ -219,7 +240,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     },
     [CreateCardSteps.SUCCESS]: {
       Component: CardSusccessStep,
-      mainButtonText: 'Close',
+      mainButtonText: 'Co to card',
       onMainButtonClick: closeAndHandleOnCardCreate,
     },
   };
@@ -238,7 +259,6 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
         nativeCloseButton
         confirmButtonText={createCardStepsMap[currentStep].mainButtonText}
         onConfirm={createCardStepsMap[currentStep].onMainButtonClick}
-        isLoading={requestStatuses.PENDING}
         className=" md:h-[750px]"
       >
         <div className={cn('flex flex-col gap-4', className)}>

@@ -13,7 +13,7 @@ type ExternalWithdrawInputProps = {
   netAmount: number | null;
   commission: number | null;
   setAmount: (amount: number) => void;
-  selectedCrypto: API.List.Crypto;
+  selectedCrypto: API.List.Crypto | null;
   isCalculating?: boolean;
   label?: string;
   negativeValue?: boolean;
@@ -53,7 +53,7 @@ const ExternalWithdrawInput: FC<ExternalWithdrawInputProps> = (props) => {
           content="width=device-width, initial-scale=1, maximum-scale=1"
           endContent={
             <div className="pointer-events-none flex items-center">
-              <span className="text-small text-default-400">{selectedCrypto.icon}</span>
+              <span className="text-small text-default-400">{selectedCrypto?.icon}</span>
             </div>
           }
           value={amount.toString()}
@@ -68,8 +68,8 @@ const ExternalWithdrawInput: FC<ExternalWithdrawInputProps> = (props) => {
             <span className="text-xs md:text-base">
               {!!netAmount && (
                 <>
-                  You will get <strong>{netAmount}</strong> {selectedCrypto.symbol}, fees{' '}
-                  <strong>{prettyCommission}</strong> {selectedCrypto.symbol}
+                  You will get <strong>{netAmount}</strong> {selectedCrypto?.symbol}, fees{' '}
+                  <strong>{prettyCommission}</strong> {selectedCrypto?.symbol}
                 </>
               )}
             </span>

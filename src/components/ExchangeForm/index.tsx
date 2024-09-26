@@ -13,14 +13,14 @@ type ExchangeFormProps = {
   sellingTitleLabel?: string;
   sellingTitleValue?: string;
   sellingAmount: string | number;
-  sellingCurrency: API.List.Crypto | API.List.Fiat;
+  sellingCurrency: API.List.Crypto | API.List.Fiat | null;
   handleSellingAmountInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSellingCurrencyClick?: () => void;
 
   buyingTitleLabel?: string;
   buyingTitleValue?: string;
   buyingAmount: string | number;
-  buyingCurrency: API.List.Crypto | API.List.Fiat;
+  buyingCurrency: API.List.Crypto | API.List.Fiat | null;
   handleBuyingAmountInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   buyingAmoutPending?: boolean;
   onBuyingCurrencyClick?: () => void;
@@ -54,7 +54,7 @@ const ExchangeForm: FC<ExchangeFormProps> = (props) => {
         chains={chains}
         amount={sellingAmount}
         handleAmountInput={handleSellingAmountInput}
-        amountSymbol={sellingCurrency.symbol}
+        amountSymbol={sellingCurrency?.symbol}
         onCurrencyClick={onSellingCurrencyClick}
       />
 
@@ -66,7 +66,7 @@ const ExchangeForm: FC<ExchangeFormProps> = (props) => {
         titleValue={buyingTitleValue}
         currency={buyingCurrency}
         amount={buyingAmount}
-        amountSymbol={buyingCurrency.symbol}
+        amountSymbol={buyingCurrency?.symbol}
         handleAmountInput={handleBuyingAmountInput}
         isAmountLoading={buyingAmoutPending}
         onCurrencyClick={onBuyingCurrencyClick}

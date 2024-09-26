@@ -9,6 +9,7 @@ export type CardTypeStepProps = {
   setCardType: Dispatch<SetStateAction<CardType | null>>;
   cardTypes: Array<{
     title: string;
+    description: string;
     value: CardType;
   }>;
 };
@@ -29,10 +30,11 @@ const CardTypeStep: FC<CardTypeStepProps> = (props) => {
     <div className="flex flex-col gap-12">
       <Card provider="Visa" size="md" className=" self-center" />
       <div className="flex flex-col gap-3">
-        {cardTypes.map(({ value, title }) => (
+        {cardTypes.map(({ value, title, description }) => (
           <CustomOption
             key={value}
             title={title}
+            description={description}
             type="radio"
             isChecked={cardType === value}
             onChange={onCardTypeClick}

@@ -23,7 +23,7 @@ import { getActiveFiatAvailableCrypto, isCrypto, isFiat } from '@/utils/financia
 type OfflineCryptoFormProps = {
   selectCrypto: (crypto: API.List.Crypto) => void;
   selectFiat: (fiat: API.List.Fiat) => void;
-  selectedCrypto: API.List.Crypto;
+  selectedCrypto: API.List.Crypto | null;
   selectedFiat: API.List.Fiat;
   chainList: API.List.Chains[];
   cryptoList: API.List.Crypto[];
@@ -49,7 +49,7 @@ const OfflineCryptoForm: FC<OfflineCryptoFormProps> = (props) => {
 
   const availableCrypto = getActiveFiatAvailableCrypto(exchangeRate, cryptoList);
 
-  const selectedChainName = chainList.find((chain) => chain.id === selectedCrypto.chain)?.name;
+  const selectedChainName = chainList.find((chain) => chain.id === selectedCrypto?.chain)?.name;
 
   const selectCurrency = (currency: API.List.Crypto | API.List.Fiat | API.List.Chains) => {
     if (isFiat(currency)) {
@@ -64,7 +64,7 @@ const OfflineCryptoForm: FC<OfflineCryptoFormProps> = (props) => {
     <Card className={cx('flex w-full max-w-2xl flex-col gap-8 p-4 py-6 xs:px-10 xs:py-8', className)}>
       <div className="flex items-center justify-between">
         <h3 className="text-xl font-medium lg:text-2.5xl">
-          Buy {selectedCrypto.name} {selectedChainName}
+          Buy {selectedCrypto?.name} {selectedChainName}
         </h3>
         <Image src={logo} alt="logo" height={96} className="h-12" />
       </div>

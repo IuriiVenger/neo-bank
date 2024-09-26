@@ -10,7 +10,7 @@ import { roundToDecimals } from '@/utils/converters';
 
 type OfflineCryptoFormFieldProps = {
   action: OfflineCryptoFormFieldAction;
-  currency: API.List.Crypto | API.List.Fiat;
+  currency: API.List.Crypto | API.List.Fiat | null;
   currencies: API.List.Crypto[] | API.List.Fiat[];
   onChangeCurrency: (currency: API.List.Crypto | API.List.Fiat | API.List.Chains) => void;
   value: number;
@@ -41,7 +41,9 @@ const OfflineCryptoFormField: FC<OfflineCryptoFormFieldProps> = (props) => {
       <p className="mb-2 text-xs">{title[action]}</p>
 
       <div className="flex items-start justify-between">
-        <CurrencyInfo chains={chains} currency={currency} onCurrencyClick={toogleIsModalOpen} minValue={minValue} />
+        {currency && (
+          <CurrencyInfo chains={chains} currency={currency} onCurrencyClick={toogleIsModalOpen} minValue={minValue} />
+        )}
         <input
           className="w-full text-end text-xl font-semibold tracking-wide focus-visible:outline-none disabled:bg-inherit"
           onBlur={onInputBlur}

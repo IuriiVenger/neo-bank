@@ -5,7 +5,7 @@ import { IconType } from 'react-icons';
 
 import { RiArrowDownLine, RiArrowUpLine } from 'react-icons/ri';
 
-import { WalletType } from './types';
+import { TitleDescriptionShortitle, WalletType } from './types';
 
 export enum RequestStatus {
   NONE = 'none',
@@ -26,12 +26,6 @@ export enum ResponseStatus {
 }
 
 export const defaultCurrency = {
-  chain: {
-    id: 1,
-    enabled: true,
-    name: 'Tron',
-    symbol: 'TRON',
-  },
   fiat: {
     uuid: 'bf229baf-8514-4ca7-b74e-239ffd333868',
     symbol: '$',
@@ -179,13 +173,6 @@ export enum CardTransactionDirection {
   OUTGOING = 'OUTGOING',
 }
 
-export const allowedCryptoToFiatUuid = [
-  '9126d383-cd78-444f-9482-b5c33b4e552a',
-  'ebe6f1db-5d84-4538-907a-bde6970e217c',
-  'aceafbb8-aca6-44f9-8b12-25560e4e3bb4',
-  '509eca03-bc0d-4a38-b7dc-d136d2bdaa43',
-];
-
 export enum AppEnviroment {
   WEB = 'web',
   TELEGRAM = 'telegram',
@@ -206,7 +193,7 @@ export enum CardType {
   DEBIT = 'DEBIT',
 }
 
-export const cardFormFactorsData: Record<CardFormFactor, { title: string; description: string; shortTitle: string }> = {
+export const cardFormFactorsData: Record<CardFormFactor, TitleDescriptionShortitle> = {
   [CardFormFactor.VIRTUAL]: {
     title: 'Virtual card',
     shortTitle: 'Virtual',

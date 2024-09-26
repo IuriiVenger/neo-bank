@@ -14,6 +14,8 @@ const StoreWatchers = () => {
   const { selectedFiat } = useAppSelector(selectFinanceData);
 
   const loadFiatExchangeRate = async () => {
+    if (!selectedFiat) return;
+
     const fiatExchangeRate = await exchange.fiat2crypto.getByUuid(selectedFiat.uuid);
 
     dispatch(setFiatExchangeRate(fiatExchangeRate));

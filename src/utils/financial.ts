@@ -37,7 +37,7 @@ import cream from '@/assets/svg/landing-cryptocurrency-icons/cream.svg';
 import cryptoCom from '@/assets/svg/landing-cryptocurrency-icons/cryptoCom.svg';
 import currencyCom from '@/assets/svg/landing-cryptocurrency-icons/currencyCom.svg';
 import dash from '@/assets/svg/landing-cryptocurrency-icons/dash.svg';
-import { WithAmount } from '@/types';
+import { WithOptionalAmount } from '@/types';
 
 type CryptoIcons = {
   [key: string]: string;
@@ -134,10 +134,80 @@ export const getCardBalance = (card: API.Cards.CardDetailItem | API.Cards.CardLi
 };
 
 export const convertWalletBalanceToCryptoWithAmount = (walletBalance: API.Wallets.WalletBalance) => {
-  const cryptoWithBalance: WithAmount<API.List.Crypto>[] = walletBalance
+  const cryptoWithBalance: WithOptionalAmount<API.List.Crypto>[] = walletBalance
     .filter((balance) => balance.details.find((detail) => detail.amount > 0))
     .map((balance) => balance.details.map((detail) => ({ ...detail.crypto, amount: detail.amount })))
-    .flat();
+    .flat()
+    .sort((a, b) => b.amount - a.amount);
 
   return cryptoWithBalance;
+};
+
+export const getCurrencyId = (currency: API.List.Crypto | API.List.Fiat | API.List.Chains) =>
+  isChain(currency) ? currency.id : currency.uuid;
+
+// const selectedCoinCurrenciesWithAmount =
+// cryptoBySymbol
+//   .find((crypto) => crypto.symbol === selectedCoin)
+//   ?.items.map((currency) => ({
+//     ...currency,
+//     amount:
+//       selectedWallet.data?.balance.find(({ details }) =>
+//         details.find(({ crypto }) => crypto.uuid === currency.uuid),
+//       )?.amount || 0,
+//   })) || [];
+
+export const getCoinListlWithAmount = (
+  cryptoBySymbol: API.List.CryptoBySymbol[],
+  selectedWallet: API.Wallets.ExtendWallet | null,
+) =>
+  cryptoBySymbol
+    .map((crypto) => {
+      const balance = selectedWallet?.balance.find((wallet) => wallet.symbol === crypto.symbol);
+
+      return {
+        crypto: {
+          ...crypto,
+          amount: balance?.amount ?? 0,
+          fiat_amount: balance?.fiat_amount ?? 0,
+        },
+        currencyName: crypto.symbol,
+      };
+    })
+    .sort((a, b) => b.crypto.fiat_amount - a.crypto.fiat_amount);
+
+export const getCurrencyListWithAmount = (crypto: API.List.Crypto[], walletBalance: API.Wallets.WalletBalance) => {
+  const cryptoWithBalance = convertWalletBalanceToCryptoWithAmount(walletBalance);
+
+  const currencyListWithAmount = crypto
+    .map((currency) => {
+      const walletCrypto = cryptoWithBalance.find((item) => item.uuid === currency.uuid);
+      return { ...currency, amount: walletCrypto?.amount || 0 };
+    })
+    .sort((a, b) => b.amount - a.amount);
+
+  return currencyListWithAmount;
+};
+
+export const getSelectedCoinCurrenciesWithAmount = (
+  cryptoBySymbol: API.List.CryptoBySymbol[],
+  selectedCoin: string,
+  selectedWallet: API.Wallets.ExtendWallet,
+) => {
+  const selectedCoinCurrenciesWithAmount =
+    cryptoBySymbol
+      .find((crypto) => crypto.symbol === selectedCoin)
+      ?.items.map((currency) => {
+        const balance =
+          selectedWallet?.balance.find(({ details }) => details.find(({ crypto }) => crypto.uuid === currency.uuid))
+            ?.amount || 0;
+
+        return {
+          ...currency,
+          amount: balance,
+        };
+      })
+      .sort((a, b) => b.amount - a.amount) || [];
+
+  return selectedCoinCurrenciesWithAmount;
 };

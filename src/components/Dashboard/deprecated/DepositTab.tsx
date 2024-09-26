@@ -61,6 +61,8 @@ const DepositTab: FC<DepositTabProps> = (props) => {
 
   const clickButtonHandler = () =>
     selectedWallet.data &&
+    selectedFiat &&
+    selectedCrypto &&
     createFiat2CryptoOrder({
       amount,
       fiat_uuid: selectedFiat?.uuid,
@@ -85,7 +87,7 @@ const DepositTab: FC<DepositTabProps> = (props) => {
   };
 
   const loadChain = async () => {
-    if (selectedWallet.data) {
+    if (selectedWallet.data && selectedChain) {
       try {
         setActiveWalletAddress(null);
         setIsWalletAdressLoading(true);
@@ -104,7 +106,7 @@ const DepositTab: FC<DepositTabProps> = (props) => {
   };
 
   const createWalletAddressHandler = async () => {
-    if (selectedWallet.data) {
+    if (selectedWallet.data && selectedChain) {
       try {
         setIsWalletAdressLoading(true);
         await createWalletAddress({ chain: selectedChain.id, wallet_uuid: selectedWallet.data.uuid, label: 'default' });
@@ -132,11 +134,16 @@ const DepositTab: FC<DepositTabProps> = (props) => {
       />
       {activePaymentMethod === PaymentMethod.FIAT && (
         <>
-          <SelectCurrency label="Deposit by" onClick={openFiatModal} currency={selectedFiat} />
-          <SelectCurrency label="Deposit to" onClick={openCryptoModal} currency={selectedCrypto} chains={chainList} />
+          <SelectCurrency label="Deposit by" onClick={openFiatModal} currency={selectedFiat as any} />
+          <SelectCurrency
+            label="Deposit to"
+            onClick={openCryptoModal}
+            currency={selectedCrypto as any}
+            chains={chainList}
+          />
           <ExternalExhangeInput
-            buyingCurrency={selectedCrypto}
-            sellingCurrency={selectedFiat}
+            buyingCurrency={selectedCrypto as any}
+            sellingCurrency={selectedFiat as any}
             calcData={onrampCalcData}
             sellValue={amount}
             setSellValue={setAmount}
@@ -150,7 +157,7 @@ const DepositTab: FC<DepositTabProps> = (props) => {
 
       {activePaymentMethod === PaymentMethod.CRYPTO && (
         <>
-          <SelectCurrency label="Deposit by" onClick={openChainModal} currency={selectedChain} />
+          <SelectCurrency label="Deposit by" onClick={openChainModal} currency={selectedChain as any} />
           <ChainInfo
             isWalletAdressLoading={isWalletAdressLoading}
             selectedAddress={activeWalletAddress}

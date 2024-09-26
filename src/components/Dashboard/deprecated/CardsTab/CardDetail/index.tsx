@@ -18,7 +18,7 @@ import AddToWalletModal from './AddToWalletModal';
 import CardLimitsModal from './CardLimitsModal';
 import CardSensitiveDataModal from './CardSensitiveDataModal';
 
-import CardTopupModal from './CardTopupModal';
+// import CardTopupModal from './CardTopupModal';
 import CardTransactionTable from './CardTransactionTable';
 
 import { API } from '@/api/types';
@@ -236,12 +236,12 @@ const CardDetail: FC<CardDetailProps> = (props) => {
         setIsModalOpen={setIsLimitsModalOpen}
         {...props}
       />
-      <CardTopupModal
+      {/* <CardTopupModal
         sensitiveData={sensitiveData}
         isOpen={isTopupModalOpen}
         setIsModalOpen={setIsTopupModalOpen}
         {...props}
-      />
+      /> */}
       <ConfirmModal
         isOpen={isConfirmationModalOpen}
         setIsModalOpen={setIsConfirmationModalOpen}

@@ -12,7 +12,7 @@ type ExchangeFormFieldProps = {
   className?: string;
   titleLabel?: string;
   titleValue?: string;
-  currency: API.List.Chains | API.List.Crypto | API.List.Fiat;
+  currency: API.List.Chains | API.List.Crypto | API.List.Fiat | null;
   chains?: API.List.Chains[];
   onCurrencyClick?: () => void;
   amount: string | number;
@@ -44,7 +44,15 @@ const ExchangeFormField: FC<ExchangeFormFieldProps> = (props) => {
         <p>{titleValue}</p>
       </div>
       <div className="flex justify-between">
-        <CurrencyInfo hideSymbol currency={currency} chains={chains} hideChainChip onCurrencyClick={onCurrencyClick} />
+        {!!currency && (
+          <CurrencyInfo
+            hideSymbol
+            currency={currency}
+            chains={chains}
+            hideChainChip
+            onCurrencyClick={onCurrencyClick}
+          />
+        )}
         {isAmountLoading ? (
           <Loader className="w-fit" size="sm" />
         ) : (

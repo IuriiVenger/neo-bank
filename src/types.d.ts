@@ -18,4 +18,12 @@ type ChangeDashboardTabAdditionalParams = {
   card_id?: string | null;
 };
 
-type WithAmount<T> = T & { amount?: number };
+type WithOptionalAmount<T> = T & { amount?: number };
+
+type TitleDescription<T = string, D = string> = { title: T; description: D };
+
+type TitleShortitle<T = string, S = string> = { title: T; shortTitle: S };
+
+type TitleDescriptionShortitle<T = string, D = string, S = string> = TitleDescription<T, D> & TitleShortitle<T, S>;
+
+type TitleDescriptionValue<T = string, D = string, V = string> = TitleDescription<T, D> & { value: V };

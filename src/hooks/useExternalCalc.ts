@@ -40,7 +40,7 @@ const useExternalCalc: UseExternalCalc = () => {
   const [lastSelectedWallet, setLastSelectedWallet] = useState(selectedWallet);
 
   const updateCalculations = () => {
-    if (selectedWallet.data) {
+    if (selectedWallet.data && selectedCrypto && selectedFiat) {
       const onRampCalcParams = {
         crypto_uuid: selectedCrypto.uuid,
         fiat_uuid: selectedFiat.uuid,

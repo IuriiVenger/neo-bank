@@ -11,14 +11,14 @@ import useBreakpoints from '@/hooks/useBreakpoints';
 import { useAppSelector } from '@/store';
 import { selectConfig } from '@/store/selectors';
 
-type HiddenConfirmButtonProps = {
+export type HiddenConfirmButtonProps = {
   confirmButtonHidden: true;
   onConfirm?: never;
   confirmButtonText?: never;
 };
 
-type VisibleConfirmButtonProps = {
-  confirmButtonHidden?: false;
+export type VisibleConfirmButtonProps = {
+  confirmButtonHidden?: boolean;
   onConfirm: () => void;
   confirmButtonText: string;
 };
@@ -286,15 +286,17 @@ const WebModal: FC<MainModalProps> = (props) => {
     <Modal
       {...otherProps}
       isOpen={isOpen}
-      className={cn('overflow-y-auto', className)}
+      className={cn('', className)}
       onClose={closeModal}
       hideCloseButton={nonNativeCloseButtonEnabled}
     >
       <ModalContent
-        className={cn('fixed left-0 top-0 max-h-svh min-h-96  md:relative md:max-h-[85vh]', contentClassName)}
+        className={cn('fixed left-0 top-0 max-h-svh  min-h-96 md:relative md:max-h-[85vh]', contentClassName)}
       >
         {header || (nativeCloseButton && !hideCloseButton && <ModalHeader className="">{header}</ModalHeader>)}
-        <ModalBody className={cn('pb-10 shadow-none sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>
+        <ModalBody className={cn('overflow-y-auto pb-10 shadow-none sm:max-h-[90vh]', bodyClassname)}>
+          {children}
+        </ModalBody>
         {(!confirmButtonHidden || nonNativeCloseButtonEnabled) && (
           <ModalFooter className="relative z-10 flex min-h-1 w-full flex-col pb-6">
             {!confirmButtonHidden && (
