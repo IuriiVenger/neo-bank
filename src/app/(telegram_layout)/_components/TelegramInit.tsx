@@ -106,8 +106,8 @@ const TelegramInit = () => {
 
   useEffect(() => {
     if (miniApp) {
-      miniApp.setHeaderColor('#000000');
       miniApp.setBgColor('#000000');
+      miniApp.setHeaderColor('#000000');
       toast.success('miniApp.setHeaderColor and miniApp.setBgColor');
     }
   }, [miniApp]);
