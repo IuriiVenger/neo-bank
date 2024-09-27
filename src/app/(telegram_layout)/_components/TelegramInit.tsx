@@ -1,9 +1,9 @@
 import {
-  parseLaunchParams,
   parseThemeParams,
   useInitData,
   useLaunchParams,
   useMiniApp,
+  useThemeParams,
   // useSettingsButton
 } from '@telegram-apps/sdk-react';
 
@@ -80,6 +80,8 @@ const TelegramInit = () => {
   const { initUser } = useAuth(dispatch);
   const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, initUser);
 
+  const themeParams = useThemeParams(true);
+
   // const settingsButton = useSettingsButton(true);
   // const openSettingsPopup = () => {
   //   dispatch(setModalVisible(ModalNames.SETTINGS));
@@ -108,25 +110,10 @@ const TelegramInit = () => {
 
   useEffect(() => {
     if (miniApp) {
-      // miniApp.setBgColor('#000000');
-      // miniApp.setHeaderColor('#000000');
-      parseLaunchParams(
-        new URLSearchParams([
-          [
-            'tgWebAppThemeParams',
-            JSON.stringify({
-              bg_color: '#17212b',
-              button_color: '#5288c1',
-              button_text_color: '#ffffff',
-              hint_color: '#708499',
-              link_color: '#6ab3f3',
-              secondary_bg_color: '#232e3c',
-              text_color: '#f5f5f5',
-            }),
-          ],
-        ]),
-      );
-      toast.success('miniApp.setHeaderColor and miniApp.setBgColor');
+      miniApp.setBgColor('#000000');
+      miniApp.setHeaderColor('#000000');
+
+      toast.success('themeParams');
     }
   }, [miniApp]);
 
