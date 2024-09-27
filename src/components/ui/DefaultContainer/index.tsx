@@ -14,7 +14,7 @@ const DefaultContainer: FC<DefaultContainerProps> = (props) => {
   const roundedClassName = getRoundedClassName(rounded);
 
   return (
-    <div className={cn('bg-background-2 p-4 lg:p-8', className, roundedClassName)} {...rest}>
+    <div className={cn(className, 'bg-background-2 p-4 lg:p-8', roundedClassName)} {...rest}>
       {children}
     </div>
   );

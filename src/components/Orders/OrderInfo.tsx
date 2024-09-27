@@ -95,7 +95,7 @@ const OrderInfo: FC<OrderInfoProps> = ({ order }) => {
         as={Link}
         href="/dashboard"
         color={orderStatusInfo.buttonColor}
-        className="mt-8 w-60 text-white"
+        className="mt-8 w-60 text-primary-foreground"
         radius="sm"
       >
         Go to dashboard

@@ -95,7 +95,7 @@ const WalletTab: FC<WalletTabProps> = (props) => {
   return (
     <>
       <BackButton onClick={activeStepData.backButtonHandler} text={activeStepData.backButtonText} />
-      <DefaultContainer className="h-full max-lg:bg-inherit max-lg:p-0">
+      <DefaultContainer className="h-full max-lg:!bg-inherit max-lg:p-0">
         <h1 className="mb-8 text-2xl font-medium">Wallet</h1>
         <ActiveComponent {...stepsProps} />
       </DefaultContainer>

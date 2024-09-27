@@ -224,7 +224,7 @@ const useAuth = (dispatch: AppDispatch) => {
     try {
       clearUserContent();
       deleteTokens();
-      router.push('/');
+      router.push('/auth');
     } finally {
       setLoadingStatus(RequestStatus.NONE);
     }

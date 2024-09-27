@@ -17,9 +17,12 @@ import React, { FC, useMemo, useState } from 'react';
 
 import KYCButton from '../KYC/KYCButton';
 
+import ThemeImage from '../ui/ThemeImage';
+
 import AuthButtons from './AuthButtons';
 
-import headerLogo from '@/assets/svg/tenant/header_logo.svg';
+import darkHeaderLogo from '@/assets/svg/tenant/dark/header_logo.svg';
+import lightHeaderLogo from '@/assets/svg/tenant/light/header_logo.svg';
 import whiteLabelConfig from '@/config/whitelabel';
 import { ModalNames, requestKYCStatuses } from '@/constants';
 import useAuth from '@/hooks/useAuth';
@@ -73,12 +76,18 @@ const Header: FC = () => {
       </NavbarContent>
       <NavbarContent className="pr-3 md:hidden" justify="center">
         <NavbarBrand>
-          <Image src={headerLogo} alt="Logo" height={48} className="h-6 w-fit" />
+          <ThemeImage
+            lightSrc={lightHeaderLogo}
+            darkSrc={darkHeaderLogo}
+            alt="Logo"
+            height={48}
+            className="h-6 w-fit"
+          />
         </NavbarBrand>
       </NavbarContent>
       <NavbarContent className="hidden flex-grow gap-4 md:flex" justify="center">
         <Link className="flex-shrink-0" href="/">
-          <Image src={headerLogo} alt="Logo" height={48} className="h-6" />
+          <ThemeImage lightSrc={lightHeaderLogo} darkSrc={darkHeaderLogo} alt="Logo" height={48} className="h-6" />
         </Link>
 
         <div className="flex w-full  justify-center gap-8">

@@ -29,9 +29,9 @@ const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
   };
 
   return (
-    <MainModal confirmButtonHidden bodyClassname="px-0" isOpen={isOpen} onOpenChange={setIsModalOpen}>
+    <MainModal confirmButtonHidden isOpen={isOpen} onOpenChange={setIsModalOpen}>
       <div>
-        <h2 className="mb-4 px-4 text-2xl font-medium">{title}</h2>
+        <h2 className="mb-4 text-3xl font-medium">{title}</h2>
         <CurrenciesList currencies={currencies} chains={chains} handleCurrencyClick={handleCurrencyClick} />
       </div>
     </MainModal>

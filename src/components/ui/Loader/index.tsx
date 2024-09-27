@@ -3,7 +3,10 @@ import cn from 'classnames';
 import Image from 'next/image';
 import { FC } from 'react';
 
-import logo from '@/assets/svg/tenant/header_logo.svg';
+import ThemeImage from '../ThemeImage';
+
+import darkLogo from '@/assets/svg/tenant/dark/logo.svg';
+import lightLogo from '@/assets/svg/tenant/light/logo.svg';
 
 type LoaderProps = {
   className?: string;
@@ -16,8 +19,9 @@ const Loader: FC<LoaderProps> = ({ className, size }) => (
 
 export const BrandLoader: FC = () => (
   <div className="flex w-full flex-col items-center justify-center">
-    <Image
-      src={logo}
+    <ThemeImage
+      lightSrc={lightLogo}
+      darkSrc={darkLogo}
       height={128}
       alt="logo"
       className="absolute mb-6 h-16 animate-[pulse_1s_cubic-bezier(0.4,0,0.6,1)_infinite]"

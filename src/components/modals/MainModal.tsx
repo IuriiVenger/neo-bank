@@ -292,6 +292,7 @@ const WebModal: FC<MainModalProps> = (props) => {
       className={cn('', className)}
       onClose={closeModal}
       hideCloseButton={nonNativeCloseButtonEnabled}
+      backdrop="blur"
     >
       <ModalContent
         className={cn('fixed left-0 top-0 max-h-svh  min-h-96 md:relative md:max-h-[85vh]', contentClassName)}

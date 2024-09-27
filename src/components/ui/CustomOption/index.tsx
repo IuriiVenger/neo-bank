@@ -55,7 +55,7 @@ const CustomOption: FC<CustomOptionProps> = (props) => {
       type="button"
       className={cn(
         'bg-background-2 flex w-full justify-between rounded-medium border p-4',
-        isBordered || (isChecked && 'border-secondary'),
+        isBordered || (isChecked ? 'border-primary' : 'border-background-2'),
       )}
     >
       <div className="flex flex-col items-start gap-0.5">

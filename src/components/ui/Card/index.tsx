@@ -4,7 +4,9 @@ import { FC } from 'react';
 
 import masterCardLogo from '@/assets/svg/payment-systems/master-card-logo.svg';
 import visaLogo from '@/assets/svg/payment-systems/visa-logo-white.svg';
-import cardLogo from '@/assets/svg/tenant/card-logo.svg';
+import darkCardLogo from '@/assets/svg/tenant/dark/card-logo.svg';
+import lightCardLogo from '@/assets/svg/tenant/light/card-logo.svg';
+import ThemeImage from '@/components/ui/ThemeImage';
 import { CardStatus } from '@/constants';
 import { getCardProvider } from '@/utils/financial';
 
@@ -104,7 +106,7 @@ const Card: FC<CardProps> = (props) => {
   } = props;
 
   const printedCardNumber = masked && cardNumber ? `· · ${cardNumber.slice(-4)}` : cardNumber;
-  const mainLogo = tenantLogo || cardLogo;
+
   const providerLogo = provider ? CardProviders[getCardProvider(provider)] : null;
 
   return (
@@ -118,7 +120,12 @@ const Card: FC<CardProps> = (props) => {
       )}
     >
       <div className="flex justify-between ">
-        <Image className={cardSizesMap[size].tenantLogo} src={mainLogo} alt="Tenant logo" />
+        <ThemeImage
+          className={cardSizesMap[size].tenantLogo}
+          lightSrc={lightCardLogo}
+          darkSrc={darkCardLogo}
+          alt="Tenant logo"
+        />
       </div>
       {balance !== undefined && (
         <div className="flex flex-col items-start">

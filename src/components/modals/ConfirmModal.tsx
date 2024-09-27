@@ -133,7 +133,6 @@ const ConfirmModal: FC<ConfirmModalProps> = (props) => {
           <Button onClick={handleClose}>Cancel</Button>
           <Button
             isDisabled={!!delay}
-            className="text-white"
             color={lastRequestStatus.REJECTED ? 'danger' : 'primary'}
             isLoading={requestStatuses.PENDING}
             onClick={handleConfirmModal}

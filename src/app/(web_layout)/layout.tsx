@@ -14,7 +14,7 @@ const MainLayout: FC<RootLayoutProps> = ({ children }) => (
     <main className="flex w-full max-w-screen-2xl flex-grow justify-center p-5 pb-20 md:px-10 md:pt-8 ">
       <Suspense fallback={<Loader />}>{children}</Suspense>
     </main>
-    <Footer />
+    {/* <Footer /> */}
     <LayoutModalContainer />
   </>
 );
