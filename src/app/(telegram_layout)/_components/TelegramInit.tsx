@@ -1,4 +1,5 @@
 import {
+  bindThemeParamsCSSVars,
   parseLaunchParams,
   parseThemeParams,
   retrieveLaunchParams,
@@ -78,6 +79,7 @@ const TelegramInit = () => {
   const miniApp = useMiniApp(true);
   const initData = useInitData(true);
   const dispatch = useAppDispatch();
+  const themeParams = useThemeParams(true);
 
   const { initUser } = useAuth(dispatch);
   const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, initUser);
@@ -110,7 +112,8 @@ const TelegramInit = () => {
 
   useEffect(() => {
     if (miniApp) {
-      miniApp.setBgColor(themes.dark.baseColors.background);
+      // miniApp.setBgColor(themes.dark.baseColors.background);
+      // miniApp.setHeaderColor(themes.dark.baseColors.background);
     }
   }, [miniApp]);
 
