@@ -94,8 +94,8 @@ const TelegramInit = () => {
   useEffect(() => {
     if (isWebAppInitialized && !isUserLoggedIn) {
       initTelegramAuth();
-      miniApp?.setHeaderColor('secondary_bg_color');
-      miniApp?.setBgColor(themes.dark.baseColors.background);
+      miniApp && miniApp.setHeaderColor('#000000');
+      miniApp && miniApp.setBgColor('#000000');
     }
   }, [isWebAppInitialized, isUserLoggedIn]);
 
