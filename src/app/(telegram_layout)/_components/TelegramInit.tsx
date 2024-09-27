@@ -109,8 +109,6 @@ const TelegramInit = () => {
       miniApp.setHeaderColor('#000000');
       miniApp.setBgColor('#000000');
       toast.success('miniApp.setHeaderColor and miniApp.setBgColor');
-    } else {
-      toast.error('miniApp is not defined');
     }
   }, [miniApp]);
 
