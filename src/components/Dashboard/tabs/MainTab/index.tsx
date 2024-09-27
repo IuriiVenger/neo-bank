@@ -2,7 +2,14 @@
 import cn from 'classnames';
 import { FC, useState } from 'react';
 
-import { RiAddFill, RiCornerLeftDownFill, RiCornerRightUpFill, RiMore2Fill } from 'react-icons/ri';
+import {
+  RiAddFill,
+  RiCornerLeftDownFill,
+  RiCornerRightUpFill,
+  RiMore2Fill,
+  RiWalletFill,
+  RiWalletLine,
+} from 'react-icons/ri';
 
 import CreateCardModal from '../../CreateCardModal';
 import ReceiveCryptoModal from '../../ReceiveCryptoModal';
@@ -92,9 +99,9 @@ const MainTab: FC<MainTabProps> = (props) => {
       onClick: openWithdrawCryptoModal,
     },
     {
-      title: 'Other',
-      Icon: RiMore2Fill,
-      onClick: () => alert('Other'),
+      title: 'Wallet',
+      Icon: RiWalletLine,
+      onClick: openWalletTab,
     },
   ];
 

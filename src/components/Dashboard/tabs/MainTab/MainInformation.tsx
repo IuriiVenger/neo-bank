@@ -17,7 +17,7 @@ const MainInformation: FC<MainInformationProps> = (props) => {
   return (
     <DefaultContainer
       className={cn(
-        'flex h-fit w-full flex-shrink-0 flex-col justify-between gap-6 md:flex-row  md:!py-11  md:px-8 max-md:!bg-background max-md:px-0',
+        'flex h-fit w-full flex-shrink-0 flex-col justify-between gap-6 md:flex-row  md:!py-11  md:px-8 max-md:!bg-background max-md:p-0',
         className,
       )}
     >

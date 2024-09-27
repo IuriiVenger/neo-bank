@@ -81,7 +81,7 @@ const Dashboard: FC<DashboardProps> = (props) => {
   const isWalletPending = selectedWallet.status === RequestStatus.PENDING;
 
   return (
-    <section className="flex w-full max-w-screen-xl flex-col  [&>:first-child:not(.back-button)]:mt-10">
+    <section className="flex w-full max-w-screen-xl flex-col  [&>:first-child:not(.back-button)]:lg:mt-10">
       {isWalletPending ? (
         <Loader />
       ) : (
