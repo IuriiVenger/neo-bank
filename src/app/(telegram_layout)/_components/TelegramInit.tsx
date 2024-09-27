@@ -102,12 +102,8 @@ const TelegramInit = () => {
     localStorage.setItem('app_enviroment', AppEnviroment.TELEGRAM);
   }, []);
 
-  useEffect(() => {
-    if (miniApp) {
-      miniApp.setHeaderColor(themes.dark.baseColors.background);
-      miniApp.setBgColor(themes.dark.baseColors.background);
-    }
-  }, [miniApp]);
+  miniApp?.setHeaderColor(themes.dark.baseColors.background);
+  miniApp?.setBgColor(themes.dark.baseColors.background);
 
   return null;
 };
