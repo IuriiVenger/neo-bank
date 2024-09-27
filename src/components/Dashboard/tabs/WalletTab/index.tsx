@@ -7,7 +7,6 @@ import ChooseCoinStep, { ChooseCoinStepProps } from './step/ChooseCoinStep';
 import ChooseCurrencyStep, { ChooseCurrencyStepProps } from './step/ChooseCurrencyStep';
 
 import { API } from '@/api/types';
-import CoinList from '@/components/CoinList';
 import BackButton from '@/components/ui/BackButton';
 import DefaultContainer from '@/components/ui/DefaultContainer';
 import { DashboardTabs } from '@/constants';

@@ -1,6 +1,5 @@
 import { Spinner } from '@nextui-org/react';
 import cn from 'classnames';
-import Image from 'next/image';
 import { FC } from 'react';
 
 import ThemeImage from '../ThemeImage';

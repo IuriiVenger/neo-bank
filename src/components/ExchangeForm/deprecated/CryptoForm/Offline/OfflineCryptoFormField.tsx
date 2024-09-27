@@ -56,7 +56,6 @@ const OfflineCryptoFormField: FC<OfflineCryptoFormFieldProps> = (props) => {
       <CurrencyListModal
         isOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        activeCurrency={currency}
         currencies={currencies}
         onSelect={onChangeCurrency}
         chains={chains}

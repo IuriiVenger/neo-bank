@@ -8,7 +8,7 @@ import { IconType } from 'react-icons';
 import { GoHistory, GoNoEntry, GoVerified } from 'react-icons/go';
 
 import { API } from '@/api/types';
-import { DashboardTabs, OrderStatuses, OrderTypes } from '@/constants';
+import { OrderStatuses, OrderTypes } from '@/constants';
 
 import { getDateAndTime } from '@/utils/converters';
 

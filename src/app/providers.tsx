@@ -13,7 +13,6 @@ import { themes } from '@/config/themes';
 import { CustomTheme } from '@/constants';
 import useInitApp from '@/hooks/useInitApp';
 import { useAppDispatch } from '@/store';
-import StoreProvider from '@/store/components/StoreProvider';
 import StoreWatchers from '@/store/components/StoreWatchers';
 
 const font = Inter({ subsets: ['latin'] });
@@ -21,7 +20,7 @@ const font = Inter({ subsets: ['latin'] });
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch();
   const defaultTheme = (process.env.DEFAULT_THEME as CustomTheme) || CustomTheme.LIGHT;
-  const [theme, _] = useState<CustomTheme>(defaultTheme);
+  const [theme] = useState<CustomTheme>(defaultTheme);
 
   const { initApp } = useInitApp(dispatch);
 

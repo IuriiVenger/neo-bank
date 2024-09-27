@@ -1,7 +1,7 @@
 import 'react-toastify/dist/ReactToastify.css';
 import { FC, Suspense } from 'react';
 
-import Footer from '@/components/Footer';
+// import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import LayoutModalContainer from '@/components/modals/LayoutModalContainer';
 import Loader from '@/components/ui/Loader';

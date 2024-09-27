@@ -11,7 +11,6 @@ import {
   Divider,
 } from '@nextui-org/react';
 
-import Image from 'next/image.js';
 import Link from 'next/link';
 import React, { FC, useMemo, useState } from 'react';
 

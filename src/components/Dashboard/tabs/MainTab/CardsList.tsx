@@ -13,7 +13,6 @@ import { DashboardProps } from '../..';
 
 import cardsEmptyStateDark from '@/assets/svg/theme-illustrations/dark/card-empty-state.svg';
 import cardsEmptyStateLight from '@/assets/svg/theme-illustrations/light/card-empty-state.svg';
-import CreateCardModal from '@/components/Dashboard/CreateCardModal';
 import Card, { CardSizes } from '@/components/ui/Card';
 import EmptyState from '@/components/ui/EmptyState';
 import Loader from '@/components/ui/Loader';

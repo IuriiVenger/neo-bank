@@ -82,8 +82,6 @@ const CryptoRequisites: FC<CryptoRequisitesProps> = (props) => {
     return <Loader />;
   }
 
-  console.log('selectedAddress', selectedAddress);
-
   return (
     <div className="flex flex-col items-center gap-8">
       {selectedAddress && (

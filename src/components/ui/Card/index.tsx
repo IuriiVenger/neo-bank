@@ -79,10 +79,10 @@ type CardProps = {
   provider?: CardProvider;
   cardNumber?: string;
   balance?: string;
-  CVV?: string;
-  expirationDate?: string;
+  // CVV?: string;
+  // expirationDate?: string;
   masked?: boolean;
-  tenantLogo?: string;
+  // tenantLogo?: string;
   status?: CardStatus;
 };
 
@@ -98,10 +98,10 @@ const Card: FC<CardProps> = (props) => {
     cardNumber,
     balance,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    CVV,
+    // CVV,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    expirationDate,
-    tenantLogo,
+    // expirationDate,
+    // tenantLogo,
     status = CardStatus.ACTIVE,
   } = props;
 

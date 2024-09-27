@@ -17,11 +17,10 @@ type CurrencyListModalProps = {
     | WithOptionalAmount<API.List.Crypto>[]
     | WithOptionalAmount<API.List.Fiat>[]
     | WithOptionalAmount<API.List.Chains>[];
-  activeCurrency: API.List.Crypto | API.List.Fiat | API.List.Chains | null;
 };
 
 const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
-  const { isOpen, setIsModalOpen, onSelect, currencies, activeCurrency, chains, title = 'Select a currency' } = props;
+  const { isOpen, setIsModalOpen, onSelect, currencies, chains, title = 'Select a currency' } = props;
 
   const handleCurrencyClick = (currency: API.List.Crypto | API.List.Fiat | API.List.Chains) => {
     onSelect(currency);

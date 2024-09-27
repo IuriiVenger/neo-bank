@@ -1,5 +1,3 @@
-import { API } from './api/types';
-
 export type ValueWithLabel = {
   value: string;
   label: string;
