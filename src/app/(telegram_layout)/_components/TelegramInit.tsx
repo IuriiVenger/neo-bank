@@ -115,6 +115,29 @@ const TelegramInit = () => {
       // miniApp.setHeaderColor('#000000');
       parseLaunchParams(
         new URLSearchParams([
+          ['tgWebAppVersion', '6.7'],
+          ['tgWebAppPlatform', 'tdekstop'],
+          ['tgWebAppBotInline', '1'],
+          [
+            'tgWebAppData',
+            new URLSearchParams([
+              ['query_id', 'AAHdF6IQAAAAAN0XohAOqR8k'],
+              [
+                'user',
+                JSON.stringify({
+                  id: 279058397,
+                  first_name: 'Vladislav',
+                  last_name: 'Kibenko',
+                  username: 'vdkfrost',
+                  language_code: 'ru',
+                  is_premium: true,
+                  allows_write_to_pm: true,
+                }),
+              ],
+              ['auth_date', '1691441944'],
+              ['hash', 'abc'],
+            ]).toString(),
+          ],
           [
             'tgWebAppThemeParams',
             JSON.stringify({
