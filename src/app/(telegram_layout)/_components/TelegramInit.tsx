@@ -6,7 +6,7 @@ import {
   // useSettingsButton
 } from '@telegram-apps/sdk-react';
 
-import { useEffect } from 'react';
+import { use, useEffect } from 'react';
 
 import {
   AppEnviroment,
@@ -17,19 +17,6 @@ import useTelegramAuth from '@/hooks/useTelegramAuth';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { selectConfig, selectIsUserLoggedIn } from '@/store/selectors';
 import { setAppEnviroment } from '@/store/slices/config';
-
-parseLaunchParams([
-  'tgWebAppThemeParams',
-  JSON.stringify({
-    bg_color: '#17212b',
-    button_color: '#5288c1',
-    button_text_color: '#ffffff',
-    hint_color: '#708499',
-    link_color: '#6ab3f3',
-    secondary_bg_color: '#232e3c',
-    text_color: '#f5f5f5',
-  }),
-]);
 // import { setModalVisible } from '@/store/slices/ui';
 
 // eslint-disable-next-line import/order
@@ -105,8 +92,25 @@ const TelegramInit = () => {
   // }, [settingsButton]);
 
   useEffect(() => {
+    if (isWebAppInitialized) {
+      parseLaunchParams([
+        'tgWebAppThemeParams',
+        JSON.stringify({
+          bg_color: '#17212b',
+          button_color: '#5288c1',
+          button_text_color: '#ffffff',
+          hint_color: '#708499',
+          link_color: '#6ab3f3',
+          secondary_bg_color: '#232e3c',
+          text_color: '#f5f5f5',
+        }),
+      ]);
+    }
+  }, [isWebAppInitialized]);
+
+  useEffect(() => {
     if (isWebAppInitialized && !isUserLoggedIn) {
-      initTelegramAuth();
+      initUser();
     }
   }, [isWebAppInitialized, isUserLoggedIn]);
 
