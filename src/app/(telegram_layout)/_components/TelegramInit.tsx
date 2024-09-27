@@ -1,14 +1,23 @@
-import { useInitData, useLaunchParams, useMiniApp, useSettingsButton } from '@telegram-apps/sdk-react';
+import {
+  parseLaunchParams,
+  useInitData,
+  useLaunchParams,
+  useMiniApp,
+  // useSettingsButton
+} from '@telegram-apps/sdk-react';
 
 import { useEffect } from 'react';
 
-import { AppEnviroment, ModalNames } from '@/constants';
+import {
+  AppEnviroment,
+  // ModalNames
+} from '@/constants';
 import useAuth from '@/hooks/useAuth';
 import useTelegramAuth from '@/hooks/useTelegramAuth';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { selectConfig, selectIsUserLoggedIn } from '@/store/selectors';
 import { setAppEnviroment } from '@/store/slices/config';
-import { setModalVisible } from '@/store/slices/ui';
+// import { setModalVisible } from '@/store/slices/ui';
 
 // eslint-disable-next-line import/order
 // import { mockTelegramEnv, parseInitData } from '@telegram-apps/sdk';
@@ -63,25 +72,24 @@ const TelegramInit = () => {
   const miniApp = useMiniApp(true);
   const initData = useInitData(true);
   const dispatch = useAppDispatch();
-  const settingsButton = useSettingsButton(true);
+
   const { initUser } = useAuth(dispatch);
   const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, initUser);
 
-  const openSettingsPopup = () => {
-    dispatch(setModalVisible(ModalNames.SETTINGS));
-  };
-
-  const initSettingsButton = () => {
-    if (!settingsButton) {
-      return;
-    }
-    settingsButton.show();
-    settingsButton.on('click', openSettingsPopup);
-  };
-
-  useEffect(() => {
-    initSettingsButton();
-  }, [settingsButton]);
+  // const settingsButton = useSettingsButton(true);
+  // const openSettingsPopup = () => {
+  //   dispatch(setModalVisible(ModalNames.SETTINGS));
+  // };
+  // const initSettingsButton = () => {
+  //   if (!settingsButton) {
+  //     return;
+  //   }
+  //   settingsButton.show();
+  //   settingsButton.on('click', openSettingsPopup);
+  // };
+  // useEffect(() => {
+  //   initSettingsButton();
+  // }, [settingsButton]);
 
   useEffect(() => {
     if (isWebAppInitialized && !isUserLoggedIn) {
@@ -92,6 +100,19 @@ const TelegramInit = () => {
   useEffect(() => {
     dispatch(setAppEnviroment(AppEnviroment.TELEGRAM));
     localStorage.setItem('app_enviroment', AppEnviroment.TELEGRAM);
+
+    parseLaunchParams([
+      'tgWebAppThemeParams',
+      JSON.stringify({
+        bg_color: '#17212b',
+        button_color: '#5288c1',
+        button_text_color: '#ffffff',
+        hint_color: '#708499',
+        link_color: '#6ab3f3',
+        secondary_bg_color: '#232e3c',
+        text_color: '#f5f5f5',
+      }),
+    ]);
   }, []);
 
   return null;

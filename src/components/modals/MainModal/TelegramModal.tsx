@@ -54,10 +54,6 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     mainButton.setBgColor(themes.light.telegramColors.mainButton.disabledColor);
   };
 
-  useEffect(() => {
-    toast.info(`confirmButtonHidden: ${confirmButtonHidden}`);
-  }, [confirmButtonHidden]);
-
   const enableMainButton = () => {
     if (!mainButton || !isOpen) return;
 

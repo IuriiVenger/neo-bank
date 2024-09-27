@@ -63,8 +63,8 @@ const useAuth = (dispatch: AppDispatch) => {
       setLoadingStatus(RequestStatus.FULLFILLED);
       dispatch(setAppFullInitialized(true));
     } catch (e) {
-      deleteTokens();
       setLoadingStatus(RequestStatus.REJECTED);
+      deleteTokens();
     }
   };
 
