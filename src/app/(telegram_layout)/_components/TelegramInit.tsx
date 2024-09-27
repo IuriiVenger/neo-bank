@@ -7,6 +7,8 @@ import {
 
 import { useEffect } from 'react';
 
+import { toast } from 'react-toastify';
+
 import { themes } from '@/config/themes';
 import {
   AppEnviroment,
@@ -94,8 +96,6 @@ const TelegramInit = () => {
   useEffect(() => {
     if (isWebAppInitialized && !isUserLoggedIn) {
       initTelegramAuth();
-      miniApp && miniApp.setHeaderColor('#000000');
-      miniApp && miniApp.setBgColor('#000000');
     }
   }, [isWebAppInitialized, isUserLoggedIn]);
 
@@ -103,6 +103,16 @@ const TelegramInit = () => {
     dispatch(setAppEnviroment(AppEnviroment.TELEGRAM));
     localStorage.setItem('app_enviroment', AppEnviroment.TELEGRAM);
   }, []);
+
+  useEffect(() => {
+    if (miniApp) {
+      miniApp.setHeaderColor('#000000');
+      miniApp.setBgColor('#000000');
+      toast.success('miniApp.setHeaderColor and miniApp.setBgColor');
+    } else {
+      toast.error('miniApp is not defined');
+    }
+  }, [miniApp]);
 
   return null;
 };
