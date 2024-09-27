@@ -1,20 +1,7 @@
-import {
-  bindThemeParamsCSSVars,
-  parseLaunchParams,
-  parseThemeParams,
-  retrieveLaunchParams,
-  serializeThemeParams,
-  useInitData,
-  useLaunchParams,
-  useMiniApp,
-  useThemeParams,
-} from '@telegram-apps/sdk-react';
+import { useInitData, useLaunchParams, useMiniApp, useThemeParams } from '@telegram-apps/sdk-react';
 
 import { useEffect } from 'react';
 
-import { toast } from 'react-toastify';
-
-import { themes } from '@/config/themes';
 import {
   AppEnviroment,
   // ModalNames
@@ -79,7 +66,6 @@ const TelegramInit = () => {
   const miniApp = useMiniApp(true);
   const initData = useInitData(true);
   const dispatch = useAppDispatch();
-  const themeParams = useThemeParams(true);
 
   const { initUser } = useAuth(dispatch);
   const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, initUser);
@@ -109,13 +95,6 @@ const TelegramInit = () => {
     dispatch(setAppEnviroment(AppEnviroment.TELEGRAM));
     localStorage.setItem('app_enviroment', AppEnviroment.TELEGRAM);
   }, []);
-
-  useEffect(() => {
-    if (miniApp) {
-      // miniApp.setBgColor(themes.dark.baseColors.background);
-      // miniApp.setHeaderColor(themes.dark.baseColors.background);
-    }
-  }, [miniApp]);
 
   return null;
 };
