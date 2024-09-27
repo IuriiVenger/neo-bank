@@ -132,7 +132,7 @@ const LogInOtpPhone: FC<LogInOtpPhoneProps> = (props) => {
           />
         )}
 
-        <Button isLoading={isLoading} type="submit" color="primary" className="mb-2  w-full text-white" radius="full">
+        <Button isLoading={isLoading} type="submit" color="primary" className="mb-2  w-full" radius="full">
           {buttonText}
         </Button>
         {!isOtpRequested && (

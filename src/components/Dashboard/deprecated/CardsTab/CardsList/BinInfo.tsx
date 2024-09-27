@@ -1,7 +1,5 @@
 import { FC } from 'react';
 
-import { API } from '@/api/types';
-
 type BinInfoProps = {
   // bin: API.Cards.Bin;
   bin: any;

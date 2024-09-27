@@ -181,14 +181,12 @@ const DepositTab: FC<DepositTabProps> = (props) => {
       <CurrencyListModal
         isOpen={isFiatModalOpen}
         setIsModalOpen={setIsFiatModalOpen}
-        activeCurrency={selectedFiat}
         currencies={fiatList}
         onSelect={selectCurrency}
       />
       <CurrencyListModal
         isOpen={isCryptoModalOpen}
         setIsModalOpen={setIsCryptoModalOpen}
-        activeCurrency={selectedCrypto}
         currencies={availableToExchangeCrypto}
         onSelect={selectCurrency}
         chains={chainList}
@@ -196,7 +194,6 @@ const DepositTab: FC<DepositTabProps> = (props) => {
       <CurrencyListModal
         isOpen={isChainModalOpen}
         setIsModalOpen={setIsChainModalOpen}
-        activeCurrency={selectedChain}
         currencies={chainList}
         onSelect={selectCurrency}
         title="Select network"

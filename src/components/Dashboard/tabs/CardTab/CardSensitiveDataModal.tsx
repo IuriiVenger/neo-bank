@@ -51,14 +51,7 @@ const CardSensitiveDataModal: FC<CardSensitiveDataModalProps> = (props) => {
             focused={focus}
           /> */}
 
-        <Card
-          className="self-center"
-          cardNumber={numberMask}
-          expirationDate={expiry}
-          provider={selectedCard.data?.brand}
-          CVV={sensitiveData.cvv}
-          size="md"
-        />
+        <Card className="self-center" cardNumber={numberMask} provider={selectedCard.data?.brand} size="md" />
         <div className="flex flex-col gap-3 py-4">
           <CustomInput
             isCustomBordered

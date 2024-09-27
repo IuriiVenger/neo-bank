@@ -2,11 +2,12 @@
 import cn from 'classnames';
 import { FC, useState } from 'react';
 
-import { RiAddFill, RiCornerLeftDownFill, RiCornerRightUpFill, RiMore2Fill } from 'react-icons/ri';
+import { RiAddFill, RiCornerLeftDownFill, RiCornerRightUpFill, RiWalletLine } from 'react-icons/ri';
 
 import CreateCardModal from '../../CreateCardModal';
 import ReceiveCryptoModal from '../../ReceiveCryptoModal';
 import WalletTransactions from '../../WalletTransactions';
+import WithdrawCryptoModal from '../../WithdrawCryptoModal';
 
 import MainInformation from './MainInformation';
 import WalletBalanceList from './WalletBalanceList';
@@ -40,6 +41,7 @@ type MainTabProps = {
   getWalletAddress: DashboardProps['getWalletAddress'];
   createWalletAddress: DashboardProps['createWalletAddress'];
   selectCrypto: DashboardProps['selectCrypto'];
+  externalCalcData: DashboardProps['externalCalcData'];
 };
 
 const MainTab: FC<MainTabProps> = (props) => {
@@ -54,6 +56,7 @@ const MainTab: FC<MainTabProps> = (props) => {
 
   const [isReceiveCryptoModalOpen, setIsReceiveCryptoModalOpen] = useState(false);
   const [isCreateCardModalOpen, setIsCreateCardModalOpen] = useState(false);
+  const [isWithdrawCryptoModalOpen, setIsWithdrawCryptoModalOpen] = useState(false);
 
   const currentWalletBalanceAmount = separateNumbers(roundToDecimals(selectedWallet.data?.total_amount || 0));
   const currentWalletBalance = `${selectedWalletBalanceCurrency} ${currentWalletBalanceAmount}`;
@@ -65,6 +68,7 @@ const MainTab: FC<MainTabProps> = (props) => {
   const openTransactionsTab = () => changeDashboardTab(DashboardTabs.TRANSACTIONS);
   const openReceiveCryptoModal = () => setIsReceiveCryptoModalOpen(true);
   const openCreateCardModal = () => setIsCreateCardModalOpen(true);
+  const openWithdrawCryptoModal = () => setIsWithdrawCryptoModalOpen(true);
 
   const onCardCreate = (card_id: string) => {
     onCardClick(card_id);
@@ -73,7 +77,7 @@ const MainTab: FC<MainTabProps> = (props) => {
 
   const actionButtons: RoundButtonProps[] = [
     {
-      title: 'Create card',
+      title: 'New card',
       Icon: RiAddFill,
       onClick: openCreateCardModal,
     },
@@ -85,12 +89,12 @@ const MainTab: FC<MainTabProps> = (props) => {
     {
       title: 'Send',
       Icon: RiCornerRightUpFill,
-      onClick: () => alert('Send'),
+      onClick: openWithdrawCryptoModal,
     },
     {
-      title: 'Other',
-      Icon: RiMore2Fill,
-      onClick: () => alert('Other'),
+      title: 'Wallet',
+      Icon: RiWalletLine,
+      onClick: openWalletTab,
     },
   ];
 
@@ -132,6 +136,12 @@ const MainTab: FC<MainTabProps> = (props) => {
         isOpen={isCreateCardModalOpen}
         setIsModalOpen={setIsCreateCardModalOpen}
         onCardCreate={onCardCreate}
+        {...props}
+      />
+      <WithdrawCryptoModal
+        isOpen={isWithdrawCryptoModalOpen}
+        setIsModalOpen={setIsWithdrawCryptoModalOpen}
+        chains={chainList}
         {...props}
       />
     </section>

@@ -38,8 +38,7 @@ const RoundButton: FC<RoundButtonProps> = (props) => {
         isLoading={isLoading}
         color={active ? 'primary' : 'default'}
         className={cn(
-          'h-16 w-16 text-2xl',
-          !active && 'bg-white ',
+          'bg-background-2 h-16 w-16 text-2xl',
           disabled && '!cursor-not-allowed opacity-50 hover:!opacity-50',
           buttonClassname,
         )}

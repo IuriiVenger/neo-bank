@@ -192,14 +192,12 @@ const WithdrawTab: FC<WithdrawTabProps> = (props) => {
       <CurrencyListModal
         isOpen={isFiatModalOpen}
         setIsModalOpen={setIsFiatModalOpen}
-        activeCurrency={selectedFiat}
         currencies={fiatList}
         onSelect={selectCurrency}
       />
       <CurrencyListModal
         isOpen={isCryptoModalOpen}
         setIsModalOpen={setIsCryptoModalOpen}
-        activeCurrency={selectedCrypto}
         currencies={allowedCryptoToFiatList}
         onSelect={selectCurrency}
         chains={chainList}

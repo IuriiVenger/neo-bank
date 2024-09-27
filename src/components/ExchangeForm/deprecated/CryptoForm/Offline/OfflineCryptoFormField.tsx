@@ -45,7 +45,7 @@ const OfflineCryptoFormField: FC<OfflineCryptoFormFieldProps> = (props) => {
           <CurrencyInfo chains={chains} currency={currency} onCurrencyClick={toogleIsModalOpen} minValue={minValue} />
         )}
         <input
-          className="w-full text-end text-xl font-semibold tracking-wide focus-visible:outline-none disabled:bg-inherit"
+          className="w-full text-end text-xl font-semibold tracking-wide focus-visible:outline-none disabled:!bg-inherit"
           onBlur={onInputBlur}
           value={isCalculateField ? calculatedValue : value}
           disabled={isCalculateField}
@@ -56,7 +56,6 @@ const OfflineCryptoFormField: FC<OfflineCryptoFormFieldProps> = (props) => {
       <CurrencyListModal
         isOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        activeCurrency={currency}
         currencies={currencies}
         onSelect={onChangeCurrency}
         chains={chains}

@@ -194,7 +194,6 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
         <CurrencyListModal
           isOpen={isCryptoModalOpen}
           setIsModalOpen={setIsCryptoModalOpen}
-          activeCurrency={selectedCrypto}
           currencies={allowedCryptoToFiatList}
           onSelect={selectCurrency}
           chains={chainList}

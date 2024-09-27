@@ -15,7 +15,7 @@ import ConfirmModal from '@/components/modals/ConfirmModal';
 import MainModal from '@/components/modals/MainModal';
 
 import { CardFormFactor, cardFormFactorsData, CardType, cardTypeData } from '@/constants';
-import { useRequestStatus } from '@/hooks/useRequestStatus';
+
 import { TitleDescriptionValue } from '@/types';
 
 type CreateCardModalProps = {
@@ -95,7 +95,6 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   const [selectedProgram, setSelectedProgram] = useState<API.Cards.CardConfig | null>(null);
 
   const [topUpConfirmationText, setTopUpConfirmationText] = useState<string | null>(null);
-  const [requestStatuses, setPending, setFullfilled, setRejected] = useRequestStatus();
 
   const [cardFormFactor, setCardFormFactor] = useState<CardFormFactor | null>(null);
   const [cardType, setCardType] = useState<CardType | null>(null);
@@ -168,16 +167,9 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
       request_id: crypto.randomUUID(),
     };
 
-    try {
-      setPending();
-      const { data } = await createCard(requestData);
-      setCreatedCardId(data.card_id);
-      setCurrentStep(CreateCardSteps.SUCCESS);
-      setFullfilled();
-    } catch (error) {
-      setRejected();
-      throw error;
-    }
+    const { data } = await createCard(requestData);
+    setCreatedCardId(data.card_id);
+    setCurrentStep(CreateCardSteps.SUCCESS);
   };
 
   const closeModal = () => {

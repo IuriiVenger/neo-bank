@@ -15,7 +15,7 @@ import OfflineCryptoFormField from './OfflineCryptoFormField';
 import { API } from '@/api/types';
 import mastercard from '@/assets/svg/payment-systems/mastercard.svg';
 import visa from '@/assets/svg/payment-systems/visa.svg';
-import logo from '@/assets/svg/tenant/logo.svg';
+import logo from '@/assets/svg/tenant/light/logo.svg';
 import { OfflineCryptoFormFieldAction } from '@/constants';
 import { UseExchangeData } from '@/hooks/useExchange';
 import { getActiveFiatAvailableCrypto, isCrypto, isFiat } from '@/utils/financial';

@@ -69,7 +69,7 @@ const ReceiveCryptoModal: FC<ReceiveCryptoModalProps> = (props) => {
 
   const steps: ReceiveCryptoStepsMap = {
     [ReceiveCryptoSteps.METHOD]: {
-      title: 'Choose a method',
+      title: 'Choose a coin',
       Component: ChooseCoinStep,
       confirmButtonHidden: true,
     },

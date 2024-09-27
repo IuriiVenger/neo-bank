@@ -11,7 +11,6 @@ import { DashboardProps } from './Dashboard';
 import DefaultContainer from './ui/DefaultContainer';
 
 import { API } from '@/api/types';
-import CustomInput from '@/components/ui/CustomInput';
 
 import Loader from '@/components/ui/Loader';
 import { ResponseStatus } from '@/constants';
@@ -82,8 +81,6 @@ const CryptoRequisites: FC<CryptoRequisitesProps> = (props) => {
   if (requestStatus.NONE || requestStatus.PENDING) {
     return <Loader />;
   }
-
-  console.log('selectedAddress', selectedAddress);
 
   return (
     <div className="flex flex-col items-center gap-8">

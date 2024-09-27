@@ -13,6 +13,8 @@ type CoinListProps = {
   selectedWallet: StoreDataWithStatus<API.Wallets.ExtendWallet | null>;
   selectedWalletBalanceCurrency: string;
   onCoinClick?: (symbol: string) => void;
+  hideEmptyBalance?: boolean;
+  isTable?: boolean;
 };
 
 type CryptoBySymbolWithBalance = {
@@ -21,11 +23,20 @@ type CryptoBySymbolWithBalance = {
 };
 
 const CoinList: FC<CoinListProps> = (props) => {
-  const { cryptoBySymbol, selectedWallet, selectedWalletBalanceCurrency, className, onCoinClick } = props;
+  const {
+    cryptoBySymbol,
+    selectedWallet,
+    selectedWalletBalanceCurrency,
+    className,
+    onCoinClick,
+    hideEmptyBalance,
+    isTable,
+  } = props;
 
   const cryptoBySymbolWithBalance: CryptoBySymbolWithBalance[] = getCoinListlWithAmount(
     cryptoBySymbol,
     selectedWallet.data,
+    hideEmptyBalance,
   );
 
   const handleCurrencyClick = (symbol: string) => () => onCoinClick && onCoinClick(symbol);
@@ -35,6 +46,7 @@ const CoinList: FC<CoinListProps> = (props) => {
       {cryptoBySymbolWithBalance.map((crypto, index) => (
         <CryptoInfo
           className="hover:opacity-hover"
+          isTable={isTable}
           onCurrencyClick={handleCurrencyClick(crypto.crypto.symbol)}
           hideEmptyBalance
           key={index}

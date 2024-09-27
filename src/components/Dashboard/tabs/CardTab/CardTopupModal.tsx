@@ -156,7 +156,6 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
         <CurrencyListModal
           isOpen={isCryptoModalOpen}
           setIsModalOpen={setIsCryptoModalOpen}
-          activeCurrency={selectedCrypto}
           currencies={availableCryptoToWithdraw}
           onSelect={selectCurrency}
           chains={chainList}

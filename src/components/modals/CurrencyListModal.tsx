@@ -17,11 +17,10 @@ type CurrencyListModalProps = {
     | WithOptionalAmount<API.List.Crypto>[]
     | WithOptionalAmount<API.List.Fiat>[]
     | WithOptionalAmount<API.List.Chains>[];
-  activeCurrency: API.List.Crypto | API.List.Fiat | API.List.Chains | null;
 };
 
 const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
-  const { isOpen, setIsModalOpen, onSelect, currencies, activeCurrency, chains, title = 'Select a currency' } = props;
+  const { isOpen, setIsModalOpen, onSelect, currencies, chains, title = 'Select a currency' } = props;
 
   const handleCurrencyClick = (currency: API.List.Crypto | API.List.Fiat | API.List.Chains) => {
     onSelect(currency);
@@ -29,15 +28,10 @@ const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
   };
 
   return (
-    <MainModal confirmButtonHidden bodyClassname="px-0" isOpen={isOpen} onOpenChange={setIsModalOpen}>
+    <MainModal confirmButtonHidden isOpen={isOpen} onOpenChange={setIsModalOpen}>
       <div>
-        <h2 className="mb-4 px-4 text-2xl font-medium">{title}</h2>
-        <CurrenciesList
-          currencies={currencies}
-          activeCurrency={activeCurrency}
-          chains={chains}
-          handleCurrencyClick={handleCurrencyClick}
-        />
+        <h2 className="mb-4 text-3xl font-medium">{title}</h2>
+        <CurrenciesList currencies={currencies} chains={chains} handleCurrencyClick={handleCurrencyClick} />
       </div>
     </MainModal>
   );

@@ -15,9 +15,11 @@ export const instance = axios.create({
   timeout: 60000,
 });
 
+const isBrowser = typeof window !== 'undefined';
+
 instance.interceptors.request.use((config) => {
-  const access_token = localStorage.getItem('access_token');
-  const appEnviroment = localStorage.getItem('app_enviroment') || AppEnviroment.WEB;
+  const access_token = isBrowser && localStorage.getItem('access_token');
+  const appEnviroment = (isBrowser && localStorage.getItem('app_enviroment')) || AppEnviroment.WEB;
 
   const modifiedHeaders = {
     ...config.headers,
@@ -44,8 +46,8 @@ instance.interceptors.response.use(
   (error) => {
     if (error?.response?.status === ResponseStatus.UNAUTHORIZED) {
       const { response, config: failedRequest } = error;
-      const refreshToken = localStorage.getItem('refresh_token');
-      const appEnviroment = localStorage.getItem('app_enviroment') || AppEnviroment.WEB;
+      const refreshToken = isBrowser && localStorage.getItem('refresh_token');
+      const appEnviroment = (isBrowser && localStorage.getItem('app_enviroment')) || AppEnviroment.WEB;
 
       if (response.config?.url.includes('/auth/refresh/refresh_token') || !refreshToken) {
         if (typeof window !== 'undefined') {

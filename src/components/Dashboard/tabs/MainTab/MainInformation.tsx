@@ -17,7 +17,7 @@ const MainInformation: FC<MainInformationProps> = (props) => {
   return (
     <DefaultContainer
       className={cn(
-        'flex h-fit w-full flex-shrink-0 flex-col justify-between gap-6 md:flex-row  md:!py-11  md:px-8 max-md:bg-inherit max-md:px-0',
+        'flex h-fit w-full flex-shrink-0 flex-col justify-between gap-6 md:flex-row  md:!py-11  md:px-8 max-md:!bg-background max-md:p-0',
         className,
       )}
     >
@@ -27,7 +27,7 @@ const MainInformation: FC<MainInformationProps> = (props) => {
       </div>
       <div className="flex gap-4 md:gap-9 max-md:justify-between max-md:px-2">
         {actionButtons.map((button, index) => (
-          <RoundButton buttonClassname="md:bg-background" key={button.id || index} {...button} />
+          <RoundButton buttonClassname="md:!bg-background" key={button.id || index} {...button} />
         ))}
       </div>
     </DefaultContainer>
