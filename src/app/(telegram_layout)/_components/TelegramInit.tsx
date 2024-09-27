@@ -1,5 +1,7 @@
 import {
+  parseLaunchParams,
   parseThemeParams,
+  retrieveLaunchParams,
   serializeThemeParams,
   useInitData,
   useLaunchParams,
@@ -111,21 +113,44 @@ const TelegramInit = () => {
     if (miniApp) {
       // miniApp.setBgColor('#000000');
       // miniApp.setHeaderColor('#000000');
-      serializeThemeParams({
-        accentTextColor: '#000000',
-        bgColor: '#000000',
-        buttonColor: '#000000',
-        buttonTextColor: '#000000',
-        destructiveTextColor: '#000000',
-        headerBgColor: '#000000',
-        hintColor: '#000000',
-        linkColor: '#000000',
-        secondaryBgColor: '#000000',
-        sectionBgColor: '#000000',
-        sectionHeaderTextColor: '#000000',
-        subtitleTextColor: '#000000',
-        textColor: '#000000',
-      });
+      parseLaunchParams(
+        new URLSearchParams([
+          ['tgWebAppVersion', '6.7'],
+          ['tgWebAppBotInline', '1'],
+          [
+            'tgWebAppData',
+            new URLSearchParams([
+              ['query_id', 'AAHdF6IQAAAAAN0XohAOqR8k'],
+              [
+                'user',
+                JSON.stringify({
+                  id: 279058397,
+                  first_name: 'Vladislav',
+                  last_name: 'Kibenko',
+                  username: 'vdkfrost',
+                  language_code: 'ru',
+                  is_premium: true,
+                  allows_write_to_pm: true,
+                }),
+              ],
+              ['auth_date', '1691441944'],
+              ['hash', 'abc'],
+            ]).toString(),
+          ],
+          [
+            'tgWebAppThemeParams',
+            JSON.stringify({
+              bg_color: '#17212b',
+              button_color: '#5288c1',
+              button_text_color: '#ffffff',
+              hint_color: '#708499',
+              link_color: '#6ab3f3',
+              secondary_bg_color: '#232e3c',
+              text_color: '#f5f5f5',
+            }),
+          ],
+        ]),
+      );
       toast.success('themeParams');
     }
   }, [miniApp]);
