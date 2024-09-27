@@ -20,7 +20,7 @@ const MainLayout: FC<RootLayoutProps> = ({ children }) => {
     if (isScriptLoaded) {
       (window as any).Telegram.WebApp.setBackgroundColor(themes.dark.baseColors.background);
       (window as any).Telegram.WebApp.setHeaderColor(themes.dark.baseColors.background);
-      (window as any).Telegram.WebApp.setBottomBarColor(themes.dark.telegramColors.mainButton.color);
+      (window as any).Telegram.WebApp.setBottomBarColor(themes.dark.baseColors.background);
     }
   }, [isScriptLoaded]);
 
