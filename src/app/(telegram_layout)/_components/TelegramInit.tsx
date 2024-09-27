@@ -17,6 +17,19 @@ import useTelegramAuth from '@/hooks/useTelegramAuth';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { selectConfig, selectIsUserLoggedIn } from '@/store/selectors';
 import { setAppEnviroment } from '@/store/slices/config';
+
+parseLaunchParams([
+  'tgWebAppThemeParams',
+  JSON.stringify({
+    bg_color: '#17212b',
+    button_color: '#5288c1',
+    button_text_color: '#ffffff',
+    hint_color: '#708499',
+    link_color: '#6ab3f3',
+    secondary_bg_color: '#232e3c',
+    text_color: '#f5f5f5',
+  }),
+]);
 // import { setModalVisible } from '@/store/slices/ui';
 
 // eslint-disable-next-line import/order
@@ -100,19 +113,6 @@ const TelegramInit = () => {
   useEffect(() => {
     dispatch(setAppEnviroment(AppEnviroment.TELEGRAM));
     localStorage.setItem('app_enviroment', AppEnviroment.TELEGRAM);
-
-    parseLaunchParams([
-      'tgWebAppThemeParams',
-      JSON.stringify({
-        bg_color: '#17212b',
-        button_color: '#5288c1',
-        button_text_color: '#ffffff',
-        hint_color: '#708499',
-        link_color: '#6ab3f3',
-        secondary_bg_color: '#232e3c',
-        text_color: '#f5f5f5',
-      }),
-    ]);
   }, []);
 
   return null;
