@@ -1,14 +1,17 @@
-import { useInitData, useLaunchParams, useMiniApp, useSettingsButton } from '@telegram-apps/sdk-react';
+import { useInitData, useLaunchParams, useMiniApp, useThemeParams } from '@telegram-apps/sdk-react';
 
 import { useEffect } from 'react';
 
-import { AppEnviroment, ModalNames } from '@/constants';
+import {
+  AppEnviroment,
+  // ModalNames
+} from '@/constants';
 import useAuth from '@/hooks/useAuth';
 import useTelegramAuth from '@/hooks/useTelegramAuth';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { selectConfig, selectIsUserLoggedIn } from '@/store/selectors';
 import { setAppEnviroment } from '@/store/slices/config';
-import { setModalVisible } from '@/store/slices/ui';
+// import { setModalVisible } from '@/store/slices/ui';
 
 // eslint-disable-next-line import/order
 // import { mockTelegramEnv, parseInitData } from '@telegram-apps/sdk';
@@ -35,19 +38,19 @@ import { setModalVisible } from '@/store/slices/ui';
 
 // mockTelegramEnv({
 //   themeParams: {
-//     accentTextColor: '#6ab2f2',
-//     bgColor: '#17212b',
-//     buttonColor: '#5288c1',
-//     buttonTextColor: '#ffffff',
-//     destructiveTextColor: '#ec3942',
-//     headerBgColor: '#17212b',
-//     hintColor: '#708499',
-//     linkColor: '#6ab3f3',
-//     secondaryBgColor: '#232e3c',
-//     sectionBgColor: '#17212b',
-//     sectionHeaderTextColor: '#6ab3f3',
-//     subtitleTextColor: '#708499',
-//     textColor: '#f5f5f5',
+//     accentTextColor: '#000000',
+//     bgColor: '#000000',
+//     buttonColor: '#000000',
+//     buttonTextColor: '#000000',
+//     destructiveTextColor: '#000000',
+//     headerBgColor: '#000000',
+//     hintColor: '#000000',
+//     linkColor: '#000000',
+//     secondaryBgColor: '#000000',
+//     sectionBgColor: '#000000',
+//     sectionHeaderTextColor: '#000000',
+//     subtitleTextColor: '#000000',
+//     textColor: '#000000',
 //   },
 //   initData: parseInitData(initDataRaw),
 //   initDataRaw,
@@ -63,25 +66,24 @@ const TelegramInit = () => {
   const miniApp = useMiniApp(true);
   const initData = useInitData(true);
   const dispatch = useAppDispatch();
-  const settingsButton = useSettingsButton(true);
+
   const { initUser } = useAuth(dispatch);
   const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, initUser);
 
-  const openSettingsPopup = () => {
-    dispatch(setModalVisible(ModalNames.SETTINGS));
-  };
-
-  const initSettingsButton = () => {
-    if (!settingsButton) {
-      return;
-    }
-    settingsButton.show();
-    settingsButton.on('click', openSettingsPopup);
-  };
-
-  useEffect(() => {
-    initSettingsButton();
-  }, [settingsButton]);
+  // const settingsButton = useSettingsButton(true);
+  // const openSettingsPopup = () => {
+  //   dispatch(setModalVisible(ModalNames.SETTINGS));
+  // };
+  // const initSettingsButton = () => {
+  //   if (!settingsButton) {
+  //     return;
+  //   }
+  //   settingsButton.show();
+  //   settingsButton.on('click', openSettingsPopup);
+  // };
+  // useEffect(() => {
+  //   initSettingsButton();
+  // }, [settingsButton]);
 
   useEffect(() => {
     if (isWebAppInitialized && !isUserLoggedIn) {

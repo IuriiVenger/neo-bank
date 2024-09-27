@@ -8,7 +8,7 @@ import { IoCopyOutline } from 'react-icons/io5';
 import { toast } from 'react-toastify';
 
 import { API } from '@/api/types';
-import { CustomModal } from '@/components/modals/MainModal';
+import { CustomModal } from '@/components/modals/MainModal/CustomModal';
 import CustomInput from '@/components/ui/CustomInput';
 import { useRequestStatus } from '@/hooks/useRequestStatus';
 

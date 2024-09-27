@@ -19,7 +19,7 @@ type BaseColorsKeys =
   | 'background3'
   | 'background4';
 
-type BaseColors = Record<BaseColorsKeys, HexColor | RGBAColor | RGBColor>;
+type BaseColors = Record<BaseColorsKeys, HexColor | RGBAColor | RGBColor> & { background: HexColor };
 
 type BrandColorsKeys = 'primary' | 'secondary' | 'danger' | 'success';
 type BrandColorsValues =
@@ -45,6 +45,7 @@ type BrandColors = {
 type TelegramColors = {
   mainButton: {
     color: HexColor;
+    textColor: HexColor;
     disabledColor: HexColor;
   };
 };
@@ -147,6 +148,7 @@ export const themes: Themes = {
     telegramColors: {
       mainButton: {
         color: '#000000',
+        textColor: '#FFFFFF',
         disabledColor: '#A1A1AA',
       },
     },
@@ -213,7 +215,8 @@ export const themes: Themes = {
     },
     telegramColors: {
       mainButton: {
-        color: '#000000',
+        color: '#FFFFFF',
+        textColor: '#000000',
         disabledColor: '#A1A1AA',
       },
     },
