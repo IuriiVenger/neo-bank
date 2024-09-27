@@ -141,44 +141,43 @@ const CardTab: FC<CardTabProps> = (props) => {
 
   const availableActions = actionButtons.filter((button) => button.enabled);
 
-  return (
+  return isCardPending || !selectedCard.data ? (
+    <Loader className="h-full" />
+  ) : (
     <>
       <BackButton onClick={backToDashboard} />
-      {isCardPending || !selectedCard.data ? (
-        <Loader className="h-full" />
-      ) : (
-        <section className="flex h-full gap-8 lg:gap-14 max-lg:flex-col">
-          <div className="flex w-fit flex-col gap-7 max-lg:self-center">
-            <Card
-              className="max-md:hidden"
-              cardNumber={selectedCard.data.card_number}
-              provider={selectedCard.data.brand}
-              status={selectedCard.data.card_status}
-              balance={getCardBalance(selectedCard.data)}
-              masked
-              size="lg"
-            />
-            <Card
-              className="md:hidden"
-              cardNumber={selectedCard.data.card_number}
-              provider={selectedCard.data.brand}
-              balance={getCardBalance(selectedCard.data)}
-              status={selectedCard.data.card_status}
-              masked
-              size="md"
-            />
-            <div className="flex w-full justify-between">
-              {availableActions.map((button, index) => (
-                <RoundButton key={index} {...button} />
-              ))}
-            </div>
+      <section className="flex h-full gap-8 lg:gap-14 max-lg:flex-col">
+        <div className="flex w-fit flex-col gap-7 max-lg:self-center">
+          <Card
+            className="max-md:hidden"
+            cardNumber={selectedCard.data.card_number}
+            provider={selectedCard.data.brand}
+            status={selectedCard.data.card_status}
+            balance={getCardBalance(selectedCard.data)}
+            masked
+            size="lg"
+          />
+          <Card
+            className="md:hidden"
+            cardNumber={selectedCard.data.card_number}
+            provider={selectedCard.data.brand}
+            balance={getCardBalance(selectedCard.data)}
+            status={selectedCard.data.card_status}
+            masked
+            size="md"
+          />
+          <div className="flex w-full justify-between">
+            {availableActions.map((button, index) => (
+              <RoundButton key={index} {...button} />
+            ))}
           </div>
-          <DefaultContainer className="left-0 h-full flex-grow md:w-full max-xs:-mx-5 max-xs:-mb-20 max-xs:rounded-b-none">
-            <h1 className="mb-8 text-2xl font-medium">Transactions</h1>
-            <CardTransactions {...props} />
-          </DefaultContainer>
-        </section>
-      )}
+        </div>
+        <DefaultContainer className="left-0 h-full flex-grow md:w-full max-xs:-mx-5 max-xs:-mb-20 max-xs:rounded-b-none">
+          <h1 className="mb-8 text-2xl font-medium">Transactions</h1>
+          <CardTransactions {...props} />
+        </DefaultContainer>
+      </section>
+
       <CardSensitiveDataModal
         isOpen={isSensitiveDataModalOpen}
         setIsModalOpen={setIsSensitiveDataModalOpen}
