@@ -80,8 +80,6 @@ const TelegramInit = () => {
   const { initUser } = useAuth(dispatch);
   const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, initUser);
 
-  const themeParams = useThemeParams(true);
-
   // const settingsButton = useSettingsButton(true);
   // const openSettingsPopup = () => {
   //   dispatch(setModalVisible(ModalNames.SETTINGS));
@@ -111,7 +109,7 @@ const TelegramInit = () => {
   useEffect(() => {
     if (miniApp) {
       miniApp.setBgColor('#000000');
-      miniApp.setHeaderColor('#000000');
+      // miniApp.setHeaderColor('#000000');
 
       toast.success('themeParams');
     }
