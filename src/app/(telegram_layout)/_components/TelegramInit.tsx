@@ -93,7 +93,7 @@ const TelegramInit = () => {
 
   useEffect(() => {
     if (isWebAppInitialized && !isUserLoggedIn) {
-      initUser();
+      initTelegramAuth();
     }
   }, [isWebAppInitialized, isUserLoggedIn]);
 
