@@ -213,7 +213,7 @@ export const themes: Themes = {
     },
     telegramColors: {
       mainButton: {
-        color: '#000000',
+        color: '#FFFFFF',
         disabledColor: '#A1A1AA',
       },
     },
