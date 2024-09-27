@@ -146,6 +146,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
 
     mainButton.enable();
     mainButton.setBgColor(themes.dark.telegramColors.mainButton.color);
+    mainButton.setTextColor(themes.dark.telegramColors.mainButton.textColor);
   };
 
   const showLoader = () => {

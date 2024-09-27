@@ -45,6 +45,7 @@ type BrandColors = {
 type TelegramColors = {
   mainButton: {
     color: HexColor;
+    textColor: HexColor;
     disabledColor: HexColor;
   };
 };
@@ -147,6 +148,7 @@ export const themes: Themes = {
     telegramColors: {
       mainButton: {
         color: '#000000',
+        textColor: '#FFFFFF',
         disabledColor: '#A1A1AA',
       },
     },
@@ -214,6 +216,7 @@ export const themes: Themes = {
     telegramColors: {
       mainButton: {
         color: '#FFFFFF',
+        textColor: '#000000',
         disabledColor: '#A1A1AA',
       },
     },
