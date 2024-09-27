@@ -160,9 +160,8 @@ const CardsList: FC<CardsListProps> = (props) => {
               />
             )}
             {data.map((card, index) => (
-              <div>
+              <div key={`${card.card_id}_${index}`}>
                 <button
-                  key={`${card.card_id}_${index}`}
                   type="button"
                   onClick={handleCardClick(card.card_id)}
                   className={cn(

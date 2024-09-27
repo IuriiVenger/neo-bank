@@ -32,12 +32,7 @@ const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
     <MainModal confirmButtonHidden bodyClassname="px-0" isOpen={isOpen} onOpenChange={setIsModalOpen}>
       <div>
         <h2 className="mb-4 px-4 text-2xl font-medium">{title}</h2>
-        <CurrenciesList
-          currencies={currencies}
-          activeCurrency={activeCurrency}
-          chains={chains}
-          handleCurrencyClick={handleCurrencyClick}
-        />
+        <CurrenciesList currencies={currencies} chains={chains} handleCurrencyClick={handleCurrencyClick} />
       </div>
     </MainModal>
   );

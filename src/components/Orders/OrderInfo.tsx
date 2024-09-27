@@ -93,7 +93,7 @@ const OrderInfo: FC<OrderInfoProps> = ({ order }) => {
       </div>
       <Button
         as={Link}
-        href={`/dashboard?tab=${DashboardTabs.INFO}`}
+        href="/dashboard"
         color={orderStatusInfo.buttonColor}
         className="mt-8 w-60 text-white"
         radius="sm"

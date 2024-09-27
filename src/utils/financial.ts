@@ -160,8 +160,9 @@ export const getCurrencyId = (currency: API.List.Crypto | API.List.Fiat | API.Li
 export const getCoinListlWithAmount = (
   cryptoBySymbol: API.List.CryptoBySymbol[],
   selectedWallet: API.Wallets.ExtendWallet | null,
-) =>
-  cryptoBySymbol
+  hideEmptyBalance = false,
+) => {
+  const coinListWithAmount = cryptoBySymbol
     .map((crypto) => {
       const balance = selectedWallet?.balance.find((wallet) => wallet.symbol === crypto.symbol);
 
@@ -175,6 +176,9 @@ export const getCoinListlWithAmount = (
       };
     })
     .sort((a, b) => b.crypto.fiat_amount - a.crypto.fiat_amount);
+
+  return hideEmptyBalance ? coinListWithAmount.filter((item) => item.crypto.amount > 0) : coinListWithAmount;
+};
 
 export const getCurrencyListWithAmount = (crypto: API.List.Crypto[], walletBalance: API.Wallets.WalletBalance) => {
   const cryptoWithBalance = convertWalletBalanceToCryptoWithAmount(walletBalance);
@@ -193,6 +197,7 @@ export const getSelectedCoinCurrenciesWithAmount = (
   cryptoBySymbol: API.List.CryptoBySymbol[],
   selectedCoin: string,
   selectedWallet: API.Wallets.ExtendWallet,
+  hideEmptyBalance = false,
 ) => {
   const selectedCoinCurrenciesWithAmount =
     cryptoBySymbol
@@ -209,5 +214,7 @@ export const getSelectedCoinCurrenciesWithAmount = (
       })
       .sort((a, b) => b.amount - a.amount) || [];
 
-  return selectedCoinCurrenciesWithAmount;
+  return hideEmptyBalance
+    ? selectedCoinCurrenciesWithAmount.filter(({ amount }) => !!amount)
+    : selectedCoinCurrenciesWithAmount;
 };

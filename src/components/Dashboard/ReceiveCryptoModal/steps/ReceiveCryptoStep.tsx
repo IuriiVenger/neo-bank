@@ -1,9 +1,7 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
-import { API } from '@/api/types';
 import CryptoRequisites from '@/components/CryptoRequisites';
 import { DashboardProps } from '@/components/Dashboard';
-import { ResponseStatus } from '@/constants';
 
 export type ReceiveCryptoStepProps = {
   getWalletAddress: DashboardProps['getWalletAddress'];

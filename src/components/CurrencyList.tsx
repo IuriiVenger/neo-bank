@@ -5,7 +5,6 @@ import CurrencyInfo from './Currency/CurrencyInfo';
 
 import { API } from '@/api/types';
 import { WithOptionalAmount } from '@/types';
-import { getCurrencyId } from '@/utils/financial';
 
 type CurrenciesListProps = {
   chains?: API.List.Chains[];
@@ -13,22 +12,19 @@ type CurrenciesListProps = {
     | WithOptionalAmount<API.List.Crypto>[]
     | WithOptionalAmount<API.List.Fiat>[]
     | WithOptionalAmount<API.List.Chains>[];
-  activeCurrency: API.List.Crypto | API.List.Fiat | API.List.Chains | null;
   handleCurrencyClick?: (currency: API.List.Crypto | API.List.Fiat | API.List.Chains) => void;
   className?: string;
 };
 
 const CurrenciesList: FC<CurrenciesListProps> = (props) => {
-  const { currencies, activeCurrency, chains, handleCurrencyClick, className } = props;
+  const { currencies, chains, handleCurrencyClick, className } = props;
   return (
     <section className={cn(className, 'flex flex-col gap-4')}>
       {currencies.map((currency, index) => (
         <div
           className={cn(
-            'flex cursor-pointer items-center justify-between transition-background md:border-b ',
-            activeCurrency && getCurrencyId(currency) === getCurrencyId(activeCurrency)
-              ? 'bg-gray-100'
-              : 'hover:opacity-hover',
+            'flex  items-center justify-between transition-background ',
+            !!handleCurrencyClick && 'cursor-pointer hover:opacity-hover',
           )}
           key={index}
           onClick={() => handleCurrencyClick && handleCurrencyClick(currency)}

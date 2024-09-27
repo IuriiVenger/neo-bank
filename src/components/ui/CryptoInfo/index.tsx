@@ -44,7 +44,11 @@ const CryptoInfo: FC<CryptoInfoProps> = (props) => {
     <button
       type="button"
       onClick={onCurrencyClick}
-      className={cn(className, 'flex shrink-0 items-center gap-3 hover:opacity-hover')}
+      className={cn(
+        className,
+        'flex shrink-0 items-center gap-3',
+        onCurrencyClick ? 'cursor-pointer hover:opacity-hover' : 'cursor-default',
+      )}
     >
       <div
         className={cn(

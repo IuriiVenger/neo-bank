@@ -11,7 +11,6 @@ import { DashboardProps } from './Dashboard';
 import DefaultContainer from './ui/DefaultContainer';
 
 import { API } from '@/api/types';
-import CustomInput from '@/components/ui/CustomInput';
 
 import Loader from '@/components/ui/Loader';
 import { ResponseStatus } from '@/constants';

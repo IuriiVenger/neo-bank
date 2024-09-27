@@ -37,6 +37,7 @@ type MainModalProps = CustomModalProps &
     isAppFullInitialized?: boolean;
     nativeCloseButton?: boolean;
     saveScrollPosition?: boolean;
+    isDismissable?: boolean;
   };
 
 export const CustomModal: FC<CustomModalProps> = (props) => {
@@ -272,6 +273,7 @@ const WebModal: FC<MainModalProps> = (props) => {
     nativeCloseButton,
     isOpen,
     onClose,
+    isDismissable = false,
     ...otherProps
   } = props;
 
@@ -285,6 +287,7 @@ const WebModal: FC<MainModalProps> = (props) => {
   return (
     <Modal
       {...otherProps}
+      isDismissable={isDismissable}
       isOpen={isOpen}
       className={cn('', className)}
       onClose={closeModal}
