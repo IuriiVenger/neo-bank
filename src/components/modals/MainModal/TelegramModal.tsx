@@ -2,6 +2,8 @@ import { cn, Modal, ModalBody, ModalContent, ModalHeader } from '@nextui-org/rea
 import { useBackButton, useMainButton } from '@telegram-apps/sdk-react';
 import { FC, useEffect } from 'react';
 
+import { toast } from 'react-toastify';
+
 import { MainModalProps } from '.';
 
 import { themes } from '@/config/themes';
@@ -51,6 +53,10 @@ const TelegramModal: FC<MainModalProps> = (props) => {
 
     mainButton.setBgColor(themes.light.telegramColors.mainButton.disabledColor);
   };
+
+  useEffect(() => {
+    toast.info(`confirmButtonHidden: ${confirmButtonHidden}`);
+  }, [confirmButtonHidden]);
 
   const enableMainButton = () => {
     if (!mainButton || !isOpen) return;
