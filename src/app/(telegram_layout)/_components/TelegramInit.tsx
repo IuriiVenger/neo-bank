@@ -1,4 +1,5 @@
 import {
+  parseLaunchParams,
   parseThemeParams,
   useInitData,
   useLaunchParams,
@@ -109,21 +110,45 @@ const TelegramInit = () => {
     if (miniApp) {
       // miniApp.setBgColor('#000000');
       // miniApp.setHeaderColor('#000000');
-      parseThemeParams({
-        accent_text_color: '#6ab2f2',
-        bg_color: '#17212b',
-        button_color: '#5288c1',
-        button_text_color: '#ffffff',
-        destructive_text_color: '#ec3942',
-        header_bg_color: '#17212b',
-        hint_color: '#708499',
-        link_color: '#6ab3f3',
-        secondary_bg_color: '#232e3c',
-        section_bg_color: '#17212b',
-        section_header_text_color: '#6ab3f3',
-        subtitle_text_color: '#708499',
-        text_color: '#f5f5f5',
-      });
+      parseLaunchParams(
+        new URLSearchParams([
+          ['tgWebAppVersion', '6.7'],
+          ['tgWebAppPlatform', 'tdekstop'],
+          ['tgWebAppBotInline', '1'],
+          [
+            'tgWebAppData',
+            new URLSearchParams([
+              ['query_id', 'AAHdF6IQAAAAAN0XohAOqR8k'],
+              [
+                'user',
+                JSON.stringify({
+                  id: 279058397,
+                  first_name: 'Vladislav',
+                  last_name: 'Kibenko',
+                  username: 'vdkfrost',
+                  language_code: 'ru',
+                  is_premium: true,
+                  allows_write_to_pm: true,
+                }),
+              ],
+              ['auth_date', '1691441944'],
+              ['hash', 'abc'],
+            ]).toString(),
+          ],
+          [
+            'tgWebAppThemeParams',
+            JSON.stringify({
+              bg_color: '#17212b',
+              button_color: '#5288c1',
+              button_text_color: '#ffffff',
+              hint_color: '#708499',
+              link_color: '#6ab3f3',
+              secondary_bg_color: '#232e3c',
+              text_color: '#f5f5f5',
+            }),
+          ],
+        ]),
+      );
       toast.success('miniApp.setHeaderColor and miniApp.setBgColor');
     }
   }, [miniApp]);
