@@ -110,6 +110,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     isAppFullInitialized,
     isLoading,
     onClose,
+    isDismissable = false,
     ...otherProps
   } = props;
 
@@ -241,7 +242,14 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   }, [isLoading]);
 
   return (
-    <Modal isOpen={isOpen} hideCloseButton disableAnimation onOpenChange={onOpenChange} {...otherProps}>
+    <Modal
+      isDismissable={isDismissable}
+      isOpen={isOpen}
+      hideCloseButton
+      disableAnimation
+      onOpenChange={onOpenChange}
+      {...otherProps}
+    >
       <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:relative md:max-h-[90vh]', contentClassName)}>
         {!!header && <ModalHeader>{header}</ModalHeader>}
         <ModalBody className={cn('pb-10 shadow-inner sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>
