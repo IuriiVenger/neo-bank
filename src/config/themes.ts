@@ -19,7 +19,7 @@ type BaseColorsKeys =
   | 'background3'
   | 'background4';
 
-type BaseColors = Record<BaseColorsKeys, HexColor | RGBAColor | RGBColor>;
+type BaseColors = Record<BaseColorsKeys, HexColor | RGBAColor | RGBColor> & { background: HexColor };
 
 type BrandColorsKeys = 'primary' | 'secondary' | 'danger' | 'success';
 type BrandColorsValues =
