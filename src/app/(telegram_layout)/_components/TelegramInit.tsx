@@ -94,6 +94,8 @@ const TelegramInit = () => {
   useEffect(() => {
     if (isWebAppInitialized && !isUserLoggedIn) {
       initTelegramAuth();
+      miniApp?.setHeaderColor(themes.dark.baseColors.background);
+      miniApp?.setBgColor(themes.dark.baseColors.background);
     }
   }, [isWebAppInitialized, isUserLoggedIn]);
 
@@ -101,9 +103,6 @@ const TelegramInit = () => {
     dispatch(setAppEnviroment(AppEnviroment.TELEGRAM));
     localStorage.setItem('app_enviroment', AppEnviroment.TELEGRAM);
   }, []);
-
-  miniApp?.setHeaderColor(themes.dark.baseColors.background);
-  miniApp?.setBgColor(themes.dark.baseColors.background);
 
   return null;
 };
