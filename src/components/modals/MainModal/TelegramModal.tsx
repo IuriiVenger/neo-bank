@@ -43,6 +43,7 @@ export const NonNativeTelegramModal: FC<MainModalProps> = (props) => {
 
       backButton.on('click', closeModal);
     } else {
+      console.log('hide back button');
       backButton.hide();
       backButton.off('click', closeModal);
     }
