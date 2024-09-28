@@ -5,7 +5,8 @@ import { FC, useEffect } from 'react';
 import { MainModalProps } from '.';
 
 import { themes } from '@/config/themes';
-import { useAppDispatch } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { selectActiveTheme } from '@/store/selectors';
 import { decreaseOpenModalCount, increaseOpenModalCount } from '@/store/slices/ui';
 
 const TelegramModal: FC<MainModalProps> = (props) => {
@@ -20,7 +21,6 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     confirmButtonText,
     confirmButtonDisabled,
     confirmButtonHidden,
-    isAppFullInitialized,
     isLoading,
     onClose,
     isDismissable = false,
@@ -30,6 +30,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   const backButton = useBackButton();
   const mainButton = useMainButton();
   const dispatch = useAppDispatch();
+  const activeTheme = useAppSelector(selectActiveTheme);
 
   const confirmHandler = () => {
     onConfirm && onConfirm();
@@ -51,15 +52,15 @@ const TelegramModal: FC<MainModalProps> = (props) => {
 
     mainButton.disable();
 
-    mainButton.setBgColor(themes.dark.telegramColors.mainButton.disabledColor);
+    mainButton.setBgColor(themes[activeTheme].telegramColors.mainButton.disabledColor);
   };
 
   const enableMainButton = () => {
     if (!mainButton) return;
 
     mainButton.enable();
-    mainButton.setBgColor(themes.dark.telegramColors.mainButton.color);
-    mainButton.setTextColor(themes.dark.telegramColors.mainButton.textColor);
+    mainButton.setBgColor(themes[activeTheme].telegramColors.mainButton.color);
+    mainButton.setTextColor(themes[activeTheme].telegramColors.mainButton.textColor);
   };
 
   const showLoader = () => {

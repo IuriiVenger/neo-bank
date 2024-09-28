@@ -1,6 +1,6 @@
 import { ModalProps } from '@nextui-org/react';
 import cn from 'classnames';
-import { FC, memo, ReactNode, useEffect, useState } from 'react';
+import { FC, memo, ReactNode, useEffect } from 'react';
 
 import TelegramModal from './TelegramModal';
 
@@ -10,9 +10,8 @@ import { framerMotionAnimations } from '@/config/animations';
 
 import { AppEnviroment } from '@/constants';
 import useBreakpoints from '@/hooks/useBreakpoints';
-import { useAppDispatch, useAppSelector } from '@/store';
+import { useAppSelector } from '@/store';
 import { selectConfig } from '@/store/selectors';
-import { decreaseOpenModalCount, increaseOpenModalCount } from '@/store/slices/ui';
 
 export type HiddenConfirmButtonProps = {
   confirmButtonHidden: true;
@@ -47,7 +46,6 @@ const MainModal: FC<MainModalProps> = (props) => {
   const { mdBreakpoint } = useBreakpoints();
   const { appEnviroment, isAppFullInitialized } = useAppSelector(selectConfig);
   const { size, motionProps, isOpen, className, nativeCloseButton = true, saveScrollPosition } = props;
-  // const dispatch = useAppDispatch();
 
   const responsiveSize = mdBreakpoint ? 'md' : 'full';
   const modalSize = size || responsiveSize;
@@ -56,33 +54,11 @@ const MainModal: FC<MainModalProps> = (props) => {
   const isTelegramEnviroment = appEnviroment === AppEnviroment.TELEGRAM;
   const disableAnimation = !mdBreakpoint && !motionProps;
 
-  // const [wasOpened, setWasOpened] = useState(false);
-
   useEffect(() => {
     if (isOpen && !mdBreakpoint && window && !saveScrollPosition) {
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
   }, [isOpen]);
-
-  // useEffect(() => {
-  //   if (isOpen && !wasOpened) {
-  //     setWasOpened(true);
-  //   }
-
-  //   if (isOpen && wasOpened) {
-  //     dispatch(increaseOpenModalCount());
-  //   }
-
-  //   if (!isOpen && wasOpened) {
-  //     dispatch(decreaseOpenModalCount());
-  //   }
-  // }, [isOpen]);
-
-  // useEffect(() => {
-  //   if (wasOpened) {
-  //     dispatch(increaseOpenModalCount());
-  //   }
-  // }, [wasOpened]);
 
   const modifiedProps = {
     ...props,

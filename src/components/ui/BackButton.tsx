@@ -1,6 +1,6 @@
 import { useBackButton } from '@telegram-apps/sdk-react';
 import cn from 'classnames';
-import { FC, memo, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { RiArrowLeftSLine } from 'react-icons/ri';
 
 import { AppEnviroment } from '@/constants';

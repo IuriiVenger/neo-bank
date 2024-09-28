@@ -2,6 +2,7 @@ import { useInitData, useLaunchParams, useMiniApp, useThemeParams } from '@teleg
 
 import { useEffect } from 'react';
 
+import { themes } from '@/config/themes';
 import {
   AppEnviroment,
   // ModalNames
@@ -9,7 +10,7 @@ import {
 import useAuth from '@/hooks/useAuth';
 import useTelegramAuth from '@/hooks/useTelegramAuth';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { selectConfig, selectIsUserLoggedIn } from '@/store/selectors';
+import { selectActiveTheme, selectConfig, selectIsUserLoggedIn } from '@/store/selectors';
 import { setAppEnviroment } from '@/store/slices/config';
 // import { setModalVisible } from '@/store/slices/ui';
 
@@ -61,6 +62,7 @@ import { setAppEnviroment } from '@/store/slices/config';
 const TelegramInit = () => {
   const { isWebAppInitialized } = useAppSelector(selectConfig);
   const isUserLoggedIn = useAppSelector(selectIsUserLoggedIn);
+  const activeTheme = useAppSelector(selectActiveTheme);
 
   const launchParams = useLaunchParams(true);
   const miniApp = useMiniApp(true);
@@ -69,6 +71,12 @@ const TelegramInit = () => {
 
   const { initUser } = useAuth(dispatch);
   const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, initUser);
+
+  useEffect(() => {
+    window.Telegram.WebApp.setBackgroundColor(themes[activeTheme].baseColors.background);
+    window.Telegram.WebApp.setHeaderColor(themes[activeTheme].baseColors.background);
+    window.Telegram.WebApp.setBottomBarColor(themes[activeTheme].baseColors.background);
+  }, []);
 
   // const settingsButton = useSettingsButton(true);
   // const openSettingsPopup = () => {
