@@ -178,7 +178,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   const onIsLoadingChanged = () => {
-    if (!mainButton || !isOpen) return;
+    if (!mainButton || !isOpen || isLoading === undefined) return;
     console.log('onIsLoadingChanged', isLoading);
 
     isLoading ? showLoader() : hideLoader();
