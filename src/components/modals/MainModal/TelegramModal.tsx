@@ -117,19 +117,23 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   const onModalClose = () => {
-    backButton.isVisible && backButton.hide();
-    backButton.isVisible && backButton.off('click', closeModal);
-    mainButton.enable();
-    mainButton.hideLoader();
-    mainButton.off('click', confirmHandler);
-    if (openModalCount === 1) mainButton.hide();
+    backButton.off('click', closeModal);
+    onConfirm && mainButton.off('click', confirmHandler);
     dispatch(decreaseOpenModalCount());
+    if (openModalCount === 0) {
+      mainButton.hide(); // have to test
+      backButton.hide();
+      mainButton.enable();
+      mainButton.hideLoader();
+    }
   };
 
   useEffect(() => {
     onModalOpen();
   }, []);
+
   useEffect(() => () => onModalClose(), []);
+
   useEffect(() => {
     onConfirmButtonHiddenChanged();
   }, [confirmButtonHidden]);
