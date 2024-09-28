@@ -6,93 +6,92 @@ import { MainModalProps } from '.';
 
 import { themes } from '@/config/themes';
 
-export const NonNativeTelegramModal: FC<MainModalProps> = (props) => {
-  const {
-    children,
-    header,
-    isOpen,
-    onOpenChange,
-    contentClassName,
-    bodyClassname,
-    onConfirm,
-    confirmButtonText,
-    confirmButtonDisabled,
-    confirmButtonHidden,
-    isAppFullInitialized,
-    isLoading,
-    onClose,
-    nativeCloseButton,
-    hideCloseButton,
-    ...otherProps
-  } = props;
+// export const NonNativeTelegramModal: FC<MainModalProps> = (props) => {
+//   const {
+//     children,
+//     header,
+//     isOpen,
+//     onOpenChange,
+//     contentClassName,
+//     bodyClassname,
+//     onConfirm,
+//     confirmButtonText,
+//     confirmButtonDisabled,
+//     confirmButtonHidden,
+//     isAppFullInitialized,
+//     isLoading,
+//     onClose,
+//     nativeCloseButton,
+//     hideCloseButton,
+//     ...otherProps
+//   } = props;
 
-  if (!isAppFullInitialized) return null;
+//   if (!isAppFullInitialized) return null;
 
-  const backButton = useBackButton();
+//   const backButton = useBackButton();
 
-  const closeModal = () => {
-    onOpenChange && onOpenChange(false);
-    onClose && onClose();
-  };
+//   const closeModal = () => {
+//     onOpenChange && onOpenChange(false);
+//     onClose && onClose();
+//   };
 
-  const onOpenChangeHandler = () => {
-    if (!backButton) return;
+//   const onOpenChangeHandler = () => {
+//     if (!backButton) return;
 
-    if (isOpen) {
-      backButton.show();
+//     if (isOpen) {
+//       backButton.show();
 
-      backButton.on('click', closeModal);
-    } else {
-      console.log('hide back button');
-      backButton.hide();
-      backButton.off('click', closeModal);
-    }
-  };
+//       backButton.on('click', closeModal);
+//     } else {
+//       backButton.hide();
+//       backButton.off('click', closeModal);
+//     }
+//   };
 
-  useEffect(() => {
-    onOpenChangeHandler();
+//   useEffect(() => {
+//     onOpenChangeHandler();
 
-    return () => {
-      if (backButton) {
-        backButton.off('click', closeModal);
-      }
-    };
-  }, [isOpen, confirmButtonHidden]);
+//     return () => {
+//       if (backButton) {
+//         backButton.off('click', closeModal);
+//       }
+//     };
+//   }, [isOpen, confirmButtonHidden]);
 
-  useEffect(() => () => onOpenChangeHandler(), []);
+//   useEffect(() => () => onOpenChangeHandler(), []);
 
-  const nonNativeCloseButtonEnabled = !nativeCloseButton && !hideCloseButton;
+//   const nonNativeCloseButtonEnabled = !nativeCloseButton && !hideCloseButton;
 
-  return (
-    <Modal isOpen={isOpen} hideCloseButton disableAnimation onOpenChange={onOpenChange} {...otherProps}>
-      <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:relative md:max-h-[90vh]', contentClassName)}>
-        {!!header && <ModalHeader>{header}</ModalHeader>}
-        <ModalBody className={cn('pb-10 shadow-inner sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>
-        {(!confirmButtonHidden || nonNativeCloseButtonEnabled) && (
-          <ModalFooter className="relative z-10 flex min-h-1 w-full flex-col pb-6">
-            {!confirmButtonHidden && (
-              <Button
-                isDisabled={confirmButtonDisabled}
-                isLoading={isLoading}
-                color="primary"
-                radius="md"
-                onClick={onConfirm}
-              >
-                {confirmButtonText}
-              </Button>
-            )}
+//   return (
+//     <Modal isOpen={isOpen} hideCloseButton disableAnimation onOpenChange={onOpenChange} {...otherProps}>
+//       <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:relative md:max-h-[90vh]', contentClassName)}>
+//         {!!header && <ModalHeader>{header}</ModalHeader>}
+//         <ModalBody className={cn('pb-10 shadow-inner sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>
+//         {(!confirmButtonHidden || nonNativeCloseButtonEnabled) && (
+//           <ModalFooter className="relative z-10 flex min-h-1 w-full flex-col pb-6">
+//             {!confirmButtonHidden && (
+//               <Button
+//                 isDisabled={confirmButtonDisabled}
+//                 isLoading={isLoading}
+//                 color="primary"
+//                 radius="md"
+//                 onClick={onConfirm}
+//               >
+//                 {confirmButtonText}
+//               </Button>
+//             )}
 
-            {nonNativeCloseButtonEnabled && (
-              <Button onClick={closeModal} className="w-full" color="primary" variant="bordered">
-                Close
-              </Button>
-            )}
-          </ModalFooter>
-        )}
-      </ModalContent>
-    </Modal>
-  );
-};
+//             {nonNativeCloseButtonEnabled && (
+//               <Button onClick={closeModal} className="w-full" color="primary" variant="bordered">
+//                 Close
+//               </Button>
+//             )}
+//           </ModalFooter>
+//         )}
+//       </ModalContent>
+//     </Modal>
+//   );
+// };
 
 const TelegramModal: FC<MainModalProps> = (props) => {
   const {
@@ -195,6 +194,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
         onConfirmButtonDisabledChanged();
       }
     } else {
+      console.log('hide back button');
       backButton.hide();
       backButton.off('click', closeModal);
       mainButton.enable();
