@@ -65,19 +65,24 @@ const MainModal: FC<MainModalProps> = (props) => {
   }, [isOpen]);
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !wasOpened) {
       setWasOpened(true);
-      dispatch(increaseOpenModalCount());
-    } else if (wasOpened) {
-      dispatch(decreaseOpenModalCount());
     }
 
-    return () => {
-      if (wasOpened) {
-        dispatch(decreaseOpenModalCount());
-      }
-    };
+    if (isOpen && wasOpened) {
+      dispatch(increaseOpenModalCount());
+    }
+
+    if (!isOpen && wasOpened) {
+      dispatch(decreaseOpenModalCount());
+    }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (wasOpened) {
+      dispatch(increaseOpenModalCount());
+    }
+  }, [wasOpened]);
 
   const modifiedProps = {
     ...props,

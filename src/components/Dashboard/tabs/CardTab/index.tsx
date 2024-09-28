@@ -147,7 +147,7 @@ const CardTab: FC<CardTabProps> = (props) => {
         <Loader className="h-full" />
       ) : (
         <>
-          {!isSensitiveDataModalOpen && !isTopupModalOpen && <BackButton onClick={backToDashboard} />}
+          <BackButton onClick={backToDashboard} />
           <section className="flex h-full gap-8 lg:gap-14 max-lg:flex-col">
             <div className="flex w-fit flex-col gap-7 max-lg:self-center">
               <Card

@@ -5,7 +5,7 @@ import { RiArrowLeftSLine } from 'react-icons/ri';
 
 import { AppEnviroment } from '@/constants';
 import { useAppSelector } from '@/store';
-import { selectConfig } from '@/store/selectors';
+import { selectConfig, selectOpenModalCount } from '@/store/selectors';
 
 type BackButtonProps = {
   onClick: () => void;
@@ -32,9 +32,10 @@ const TelegramBackButton: FC<Omit<BackButtonProps, 'text' & 'className'>> = ({ o
 
 const BackButton: FC<BackButtonProps> = ({ onClick, text = 'Back', className }) => {
   const { appEnviroment } = useAppSelector(selectConfig);
+  const openModalCount = useAppSelector(selectOpenModalCount);
 
   if (appEnviroment === AppEnviroment.TELEGRAM) {
-    return <TelegramBackButton onClick={onClick} />;
+    return !openModalCount && <TelegramBackButton onClick={onClick} />;
   }
 
   return (
