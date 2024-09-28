@@ -22,7 +22,7 @@ const TelegramBackButton: FC<Omit<BackButtonProps, 'text' & 'className'>> = ({ o
     backButton?.on('click', onClick);
     return () => {
       console.log('unmount telegram back button');
-      // backButton?.hide();
+      backButton?.hide();
       backButton?.off('click', onClick);
     };
   }, [backButton]);
