@@ -10,6 +10,7 @@ type SetVisiblePopupAction = {
 
 type InitialState = {
   popupVisibility: ModalVisibility;
+  openModalCount: number;
 };
 
 const initialPopupVisibility: ModalVisibility = Object.values(ModalNames).reduce((acc, key) => {
@@ -19,6 +20,7 @@ const initialPopupVisibility: ModalVisibility = Object.values(ModalNames).reduce
 
 const initialState: InitialState = {
   popupVisibility: initialPopupVisibility,
+  openModalCount: 0,
 };
 
 const uiSlice = createSlice({
@@ -31,9 +33,15 @@ const uiSlice = createSlice({
     setModalInvisible: (state, action: SetVisiblePopupAction) => {
       state.popupVisibility[action.payload] = false;
     },
+    increaseOpenModalCount: (state) => {
+      state.openModalCount += 1;
+    },
+    decreaseOpenModalCount: (state) => {
+      state.openModalCount -= 1;
+    },
   },
 });
 
-export const { setModalVisible, setModalInvisible } = uiSlice.actions;
+export const { setModalVisible, setModalInvisible, increaseOpenModalCount, decreaseOpenModalCount } = uiSlice.actions;
 
 export default uiSlice.reducer;
