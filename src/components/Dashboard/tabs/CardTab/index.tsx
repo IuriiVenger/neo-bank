@@ -176,7 +176,7 @@ const CardTab: FC<CardTabProps> = (props) => {
             </div>
             <DefaultContainer className="left-0 h-full flex-grow md:w-full max-xs:-mx-5 max-xs:-mb-20 max-xs:rounded-b-none">
               <h1 className="mb-8 text-2xl font-medium">Transactions</h1>
-              {/* <CardTransactions {...props} /> */}
+              <CardTransactions {...props} />
             </DefaultContainer>
           </section>
         </>
