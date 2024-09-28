@@ -130,6 +130,10 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   useEffect(() => {
+    console.log('openModalCount in useEffect', openModalCount);
+  }, [openModalCount]);
+
+  useEffect(() => {
     onModalOpen();
   }, []);
   useEffect(() => () => onModalClose(), []);
