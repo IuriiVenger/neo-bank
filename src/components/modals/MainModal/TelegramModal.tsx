@@ -189,9 +189,8 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   const onModalOpen = () => {
     if (!backButton || !mainButton) return;
     dispatch(increaseOpenModalCount());
-    setTimeout(() => backButton.show());
-    // backButton.off('click', closeModal);
-    setTimeout(() => backButton.on('click', closeModal));
+    setTimeout(() => backButton.show()); // setTimeout is used to prevent showing back button before previous back button is hidden
+    setTimeout(() => backButton.on('click', closeModal)); // setTimeout is used to prevent showing back button before previous back button is hidden
     if (!confirmButtonHidden) {
       mainButton.show();
       onOnConfirmChanged();
@@ -201,7 +200,6 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   const onModalClose = () => {
-    backButton.isVisible && console.log('hide back button');
     backButton.isVisible && backButton.hide();
     backButton.isVisible && backButton.off('click', closeModal);
     mainButton.enable();
