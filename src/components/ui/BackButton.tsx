@@ -49,4 +49,4 @@ const BackButton: FC<BackButtonProps> = ({ onClick, text = 'Back', className }) 
   );
 };
 
-export default memo(BackButton);
+export default BackButton;
