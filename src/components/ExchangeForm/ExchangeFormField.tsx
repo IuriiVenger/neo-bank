@@ -58,7 +58,7 @@ const ExchangeFormField: FC<ExchangeFormFieldProps> = (props) => {
         ) : (
           <div className="flex items-center text-xl font-semibold tracking-wide">
             <input
-              className="w-full bg-inherit text-end focus-visible:outline-none disabled:!bg-inherit"
+              className="w-full bg-inherit text-end text-foreground focus-visible:outline-none disabled:!bg-inherit disabled:opacity-100"
               value={amount}
               onChange={handleAmountInput}
               type="text"

@@ -1,4 +1,4 @@
-import { useInitData, useLaunchParams, useMiniApp, useThemeParams } from '@telegram-apps/sdk-react';
+import { useInitData, useLaunchParams, useMiniApp } from '@telegram-apps/sdk-react';
 
 import { useEffect } from 'react';
 
