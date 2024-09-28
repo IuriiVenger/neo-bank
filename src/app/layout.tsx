@@ -11,8 +11,8 @@ import StoreProvider from '@/store/components/StoreProvider';
 
 export const metadata: Metadata = {
   // title: tenantInfo.name || 'Crypto Wallet',
-  title: 'SkyFlyCard',
-  description: 'SkyFlyCard. Your Secure Oasis for Global Transactions',
+  title: 'Main Card',
+  description: 'Main Card. Your Secure Oasis for Global Transactions',
   other: {
     viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
   },

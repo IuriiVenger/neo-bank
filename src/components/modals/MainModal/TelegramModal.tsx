@@ -6,7 +6,7 @@ import { MainModalProps } from '.';
 
 import { themes } from '@/config/themes';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { selectActiveTheme } from '@/store/selectors';
+import { selectActiveTheme, selectOpenModalCount } from '@/store/selectors';
 import { decreaseOpenModalCount, increaseOpenModalCount } from '@/store/slices/ui';
 
 const TelegramModal: FC<MainModalProps> = (props) => {
@@ -31,7 +31,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   const mainButton = useMainButton();
   const dispatch = useAppDispatch();
   const activeTheme = useAppSelector(selectActiveTheme);
-
+  const openModalCount = useAppSelector(selectOpenModalCount);
   const confirmHandler = () => {
     onConfirm && onConfirm();
   };
@@ -122,7 +122,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     mainButton.enable();
     mainButton.hideLoader();
     mainButton.off('click', confirmHandler);
-    mainButton.hide();
+    if (openModalCount === 1) mainButton.hide();
     dispatch(decreaseOpenModalCount());
   };
 
