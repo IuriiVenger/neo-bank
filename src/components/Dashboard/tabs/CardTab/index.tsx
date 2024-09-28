@@ -143,11 +143,11 @@ const CardTab: FC<CardTabProps> = (props) => {
 
   return (
     <>
-      <BackButton onClick={backToDashboard} />
       {isCardPending || !selectedCard.data ? (
         <Loader className="h-full" />
       ) : (
         <>
+          <BackButton onClick={backToDashboard} />
           <section className="flex h-full gap-8 lg:gap-14 max-lg:flex-col">
             <div className="flex w-fit flex-col gap-7 max-lg:self-center">
               <Card
@@ -179,24 +179,23 @@ const CardTab: FC<CardTabProps> = (props) => {
               <CardTransactions {...props} />
             </DefaultContainer>
           </section>
-
-          <CardSensitiveDataModal
-            isOpen={isSensitiveDataModalOpen}
-            setIsModalOpen={setIsSensitiveDataModalOpen}
-            sensitiveData={sensitiveData}
-            selectedCard={selectedCard}
-          />
-          <ConfirmModal
-            isOpen={isConfirmFreezeModalOpen}
-            setIsModalOpen={setIsConfirmFreezeModalOpen}
-            title={
-              isCardFrozen ? 'Are you sure you want to unfreeze the card?' : 'Are you sure you want to freeze the card?'
-            }
-            onConfirm={toogleCardFreeze}
-          />
-          <CardTopupModal setIsModalOpen={setIsTopupModalOpen} isOpen={isTopupModalOpen} {...props} />
         </>
       )}
+      <CardSensitiveDataModal
+        isOpen={isSensitiveDataModalOpen}
+        setIsModalOpen={setIsSensitiveDataModalOpen}
+        sensitiveData={sensitiveData}
+        selectedCard={selectedCard}
+      />
+      <ConfirmModal
+        isOpen={isConfirmFreezeModalOpen}
+        setIsModalOpen={setIsConfirmFreezeModalOpen}
+        title={
+          isCardFrozen ? 'Are you sure you want to unfreeze the card?' : 'Are you sure you want to freeze the card?'
+        }
+        onConfirm={toogleCardFreeze}
+      />
+      <CardTopupModal setIsModalOpen={setIsTopupModalOpen} isOpen={isTopupModalOpen} {...props} />
     </>
   );
 };
