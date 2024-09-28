@@ -94,12 +94,12 @@ const Dashboard: FC<DashboardProps> = (props) => {
       )}
 
       {/* )} */}
-      <CreateWalletModal
+      {/* <CreateWalletModal
         isOpen={isCreateWalletModalOpen}
         setIsModalOpen={setIsCreateWalletModalOpen}
         onConfirm={createWallet}
         walletTypes={walletTypes}
-      />
+      /> */}
     </section>
   );
 };
