@@ -2,8 +2,6 @@ import { Button, cn, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } 
 import { useBackButton, useMainButton } from '@telegram-apps/sdk-react';
 import { FC, useEffect } from 'react';
 
-import { toast } from 'react-toastify';
-
 import { MainModalProps } from '.';
 
 import { themes } from '@/config/themes';
