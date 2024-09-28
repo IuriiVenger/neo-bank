@@ -28,7 +28,7 @@ const MainLayout: FC<RootLayoutProps> = ({ children }) => {
       <SDKProvider>
         <TelegramInit />
         <Suspense fallback={<BrandLoader />}>{children}</Suspense>
-        <LayoutModalContainer />
+        {/* <LayoutModalContainer /> */}
       </SDKProvider>
     </main>
   );
