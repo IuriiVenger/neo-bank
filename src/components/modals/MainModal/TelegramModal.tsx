@@ -188,11 +188,10 @@ const TelegramModal: FC<MainModalProps> = (props) => {
 
   const onModalOpen = () => {
     if (!backButton || !mainButton) return;
-
-    setTimeout(() => backButton.show());
+    dispatch(increaseOpenModalCount());
+    backButton.show();
     // backButton.off('click', closeModal);
     backButton.on('click', closeModal);
-    dispatch(increaseOpenModalCount());
     if (!confirmButtonHidden) {
       mainButton.show();
       onOnConfirmChanged();
