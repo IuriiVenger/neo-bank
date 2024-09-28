@@ -112,7 +112,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     ...otherProps
   } = props;
 
-  if (!isAppFullInitialized || isOpen) return null;
+  if (!isAppFullInitialized || !isOpen) return null;
 
   const backButton = useBackButton();
   const mainButton = useMainButton();
