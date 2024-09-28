@@ -74,7 +74,7 @@ const MainModal: FC<MainModalProps> = (props) => {
     }
 
     if (!isOpen && wasOpened) {
-      dispatch(decreaseOpenModalCount());
+      setTimeout(() => dispatch(decreaseOpenModalCount()));
     }
   }, [isOpen]);
 
