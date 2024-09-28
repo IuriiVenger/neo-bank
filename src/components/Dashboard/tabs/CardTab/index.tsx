@@ -111,35 +111,32 @@ const CardTab: FC<CardTabProps> = (props) => {
     }
   };
 
-  const actionButtons: Array<RoundButtonProps & { enabled: boolean; isLoading?: boolean }> = [
+  const actionButtons: Array<RoundButtonProps & { isLoading?: boolean }> = [
     {
       title: 'Top Up',
       onClick: openTopupModal,
-      enabled: !isCardClosed,
+      disabled: isCardClosed || isCardFrozen,
       Icon: RiAddFill,
     },
     {
       title: isCardFrozen ? 'Unfreeze' : 'Freeze',
       onClick: openFreezeModal,
-      enabled: !isCardClosed,
+      disabled: isCardClosed,
       Icon: IoSnow,
     },
     {
       title: 'Details',
       onClick: openSensitiveDataModal,
-      enabled: true,
       isLoading: requestStatuses[cardDetailRequests.SENSITIVE_DATA].PENDING,
       Icon: RiEyeFill,
     },
     {
       title: 'Settings',
       onClick: () => alert('Settings'),
-      enabled: !isCardClosed,
+      disabled: true,
       Icon: RiSettings3Fill,
     },
   ];
-
-  const availableActions = actionButtons.filter((button) => button.enabled);
 
   return (
     <>
@@ -169,7 +166,7 @@ const CardTab: FC<CardTabProps> = (props) => {
                 size="md"
               />
               <div className="flex w-full justify-between">
-                {availableActions.map((button, index) => (
+                {actionButtons.map((button, index) => (
                   <RoundButton key={index} {...button} />
                 ))}
               </div>
