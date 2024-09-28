@@ -119,7 +119,6 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   const onModalClose = () => {
     backButton.off('click', closeModal);
     onConfirm && mainButton.off('click', confirmHandler);
-    console.log('openModalCount in onModalClose', openModalCount);
     dispatch(decreaseOpenModalCount());
     if (openModalCount === 0) {
       mainButton.hide(); // have to test
@@ -130,13 +129,11 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   useEffect(() => {
-    console.log('openModalCount in useEffect', openModalCount);
-  }, [openModalCount]);
-
-  useEffect(() => {
     onModalOpen();
   }, []);
+
   useEffect(() => () => onModalClose(), []);
+
   useEffect(() => {
     onConfirmButtonHiddenChanged();
   }, [confirmButtonHidden]);
