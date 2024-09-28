@@ -47,7 +47,7 @@ const MainModal: FC<MainModalProps> = (props) => {
   const { mdBreakpoint } = useBreakpoints();
   const { appEnviroment, isAppFullInitialized } = useAppSelector(selectConfig);
   const { size, motionProps, isOpen, className, nativeCloseButton = true, saveScrollPosition } = props;
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   const responsiveSize = mdBreakpoint ? 'md' : 'full';
   const modalSize = size || responsiveSize;
@@ -56,7 +56,7 @@ const MainModal: FC<MainModalProps> = (props) => {
   const isTelegramEnviroment = appEnviroment === AppEnviroment.TELEGRAM;
   const disableAnimation = !mdBreakpoint && !motionProps;
 
-  const [wasOpened, setWasOpened] = useState(false);
+  // const [wasOpened, setWasOpened] = useState(false);
 
   useEffect(() => {
     if (isOpen && !mdBreakpoint && window && !saveScrollPosition) {
@@ -64,25 +64,25 @@ const MainModal: FC<MainModalProps> = (props) => {
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    if (isOpen && !wasOpened) {
-      setWasOpened(true);
-    }
+  // useEffect(() => {
+  //   if (isOpen && !wasOpened) {
+  //     setWasOpened(true);
+  //   }
 
-    if (isOpen && wasOpened) {
-      dispatch(increaseOpenModalCount());
-    }
+  //   if (isOpen && wasOpened) {
+  //     dispatch(increaseOpenModalCount());
+  //   }
 
-    if (!isOpen && wasOpened) {
-      setTimeout(() => dispatch(decreaseOpenModalCount()));
-    }
-  }, [isOpen]);
+  //   if (!isOpen && wasOpened) {
+  //     dispatch(decreaseOpenModalCount());
+  //   }
+  // }, [isOpen]);
 
-  useEffect(() => {
-    if (wasOpened) {
-      dispatch(increaseOpenModalCount());
-    }
-  }, [wasOpened]);
+  // useEffect(() => {
+  //   if (wasOpened) {
+  //     dispatch(increaseOpenModalCount());
+  //   }
+  // }, [wasOpened]);
 
   const modifiedProps = {
     ...props,

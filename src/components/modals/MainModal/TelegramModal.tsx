@@ -5,6 +5,8 @@ import { FC, useEffect } from 'react';
 import { MainModalProps } from '.';
 
 import { themes } from '@/config/themes';
+import { useAppDispatch } from '@/store';
+import { decreaseOpenModalCount, increaseOpenModalCount } from '@/store/slices/ui';
 
 // export const NonNativeTelegramModal: FC<MainModalProps> = (props) => {
 //   const {
@@ -114,6 +116,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
 
   const backButton = useBackButton();
   const mainButton = useMainButton();
+  const dispatch = useAppDispatch();
 
   const confirmHandler = () => {
     onConfirm && onConfirm();
@@ -189,6 +192,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     backButton.show();
     // backButton.off('click', closeModal);
     backButton.on('click', closeModal);
+    dispatch(increaseOpenModalCount());
     if (!confirmButtonHidden) {
       mainButton.show();
       onOnConfirmChanged();
@@ -205,6 +209,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     mainButton.hideLoader();
     mainButton.off('click', confirmHandler);
     mainButton.hide();
+    dispatch(decreaseOpenModalCount());
   };
 
   useEffect(() => {
