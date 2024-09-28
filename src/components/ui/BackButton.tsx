@@ -3,9 +3,6 @@ import cn from 'classnames';
 import { FC, memo, useEffect } from 'react';
 import { RiArrowLeftSLine } from 'react-icons/ri';
 
-import { toast } from 'react-toastify';
-import ReactVisibilitySensor from 'react-visibility-sensor';
-
 import { AppEnviroment } from '@/constants';
 import { useAppSelector } from '@/store';
 import { selectConfig } from '@/store/selectors';
@@ -30,18 +27,7 @@ const TelegramBackButton: FC<Omit<BackButtonProps, 'text' & 'className'>> = ({ o
     };
   }, [backButton]);
 
-  const onVisibilityChange = (isVisible: boolean) => {
-    toast.info(`Back button is ${isVisible ? 'visible' : 'hidden'}`);
-  };
-
-  return (
-    <ReactVisibilitySensor onChange={onVisibilityChange}>
-      <div className="back-button text-foreground-2 mb-4 flex h-6 items-center gap-2 hover:opacity-hover">
-        <RiArrowLeftSLine />
-        <span>Telegram back</span>
-      </div>
-    </ReactVisibilitySensor>
-  );
+  return null;
 };
 
 const BackButton: FC<BackButtonProps> = ({ onClick, text = 'Back', className }) => {
