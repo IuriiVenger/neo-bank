@@ -68,6 +68,7 @@ instance.interceptors.response.use(
               requestQueue = [];
             }
           })
+          .catch(() => Promise.reject(response))
           .finally(() => {
             isTokenRefreshing = false;
           });
