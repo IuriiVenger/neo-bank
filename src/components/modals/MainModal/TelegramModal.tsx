@@ -221,7 +221,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     };
   }, [isOpen, confirmButtonHidden, wasOpened]);
 
-  useEffect(() => () => onOpenChangeHandler(), []);
+  useEffect(() => () => onOpenChangeHandler(), [wasOpened]);
 
   useEffect(() => {
     onConfirmButtonTextChanged();
