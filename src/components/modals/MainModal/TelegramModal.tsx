@@ -187,7 +187,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     if (!backButton || !mainButton) return;
 
     backButton.show();
-    backButton.off('click', closeModal);
+    // backButton.off('click', closeModal);
     backButton.on('click', closeModal);
     if (!confirmButtonHidden) {
       mainButton.show();
