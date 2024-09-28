@@ -17,9 +17,11 @@ const TelegramBackButton: FC<Omit<BackButtonProps, 'text' & 'className'>> = ({ o
   const backButton = useBackButton(true);
 
   useEffect(() => {
+    console.log('mount telegram back button');
     backButton?.show();
     backButton?.on('click', onClick);
     return () => {
+      console.log('unmount telegram back button');
       backButton?.hide();
       backButton?.off('click', onClick);
     };
