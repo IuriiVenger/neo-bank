@@ -181,7 +181,7 @@ const CardTab: FC<CardTabProps> = (props) => {
           </section>
         </>
       )}
-      {/* <CardSensitiveDataModal
+      <CardSensitiveDataModal
         isOpen={isSensitiveDataModalOpen}
         setIsModalOpen={setIsSensitiveDataModalOpen}
         sensitiveData={sensitiveData}
@@ -195,7 +195,7 @@ const CardTab: FC<CardTabProps> = (props) => {
         }
         onConfirm={toogleCardFreeze}
       />
-      <CardTopupModal setIsModalOpen={setIsTopupModalOpen} isOpen={isTopupModalOpen} {...props} /> */}
+      <CardTopupModal setIsModalOpen={setIsTopupModalOpen} isOpen={isTopupModalOpen} {...props} />
     </>
   );
 };
