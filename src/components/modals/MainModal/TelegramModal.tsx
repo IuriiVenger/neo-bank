@@ -189,7 +189,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   const onModalOpen = () => {
     if (!backButton || !mainButton) return;
 
-    backButton.show();
+    setTimeout(() => backButton.show());
     // backButton.off('click', closeModal);
     backButton.on('click', closeModal);
     dispatch(increaseOpenModalCount());
