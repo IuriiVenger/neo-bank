@@ -112,7 +112,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     ...otherProps
   } = props;
 
-  if (!isAppFullInitialized) return null;
+  if (!isAppFullInitialized || isOpen) return null;
 
   const backButton = useBackButton();
   const mainButton = useMainButton();
@@ -122,18 +122,18 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   const closeModal = () => {
-    onOpenChange && onOpenChange(false);
     onClose && onClose();
+    onOpenChange && onOpenChange(false);
   };
 
   const onConfirmButtonTextChanged = () => {
-    if (!mainButton || !confirmButtonText || !isOpen) return;
+    if (!mainButton || !confirmButtonText) return;
 
     mainButton.setText(confirmButtonText);
   };
 
   const disableMainButton = () => {
-    if (!mainButton || !isOpen) return;
+    if (!mainButton) return;
 
     mainButton.disable();
 
@@ -141,7 +141,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   const enableMainButton = () => {
-    if (!mainButton || !isOpen) return;
+    if (!mainButton) return;
 
     mainButton.enable();
     mainButton.setBgColor(themes.dark.telegramColors.mainButton.color);
@@ -149,7 +149,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   const showLoader = () => {
-    if (!mainButton || !isOpen) return;
+    if (!mainButton) return;
 
     mainButton.showLoader();
     disableMainButton();
@@ -180,46 +180,41 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     mainButton.on('click', confirmHandler);
   };
 
-  const onOpenChangeHandler = () => {
+  const onConfirmButtonHiddenChanged = () => {
+    if (!mainButton || !isOpen) return;
+    confirmButtonHidden ? mainButton.hide() : mainButton.show();
+  };
+
+  const onModalOpen = () => {
     if (!backButton || !mainButton) return;
 
-    if (isOpen) {
-      backButton.show();
-
-      backButton.on('click', closeModal);
-      if (!confirmButtonHidden) {
-        mainButton.show();
-        onOnConfirmChanged();
-        onConfirmButtonTextChanged();
-        onConfirmButtonDisabledChanged();
-      }
-    } else {
-      backButton.isVisible && console.log('hide back button');
-      backButton.isVisible && backButton.hide();
-      backButton.isVisible && backButton.off('click', closeModal);
-      mainButton.enable();
-      mainButton.hideLoader();
-      if (!confirmButtonHidden) {
-        mainButton.off('click', confirmHandler);
-        mainButton.hide();
-      }
+    backButton.show();
+    backButton.on('click', closeModal);
+    if (!confirmButtonHidden) {
+      mainButton.show();
+      onOnConfirmChanged();
+      onConfirmButtonTextChanged();
+      onConfirmButtonDisabledChanged();
     }
   };
 
+  const onModalClose = () => {
+    backButton.isVisible && console.log('hide back button');
+    backButton.isVisible && backButton.hide();
+    backButton.isVisible && backButton.off('click', closeModal);
+    mainButton.enable();
+    mainButton.hideLoader();
+    mainButton.off('click', confirmHandler);
+    mainButton.hide();
+  };
+
   useEffect(() => {
-    onOpenChangeHandler();
-
-    return () => {
-      if (backButton) {
-        backButton.off('click', closeModal);
-      }
-      if (mainButton) {
-        mainButton.off('click', confirmHandler);
-      }
-    };
-  }, [isOpen, confirmButtonHidden]);
-
-  useEffect(() => () => onOpenChangeHandler(), []);
+    onModalOpen();
+  }, []);
+  useEffect(() => () => onModalClose(), []);
+  useEffect(() => {
+    onConfirmButtonHiddenChanged();
+  }, [confirmButtonHidden]);
 
   useEffect(() => {
     onConfirmButtonTextChanged();
