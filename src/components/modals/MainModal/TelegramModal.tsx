@@ -114,6 +114,8 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     ...otherProps
   } = props;
 
+  console.log('TelegramModal', props);
+
   const backButton = useBackButton();
   const mainButton = useMainButton();
   const dispatch = useAppDispatch();
@@ -129,12 +131,14 @@ const TelegramModal: FC<MainModalProps> = (props) => {
 
   const onConfirmButtonTextChanged = () => {
     if (!mainButton || !confirmButtonText) return;
+    console.log('onConfirmButtonTextChanged', confirmButtonText);
 
     mainButton.setText(confirmButtonText);
   };
 
   const disableMainButton = () => {
     if (!mainButton) return;
+    console.log('disableMainButton');
 
     mainButton.disable();
 
@@ -143,6 +147,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
 
   const enableMainButton = () => {
     if (!mainButton) return;
+    console.log('enableMainButton');
 
     mainButton.enable();
     mainButton.setBgColor(themes.dark.telegramColors.mainButton.color);
@@ -151,6 +156,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
 
   const showLoader = () => {
     if (!mainButton) return;
+    console.log('showLoader');
 
     mainButton.showLoader();
     disableMainButton();
@@ -159,6 +165,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
 
   const hideLoader = () => {
     if (!mainButton || !isOpen) return;
+    console.log('hideLoader');
 
     mainButton.hideLoader();
     enableMainButton();
@@ -166,28 +173,33 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   const onConfirmButtonDisabledChanged = () => {
+    console.log('onConfirmButtonDisabledChanged', confirmButtonDisabled);
     confirmButtonDisabled ? disableMainButton() : enableMainButton();
   };
 
   const onIsLoadingChanged = () => {
     if (!mainButton || !isOpen) return;
+    console.log('onIsLoadingChanged', isLoading);
 
     isLoading ? showLoader() : hideLoader();
   };
 
   const onOnConfirmChanged = () => {
     if (!mainButton || !isOpen) return;
+    console.log('onOnConfirmChanged', onConfirm);
     mainButton.off('click', confirmHandler);
     mainButton.on('click', confirmHandler);
   };
 
   const onConfirmButtonHiddenChanged = () => {
     if (!mainButton || !isOpen) return;
+    console.log('onConfirmButtonHiddenChanged', confirmButtonHidden);
     confirmButtonHidden ? mainButton.hide() : mainButton.show();
   };
 
   const onModalOpen = () => {
     if (!backButton || !mainButton) return;
+    console.log('onModalOpen');
     dispatch(increaseOpenModalCount());
     setTimeout(() => backButton.show()); // setTimeout is used to prevent showing back button before previous back button is hidden
     setTimeout(() => backButton.on('click', closeModal)); // setTimeout is used to prevent showing back button before previous back button is hidden
@@ -200,6 +212,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   const onModalClose = () => {
+    console.log('onModalClose');
     backButton.isVisible && backButton.hide();
     backButton.isVisible && backButton.off('click', closeModal);
     mainButton.enable();
