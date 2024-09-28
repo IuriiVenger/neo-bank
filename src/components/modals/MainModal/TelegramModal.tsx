@@ -194,9 +194,9 @@ const TelegramModal: FC<MainModalProps> = (props) => {
         onConfirmButtonDisabledChanged();
       }
     } else {
-      console.log('hide back button');
-      backButton.hide();
-      backButton.off('click', closeModal);
+      backButton.isVisible && console.log('hide back button');
+      backButton.isVisible && backButton.hide();
+      backButton.isVisible && backButton.off('click', closeModal);
       mainButton.enable();
       mainButton.hideLoader();
       if (!confirmButtonHidden) {
