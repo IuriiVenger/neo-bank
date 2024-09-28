@@ -1,6 +1,6 @@
 import { Button, cn, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react';
 import { useBackButton, useMainButton } from '@telegram-apps/sdk-react';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 
 import { MainModalProps } from '.';
 
@@ -112,8 +112,6 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     ...otherProps
   } = props;
 
-  const [wasOpened, setWasOpened] = useState(false);
-
   if (!isAppFullInitialized) return null;
 
   const backButton = useBackButton();
@@ -186,8 +184,8 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     if (!backButton || !mainButton) return;
 
     if (isOpen) {
-      setWasOpened(true);
       backButton.show();
+
       backButton.on('click', closeModal);
       if (!confirmButtonHidden) {
         mainButton.show();
@@ -195,7 +193,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
         onConfirmButtonTextChanged();
         onConfirmButtonDisabledChanged();
       }
-    } else if (wasOpened) {
+    } else {
       backButton.isVisible && console.log('hide back button');
       backButton.isVisible && backButton.hide();
       backButton.isVisible && backButton.off('click', closeModal);
@@ -219,9 +217,9 @@ const TelegramModal: FC<MainModalProps> = (props) => {
         mainButton.off('click', confirmHandler);
       }
     };
-  }, [isOpen, confirmButtonHidden, wasOpened]);
+  }, [isOpen, confirmButtonHidden]);
 
-  useEffect(() => () => onOpenChangeHandler(), [wasOpened]);
+  useEffect(() => () => onOpenChangeHandler(), []);
 
   useEffect(() => {
     onConfirmButtonTextChanged();
