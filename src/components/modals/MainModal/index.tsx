@@ -70,7 +70,13 @@ const MainModal: FC<MainModalProps> = (props) => {
     className: cn('bg-background', className),
   };
 
-  return isTelegramEnviroment ? <TelegramModal {...modifiedProps} /> : <WebModal {...modifiedProps} />;
+  if (!isTelegramEnviroment) {
+    return <WebModal {...modifiedProps} />;
+  }
+
+  if (isTelegramEnviroment && isAppFullInitialized && isOpen) {
+    return <TelegramModal {...modifiedProps} />;
+  }
 };
 
 export default memo(MainModal);

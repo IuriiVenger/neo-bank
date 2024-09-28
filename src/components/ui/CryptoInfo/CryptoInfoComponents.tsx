@@ -25,7 +25,7 @@ export type CryptoInfoAmountProps = {
 export const CryptoLabel: FC<CryptoLabelProps> = ({ crypto, currencyNameLabel }) => (
   <div className="flex items-center gap-3">
     <Image
-      className="h-11 w-11 rounded-full object-cover"
+      className="h-[42px] w-[42px] rounded-full object-cover"
       src={getCryptoIconSrc(crypto.symbol)}
       alt="currency label"
       height={44}

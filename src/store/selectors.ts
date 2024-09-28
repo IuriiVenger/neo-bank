@@ -7,6 +7,8 @@ export const selectIsUserLoggedIn = (state: RootState) => !!state.user.userData?
 export const selectFinanceData = (state: RootState) => state.finance;
 export const selectConfig = (state: RootState) => state.config;
 export const selectModalVisibility = (state: RootState) => state.ui.popupVisibility;
+export const selectOpenModalCount = (state: RootState) => state.ui.openModalCount;
+export const selectActiveTheme = (state: RootState) => state.ui.activeTheme;
 
 export const selectActiveFiatAvailableCrypto = (state: RootState) => {
   const { fiatExchangeRate, crypto } = state.finance;
