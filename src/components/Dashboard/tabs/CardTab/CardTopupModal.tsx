@@ -159,6 +159,7 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
           currencies={availableCryptoToWithdraw}
           onSelect={selectCurrency}
           chains={chainList}
+          restoreInitialTelegramButtonsOnClose
         />
         <ConfirmModal
           isOpen={isConfirmationModalOpen}
