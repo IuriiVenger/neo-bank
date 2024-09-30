@@ -1,18 +1,15 @@
-import { useInitData, useLaunchParams, useMiniApp } from '@telegram-apps/sdk-react';
+import { useInitData, useLaunchParams, useMiniApp, useSettingsButton } from '@telegram-apps/sdk-react';
 
 import { useEffect } from 'react';
 
 import { themes } from '@/config/themes';
-import {
-  AppEnviroment,
-  // ModalNames
-} from '@/constants';
+import { AppEnviroment, ModalNames } from '@/constants';
 import useAuth from '@/hooks/useAuth';
 import useTelegramAuth from '@/hooks/useTelegramAuth';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { selectActiveTheme, selectConfig, selectIsUserLoggedIn } from '@/store/selectors';
 import { setAppEnviroment } from '@/store/slices/config';
-// import { setModalVisible } from '@/store/slices/ui';
+import { setModalVisible } from '@/store/slices/ui';
 
 // eslint-disable-next-line import/order
 // import { mockTelegramEnv, parseInitData } from '@telegram-apps/sdk';
@@ -78,20 +75,20 @@ const TelegramInit = () => {
     window.Telegram.WebApp.setBottomBarColor(themes[activeTheme].baseColors.background);
   }, []);
 
-  // const settingsButton = useSettingsButton(true);
-  // const openSettingsPopup = () => {
-  //   dispatch(setModalVisible(ModalNames.SETTINGS));
-  // };
-  // const initSettingsButton = () => {
-  //   if (!settingsButton) {
-  //     return;
-  //   }
-  //   settingsButton.show();
-  //   settingsButton.on('click', openSettingsPopup);
-  // };
-  // useEffect(() => {
-  //   initSettingsButton();
-  // }, [settingsButton]);
+  const settingsButton = useSettingsButton(true);
+  const openSettingsPopup = () => {
+    dispatch(setModalVisible(ModalNames.SETTINGS));
+  };
+  const initSettingsButton = () => {
+    if (!settingsButton) {
+      return;
+    }
+    settingsButton.show();
+    settingsButton.on('click', openSettingsPopup);
+  };
+  useEffect(() => {
+    initSettingsButton();
+  }, [settingsButton]);
 
   useEffect(() => {
     if (isWebAppInitialized && !isUserLoggedIn) {

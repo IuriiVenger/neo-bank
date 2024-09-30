@@ -65,7 +65,7 @@ const MainModal: FC<MainModalProps> = (props) => {
   const { appEnviroment, isAppFullInitialized } = useAppSelector(selectConfig);
   const { size, motionProps, isOpen, className, nativeCloseButton = true, saveScrollPosition } = props;
 
-  const responsiveSize = mdBreakpoint ? 'md' : 'full';
+  const responsiveSize = mdBreakpoint ? 'lg' : 'full';
   const modalSize = size || responsiveSize;
   const responsiveMotionProps = mdBreakpoint ? { variants: framerMotionAnimations.downEnterExit } : undefined;
   const modalMotionProps = motionProps || responsiveMotionProps;
