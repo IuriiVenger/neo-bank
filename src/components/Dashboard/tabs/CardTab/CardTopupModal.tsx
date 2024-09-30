@@ -83,12 +83,12 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
 
   const openCryptoModal = () => setIsCryptoModalOpen(true);
 
-  const openConfirmationModal = () => {
+  const openConfirmationModal = useCallback(() => {
     const confirmationText = `Are you sure you want to Top Up ${amount} ${selectedCrypto?.symbol}?`;
 
     setTopUpConfirmationText(confirmationText);
     setIsConfirmationModalOpen(true);
-  };
+  }, [amount, selectedCrypto]);
 
   const topUpCard = async () => {
     if (!selectedWallet.data || !selectedCard.data || !selectedCrypto || !selectedFiat) return;
