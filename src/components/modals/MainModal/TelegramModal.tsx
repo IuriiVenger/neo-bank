@@ -14,7 +14,6 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     children,
     header,
     isOpen,
-    onOpenChange,
     contentClassName,
     bodyClassname,
     onConfirm,
@@ -24,7 +23,6 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     isLoading,
     onClose,
     isDismissable = false,
-    restoreInitialTelegramButtonsOnClose,
     ...otherProps
   } = props;
 
@@ -37,15 +35,10 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     onConfirm && onConfirm();
   };
 
-  const [initialBackButtonVisibility] = useState(backButton.isVisible);
-  const [initialMainButtonVisibility] = useState(mainButton.isVisible);
-  const [initialMainButtonEnabled] = useState(mainButton.isEnabled);
-  const [initialMainButtonText] = useState(mainButton.text);
-
-  const closeModal = () => {
-    onClose && onClose();
-    onOpenChange && onOpenChange(false);
-  };
+  // const [initialBackButtonVisibility] = useState(backButton.isVisible);
+  // const [initialMainButtonVisibility] = useState(mainButton.isVisible);
+  // const [initialMainButtonEnabled] = useState(mainButton.isEnabled);
+  // const [initialMainButtonText] = useState(mainButton.text);
 
   const onConfirmButtonTextChanged = () => {
     if (!confirmButtonText) return;
@@ -100,9 +93,9 @@ const TelegramModal: FC<MainModalProps> = (props) => {
 
   const onModalOpen = () => {
     dispatch(increaseOpenModalCount());
-    backButton.off('click', closeModal);
+    backButton.off('click', onClose);
     setTimeout(() => backButton.show()); // setTimeout is used to prevent showing back button before previous back button is hidden
-    setTimeout(() => backButton.on('click', closeModal)); // setTimeout is used to prevent showing back button before previous back button is hidden
+    setTimeout(() => backButton.on('click', onClose)); // setTimeout is used to prevent showing back button before previous back button is hidden
     if (!confirmButtonHidden) {
       mainButton.show();
       onOnConfirmChanged();
@@ -112,22 +105,22 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   const onModalClose = () => {
-    backButton.off('click', closeModal);
+    backButton.off('click', onClose);
     onConfirm && mainButton.off('click', confirmHandler);
     dispatch(decreaseOpenModalCount());
 
-    if (restoreInitialTelegramButtonsOnClose) {
-      console.log('restoreInitialTelegramButtonsOnClose');
-      console.log('initialBackButtonVisibility', initialBackButtonVisibility);
-      console.log('initialMainButtonVisibility', initialMainButtonVisibility);
-      console.log('initialMainButtonEnabled', initialMainButtonEnabled);
-      console.log('initialMainButtonText', initialMainButtonText);
-      initialBackButtonVisibility ? backButton.show() : backButton.hide();
-      initialMainButtonVisibility ? mainButton.show() : mainButton.hide();
-      initialMainButtonEnabled ? mainButton.enable() : mainButton.disable();
-      mainButton.setText(initialMainButtonText);
-      return;
-    }
+    // if (restoreInitialTelegramButtonsOnClose) {
+    //   console.log('restoreInitialTelegramButtonsOnClose');
+    //   console.log('initialBackButtonVisibility', initialBackButtonVisibility);
+    //   console.log('initialMainButtonVisibility', initialMainButtonVisibility);
+    //   console.log('initialMainButtonEnabled', initialMainButtonEnabled);
+    //   console.log('initialMainButtonText', initialMainButtonText);
+    //   initialBackButtonVisibility ? backButton.show() : backButton.hide();
+    //   initialMainButtonVisibility ? mainButton.show() : mainButton.hide();
+    //   initialMainButtonEnabled ? mainButton.enable() : mainButton.disable();
+    //   mainButton.setText(initialMainButtonText);
+    //   return;
+    // }
 
     if (openModalCount === 0) {
       mainButton.hide(); // have to test
@@ -172,7 +165,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
       isOpen={isOpen}
       hideCloseButton
       disableAnimation
-      onOpenChange={onOpenChange}
+      // onClose={onClose}
       {...otherProps}
     >
       <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:relative md:max-h-[90vh]', contentClassName)}>

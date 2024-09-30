@@ -163,6 +163,10 @@ const WithdrawCryptoModal: FC<WithdrawCryptoModalProps> = (props) => {
     setCurrentStep(WithdrawCryptoSteps.COIN);
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   const cryptoStepsDataComponentProps: CryptoStepsDataComponentProps = {
     selectedWallet,
     selectedWalletBalanceCurrency,
@@ -190,7 +194,7 @@ const WithdrawCryptoModal: FC<WithdrawCryptoModalProps> = (props) => {
   }, [isOpen]);
 
   return (
-    <MainModal isLoading={withdrawRequestStatus.PENDING} isOpen={isOpen} onOpenChange={setIsModalOpen} {...activeStep}>
+    <MainModal isLoading={withdrawRequestStatus.PENDING} isOpen={isOpen} onClose={closeModal} {...activeStep}>
       <h2 className="mb-5 text-3xl font-medium">{activeStep.title}</h2>
       <ActiveStepComponent {...cryptoStepsDataComponentProps} />
     </MainModal>

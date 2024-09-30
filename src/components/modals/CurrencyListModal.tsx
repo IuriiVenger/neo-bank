@@ -36,12 +36,16 @@ const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
     setIsModalOpen(false);
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <MainModal
       confirmButtonHidden
       isOpen={isOpen}
-      onOpenChange={setIsModalOpen}
-      restoreInitialTelegramButtonsOnClose={restoreInitialTelegramButtonsOnClose}
+      onClose={closeModal}
+      // restoreInitialTelegramButtonsOnClose={restoreInitialTelegramButtonsOnClose}
     >
       <div>
         <h2 className="mb-4 text-3xl font-medium">{title}</h2>

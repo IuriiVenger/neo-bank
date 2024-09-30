@@ -52,13 +52,7 @@ const CardSensitiveDataModal: FC<CardSensitiveDataModalProps> = (props) => {
   };
 
   return (
-    <MainModal
-      isOpen={isOpen}
-      onOpenChange={setIsModalOpen}
-      onClose={onModalClose}
-      confirmButtonHidden
-      header="Card details"
-    >
+    <MainModal isOpen={isOpen} onClose={closeModal} confirmButtonHidden header="Card details">
       <div className="m-auto flex flex-col gap-6">
         <button type="button" onClick={toogleFocus} className="m-auto w-fit">
           <ReactCreditCard

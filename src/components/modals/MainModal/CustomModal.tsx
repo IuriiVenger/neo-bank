@@ -21,7 +21,7 @@ export const CustomModal: FC<CustomModalProps> = (props) => {
     className,
     contentClassName,
     bodyClassname,
-    onOpenChange,
+    onClose,
     ...otherProps
   } = props;
 
@@ -29,10 +29,6 @@ export const CustomModal: FC<CustomModalProps> = (props) => {
   const modalSize = size || responsiveSize;
   const responsiveMotionProps = mdBreakpoint ? { variants: framerMotionAnimations.downEnterExit } : undefined;
   const modalMotionProps = motionProps || responsiveMotionProps;
-
-  const closeModal = () => {
-    onOpenChange && onOpenChange(false);
-  };
 
   useEffect(() => {
     if (isOpen && !mdBreakpoint && window) {
@@ -46,7 +42,7 @@ export const CustomModal: FC<CustomModalProps> = (props) => {
       scrollBehavior={scrollBehavior}
       size={modalSize}
       isOpen={isOpen}
-      onClose={closeModal}
+      onClose={onClose}
       {...otherProps}
       disableAnimation={!mdBreakpoint}
       className={cn('overflow-y-auto', className)}

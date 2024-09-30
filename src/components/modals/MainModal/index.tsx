@@ -25,7 +25,7 @@ export type VisibleConfirmButtonProps = {
   confirmButtonText: string;
 };
 
-export type CustomModalProps = ModalProps & {
+export type CustomModalProps = Omit<ModalProps, 'onOpenChange'> & {
   header?: ReactNode | string;
   footer?: ReactNode | string;
   contentClassName?: string;
@@ -40,7 +40,7 @@ export type MainModalProps = CustomModalProps &
     nativeCloseButton?: boolean;
     saveScrollPosition?: boolean;
     isDismissable?: boolean;
-    restoreInitialTelegramButtonsOnClose?: boolean;
+    onClose: () => void;
   };
 
 const MainModal: FC<MainModalProps> = (props) => {

@@ -130,7 +130,8 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
   return (
     <MainModal
       isOpen={isOpen}
-      onOpenChange={setIsModalOpen}
+      // onOpenChange={setIsModalOpen}
+      onClose={closeModal}
       confirmButtonDisabled={!isTopUpAvailable}
       confirmButtonText={isAmountEnough ? 'Top Up' : 'Not enough funds'}
       onConfirm={openConfirmationModal}

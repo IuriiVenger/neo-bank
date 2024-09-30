@@ -62,7 +62,7 @@ const CardLimitsModal: FC<CardLimitsModalProps> = (props) => {
   return (
     <MainModal
       isOpen={isOpen}
-      onOpenChange={onOpenChange}
+      onClose={closeModal}
       header="Card limits"
       confirmButtonDisabled={isModalsLimitsEqual}
       isLoading={requestStatuses.PENDING}
