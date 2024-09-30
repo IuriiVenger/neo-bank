@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { API } from '@/api/types';
@@ -31,7 +31,6 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
   const {
     allowedCryptoToFiatList,
     selectedWallet,
-
     selectCrypto,
     selectFiat,
     selectedCrypto,
@@ -67,6 +66,8 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
   const isAmountEnough = selectedCryptoAvavilibleToWithdraw && selectedCryptoAvavilibleToWithdraw >= amount;
   const isTopUpAvailable = !!selectedCrypto && !!selectedFiat && !!selectedWallet.data && !!amount && isAmountEnough;
 
+  const confirmButtonText = isAmountEnough ? 'Top Up' : 'Not enough funds';
+
   const availableCryptoToWithdraw = selectedWallet.data
     ? getCurrencyListWithAmount(allowedCryptoToFiatList, selectedWallet.data.balance)
     : [];
@@ -82,12 +83,12 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
 
   const openCryptoModal = () => setIsCryptoModalOpen(true);
 
-  const openConfirmationModal = () => {
+  const openConfirmationModal = useCallback(() => {
     const confirmationText = `Are you sure you want to Top Up ${amount} ${selectedCrypto?.symbol}?`;
 
     setTopUpConfirmationText(confirmationText);
     setIsConfirmationModalOpen(true);
-  };
+  }, [amount, selectedCrypto]);
 
   const topUpCard = async () => {
     if (!selectedWallet.data || !selectedCard.data || !selectedCrypto || !selectedFiat) return;
@@ -105,9 +106,9 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
     setIsModalOpen(false);
   };
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsModalOpen(false);
-  };
+  }, []);
 
   const setCardFiatCurrency = () => {
     const cardCurrency = fiatList.find((fiat) => fiat.uuid === selectedCard.data?.fiat_account.fiat.uuid);
@@ -131,12 +132,12 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
   return (
     <MainModal
       isOpen={isOpen}
-      onOpenChange={setIsModalOpen}
+      onClose={closeModal}
       confirmButtonDisabled={!isTopUpAvailable}
-      confirmButtonText={isAmountEnough ? 'Top Up' : 'Not enough funds'}
+      confirmButtonText={confirmButtonText}
       onConfirm={openConfirmationModal}
     >
-      <div className="flex  flex-col gap-6">
+      <div className="flex flex-col gap-6">
         <h2 className="text-3xl font-medium">From crypto wallet</h2>
         <ExchangeForm
           chains={chainList}
@@ -159,6 +160,11 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
           currencies={availableCryptoToWithdraw}
           onSelect={selectCurrency}
           chains={chainList}
+          havePreviousTelegramNativeButtons
+          previousTelegramMainButtonHandler={openConfirmationModal}
+          previousTelegramMainButtonText={confirmButtonText}
+          previousTelegramBackButtonHandler={closeModal}
+          previousTelegramMainButtonDisabled={!isTopUpAvailable}
         />
         <ConfirmModal
           isOpen={isConfirmationModalOpen}

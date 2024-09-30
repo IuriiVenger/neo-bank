@@ -176,7 +176,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     setIsModalOpen(false);
   };
 
-  const onClose = () => {
+  const onOpen = () => {
     setCurrentStep(CreateCardSteps.FORM_FACTOR);
     setCardFormFactor(null);
     setCardType(null);
@@ -190,7 +190,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
 
   useEffect(() => {
     if (isOpen) {
-      onClose();
+      onOpen();
     }
   }, [isOpen]);
 
@@ -243,12 +243,11 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     <>
       <MainModal
         isOpen={isOpen}
-        onClose={onClose}
-        onOpenChange={setIsModalOpen}
+        onClose={closeModal}
         confirmButtonDisabled={createCardStepsMap[currentStep].isDisabled}
         backdrop="opaque"
         scrollBehavior="inside"
-        nativeCloseButton
+        // nativeCloseButton
         confirmButtonText={createCardStepsMap[currentStep].mainButtonText}
         onConfirm={createCardStepsMap[currentStep].onMainButtonClick}
         className=" md:h-[750px]"

@@ -12,7 +12,6 @@ const WebModal: FC<MainModalProps> = (props) => {
     bodyClassname,
     confirmButtonDisabled,
     confirmButtonText,
-    onOpenChange,
     onConfirm,
     confirmButtonHidden,
     isLoading,
@@ -24,11 +23,6 @@ const WebModal: FC<MainModalProps> = (props) => {
     ...otherProps
   } = props;
 
-  const closeModal = () => {
-    onOpenChange && onOpenChange(false);
-    onClose && onClose();
-  };
-
   const nonNativeCloseButtonEnabled = !nativeCloseButton && !hideCloseButton;
 
   return (
@@ -37,7 +31,7 @@ const WebModal: FC<MainModalProps> = (props) => {
       isDismissable={isDismissable}
       isOpen={isOpen}
       className={cn('', className)}
-      onClose={closeModal}
+      onClose={onClose}
       hideCloseButton={nonNativeCloseButtonEnabled}
       backdrop="blur"
     >
@@ -63,7 +57,7 @@ const WebModal: FC<MainModalProps> = (props) => {
             )}
 
             {nonNativeCloseButtonEnabled && (
-              <Button onClick={closeModal} className="w-full" color="primary" variant="bordered">
+              <Button onClick={onClose} className="w-full" color="primary" variant="bordered">
                 Close
               </Button>
             )}

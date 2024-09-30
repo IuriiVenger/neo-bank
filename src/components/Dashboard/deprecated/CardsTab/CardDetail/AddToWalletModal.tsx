@@ -53,7 +53,7 @@ const AddToWalletModal: FC<AddWalletToModalProps> = (props) => {
     <CustomModal
       header="Add to wallet"
       isOpen={isOpen}
-      onOpenChange={setIsModalOpen}
+      onClose={closeModal}
       footer={
         <div className="flex flex-col gap-4">
           {otp ? (

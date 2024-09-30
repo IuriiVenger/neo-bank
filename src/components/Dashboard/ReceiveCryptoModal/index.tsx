@@ -106,6 +106,10 @@ const ReceiveCryptoModal: FC<ReceiveCryptoModalProps> = (props) => {
     setSelectedCoin(null);
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   const cryptoStepsDataComponentProps: CryptoStepsDataComponentProps = {
     selectedWallet,
     selectedWalletBalanceCurrency,
@@ -130,7 +134,7 @@ const ReceiveCryptoModal: FC<ReceiveCryptoModalProps> = (props) => {
   }, [isOpen]);
 
   return (
-    <MainModal isOpen={isOpen} onOpenChange={setIsModalOpen} {...activeStep}>
+    <MainModal onClose={closeModal} isOpen={isOpen} {...activeStep}>
       <h2 className="mb-5 text-3xl font-medium">{activeStep.title}</h2>
       <ActiveStepComponent {...cryptoStepsDataComponentProps} />
     </MainModal>

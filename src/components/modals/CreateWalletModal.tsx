@@ -39,7 +39,7 @@ const CreateWalletModal: FC<CreateWalletProps> = (props) => {
   return (
     <MainModal
       isOpen={isOpen}
-      onOpenChange={setIsModalOpen}
+      onClose={handleClose}
       header="Create Wallet"
       confirmButtonText="Create"
       confirmButtonDisabled={!selectedWalletType}

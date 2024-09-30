@@ -57,17 +57,11 @@ const KYCModal: FC<KYCModalProps> = (props) => {
   const closeHandler = () => {
     step === KYCSteps.KYC && onClose();
     setStep(KYCSteps.START);
+    setIsModalOpen(false);
   };
 
   return (
-    <MainModal
-      isOpen={isOpen}
-      onOpenChange={setIsModalOpen}
-      onClose={closeHandler}
-      scrollBehavior="inside"
-      confirmButtonHidden
-      nativeCloseButton
-    >
+    <MainModal isOpen={isOpen} onClose={closeHandler} scrollBehavior="inside" confirmButtonHidden nativeCloseButton>
       <>
         {step === KYCSteps.START && (
           <Start nextStep={() => setStep(KYCSteps.KYC)} isPending={isPending} isError={isError} {...props} />

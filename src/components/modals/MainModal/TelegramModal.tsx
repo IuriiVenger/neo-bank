@@ -1,6 +1,6 @@
 import { cn, Modal, ModalBody, ModalContent, ModalHeader } from '@nextui-org/react';
 import { useBackButton, useMainButton } from '@telegram-apps/sdk-react';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { MainModalProps } from '.';
 
@@ -14,7 +14,6 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     children,
     header,
     isOpen,
-    onOpenChange,
     contentClassName,
     bodyClassname,
     onConfirm,
@@ -24,6 +23,11 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     isLoading,
     onClose,
     isDismissable = false,
+    havePreviousTelegramNativeButtons,
+    previousTelegramMainButtonHandler,
+    previousTelegramMainButtonText,
+    previousTelegramMainButtonDisabled,
+    previousTelegramBackButtonHandler,
     ...otherProps
   } = props;
 
@@ -36,44 +40,30 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     onConfirm && onConfirm();
   };
 
-  const closeModal = () => {
-    onClose && onClose();
-    onOpenChange && onOpenChange(false);
-  };
-
   const onConfirmButtonTextChanged = () => {
-    if (!mainButton || !confirmButtonText) return;
+    if (!confirmButtonText) return;
 
     mainButton.setText(confirmButtonText);
   };
 
   const disableMainButton = () => {
-    if (!mainButton) return;
-
     mainButton.disable();
-
     mainButton.setBgColor(themes[activeTheme].telegramColors.mainButton.disabledColor);
   };
 
   const enableMainButton = () => {
-    if (!mainButton) return;
-
     mainButton.enable();
     mainButton.setBgColor(themes[activeTheme].telegramColors.mainButton.color);
     mainButton.setTextColor(themes[activeTheme].telegramColors.mainButton.textColor);
   };
 
   const showLoader = () => {
-    if (!mainButton) return;
-
     mainButton.showLoader();
     disableMainButton();
     mainButton.setText('Loading...');
   };
 
   const hideLoader = () => {
-    if (!mainButton || !isOpen) return;
-
     mainButton.hideLoader();
     enableMainButton();
     onConfirmButtonTextChanged();
@@ -84,14 +74,12 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   const onIsLoadingChanged = () => {
-    if (!mainButton || !isOpen || isLoading === undefined) return;
+    if (isLoading === undefined) return;
 
     isLoading ? showLoader() : hideLoader();
   };
 
   const onOnConfirmChanged = () => {
-    if (!mainButton || !isOpen) return;
-
     mainButton.off('click', confirmHandler);
     mainButton.on('click', confirmHandler);
   };
@@ -102,12 +90,27 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     confirmButtonHidden ? mainButton.hide() : mainButton.show();
   };
 
-  const onModalOpen = () => {
-    if (!backButton || !mainButton) return;
+  const removePreviousTelegramNativeButtonsHandlers = () => {
+    previousTelegramMainButtonHandler !== undefined && mainButton.off('click', previousTelegramMainButtonHandler);
+    previousTelegramBackButtonHandler !== undefined && backButton.off('click', previousTelegramBackButtonHandler);
+  };
 
+  const restorePreviousTelegramNativeButtons = () => {
+    previousTelegramMainButtonHandler !== undefined && mainButton.on('click', previousTelegramMainButtonHandler);
+    previousTelegramMainButtonHandler !== undefined && mainButton.show();
+    previousTelegramMainButtonDisabled ? disableMainButton() : enableMainButton();
+    previousTelegramMainButtonText !== undefined && mainButton.setText(previousTelegramMainButtonText);
+    previousTelegramBackButtonHandler !== undefined && backButton.on('click', previousTelegramBackButtonHandler);
+  };
+
+  const onModalOpen = () => {
     dispatch(increaseOpenModalCount());
+    if (havePreviousTelegramNativeButtons) {
+      removePreviousTelegramNativeButtonsHandlers();
+    }
+    // backButton.off('click', onClose); // have to test if it is necessary
     setTimeout(() => backButton.show()); // setTimeout is used to prevent showing back button before previous back button is hidden
-    setTimeout(() => backButton.on('click', closeModal)); // setTimeout is used to prevent showing back button before previous back button is hidden
+    setTimeout(() => backButton.on('click', onClose)); // setTimeout is used to prevent showing back button before previous back button is hidden
     if (!confirmButtonHidden) {
       mainButton.show();
       onOnConfirmChanged();
@@ -117,9 +120,15 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   const onModalClose = () => {
-    backButton.off('click', closeModal);
+    backButton.off('click', onClose);
     onConfirm && mainButton.off('click', confirmHandler);
     dispatch(decreaseOpenModalCount());
+
+    if (havePreviousTelegramNativeButtons) {
+      restorePreviousTelegramNativeButtons();
+      return;
+    }
+
     if (openModalCount === 0) {
       mainButton.hide(); // have to test
       backButton.hide();
@@ -163,7 +172,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
       isOpen={isOpen}
       hideCloseButton
       disableAnimation
-      onOpenChange={onOpenChange}
+      // onClose={onClose}
       {...otherProps}
     >
       <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:relative md:max-h-[90vh]', contentClassName)}>
