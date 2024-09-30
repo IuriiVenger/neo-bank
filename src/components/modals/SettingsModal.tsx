@@ -1,4 +1,9 @@
+import { Button } from '@nextui-org/react';
 import { FC } from 'react';
+import { RiPaletteFill } from 'react-icons/ri';
+
+import ThemeSwitcher from '../ThemeSwitcher';
+import DefaultContainer from '../ui/DefaultContainer';
 
 import MainModal from './MainModal';
 
@@ -15,9 +20,21 @@ const SettingsModal: FC<SettingsModalProps> = (props) => {
   };
 
   return (
-    <MainModal isOpen={isOpen} onClose={closeModal} header="Settings" confirmButtonHidden>
+    <MainModal isOpen={isOpen} onClose={closeModal} confirmButtonHidden>
       <div className="flex flex-col items-center justify-center">
-        <h1>Settings page</h1>
+        <h2 className="mb-5 text-3xl font-medium">Settings</h2>
+        <DefaultContainer className="w-full">
+          <div className="flex items-center justify-between gap-3">
+            <Button className=" bg-background-3 h-[42px] w-[42px]" radius="full" size="md" isIconOnly>
+              <RiPaletteFill className="text-xl" />
+            </Button>
+            <div className="w-full">
+              <p>Personalized theme</p>
+              <p className="text-xs text-secondary">Choose light or dark mode</p>
+            </div>
+            <ThemeSwitcher />
+          </div>
+        </DefaultContainer>
       </div>
     </MainModal>
   );
