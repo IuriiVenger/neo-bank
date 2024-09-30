@@ -123,12 +123,12 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     dispatch(decreaseOpenModalCount());
 
     if (havePreviousTelegramNativeButtons) {
-      previousTelegramMainButtonHandler !== undefined && mainButton.on('click', previousTelegramMainButtonHandler);
-      previousTelegramMainButtonDisabled !== undefined && previousTelegramMainButtonDisabled
-        ? mainButton.disable()
-        : mainButton.enable();
-      previousTelegramMainButtonText !== undefined && mainButton.setText(previousTelegramMainButtonText);
-      previousTelegramBackButtonHandler !== undefined && backButton.on('click', previousTelegramBackButtonHandler);
+      // previousTelegramMainButtonHandler !== undefined && mainButton.on('click', previousTelegramMainButtonHandler);
+      // previousTelegramMainButtonDisabled !== undefined && previousTelegramMainButtonDisabled
+      //   ? mainButton.disable()
+      //   : mainButton.enable();
+      // previousTelegramMainButtonText !== undefined && mainButton.setText(previousTelegramMainButtonText);
+      // previousTelegramBackButtonHandler !== undefined && backButton.on('click', previousTelegramBackButtonHandler);
       return;
     }
 
