@@ -2,7 +2,7 @@
 
 import { useInitData, useLaunchParams, useMiniApp, useSettingsButton, useThemeParams } from '@telegram-apps/sdk-react';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { themes } from '@/config/themes';
 import { AppEnviroment, CustomTheme, ModalNames } from '@/constants';
@@ -71,15 +71,27 @@ const TelegramInit = () => {
 
   const { initUser } = useAuth(dispatch);
   const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, initUser);
+  const [isThemeInitialized, setIsThemeInitialized] = useState(false);
 
-  useEffect(() => {
+  const initTheme = () => {
+    telegramTheme && dispatch(setActiveTheme(telegramTheme.isDark ? CustomTheme.DARK : CustomTheme.LIGHT));
+    setIsThemeInitialized(true);
+  };
+
+  const updateTheme = () => {
     window.Telegram.WebApp.setBackgroundColor(themes[activeTheme].baseColors.background);
     window.Telegram.WebApp.setHeaderColor(themes[activeTheme].baseColors.background);
     window.Telegram.WebApp.setBottomBarColor(themes[activeTheme].baseColors.background);
+  };
+
+  useEffect(() => {
+    if (isThemeInitialized) {
+      updateTheme();
+    }
   }, [activeTheme]);
 
   useEffect(() => {
-    telegramTheme && dispatch(setActiveTheme(telegramTheme.isDark ? CustomTheme.DARK : CustomTheme.LIGHT));
+    initTheme();
   }, [telegramTheme?.isDark]);
 
   const settingsButton = useSettingsButton(true);
