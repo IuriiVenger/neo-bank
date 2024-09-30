@@ -101,7 +101,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   const restorePreviousTelegramNativeButtons = () => {
     previousTelegramMainButtonHandler !== undefined && mainButton.on('click', previousTelegramMainButtonHandler);
     previousTelegramMainButtonHandler !== undefined && mainButton.show();
-    !previousTelegramMainButtonDisabled ? mainButton.disable() : mainButton.enable();
+    previousTelegramMainButtonDisabled ? mainButton.disable() : mainButton.enable();
     previousTelegramMainButtonText !== undefined && mainButton.setText(previousTelegramMainButtonText);
     previousTelegramBackButtonHandler !== undefined && backButton.on('click', previousTelegramBackButtonHandler);
   };
