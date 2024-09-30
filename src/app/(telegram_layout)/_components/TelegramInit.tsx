@@ -73,7 +73,7 @@ const TelegramInit = () => {
     window.Telegram.WebApp.setBackgroundColor(themes[activeTheme].baseColors.background);
     window.Telegram.WebApp.setHeaderColor(themes[activeTheme].baseColors.background);
     window.Telegram.WebApp.setBottomBarColor(themes[activeTheme].baseColors.background);
-  }, []);
+  }, [activeTheme]);
 
   const settingsButton = useSettingsButton(true);
   const openSettingsPopup = () => {
