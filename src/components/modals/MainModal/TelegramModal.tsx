@@ -98,12 +98,19 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     confirmButtonHidden ? mainButton.hide() : mainButton.show();
   };
 
+  const restorePreviousTelegramNativeButtons = () => {
+    previousTelegramMainButtonHandler !== undefined && mainButton.on('click', previousTelegramMainButtonHandler);
+    previousTelegramMainButtonHandler !== undefined && mainButton.show();
+    previousTelegramMainButtonDisabled !== undefined && previousTelegramMainButtonDisabled
+      ? mainButton.disable()
+      : mainButton.enable();
+    previousTelegramMainButtonText !== undefined && mainButton.setText(previousTelegramMainButtonText);
+    previousTelegramBackButtonHandler !== undefined && backButton.on('click', previousTelegramBackButtonHandler);
+  };
+
   const onModalOpen = () => {
     dispatch(increaseOpenModalCount());
     if (havePreviousTelegramNativeButtons) {
-      console.log('havePreviousTelegramNativeButtons');
-      console.log('previousTelegramMainButtonHandler', previousTelegramMainButtonHandler);
-      console.log('previousTelegramBackButtonHandler', previousTelegramBackButtonHandler);
       previousTelegramMainButtonHandler !== undefined && mainButton.off('click', previousTelegramMainButtonHandler);
       previousTelegramBackButtonHandler !== undefined && backButton.off('click', previousTelegramBackButtonHandler);
     }
@@ -124,14 +131,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     dispatch(decreaseOpenModalCount());
 
     if (havePreviousTelegramNativeButtons) {
-      previousTelegramMainButtonHandler !== undefined && mainButton.on('click', previousTelegramMainButtonHandler);
-      previousTelegramMainButtonHandler !== undefined && mainButton.show();
-      previousTelegramMainButtonDisabled !== undefined && previousTelegramMainButtonDisabled
-        ? mainButton.disable()
-        : mainButton.enable();
-      previousTelegramMainButtonText !== undefined && mainButton.setText(previousTelegramMainButtonText);
-      previousTelegramBackButtonHandler !== undefined && backButton.on('click', previousTelegramBackButtonHandler);
-
+      setTimeout(() => restorePreviousTelegramNativeButtons());
       return;
     }
 
