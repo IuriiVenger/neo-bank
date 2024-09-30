@@ -1,3 +1,5 @@
+'use client';
+
 import { useInitData, useLaunchParams, useMiniApp, useSettingsButton, useThemeParams } from '@telegram-apps/sdk-react';
 
 import { useEffect } from 'react';
@@ -65,7 +67,7 @@ const TelegramInit = () => {
   const miniApp = useMiniApp(true);
   const initData = useInitData(true);
   const dispatch = useAppDispatch();
-  const { isDark } = useThemeParams();
+  const telegramTheme = useThemeParams(true);
 
   const { initUser } = useAuth(dispatch);
   const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, initUser);
@@ -77,8 +79,8 @@ const TelegramInit = () => {
   }, [activeTheme]);
 
   useEffect(() => {
-    dispatch(setActiveTheme(isDark ? CustomTheme.DARK : CustomTheme.LIGHT));
-  }, [isDark]);
+    telegramTheme && dispatch(setActiveTheme(telegramTheme.isDark ? CustomTheme.DARK : CustomTheme.LIGHT));
+  }, [telegramTheme?.isDark]);
 
   const settingsButton = useSettingsButton(true);
   const openSettingsPopup = () => {
