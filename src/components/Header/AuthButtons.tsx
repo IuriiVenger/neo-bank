@@ -45,11 +45,11 @@ const AuthButtons: FC<UserProps> = ({ className }) => {
               <KYCButton onClick={openKycModal} status={userData.kyc_status} />
             </NavbarItem>
           )}
-          <NavbarItem>
+          {/* <NavbarItem>
             <Link className="w-full text-sm text-primary hover:underline " href="/dashboard">
               Dashboard
             </Link>
-          </NavbarItem>
+          </NavbarItem> */}
           <span className="w-fit cursor-pointer !bg-inherit p-0 text-primary hover:underline " onClick={signOut}>
             Logout
           </span>

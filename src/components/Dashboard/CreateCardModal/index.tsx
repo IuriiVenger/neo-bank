@@ -232,7 +232,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     },
     [CreateCardSteps.SUCCESS]: {
       Component: CardSusccessStep,
-      mainButtonText: 'Co to card',
+      mainButtonText: 'Go to card',
       onMainButtonClick: closeAndHandleOnCardCreate,
     },
   };

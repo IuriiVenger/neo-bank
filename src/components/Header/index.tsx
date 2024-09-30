@@ -16,6 +16,7 @@ import React, { FC, useMemo, useState } from 'react';
 
 import KYCButton from '../KYC/KYCButton';
 
+import ThemeSwitcher from '../ThemeSwitcher';
 import ThemeImage from '../ui/ThemeImage';
 
 import AuthButtons from './AuthButtons';
@@ -98,6 +99,7 @@ const Header: FC = () => {
             </NavbarItem>
           ))}
         </div>
+        <ThemeSwitcher />
         <AuthButtons />
       </NavbarContent>
 
@@ -115,6 +117,7 @@ const Header: FC = () => {
           </NavbarMenuItem>
         ))}
         <Divider />
+
         {isUserSignedIn ? (
           <>
             <NavbarMenuItem>
@@ -141,6 +144,9 @@ const Header: FC = () => {
         {userData && requestKYCStatuses.includes(userData.kyc_status) && (
           <KYCButton onClick={showKYCModal} status={userData?.kyc_status} />
         )}
+        <NavbarItem className="flex h-full items-end pb-6">
+          <ThemeSwitcher />
+        </NavbarItem>
       </NavbarMenu>
     </Navbar>
   );

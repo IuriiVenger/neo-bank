@@ -83,7 +83,7 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
   const openCryptoModal = () => setIsCryptoModalOpen(true);
 
   const openConfirmationModal = () => {
-    const confirmationText = `Are you sure you want to topup ${amount} ${selectedCrypto?.symbol}?`;
+    const confirmationText = `Are you sure you want to Top Up ${amount} ${selectedCrypto?.symbol}?`;
 
     setTopUpConfirmationText(confirmationText);
     setIsConfirmationModalOpen(true);
