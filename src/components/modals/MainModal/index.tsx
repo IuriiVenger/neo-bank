@@ -1,6 +1,6 @@
 import { ModalProps } from '@nextui-org/react';
 import cn from 'classnames';
-import { FC, memo, ReactNode, useEffect } from 'react';
+import { FC, ReactNode, useEffect } from 'react';
 
 import TelegramModal from './TelegramModal';
 
@@ -12,6 +12,22 @@ import { AppEnviroment } from '@/constants';
 import useBreakpoints from '@/hooks/useBreakpoints';
 import { useAppSelector } from '@/store';
 import { selectConfig } from '@/store/selectors';
+
+export type SavePreviousTelegramNativeButtonProps =
+  | {
+      havePreviousTelegramNativeButtons?: true;
+      previousTelegramMainButtonHandler?: () => void;
+      previousTelegramMainButtonText?: string;
+      previousTelegramMainButtonDisabled?: boolean;
+      previousTelegramBackButtonHandler: () => void;
+    }
+  | {
+      havePreviousTelegramNativeButtons?: never;
+      previousTelegramMainButtonHandler?: never;
+      previousTelegramMainButtonText?: never;
+      previousTelegramMainButtonDisabled?: never;
+      previousTelegramBackButtonHandler?: never;
+    };
 
 export type HiddenConfirmButtonProps = {
   confirmButtonHidden: true;
@@ -25,14 +41,15 @@ export type VisibleConfirmButtonProps = {
   confirmButtonText: string;
 };
 
-export type CustomModalProps = ModalProps & {
+export type CustomModalProps = Omit<ModalProps, 'onOpenChange'> & {
   header?: ReactNode | string;
   footer?: ReactNode | string;
   contentClassName?: string;
   bodyClassname?: string;
 };
 
-export type MainModalProps = CustomModalProps &
+export type MainModalProps = SavePreviousTelegramNativeButtonProps &
+  CustomModalProps &
   (HiddenConfirmButtonProps | VisibleConfirmButtonProps) & {
     confirmButtonDisabled?: boolean;
     isLoading?: boolean;
@@ -40,6 +57,7 @@ export type MainModalProps = CustomModalProps &
     nativeCloseButton?: boolean;
     saveScrollPosition?: boolean;
     isDismissable?: boolean;
+    onClose: () => void;
   };
 
 const MainModal: FC<MainModalProps> = (props) => {
@@ -79,4 +97,4 @@ const MainModal: FC<MainModalProps> = (props) => {
   }
 };
 
-export default memo(MainModal);
+export default MainModal;

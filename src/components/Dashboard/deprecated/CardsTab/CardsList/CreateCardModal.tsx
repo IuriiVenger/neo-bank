@@ -142,7 +142,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   return (
     <MainModal
       isOpen={isOpen}
-      onOpenChange={setIsModalOpen}
+      onClose={closeModal}
       backdrop="opaque"
       scrollBehavior="inside"
       header="Create card"

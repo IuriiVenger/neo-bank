@@ -1,5 +1,5 @@
 import { cn } from '@nextui-org/react';
-import { FC } from 'react';
+import { FC, useRef } from 'react';
 
 import CurrencyInfo from '../Currency/CurrencyInfo';
 import DefaultContainer from '../ui/DefaultContainer';
@@ -37,8 +37,18 @@ const ExchangeFormField: FC<ExchangeFormFieldProps> = (props) => {
     isAmountLoading,
   } = props;
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const focusInputRef = () => {
+    inputRef.current?.focus();
+  };
+
   return (
-    <DefaultContainer rounded="md" className={cn(className, 'flex flex-col justify-between gap-2 !p-4')}>
+    <DefaultContainer
+      rounded="md"
+      className={cn(className, 'flex flex-col justify-between gap-2 !p-4')}
+      onClick={focusInputRef}
+    >
       <div className="text-foreground-2 flex justify-between text-xs">
         <p>{titleLabel}</p>
         <p>{titleValue}</p>
@@ -59,10 +69,13 @@ const ExchangeFormField: FC<ExchangeFormFieldProps> = (props) => {
           <div className="flex items-center text-xl font-semibold tracking-wide">
             <input
               className="w-full bg-inherit text-end text-foreground focus-visible:outline-none disabled:!bg-inherit disabled:opacity-100"
-              value={amount}
+              value={amount.toString()}
               onChange={handleAmountInput}
-              type="text"
+              type="number"
               disabled={calculatedField}
+              inputMode="numeric"
+              pattern="[0-9]*"
+              ref={inputRef}
             />
             <span className="ml-1">{amountSymbol}</span>
           </div>

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import MainModal from './MainModal';
+import MainModal, { SavePreviousTelegramNativeButtonProps } from './MainModal';
 
 import { API } from '@/api/types';
 import CurrenciesList from '@/components/CurrencyList';
@@ -19,16 +19,26 @@ type CurrencyListModalProps = {
     | WithOptionalAmount<API.List.Chains>[];
 };
 
-const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
-  const { isOpen, setIsModalOpen, onSelect, currencies, chains, title = 'Select a currency' } = props;
+const CurrencyListModal: FC<CurrencyListModalProps & SavePreviousTelegramNativeButtonProps> = (props) => {
+  const { isOpen, setIsModalOpen, onSelect, currencies, chains, title = 'Select a currency', ...otherProps } = props;
 
   const handleCurrencyClick = (currency: API.List.Crypto | API.List.Fiat | API.List.Chains) => {
     onSelect(currency);
     setIsModalOpen(false);
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
-    <MainModal confirmButtonHidden isOpen={isOpen} onOpenChange={setIsModalOpen}>
+    <MainModal
+      confirmButtonHidden
+      isOpen={isOpen}
+      onClose={closeModal}
+      {...otherProps}
+      // restoreInitialTelegramButtonsOnClose={restoreInitialTelegramButtonsOnClose}
+    >
       <div>
         <h2 className="mb-4 text-3xl font-medium">{title}</h2>
         <CurrenciesList currencies={currencies} chains={chains} handleCurrencyClick={handleCurrencyClick} />

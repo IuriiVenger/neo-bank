@@ -10,8 +10,12 @@ type SettingsModalProps = {
 const SettingsModal: FC<SettingsModalProps> = (props) => {
   const { setIsModalOpen, isOpen } = props;
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
-    <MainModal isOpen={isOpen} onOpenChange={setIsModalOpen} header="Settings" confirmButtonHidden>
+    <MainModal isOpen={isOpen} onClose={closeModal} header="Settings" confirmButtonHidden>
       <div className="flex flex-col items-center justify-center">
         <h1>Settings page</h1>
       </div>

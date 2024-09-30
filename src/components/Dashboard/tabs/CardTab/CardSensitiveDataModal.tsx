@@ -40,8 +40,12 @@ const CardSensitiveDataModal: FC<CardSensitiveDataModalProps> = (props) => {
     toast.success('Card number copied to clipboard');
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
-    <MainModal isOpen={isOpen} onOpenChange={setIsModalOpen} confirmButtonHidden>
+    <MainModal isOpen={isOpen} onClose={closeModal} confirmButtonHidden>
       <div className="m-auto flex flex-col gap-10">
         {/* <ReactCreditCard
             number={deleteDash(sensitiveData.card_number)}

@@ -67,8 +67,12 @@ const TransactionDetailsModal: FC<TransactionDetilsProps> = ({ isOpen, transacti
     ? transaction.crypto.symbol
     : transaction.transaction_currency;
 
+  const closeModal = () => {
+    onOpenChange(false);
+  };
+
   return (
-    <MainModal saveScrollPosition isOpen={isOpen} onOpenChange={onOpenChange} bodyClassname="px-0" confirmButtonHidden>
+    <MainModal saveScrollPosition isOpen={isOpen} onClose={closeModal} bodyClassname="px-0" confirmButtonHidden>
       <div className="px-4 pb-2 pt-10">
         <h2 className="mb-15 text-center text-4xl font-medium">
           {getDirectionSymbol(transactionDirection)} {transactionAmount} {transactionCurrency}
