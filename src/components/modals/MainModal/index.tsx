@@ -19,7 +19,7 @@ export type SavePreviousTelegramNativeButtonProps =
       previousTelegramMainButtonHandler?: () => void;
       previousTelegramMainButtonText?: string;
       previousTelegramMainButtonDisabled?: boolean;
-      previousTelegramBackButtonHandler?: () => void;
+      previousTelegramBackButtonHandler: () => void;
     }
   | {
       havePreviousTelegramNativeButtons?: never;

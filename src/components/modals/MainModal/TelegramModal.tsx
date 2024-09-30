@@ -99,11 +99,14 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   const onModalOpen = () => {
     dispatch(increaseOpenModalCount());
     if (havePreviousTelegramNativeButtons) {
+      console.log('havePreviousTelegramNativeButtons');
+      console.log('previousTelegramMainButtonHandler', previousTelegramMainButtonHandler);
+      console.log('previousTelegramBackButtonHandler', previousTelegramBackButtonHandler);
       previousTelegramMainButtonHandler !== undefined && mainButton.off('click', previousTelegramMainButtonHandler);
       previousTelegramBackButtonHandler !== undefined && backButton.off('click', previousTelegramBackButtonHandler);
       return;
     }
-    backButton.off('click', onClose); // have to test if it is necessary
+    // backButton.off('click', onClose); // have to test if it is necessary
     setTimeout(() => backButton.show()); // setTimeout is used to prevent showing back button before previous back button is hidden
     setTimeout(() => backButton.on('click', onClose)); // setTimeout is used to prevent showing back button before previous back button is hidden
     if (!confirmButtonHidden) {
