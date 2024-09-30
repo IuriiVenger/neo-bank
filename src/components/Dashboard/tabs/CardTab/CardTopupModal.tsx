@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { API } from '@/api/types';
@@ -106,9 +106,9 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
     setIsModalOpen(false);
   };
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsModalOpen(false);
-  };
+  }, []);
 
   const setCardFiatCurrency = () => {
     const cardCurrency = fiatList.find((fiat) => fiat.uuid === selectedCard.data?.fiat_account.fiat.uuid);
