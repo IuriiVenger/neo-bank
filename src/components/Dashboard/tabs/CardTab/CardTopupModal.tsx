@@ -137,7 +137,7 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
       confirmButtonText={confirmButtonText}
       onConfirm={openConfirmationModal}
     >
-      <div className="flex  flex-col gap-6">
+      <div className="flex flex-col gap-6">
         <h2 className="text-3xl font-medium">From crypto wallet</h2>
         <ExchangeForm
           chains={chainList}
