@@ -16,6 +16,7 @@ import { deleteTokens, setTokens } from '@/utils/tokensFactory';
 
 const useAuth = (dispatch: AppDispatch) => {
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
   const [password, setPassword] = useState('');
   const [isOtpRequested, setIsOtpRequested] = useState(false);
@@ -62,8 +63,8 @@ const useAuth = (dispatch: AppDispatch) => {
       setLoadingStatus(RequestStatus.FULLFILLED);
       dispatch(setAppFullInitialized(true));
     } catch (e) {
-      deleteTokens();
       setLoadingStatus(RequestStatus.REJECTED);
+      deleteTokens();
     }
   };
 
@@ -115,7 +116,7 @@ const useAuth = (dispatch: AppDispatch) => {
     }
   };
 
-  const getOtp = async () => {
+  const getEmailOtp = async () => {
     setLoadingStatus(RequestStatus.PENDING);
 
     try {
@@ -134,11 +135,62 @@ const useAuth = (dispatch: AppDispatch) => {
     }
   };
 
-  const signInByOtp = async () => {
+  const getPhoneOtp = async () => {
+    setLoadingStatus(RequestStatus.PENDING);
+
+    try {
+      const { data } = await auth.signin.phone.otp(phone);
+      if (data.error) {
+        setLoadingStatus(RequestStatus.REJECTED);
+
+        return toast.error(data.error);
+      }
+      setIsOtpRequested(true);
+      setLoadingStatus(RequestStatus.FULLFILLED);
+    } catch (e) {
+      setLoadingStatus(RequestStatus.REJECTED);
+
+      throw e;
+    }
+  };
+
+  const signInByEmailOtp = async () => {
     setLoadingStatus(RequestStatus.PENDING);
 
     try {
       const { data } = await auth.verify.email.otp(email, otp);
+
+      if (data.error) {
+        setLoadingStatus(RequestStatus.REJECTED);
+
+        return toast.error(data.error);
+      }
+
+      if (data.access_token) {
+        const tokens = {
+          access_token: data.access_token,
+          refresh_token: data.refresh_token,
+        };
+        setTokens(tokens);
+      }
+
+      dispatch(setUser(data.user));
+      await loadUserContent();
+      router.push('/dashboard');
+      toast.success('You have successfully logged in');
+      setLoadingStatus(RequestStatus.FULLFILLED);
+    } catch (e) {
+      setLoadingStatus(RequestStatus.REJECTED);
+
+      throw e;
+    }
+  };
+
+  const signInByPhoneOtp = async () => {
+    setLoadingStatus(RequestStatus.PENDING);
+
+    try {
+      const { data } = await auth.verify.phone.otp(phone, otp);
 
       if (data.error) {
         setLoadingStatus(RequestStatus.REJECTED);
@@ -172,7 +224,7 @@ const useAuth = (dispatch: AppDispatch) => {
     try {
       clearUserContent();
       deleteTokens();
-      router.push('/');
+      router.push('/auth');
     } finally {
       setLoadingStatus(RequestStatus.NONE);
     }
@@ -180,18 +232,22 @@ const useAuth = (dispatch: AppDispatch) => {
 
   return {
     signIn,
-    signInByOtp,
+    signInByEmailOtp,
+    signInByPhoneOtp,
     signUp,
     signOut,
     initUser,
     setEmail,
+    setPhone,
     setPassword,
     resetAuthState,
     email,
+    phone,
     password,
     otp,
     setOtp,
-    getOtp,
+    getEmailOtp,
+    getPhoneOtp,
     isOtpRequested,
   };
 };

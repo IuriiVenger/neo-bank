@@ -8,7 +8,7 @@ import { IconType } from 'react-icons';
 import { GoHistory, GoNoEntry, GoVerified } from 'react-icons/go';
 
 import { API } from '@/api/types';
-import { DashboardTabs, OrderStatuses, OrderTypes } from '@/constants';
+import { OrderStatuses, OrderTypes } from '@/constants';
 
 import { getDateAndTime } from '@/utils/converters';
 
@@ -39,7 +39,7 @@ const orderStatusesInfo: OrderStatusesInfo = {
     description: 'Your order has been completed.',
     icon: GoVerified,
     buttonColor: 'primary',
-    iconColorClassname: 'text-tenant-main',
+    iconColorClassname: 'text-primary ',
   },
   [OrderStatuses.CANCELED]: {
     title: 'Canceled',
@@ -93,9 +93,9 @@ const OrderInfo: FC<OrderInfoProps> = ({ order }) => {
       </div>
       <Button
         as={Link}
-        href={`/dashboard?tab=${DashboardTabs.INFO}`}
+        href="/dashboard"
         color={orderStatusInfo.buttonColor}
-        className="mt-8 w-60 text-white"
+        className="mt-8 w-60 text-primary-foreground"
         radius="sm"
       >
         Go to dashboard

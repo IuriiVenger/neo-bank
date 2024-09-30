@@ -38,7 +38,7 @@ next-env.d.ts
 certificates
 
 #tenant
-public/favicon.ico
+# public/favicon.ico
 public/static/files/tenantInfo.json
 public/static/svg/tenant/**.*
 

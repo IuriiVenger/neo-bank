@@ -13,20 +13,20 @@ const tenantId = process.env.TENANT_ID;
 export const instance = axios.create({
   baseURL: baseURL || '/api/',
   timeout: 60000,
-  headers: {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'X-Tenant-Id': tenantId,
-  },
 });
 
+const isBrowser = typeof window !== 'undefined';
+
 instance.interceptors.request.use((config) => {
-  const access_token = localStorage.getItem('access_token');
-  const appEnviroment = localStorage.getItem('app_enviroment') || AppEnviroment.WEB;
+  const access_token = isBrowser && localStorage.getItem('access_token');
+  const appEnviroment = (isBrowser && localStorage.getItem('app_enviroment')) || AppEnviroment.WEB;
 
   const modifiedHeaders = {
     ...config.headers,
     'App-Enviroment': appEnviroment,
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'X-Tenant-Id': tenantId,
   };
 
   if (access_token) {
@@ -46,15 +46,13 @@ instance.interceptors.response.use(
   (error) => {
     if (error?.response?.status === ResponseStatus.UNAUTHORIZED) {
       const { response, config: failedRequest } = error;
-      const refreshToken = localStorage.getItem('refresh_token');
-      const appEnviroment = localStorage.getItem('app_enviroment') || AppEnviroment.WEB;
+      const refreshToken = isBrowser && localStorage.getItem('refresh_token');
+      const appEnviroment = (isBrowser && localStorage.getItem('app_enviroment')) || AppEnviroment.WEB;
 
       if (response.config?.url.includes('/auth/refresh/refresh_token') || !refreshToken) {
         if (typeof window !== 'undefined') {
           toast.error(error?.response?.data?.message || defaultErrorMessageForUnauthorized);
-          appEnviroment === AppEnviroment.TELEGRAM
-            ? (window.location.href = '/auth/telegram/login')
-            : (window.location.href = '/auth/login');
+          appEnviroment === AppEnviroment.TELEGRAM ? navigate('/auth/telegram/login') : navigate('/auth/login');
         }
         deleteTokens();
         requestQueue = [];
@@ -70,6 +68,7 @@ instance.interceptors.response.use(
               requestQueue = [];
             }
           })
+          .catch(() => Promise.reject(response))
           .finally(() => {
             isTokenRefreshing = false;
           });

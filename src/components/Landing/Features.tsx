@@ -44,7 +44,7 @@ const FeatureCard: FC<FeatureCardProps> = ({ Icon, title, description, className
       className,
     )}
   >
-    <Icon className=" flex-shrink-0 text-5xl text-tenant-main" />
+    <Icon className=" flex-shrink-0 text-5xl text-primary " />
     <h3 className="text-xl font-medium">{title}</h3>
     <p className="text-center text-sm">{description}</p>
   </div>

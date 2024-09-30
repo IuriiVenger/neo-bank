@@ -67,7 +67,7 @@ const VerificationStatus: FC<VerificationStatusProps> = ({ verifyStatus, openKYC
   return (
     <div
       className={cn(
-        'flex w-fit flex-col items-center justify-end gap-2 xs:flex-col-reverse md:items-end lg:flex-row lg:items-center',
+        'flex w-fit flex-col items-center justify-end gap-2 md:items-end lg:flex-row lg:items-center xs:flex-col-reverse',
         isKYCRequired && 'hover:opacity-70',
       )}
       onClick={clickHandler}

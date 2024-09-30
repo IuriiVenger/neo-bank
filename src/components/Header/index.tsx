@@ -11,15 +11,18 @@ import {
   Divider,
 } from '@nextui-org/react';
 
-import Image from 'next/image.js';
 import Link from 'next/link';
 import React, { FC, useMemo, useState } from 'react';
 
 import KYCButton from '../KYC/KYCButton';
 
+import ThemeSwitcher from '../ThemeSwitcher';
+import ThemeImage from '../ui/ThemeImage';
+
 import AuthButtons from './AuthButtons';
 
-import headerLogo from '@/assets/svg/header_logo.svg';
+import darkHeaderLogo from '@/assets/svg/tenant/dark/header_logo.svg';
+import lightHeaderLogo from '@/assets/svg/tenant/light/header_logo.svg';
 import whiteLabelConfig from '@/config/whitelabel';
 import { ModalNames, requestKYCStatuses } from '@/constants';
 import useAuth from '@/hooks/useAuth';
@@ -73,23 +76,30 @@ const Header: FC = () => {
       </NavbarContent>
       <NavbarContent className="pr-3 md:hidden" justify="center">
         <NavbarBrand>
-          <Image src={headerLogo} alt="Logo" height={48} className="h-6 w-fit" />
+          <ThemeImage
+            lightSrc={lightHeaderLogo}
+            darkSrc={darkHeaderLogo}
+            alt="Logo"
+            height={48}
+            className="h-6 w-fit"
+          />
         </NavbarBrand>
       </NavbarContent>
       <NavbarContent className="hidden flex-grow gap-4 md:flex" justify="center">
         <Link className="flex-shrink-0" href="/">
-          <Image src={headerLogo} alt="Logo" height={48} className="h-6" />
+          <ThemeImage lightSrc={lightHeaderLogo} darkSrc={darkHeaderLogo} alt="Logo" height={48} className="h-6" />
         </Link>
 
         <div className="flex w-full  justify-center gap-8">
           {filtredMenuItems.map((item, index) => (
             <NavbarItem key={`${item}-${index}`}>
-              <Link className="text-sm text-tenant-main hover:underline" href={item.href}>
+              <Link className="text-sm text-primary hover:underline " href={item.href}>
                 {item.title}
               </Link>
             </NavbarItem>
           ))}
         </div>
+        <ThemeSwitcher />
         <AuthButtons />
       </NavbarContent>
 
@@ -97,7 +107,7 @@ const Header: FC = () => {
         {filtredMenuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
             <Link
-              className="w-full text-tenant-main"
+              className="w-full text-primary "
               color={index === menuItems.length - 1 ? 'danger' : 'foreground'}
               href={item.href}
               onClick={closeMenu}
@@ -107,15 +117,16 @@ const Header: FC = () => {
           </NavbarMenuItem>
         ))}
         <Divider />
+
         {isUserSignedIn ? (
           <>
             <NavbarMenuItem>
-              <Link className="w-full text-tenant-main" href="/dashboard" onClick={closeMenu}>
+              <Link className="w-full text-primary " href="/dashboard" onClick={closeMenu}>
                 Dashboard
               </Link>
             </NavbarMenuItem>
             <NavbarMenuItem>
-              <button type="button" className="text-tenant-main" onClick={signOut}>
+              <button type="button" className="text-primary " onClick={signOut}>
                 Logout
               </button>
             </NavbarMenuItem>
@@ -123,7 +134,7 @@ const Header: FC = () => {
         ) : (
           authItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
-              <Link className="w-full text-tenant-main" href={item.href} onClick={closeMenu}>
+              <Link className="w-full text-primary " href={item.href} onClick={closeMenu}>
                 {item.title}
               </Link>
             </NavbarMenuItem>
@@ -133,6 +144,9 @@ const Header: FC = () => {
         {userData && requestKYCStatuses.includes(userData.kyc_status) && (
           <KYCButton onClick={showKYCModal} status={userData?.kyc_status} />
         )}
+        <NavbarItem className="flex h-full items-end pb-6">
+          <ThemeSwitcher />
+        </NavbarItem>
       </NavbarMenu>
     </Navbar>
   );

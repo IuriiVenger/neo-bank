@@ -12,16 +12,27 @@ import { getCurrencyIconSrc, isCrypto, isFiat } from '@/utils/financial';
 type CurrencyInfoProps = {
   currency: API.List.Crypto | API.List.Fiat | API.List.Chains;
   chains?: API.List.Chains[];
-
   hideShevron?: boolean;
   onCurrencyClick?: () => void;
   className?: string;
   currencyTitleClassname?: string;
   minValue?: number;
+  hideChainChip?: boolean;
+  hideSymbol?: boolean;
 };
 
 const CurrencyInfo: FC<CurrencyInfoProps> = (props) => {
-  const { currency, onCurrencyClick, hideShevron, className, currencyTitleClassname, minValue, chains } = props;
+  const {
+    currency,
+    onCurrencyClick,
+    hideShevron = !onCurrencyClick,
+    className,
+    currencyTitleClassname,
+    minValue,
+    chains,
+    hideChainChip,
+    hideSymbol,
+  } = props;
   const currencyName = isFiat(currency) ? currency.code : currency.name;
 
   const cryptoCurrencyChain = chains && isCrypto(currency) && chains.find((chain) => chain.id === currency.chain);
@@ -32,32 +43,38 @@ const CurrencyInfo: FC<CurrencyInfoProps> = (props) => {
     <div className={cn(className, 'flex shrink-0 items-center gap-2')}>
       <Badge
         className="border-none bg-none p-0"
-        content={chainIcon && <Image className="h-4 w-4" height={32} width={32} alt="" src={chainIcon} />}
+        content={chainIcon && <Image className="h-5 w-5" height={32} width={32} alt="" src={chainIcon} />}
       >
         <Image
-          className="h-9 w-9 rounded-full object-cover"
+          className="h-[42px] w-[42px] rounded-full object-cover"
           src={getCurrencyIconSrc(currency)}
           alt="currency label"
-          height={72}
-          width={72}
+          height={64}
+          width={64}
         />
       </Badge>
       <div className="text-left">
         <button
-          className={cn(currencyTitleClassname, 'flex items-center gap-1 text-xl font-bold')}
+          className={cn(
+            currencyTitleClassname,
+            onCurrencyClick ? 'cursor-pointer' : 'cursor-default',
+            'flex items-center gap-1 text-base font-medium',
+          )}
           type="button"
           onClick={onCurrencyClick}
         >
           <span>{currencyName}</span> {!hideShevron && <HiOutlineSelector className="text-sm text-gray-500" />}
-          {cryptoCurrencyChain && (
+          {cryptoCurrencyChain && !hideChainChip && (
             <Chip size="sm" radius="sm" className="-mt-1 h-4 py-2 text-[8px]">
               {cryptoCurrencyChain.name}
             </Chip>
           )}
         </button>
-        <p className="!p-0 text-xs">
-          {currency.symbol} {!!minValue && `(min ${minValue})`}
-        </p>
+        {!hideSymbol && (
+          <p className="!p-0 text-xs">
+            {currency.symbol} {!!minValue && `(min ${minValue})`}
+          </p>
+        )}
       </div>
     </div>
   );

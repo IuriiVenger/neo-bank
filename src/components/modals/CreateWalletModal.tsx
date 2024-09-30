@@ -1,14 +1,7 @@
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Select,
-  SelectItem,
-} from '@nextui-org/react';
+import { Select, SelectItem } from '@nextui-org/react';
 import { FC, useState } from 'react';
+
+import MainModal from './MainModal';
 
 import { WalletTypeValues } from '@/constants';
 import { ValueWithLabel } from '@/types';
@@ -44,37 +37,28 @@ const CreateWalletModal: FC<CreateWalletProps> = (props) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={setIsModalOpen} disableAnimation>
-      <ModalContent>
-        <ModalHeader>Create Wallet</ModalHeader>
-        <ModalBody>
-          <Select
-            label="Select wallet type"
-            className=""
-            onChange={handleSelectChange}
-            selectedKeys={selectedWalletType && [selectedWalletType]}
-          >
-            {walletTypes.map((walletType) => (
-              <SelectItem key={walletType.value} value={walletType.value}>
-                {walletType.label}
-              </SelectItem>
-            ))}
-          </Select>
-        </ModalBody>
-        <ModalFooter>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button
-            className="text-white"
-            color="primary"
-            isDisabled={!selectedWalletType}
-            isLoading={isWalletCreating}
-            onClick={handleCreateWallet}
-          >
-            Create
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+    <MainModal
+      isOpen={isOpen}
+      onOpenChange={setIsModalOpen}
+      header="Create Wallet"
+      confirmButtonText="Create"
+      confirmButtonDisabled={!selectedWalletType}
+      onConfirm={handleCreateWallet}
+      isLoading={isWalletCreating}
+    >
+      <Select
+        label="Select wallet type"
+        className=""
+        onChange={handleSelectChange}
+        selectedKeys={selectedWalletType && [selectedWalletType]}
+      >
+        {walletTypes.map((walletType) => (
+          <SelectItem key={walletType.value} value={walletType.value}>
+            {walletType.label}
+          </SelectItem>
+        ))}
+      </Select>
+    </MainModal>
   );
 };
 

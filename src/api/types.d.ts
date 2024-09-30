@@ -1,12 +1,16 @@
 import { User } from '@supabase/supabase-js';
 
 import {
+  CardFormFactor,
   CardStatus,
-  CardTransactionDirection,
-  CardTransationStatus,
+  CardTransactionStatus,
+  CardTransactionType,
+  CardType,
   KYCStatuses,
   OrderStatuses,
   OrderTypes,
+  WalletTransactionMethod,
+  WalletTransactionType,
 } from '@/constants';
 
 export namespace API {
@@ -59,15 +63,19 @@ export namespace API {
   }
 
   export namespace Cards {
-    export interface Bin {
-      code: string;
-      countryCode: string;
-      currencyCode: string;
-      provider: string;
+    export interface FiatAccount {
+      id: string;
+      fiat: API.List.Fiat;
+      balance: number;
+      nick_name: string | null;
+    }
+    export interface CardConfig {
+      id: string;
+      allowed_currencies: string[];
+      brand: string;
       billingAddress: string;
-      paymentServices: string[];
-      merchants: string[];
-      purposes: string[];
+      form_factor: CardFormFactor;
+      purposes: string[] | null;
       fees: {
         issue: {
           feeAmount: number;
@@ -88,9 +96,7 @@ export namespace API {
           unit: string;
         };
       };
-      requirements: {
-        isKycRequired: boolean;
-      };
+      type: CardType; // MOCK
     }
     export interface User {
       email: string;
@@ -136,170 +142,82 @@ export namespace API {
     }
 
     export interface CardDetailItem {
-      status: CardStatus;
-      cardName: string;
-      limits: Limits;
-      autoTopUp: {
-        thresholdAmount: number;
-        topUpAmount: number;
-      };
-      isFavorite: boolean;
+      brand: string;
+      f;
+      card_id: string;
+      card_number: string;
+      card_status: CardStatus;
+      form_factor: string;
+      name_on_card: string;
+      nick_name: string;
+      program_id: string;
       wallet_id: string;
-      walletInfo: {
+      type: CardType;
+      transaction_limits: {
+        amount: number;
+        interval: string;
+      }[];
+      authorization_controls: {
         id: string;
-        code: string;
-        purpose: string;
-        name: string;
-        currencyCode: string;
-        availableBalance: number;
+        card_id: string;
+        allowed_currencies: string[];
+        allowed_transaction_count: string;
+        allowed_merchant_categories: string | null;
       };
-      id: string;
-      maskedPan: string;
-      bin: {
-        code: string;
-        countryCode: string;
-        currencyCode: string;
-        provider: string;
-        billingAddress: string;
-        paymentServices: string[];
-        purposes: string[];
-        fees: {
-          issue: {
-            feeAmount: number;
-            unit: string;
-          };
-          authorization: {
-            minAmount: number;
-            maxAmount: number;
-            feeAmount: number;
-            unit: string;
-          }[];
-          decline: {
-            feeAmount: number;
-            unit: string;
-          };
-          zeroAuth: {
-            feeAmount: number;
-            unit: string;
-          };
-        };
-        requirements: {
-          isKycRequired: boolean;
-        };
-      };
-      createdAt: string;
-      balance: {
-        available: number;
-        spent: number;
-        pending: number;
-      };
-      user: {
-        id: string;
-        nickname: string;
-        email: string;
-      };
-      cardId: string;
+      fiat_account: FiatAccount;
     }
     export interface CardListItem {
-      id: string;
-      userId: string;
-      walletId: string;
-      createdAt: string;
-      type: string;
-      amount: number;
-      availableBalance: number;
-      currencyCode: string;
-      description: string;
-      status: string;
-      direction: string;
-      user: {
-        id: string;
-        role: string;
-        status: string;
-        firstName: string;
-        lastName: string;
-        nickname: string;
-        email: string;
-        balance: {
-          currencyCode: string;
-          available: number;
-          reserved: number;
-          pending: number;
-          total: number;
-        };
-      };
-      walletInfo: {
-        id: string;
-        code: string;
-        name: string;
-        currencyCode: string;
-      };
-      details: {
-        binInfo: {
-          code: string;
-          countryCode: string;
-          currencyCode: string;
-          provider: string;
-        };
-        maskedPan: string;
-        cardName: string;
-      };
+      brand: string;
+      card_id: string;
+      card_number: string;
+      card_status: string;
+      cardholder_id: string;
+      created_at: string;
+      nick_name: string;
+      updated_at: string;
+      wallet_id: string;
+      program_uuid: string;
+      fiat_account: FiatAccount;
     }
 
     export interface CardsList {
-      items: CardDetailItem[];
-      totalCount: number;
+      count: number;
+      data: CardListItem[];
     }
 
     export interface TransactionItem {
-      id: string;
-      userId: string;
-      walletId: string;
-      createdAt: string;
-      type: string;
-      amount: number;
-      availableBalance: number;
-      currencyCode: string;
-      description: string;
-      status: CardTransationStatus;
-      direction: CardTransactionDirection;
-      user: {
-        id: string;
-        role: string;
-        status: string;
-        firstName: string;
-        lastName: string;
-        nickname: string;
-        email: string;
-        balance: {
-          currencyCode: string;
-          available: number;
-          reserved: number;
-          pending: number;
-          total: number;
-        };
-      };
-      walletInfo: {
-        id: string;
-        code: string;
+      auth_code: string;
+      billing_amount: number;
+      billing_currency: string;
+      card_id: string;
+      wallet_id: string;
+      fiat_account_id: string;
+      card_nickname: string;
+      client_data: string;
+      digital_wallet_token_id: string;
+      failure_reason: string;
+      masked_card_number: string;
+      matched_authorizations: string[];
+      merchant: {
+        category_code: string;
+        city: string;
+        country: string;
         name: string;
-        currencyCode: string;
       };
-      details: {
-        binInfo: {
-          code: string;
-          countryCode: string;
-          currencyCode: string;
-          provider: string;
-        };
-        maskedPan: string;
-        cardName: string;
-      };
+      network_transaction_id: string;
+      posted_date: string;
+      retrieval_ref: string;
+      status: CardTransactionStatus;
+      transaction_amount: number;
+      transaction_currency: string;
+      transaction_date: string;
+      transaction_id: string;
+      transaction_type: CardTransactionType;
     }
 
     export interface TransactionsList {
-      items: TransactionItem[];
-      totalCount: number;
+      data: TransactionItem[];
+      has_more: boolean;
     }
 
     export interface SensitiveData {
@@ -317,20 +235,26 @@ export namespace API {
       valid_to: number;
     }
 
+    export type AuthorizationControls = {
+      allowed_merchant_categories: string[];
+      allowed_transaction_count: string;
+    };
+
+    export type TransactionLimit = {
+      amount: number;
+      interval: string;
+    };
+
     export namespace Create {
       export interface Request {
-        wallet_uuid: string;
-        binCode: string;
-        cardName: string;
-        limits?: Limits;
-        cardBalance: number;
-        cardsCount?: number;
-        autoTopUp?: {
-          thresholdAmount: number;
-          topUpAmount: number;
-        };
-        walletId?: string;
-        ownerId?: string;
+        authorization_controls: AuthorizationControls;
+        transaction_limits: TransactionLimit[];
+        name_on_card: string;
+        nick_name: string;
+        purpose?: string;
+        request_id: string;
+        program_id: string;
+        wallet_id: string;
       }
 
       export type Response = CardDetailItem;
@@ -338,6 +262,9 @@ export namespace API {
 
     export namespace Update {
       export interface Request {
+        card_status?: CardStatus;
+      }
+      export interface DeprecatedRequest {
         status: string;
         cardName: string;
         limits: Limits;
@@ -378,6 +305,15 @@ export namespace API {
     }
   }
 
+  export namespace Issuing {
+    export namespace Programs {
+      export type Response = {
+        count: number;
+        data: API.Cards.CardConfig[];
+      };
+    }
+  }
+
   export namespace KYC {
     export namespace Sumsub {
       export namespace GenerateToken {
@@ -404,8 +340,13 @@ export namespace API {
       symbol: string;
       icon: string;
       contract: string;
-      decimal: number;
+      decimal?: number;
       chain: number;
+    }
+
+    export interface CryptoBySymbol {
+      symbol: string;
+      items: Crypto[];
     }
 
     export interface Chains {
@@ -417,11 +358,31 @@ export namespace API {
   }
 
   export namespace Wallets {
-    export interface WalletBalance {
+    export interface WallletBalanceCryptoDetails {
       uuid: string;
+      crypto: {
+        icon: string;
+        name: string;
+        type: string;
+        uuid: string;
+        chain: number;
+        symbol: string;
+        enabled: boolean;
+        contract: string;
+      };
+      crypto_id: string;
+      wallet_id: string;
       amount: number;
-      crypto: List.Crypto;
+      fiat_amount: number;
     }
+    export interface WalletBalanceItem {
+      symbol: string;
+      amount: number;
+      fiat_amount: number;
+      details: WallletBalanceCryptoDetails[];
+    }
+
+    export type WalletBalance = WalletBalanceItem[];
 
     export interface Wallet {
       created_at: string;
@@ -429,7 +390,7 @@ export namespace API {
       uuid: string;
       type: string;
       base_fiat: string;
-      balance: WalletBalance[];
+      balance: WalletBalance;
     }
 
     export namespace WalletChain {
@@ -664,7 +625,8 @@ export namespace API {
     export interface Transaction {
       id: number;
       created_at: string;
-      type: string;
+      type: WalletTransactionType;
+      method: WalletTransactionMethod;
       status: string;
       amount: number;
       from: string;

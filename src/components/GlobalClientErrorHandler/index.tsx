@@ -16,9 +16,14 @@ const GlobalClientErrorHandler = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(
-        error?.response?.data?.message || error?.response?.data?.error || error?.message || 'Something went wrong',
-      );
+      const errorText =
+        (!!error?.response?.data?.message?.length && error.response.data.message?.length) ||
+        (error?.response?.data?.error?.length && error.response.data.error) ||
+        (error?.message?.length && error.message) ||
+        'Something went wrong';
+
+      toast.error(errorText);
+      // eslint-disable-next-line no-console
       console.error('GlobalClientErrorHandler:', error);
     }
   }, [error]);
