@@ -31,6 +31,8 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     ...otherProps
   } = props;
 
+  console.log(props);
+
   const backButton = useBackButton();
   const mainButton = useMainButton();
   const dispatch = useAppDispatch();
