@@ -31,7 +31,6 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
   const {
     allowedCryptoToFiatList,
     selectedWallet,
-
     selectCrypto,
     selectFiat,
     selectedCrypto,

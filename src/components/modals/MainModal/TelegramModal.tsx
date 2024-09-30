@@ -48,38 +48,30 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   const onConfirmButtonTextChanged = () => {
-    if (!mainButton || !confirmButtonText) return;
+    if (!confirmButtonText) return;
 
     mainButton.setText(confirmButtonText);
   };
 
   const disableMainButton = () => {
-    if (!mainButton) return;
-
     mainButton.disable();
 
     mainButton.setBgColor(themes[activeTheme].telegramColors.mainButton.disabledColor);
   };
 
   const enableMainButton = () => {
-    if (!mainButton) return;
-
     mainButton.enable();
     mainButton.setBgColor(themes[activeTheme].telegramColors.mainButton.color);
     mainButton.setTextColor(themes[activeTheme].telegramColors.mainButton.textColor);
   };
 
   const showLoader = () => {
-    if (!mainButton) return;
-
     mainButton.showLoader();
     disableMainButton();
     mainButton.setText('Loading...');
   };
 
   const hideLoader = () => {
-    if (!mainButton || !isOpen) return;
-
     mainButton.hideLoader();
     enableMainButton();
     onConfirmButtonTextChanged();
@@ -90,14 +82,12 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   const onIsLoadingChanged = () => {
-    if (!mainButton || !isOpen || isLoading === undefined) return;
+    if (isLoading === undefined) return;
 
     isLoading ? showLoader() : hideLoader();
   };
 
   const onOnConfirmChanged = () => {
-    if (!mainButton || !isOpen) return;
-
     mainButton.off('click', confirmHandler);
     mainButton.on('click', confirmHandler);
   };
@@ -109,9 +99,8 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   const onModalOpen = () => {
-    if (!backButton || !mainButton) return;
-
     dispatch(increaseOpenModalCount());
+    backButton.off('click', closeModal);
     setTimeout(() => backButton.show()); // setTimeout is used to prevent showing back button before previous back button is hidden
     setTimeout(() => backButton.on('click', closeModal)); // setTimeout is used to prevent showing back button before previous back button is hidden
     if (!confirmButtonHidden) {
