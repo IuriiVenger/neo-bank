@@ -10,6 +10,7 @@ import { WithOptionalAmount } from '@/types';
 type CurrencyListModalProps = {
   isOpen: boolean;
   setIsModalOpen: (isOpen: boolean) => void;
+  onClose?: () => void;
   chains?: API.List.Chains[];
   title?: string;
   onSelect: (currency: API.List.Crypto | API.List.Fiat | API.List.Chains) => void;
@@ -20,7 +21,7 @@ type CurrencyListModalProps = {
 };
 
 const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
-  const { isOpen, setIsModalOpen, onSelect, currencies, chains, title = 'Select a currency' } = props;
+  const { isOpen, setIsModalOpen, onSelect, currencies, chains, title = 'Select a currency', onClose } = props;
 
   const handleCurrencyClick = (currency: API.List.Crypto | API.List.Fiat | API.List.Chains) => {
     onSelect(currency);
@@ -28,7 +29,7 @@ const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
   };
 
   return (
-    <MainModal confirmButtonHidden isOpen={isOpen} onOpenChange={setIsModalOpen}>
+    <MainModal confirmButtonHidden isOpen={isOpen} onOpenChange={setIsModalOpen} onClose={onClose}>
       <div>
         <h2 className="mb-4 text-3xl font-medium">{title}</h2>
         <CurrenciesList currencies={currencies} chains={chains} handleCurrencyClick={handleCurrencyClick} />
