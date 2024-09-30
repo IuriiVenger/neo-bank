@@ -31,8 +31,6 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     ...otherProps
   } = props;
 
-  console.log(props);
-
   const backButton = useBackButton();
   const mainButton = useMainButton();
   const dispatch = useAppDispatch();
@@ -42,11 +40,6 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     onConfirm && onConfirm();
   };
 
-  // const [initialBackButtonVisibility] = useState(backButton.isVisible);
-  // const [initialMainButtonVisibility] = useState(mainButton.isVisible);
-  // const [initialMainButtonEnabled] = useState(mainButton.isEnabled);
-  // const [initialMainButtonText] = useState(mainButton.text);
-
   const onConfirmButtonTextChanged = () => {
     if (!confirmButtonText) return;
 
@@ -55,7 +48,6 @@ const TelegramModal: FC<MainModalProps> = (props) => {
 
   const disableMainButton = () => {
     mainButton.disable();
-
     mainButton.setBgColor(themes[activeTheme].telegramColors.mainButton.disabledColor);
   };
 
@@ -98,10 +90,15 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     confirmButtonHidden ? mainButton.hide() : mainButton.show();
   };
 
+  const removePreviousTelegramNativeButtonsHandlers = () => {
+    previousTelegramMainButtonHandler !== undefined && mainButton.off('click', previousTelegramMainButtonHandler);
+    previousTelegramBackButtonHandler !== undefined && backButton.off('click', previousTelegramBackButtonHandler);
+  };
+
   const restorePreviousTelegramNativeButtons = () => {
     previousTelegramMainButtonHandler !== undefined && mainButton.on('click', previousTelegramMainButtonHandler);
     previousTelegramMainButtonHandler !== undefined && mainButton.show();
-    previousTelegramMainButtonDisabled ? mainButton.disable() : mainButton.enable();
+    previousTelegramMainButtonDisabled ? disableMainButton() : enableMainButton();
     previousTelegramMainButtonText !== undefined && mainButton.setText(previousTelegramMainButtonText);
     previousTelegramBackButtonHandler !== undefined && backButton.on('click', previousTelegramBackButtonHandler);
   };
@@ -109,8 +106,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   const onModalOpen = () => {
     dispatch(increaseOpenModalCount());
     if (havePreviousTelegramNativeButtons) {
-      previousTelegramMainButtonHandler !== undefined && mainButton.off('click', previousTelegramMainButtonHandler);
-      previousTelegramBackButtonHandler !== undefined && backButton.off('click', previousTelegramBackButtonHandler);
+      removePreviousTelegramNativeButtonsHandlers();
     }
     // backButton.off('click', onClose); // have to test if it is necessary
     setTimeout(() => backButton.show()); // setTimeout is used to prevent showing back button before previous back button is hidden
@@ -129,7 +125,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     dispatch(decreaseOpenModalCount());
 
     if (havePreviousTelegramNativeButtons) {
-      setTimeout(() => restorePreviousTelegramNativeButtons());
+      restorePreviousTelegramNativeButtons();
       return;
     }
 
