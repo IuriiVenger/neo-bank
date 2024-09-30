@@ -24,6 +24,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     isLoading,
     onClose,
     isDismissable = false,
+    restoreInitialTelegramButtonsOnClose,
     ...otherProps
   } = props;
 
@@ -36,11 +37,10 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     onConfirm && onConfirm();
   };
 
-  const [initialBackButtonVisibility] = useState(backButton?.isVisible);
-  const [initialMainButtonVisibility] = useState(mainButton?.isVisible);
-
-  console.log('initialBackButtonVisibility', initialBackButtonVisibility);
-  console.log('initialMainButtonVisibility', initialMainButtonVisibility);
+  const [initialBackButtonVisibility] = useState(backButton.isVisible);
+  const [initialMainButtonVisibility] = useState(mainButton.isVisible);
+  const [initialMainButtonEnabled] = useState(mainButton.isEnabled);
+  const [initialMainButtonText] = useState(mainButton.text);
 
   const closeModal = () => {
     onClose && onClose();
@@ -126,6 +126,15 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     backButton.off('click', closeModal);
     onConfirm && mainButton.off('click', confirmHandler);
     dispatch(decreaseOpenModalCount());
+
+    if (restoreInitialTelegramButtonsOnClose) {
+      initialBackButtonVisibility ? backButton.show() : backButton.hide();
+      initialMainButtonVisibility ? mainButton.show() : mainButton.hide();
+      initialMainButtonEnabled ? mainButton.enable() : mainButton.disable();
+      mainButton.setText(initialMainButtonText);
+      return;
+    }
+
     if (openModalCount === 0) {
       mainButton.hide(); // have to test
       backButton.hide();

@@ -40,6 +40,7 @@ export type MainModalProps = CustomModalProps &
     nativeCloseButton?: boolean;
     saveScrollPosition?: boolean;
     isDismissable?: boolean;
+    restoreInitialTelegramButtonsOnClose?: boolean;
   };
 
 const MainModal: FC<MainModalProps> = (props) => {
