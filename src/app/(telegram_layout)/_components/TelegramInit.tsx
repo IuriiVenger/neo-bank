@@ -1,18 +1,17 @@
-import { useInitData, useLaunchParams, useMiniApp } from '@telegram-apps/sdk-react';
+'use client';
 
-import { useEffect } from 'react';
+import { useInitData, useLaunchParams, useMiniApp, useSettingsButton, useThemeParams } from '@telegram-apps/sdk-react';
+
+import { useEffect, useState } from 'react';
 
 import { themes } from '@/config/themes';
-import {
-  AppEnviroment,
-  // ModalNames
-} from '@/constants';
+import { AppEnviroment, CustomTheme, ModalNames } from '@/constants';
 import useAuth from '@/hooks/useAuth';
 import useTelegramAuth from '@/hooks/useTelegramAuth';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { selectActiveTheme, selectConfig, selectIsUserLoggedIn } from '@/store/selectors';
 import { setAppEnviroment } from '@/store/slices/config';
-// import { setModalVisible } from '@/store/slices/ui';
+import { setActiveTheme, setModalVisible } from '@/store/slices/ui';
 
 // eslint-disable-next-line import/order
 // import { mockTelegramEnv, parseInitData } from '@telegram-apps/sdk';
@@ -68,30 +67,47 @@ const TelegramInit = () => {
   const miniApp = useMiniApp(true);
   const initData = useInitData(true);
   const dispatch = useAppDispatch();
+  const telegramTheme = useThemeParams(true);
 
   const { initUser } = useAuth(dispatch);
   const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, initUser);
+  const [isThemeInitialized, setIsThemeInitialized] = useState(false);
 
-  useEffect(() => {
+  const initTheme = () => {
+    telegramTheme && dispatch(setActiveTheme(telegramTheme.isDark ? CustomTheme.DARK : CustomTheme.LIGHT));
+    setIsThemeInitialized(true);
+  };
+
+  const updateTheme = () => {
     window.Telegram.WebApp.setBackgroundColor(themes[activeTheme].baseColors.background);
     window.Telegram.WebApp.setHeaderColor(themes[activeTheme].baseColors.background);
     window.Telegram.WebApp.setBottomBarColor(themes[activeTheme].baseColors.background);
-  }, []);
+  };
 
-  // const settingsButton = useSettingsButton(true);
-  // const openSettingsPopup = () => {
-  //   dispatch(setModalVisible(ModalNames.SETTINGS));
-  // };
-  // const initSettingsButton = () => {
-  //   if (!settingsButton) {
-  //     return;
-  //   }
-  //   settingsButton.show();
-  //   settingsButton.on('click', openSettingsPopup);
-  // };
-  // useEffect(() => {
-  //   initSettingsButton();
-  // }, [settingsButton]);
+  useEffect(() => {
+    if (isThemeInitialized) {
+      updateTheme();
+    }
+  }, [activeTheme]);
+
+  useEffect(() => {
+    initTheme();
+  }, [telegramTheme?.isDark]);
+
+  const settingsButton = useSettingsButton(true);
+  const openSettingsPopup = () => {
+    dispatch(setModalVisible(ModalNames.SETTINGS));
+  };
+  const initSettingsButton = () => {
+    if (!settingsButton) {
+      return;
+    }
+    settingsButton.show();
+    settingsButton.on('click', openSettingsPopup);
+  };
+  useEffect(() => {
+    initSettingsButton();
+  }, [settingsButton]);
 
   useEffect(() => {
     if (isWebAppInitialized && !isUserLoggedIn) {
