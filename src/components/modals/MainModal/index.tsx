@@ -80,4 +80,4 @@ const MainModal: FC<MainModalProps> = (props) => {
   }
 };
 
-export default memo(MainModal);
+export default MainModal;
