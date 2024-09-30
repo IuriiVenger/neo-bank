@@ -23,6 +23,11 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     isLoading,
     onClose,
     isDismissable = false,
+    havePreviousTelegramNativeButtons,
+    previousTelegramMainButtonHandler,
+    previousTelegramMainButtonText,
+    previousTelegramMainButtonDisabled,
+    previousTelegramBackButtonHandler,
     ...otherProps
   } = props;
 
@@ -93,7 +98,12 @@ const TelegramModal: FC<MainModalProps> = (props) => {
 
   const onModalOpen = () => {
     dispatch(increaseOpenModalCount());
-    backButton.off('click', onClose);
+    if (havePreviousTelegramNativeButtons) {
+      previousTelegramMainButtonHandler !== undefined && mainButton.off('click', previousTelegramMainButtonHandler);
+      previousTelegramBackButtonHandler !== undefined && backButton.off('click', previousTelegramBackButtonHandler);
+      return;
+    }
+    backButton.off('click', onClose); // have to test if it is necessary
     setTimeout(() => backButton.show()); // setTimeout is used to prevent showing back button before previous back button is hidden
     setTimeout(() => backButton.on('click', onClose)); // setTimeout is used to prevent showing back button before previous back button is hidden
     if (!confirmButtonHidden) {
@@ -109,18 +119,15 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     onConfirm && mainButton.off('click', confirmHandler);
     dispatch(decreaseOpenModalCount());
 
-    // if (restoreInitialTelegramButtonsOnClose) {
-    //   console.log('restoreInitialTelegramButtonsOnClose');
-    //   console.log('initialBackButtonVisibility', initialBackButtonVisibility);
-    //   console.log('initialMainButtonVisibility', initialMainButtonVisibility);
-    //   console.log('initialMainButtonEnabled', initialMainButtonEnabled);
-    //   console.log('initialMainButtonText', initialMainButtonText);
-    //   initialBackButtonVisibility ? backButton.show() : backButton.hide();
-    //   initialMainButtonVisibility ? mainButton.show() : mainButton.hide();
-    //   initialMainButtonEnabled ? mainButton.enable() : mainButton.disable();
-    //   mainButton.setText(initialMainButtonText);
-    //   return;
-    // }
+    if (havePreviousTelegramNativeButtons) {
+      previousTelegramMainButtonHandler !== undefined && mainButton.on('click', previousTelegramMainButtonHandler);
+      previousTelegramMainButtonDisabled !== undefined && previousTelegramMainButtonDisabled
+        ? mainButton.disable()
+        : mainButton.enable();
+      previousTelegramMainButtonText !== undefined && mainButton.setText(previousTelegramMainButtonText);
+      previousTelegramBackButtonHandler !== undefined && backButton.on('click', previousTelegramBackButtonHandler);
+      return;
+    }
 
     if (openModalCount === 0) {
       mainButton.hide(); // have to test

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import MainModal from './MainModal';
+import MainModal, { SavePreviousTelegramNativeButtonProps } from './MainModal';
 
 import { API } from '@/api/types';
 import CurrenciesList from '@/components/CurrencyList';
@@ -10,7 +10,6 @@ import { WithOptionalAmount } from '@/types';
 type CurrencyListModalProps = {
   isOpen: boolean;
   setIsModalOpen: (isOpen: boolean) => void;
-  restoreInitialTelegramButtonsOnClose?: boolean;
   chains?: API.List.Chains[];
   title?: string;
   onSelect: (currency: API.List.Crypto | API.List.Fiat | API.List.Chains) => void;
@@ -20,16 +19,8 @@ type CurrencyListModalProps = {
     | WithOptionalAmount<API.List.Chains>[];
 };
 
-const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
-  const {
-    isOpen,
-    setIsModalOpen,
-    onSelect,
-    currencies,
-    chains,
-    title = 'Select a currency',
-    restoreInitialTelegramButtonsOnClose,
-  } = props;
+const CurrencyListModal: FC<CurrencyListModalProps & SavePreviousTelegramNativeButtonProps> = (props) => {
+  const { isOpen, setIsModalOpen, onSelect, currencies, chains, title = 'Select a currency', ...otherProps } = props;
 
   const handleCurrencyClick = (currency: API.List.Crypto | API.List.Fiat | API.List.Chains) => {
     onSelect(currency);
@@ -45,6 +36,7 @@ const CurrencyListModal: FC<CurrencyListModalProps> = (props) => {
       confirmButtonHidden
       isOpen={isOpen}
       onClose={closeModal}
+      {...otherProps}
       // restoreInitialTelegramButtonsOnClose={restoreInitialTelegramButtonsOnClose}
     >
       <div>

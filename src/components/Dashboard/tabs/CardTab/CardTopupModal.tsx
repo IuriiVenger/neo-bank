@@ -66,6 +66,8 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
   const isAmountEnough = selectedCryptoAvavilibleToWithdraw && selectedCryptoAvavilibleToWithdraw >= amount;
   const isTopUpAvailable = !!selectedCrypto && !!selectedFiat && !!selectedWallet.data && !!amount && isAmountEnough;
 
+  const confirmButtonText = isAmountEnough ? 'Top Up' : 'Not enough funds';
+
   const availableCryptoToWithdraw = selectedWallet.data
     ? getCurrencyListWithAmount(allowedCryptoToFiatList, selectedWallet.data.balance)
     : [];
@@ -130,10 +132,9 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
   return (
     <MainModal
       isOpen={isOpen}
-      // onOpenChange={setIsModalOpen}
       onClose={closeModal}
       confirmButtonDisabled={!isTopUpAvailable}
-      confirmButtonText={isAmountEnough ? 'Top Up' : 'Not enough funds'}
+      confirmButtonText={confirmButtonText}
       onConfirm={openConfirmationModal}
     >
       <div className="flex  flex-col gap-6">
@@ -159,7 +160,11 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
           currencies={availableCryptoToWithdraw}
           onSelect={selectCurrency}
           chains={chainList}
-          restoreInitialTelegramButtonsOnClose
+          havePreviousTelegramNativeButtons
+          previousTelegramMainButtonHandler={openConfirmationModal}
+          previousTelegramMainButtonText={confirmButtonText}
+          previousTelegramBackButtonHandler={closeModal}
+          previousTelegramMainButtonDisabled={!isTopUpAvailable}
         />
         <ConfirmModal
           isOpen={isConfirmationModalOpen}
