@@ -59,10 +59,12 @@ const ExchangeFormField: FC<ExchangeFormFieldProps> = (props) => {
           <div className="flex items-center text-xl font-semibold tracking-wide">
             <input
               className="w-full bg-inherit text-end text-foreground focus-visible:outline-none disabled:!bg-inherit disabled:opacity-100"
-              value={amount}
+              value={amount.toString()}
               onChange={handleAmountInput}
-              type="text"
+              type="number"
               disabled={calculatedField}
+              inputMode="numeric"
+              pattern="[0-9]*"
             />
             <span className="ml-1">{amountSymbol}</span>
           </div>
