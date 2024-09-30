@@ -128,6 +128,11 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     dispatch(decreaseOpenModalCount());
 
     if (restoreInitialTelegramButtonsOnClose) {
+      console.log('restoreInitialTelegramButtonsOnClose');
+      console.log('initialBackButtonVisibility', initialBackButtonVisibility);
+      console.log('initialMainButtonVisibility', initialMainButtonVisibility);
+      console.log('initialMainButtonEnabled', initialMainButtonEnabled);
+      console.log('initialMainButtonText', initialMainButtonText);
       initialBackButtonVisibility ? backButton.show() : backButton.hide();
       initialMainButtonVisibility ? mainButton.show() : mainButton.hide();
       initialMainButtonEnabled ? mainButton.enable() : mainButton.disable();
