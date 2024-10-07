@@ -4,13 +4,13 @@ import { useInitData, useLaunchParams, useMiniApp, useSettingsButton, useThemePa
 
 import { useEffect, useState } from 'react';
 
+import SetTelegramEnviroment from '@/components/telegram/SetTelegramEnviroment';
 import { themes } from '@/config/themes';
-import { AppEnviroment, CustomTheme, ModalNames } from '@/constants';
+import { CustomTheme, ModalNames } from '@/constants';
 import useAuth from '@/hooks/useAuth';
 import useTelegramAuth from '@/hooks/useTelegramAuth';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { selectActiveTheme, selectConfig, selectIsUserLoggedIn } from '@/store/selectors';
-import { setAppEnviroment } from '@/store/slices/config';
 import { setActiveTheme, setModalVisible } from '@/store/slices/ui';
 
 // eslint-disable-next-line import/order
@@ -84,6 +84,11 @@ const TelegramInit = () => {
     window.Telegram.WebApp.setBottomBarColor(themes[activeTheme].baseColors.background);
   };
 
+  // useEffect(() => {
+  //   dispatch(setAppEnviroment(AppEnviroment.TELEGRAM));
+  //   localStorage.setItem('app_enviroment', AppEnviroment.TELEGRAM);
+  // }, []);
+
   useEffect(() => {
     if (isThemeInitialized) {
       updateTheme();
@@ -115,12 +120,7 @@ const TelegramInit = () => {
     }
   }, [isWebAppInitialized, isUserLoggedIn]);
 
-  useEffect(() => {
-    dispatch(setAppEnviroment(AppEnviroment.TELEGRAM));
-    localStorage.setItem('app_enviroment', AppEnviroment.TELEGRAM);
-  }, []);
-
-  return null;
+  return <SetTelegramEnviroment />;
 };
 
 export default TelegramInit;
