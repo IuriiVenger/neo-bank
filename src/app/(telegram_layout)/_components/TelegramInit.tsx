@@ -85,6 +85,11 @@ const TelegramInit = () => {
   };
 
   useEffect(() => {
+    dispatch(setAppEnviroment(AppEnviroment.TELEGRAM));
+    localStorage.setItem('app_enviroment', AppEnviroment.TELEGRAM);
+  }, []);
+
+  useEffect(() => {
     if (isThemeInitialized) {
       updateTheme();
     }
@@ -114,11 +119,6 @@ const TelegramInit = () => {
       initTelegramAuth();
     }
   }, [isWebAppInitialized, isUserLoggedIn]);
-
-  useEffect(() => {
-    dispatch(setAppEnviroment(AppEnviroment.TELEGRAM));
-    localStorage.setItem('app_enviroment', AppEnviroment.TELEGRAM);
-  }, []);
 
   return null;
 };
