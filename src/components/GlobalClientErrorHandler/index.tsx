@@ -20,6 +20,7 @@ const GlobalClientErrorHandler = () => {
         (!!error?.response?.data?.message?.length && error.response.data.message?.length) ||
         (error?.response?.data?.error?.length && error.response.data.error) ||
         (error?.message?.length && error.message) ||
+        error?.data?.error ||
         'Something went wrong';
 
       toast.error(errorText);
