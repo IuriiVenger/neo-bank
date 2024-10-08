@@ -170,7 +170,6 @@ const CardsList: FC<CardsListProps> = (props) => {
                 >
                   <Card
                     className="mt-2"
-                    color="blue"
                     size={cardSize}
                     provider={card.brand}
                     cardNumber={deleteDash(card.card_number)}

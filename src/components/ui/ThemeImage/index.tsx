@@ -1,10 +1,10 @@
 import { cn } from '@nextui-org/react';
-import Image, { ImageProps } from 'next/image';
+import Image, { ImageProps, StaticImageData } from 'next/image';
 import { FC } from 'react';
 
 type ThemeImageProps = Omit<ImageProps, 'src'> & {
-  darkSrc: string;
-  lightSrc: string;
+  darkSrc: StaticImageData | string;
+  lightSrc: StaticImageData | string;
 };
 
 const ThemeImage: FC<ThemeImageProps> = ({ className, darkSrc, lightSrc, ...otherProps }) => (

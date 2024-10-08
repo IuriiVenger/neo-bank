@@ -3,8 +3,8 @@ import { FC } from 'react';
 
 import ThemeImage from '../ui/ThemeImage';
 
-import darkFooterLogo from '@/assets/svg/tenant/dark/footer_logo.svg';
-import lightFooterLogo from '@/assets/svg/tenant/light/footer_logo.svg';
+import darkFooterLogo from '@/assets/tenant/dark/footer_logo.svg';
+import lightFooterLogo from '@/assets/tenant/light/footer_logo.svg';
 import whiteLabelConfig from '@/config/whitelabel';
 
 const Footer: FC = () => (
