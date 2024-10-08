@@ -4,23 +4,17 @@ import { FC } from 'react';
 
 import masterCardLogo from '@/assets/svg/payment-systems/master-card-logo.svg';
 import visaLogo from '@/assets/svg/payment-systems/visa-logo-white.svg';
-import darkCardLogo from '@/assets/svg/tenant/dark/card-logo.svg';
-import lightCardLogo from '@/assets/svg/tenant/light/card-logo.svg';
+import darkCardBackground from '@/assets/tenant/dark/card-background.webp';
+import darkCardLogo from '@/assets/tenant/dark/card-logo.svg';
+import lightCardBackground from '@/assets/tenant/light/card-background.webp';
+import lightCardLogo from '@/assets/tenant/light/card-logo.svg';
 import ThemeImage from '@/components/ui/ThemeImage';
 import { CardStatus } from '@/constants';
 import { getCardProvider } from '@/utils/financial';
 
-export type CardColors = 'blue' | 'turquoise' | 'grey' | 'lavander';
 export type CardSizes = 'xs' | 'sm' | 'md' | 'lg' | 'adaptive';
 export type CardSizesValues = 'provider' | 'tenantLogo' | 'card' | 'cardNumber' | 'balance' | 'balanceLabel';
 export type CardProvider = 'Visa' | 'MasterCard' | string;
-
-const CardColorsMap: Record<CardColors, string> = {
-  blue: 'bg-card-blue-gradient',
-  turquoise: 'bg-card-turquoise-gradient',
-  grey: 'bg-card-grey-gradient',
-  lavander: 'bg-card-lavander-gradient',
-};
 
 const cardSizesMap: Record<CardSizes, Record<CardSizesValues, string>> = {
   xs: {
@@ -71,7 +65,6 @@ const CardProviders: Record<CardProvider, string> = {
 };
 
 type CardProps = {
-  color?: CardColors;
   className?: string;
   size?: CardSizes;
   disabled?: boolean;
@@ -88,7 +81,6 @@ type CardProps = {
 
 const Card: FC<CardProps> = (props) => {
   const {
-    color = 'blue',
     className,
     size = 'sm',
     disabled,
@@ -112,14 +104,19 @@ const Card: FC<CardProps> = (props) => {
   return (
     <section
       className={cn(
-        CardColorsMap[color],
         cardSizesMap[size].card,
         className,
-        'flex flex-col justify-between',
+        'relative flex flex-col justify-between',
         (status !== CardStatus.ACTIVE || disabled || blocked) && 'grayscale',
       )}
     >
-      <div className="flex justify-between ">
+      <ThemeImage
+        className="absolute left-0 top-0 h-full w-full"
+        lightSrc={lightCardBackground}
+        darkSrc={darkCardBackground}
+        alt="Card background"
+      />
+      <div className="relative  flex justify-between">
         <ThemeImage
           className={cardSizesMap[size].tenantLogo}
           lightSrc={lightCardLogo}
@@ -128,12 +125,12 @@ const Card: FC<CardProps> = (props) => {
         />
       </div>
       {balance !== undefined && (
-        <div className="flex flex-col items-start">
+        <div className="relative flex flex-col items-start">
           <p className={cn(cardSizesMap[size].balanceLabel, 'text-white opacity-70')}>Balance:</p>
           <p className={cn(cardSizesMap[size].balance, 'text-white')}>{balance}</p>
         </div>
       )}
-      <div className="flex items-center justify-between">
+      <div className="relative flex items-center justify-between">
         <p className={cn(cardSizesMap[size].cardNumber, 'text-white')}>{printedCardNumber}</p>
         {providerLogo && <Image src={providerLogo} className={cardSizesMap[size].provider} alt="Provider logo" />}
       </div>
