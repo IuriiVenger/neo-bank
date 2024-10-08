@@ -4,8 +4,8 @@ import { FC } from 'react';
 
 import ThemeImage from '../ThemeImage';
 
-import darkLogo from '@/assets/svg/tenant/dark/logo.svg';
-import lightLogo from '@/assets/svg/tenant/light/logo.svg';
+import darkLogo from '@/assets/tenant/dark/logo.svg';
+import lightLogo from '@/assets/tenant/light/logo.svg';
 
 type LoaderProps = {
   className?: string;

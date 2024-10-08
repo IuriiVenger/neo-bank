@@ -2,8 +2,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { FC } from 'react';
 
-import darkLogo from '@/assets/svg/tenant/dark/logo.svg';
-import lightLogo from '@/assets/svg/tenant/light/logo.svg';
+import darkLogo from '@/assets/tenant/dark/logo.svg';
+import lightLogo from '@/assets/tenant/light/logo.svg';
 import ThemeImage from '@/components/ui/ThemeImage';
 
 type AuthLayoutProps = Readonly<{ children: React.ReactNode }>;
