@@ -4,8 +4,8 @@ import { FC } from 'react';
 
 import masterCardLogo from '@/assets/svg/payment-systems/master-card-logo.svg';
 import visaLogo from '@/assets/svg/payment-systems/visa-logo-white.svg';
-import darkCardLogo from '@/assets/svg/tenant/dark/card-logo.svg';
-import lightCardLogo from '@/assets/svg/tenant/light/card-logo.svg';
+import darkCardLogo from '@/assets/tenant/dark/card-logo.svg';
+import lightCardLogo from '@/assets/tenant/light/card-logo.svg';
 import ThemeImage from '@/components/ui/ThemeImage';
 import { CardStatus } from '@/constants';
 import { getCardProvider } from '@/utils/financial';

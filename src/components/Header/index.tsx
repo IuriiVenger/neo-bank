@@ -21,8 +21,8 @@ import ThemeImage from '../ui/ThemeImage';
 
 import AuthButtons from './AuthButtons';
 
-import darkHeaderLogo from '@/assets/svg/tenant/dark/header_logo.svg';
-import lightHeaderLogo from '@/assets/svg/tenant/light/header_logo.svg';
+import darkHeaderLogo from '@/assets/tenant/dark/header_logo.svg';
+import lightHeaderLogo from '@/assets/tenant/light/header_logo.svg';
 import whiteLabelConfig from '@/config/whitelabel';
 import { ModalNames, requestKYCStatuses } from '@/constants';
 import useAuth from '@/hooks/useAuth';
