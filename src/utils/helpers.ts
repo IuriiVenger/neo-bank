@@ -71,3 +71,9 @@ export const getRoundedClassName = (rounded: 'none' | 'sm' | 'md' | 'lg' | 'full
       return 'rounded-none';
   }
 };
+
+export const getFromLocalStorage = (key: string) => {
+  if (typeof window === 'undefined' || !key) return null;
+  const item = localStorage.getItem(key);
+  return item;
+};
