@@ -1,8 +1,8 @@
 /* eslint-disable */
 const { execSync } = require('child_process');
 
-const sourceBranch = 'develop';
-const targetBranches = ['main'];
+const sourceBranch = 'main';
+const targetBranches = ['whitelabel/dauphin', 'whitelabel/flashcash', 'whitelabel/main-card'];
 
 function runCommand(command) {
   try {
