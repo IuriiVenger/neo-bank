@@ -113,7 +113,7 @@ const WithdrawCryptoModal: FC<WithdrawCryptoModalProps> = (props) => {
 
   const steps: WithdrawCryptoStepsMap = {
     [WithdrawCryptoSteps.COIN]: {
-      title: 'Recieve',
+      title: 'Choose a coin',
       Component: ChooseCoinStep,
       confirmButtonHidden: true,
     },

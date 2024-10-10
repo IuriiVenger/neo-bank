@@ -19,7 +19,10 @@ type InitialState = {
 };
 
 const customThemesValues = Object.values(CustomTheme);
-const externalDefaultTheme = process.env.DEFAULT_THEME as CustomTheme;
+const envDefaultTheme = process.env.DEFAULT_THEME as CustomTheme;
+const localStorageTheme = localStorage.getItem('active_theme') as CustomTheme;
+const externalDefaultTheme = localStorageTheme || envDefaultTheme;
+const defaultTheme = customThemesValues.includes(externalDefaultTheme) ? externalDefaultTheme : CustomTheme.DARK;
 
 const initialPopupVisibility: ModalVisibility = Object.values(ModalNames).reduce((acc, key) => {
   acc[key as ModalNames] = false;
@@ -29,7 +32,7 @@ const initialPopupVisibility: ModalVisibility = Object.values(ModalNames).reduce
 const initialState: InitialState = {
   popupVisibility: initialPopupVisibility,
   openModalCount: 0,
-  activeTheme: customThemesValues.includes(externalDefaultTheme) ? externalDefaultTheme : CustomTheme.DARK,
+  activeTheme: defaultTheme,
 };
 
 const uiSlice = createSlice({
@@ -50,6 +53,7 @@ const uiSlice = createSlice({
     },
     setActiveTheme(state, action: SetThemeAction) {
       state.activeTheme = action.payload;
+      localStorage.setItem('active_theme', action.payload);
     },
   },
 });

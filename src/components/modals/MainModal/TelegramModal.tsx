@@ -1,6 +1,6 @@
 import { cn, Modal, ModalBody, ModalContent, ModalHeader } from '@nextui-org/react';
 import { useBackButton, useMainButton } from '@telegram-apps/sdk-react';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 
 import { MainModalProps } from '.';
 
