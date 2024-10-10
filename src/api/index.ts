@@ -1,7 +1,5 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
-import { toast } from 'react-toastify';
-
 import { AppEnviroment, ResponseStatus } from '@/constants';
 import { navigate } from '@/utils/router';
 import { deleteTokens, refreshTokens, setTokens } from '@/utils/tokensFactory';
