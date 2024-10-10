@@ -2,8 +2,8 @@ import { Button } from '@nextui-org/react';
 import { FC } from 'react';
 import { RiPaletteFill } from 'react-icons/ri';
 
-import ThemeSwitcher from '../ThemeSwitcher';
 import DefaultContainer from '../ui/DefaultContainer';
+import ThemeSwitcher from '../ui/ThemeSwitcher';
 
 import MainModal from './MainModal';
 
