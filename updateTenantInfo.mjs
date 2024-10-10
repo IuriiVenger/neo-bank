@@ -35,6 +35,7 @@ const updateTenantInfo = async () => {
       JSON.stringify({ name: info?.name, main_logo: info?.main_logo, icon: info?.icon, favicon: info?.favicon }),
     );
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log('Error fetching tenant info', error);
   }
 
