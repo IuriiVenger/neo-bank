@@ -11,8 +11,8 @@ import StoreProvider from '@/store/components/StoreProvider';
 
 export const metadata: Metadata = {
   // title: tenantInfo.name || 'Crypto Wallet',
-  title: 'Main Card',
-  description: 'Main Card. Your Secure Oasis for Global Transactions',
+  title: 'dauphin.money',
+  description: 'Dauphin is your way to gold',
   other: {
     viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
   },
