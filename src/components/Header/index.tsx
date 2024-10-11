@@ -16,8 +16,8 @@ import React, { FC, useMemo, useState } from 'react';
 
 import KYCButton from '../KYC/KYCButton';
 
-import ThemeSwitcher from '../ThemeSwitcher';
 import ThemeImage from '../ui/ThemeImage';
+import ThemeSwitcher from '../ui/ThemeSwitcher';
 
 import AuthButtons from './AuthButtons';
 
