@@ -62,94 +62,93 @@ export type Themes = {
 
 export const baseColorsTheme: Record<CustomTheme, BaseColors> = {
   [CustomTheme.LIGHT]: {
-    foreground: '#000000',
-    foreground2: '#71717A',
-    foreground3: '#FFFFFF',
-    foreground4: '#FFFFFF',
-    background: '#F2F2F2',
-    background2: '#FFFFFF',
-    background3: 'rgba(0, 0, 0, 0.07)',
-    background4: '#A1A1AA',
+    foreground: '#1D2934', // Foreground
+    foreground2: '#A6A7B8', // Foreground 2
+    foreground3: '#FFFFFF', // Foreground 3
+    foreground4: '#DAD9E0', // Foreground 4
+    background: '#F5F5F5', // Background
+    background2: '#FFFFFF', // Background 2
+    background3: 'rgba(0, 0, 0, 0.07)', // Background 3 (7% opacity)
+    background4: '#B1F1B4', // Background 4
   },
   [CustomTheme.DARK]: {
-    foreground: '#FFFFFF',
-    foreground2: '#71717A',
-    foreground3: '#000000',
-    foreground4: '#FFFFFF',
-    background: '#000000',
-    background2: '#171717',
-    background3: '#3B3B3B',
-    background4: '#4C4C4C',
+    foreground: '#FFFFFF', // Foreground
+    foreground2: 'rgba(255, 255, 255, 0.5)', // Foreground 2 (50% opacity)
+    foreground3: '#FFFFFF', // Foreground 3
+    foreground4: '#93EAA7', // Foreground 4
+    background: '#0C1418', // Background
+    background2: '#121B28', // Background 2
+    background3: '#1E3F3E', // Background 3
+    background4: '#144226', // Background 4
   },
 };
 
 export const themes: Themes = {
-  // use https://smart-swatch.netlify.app/#000000 for generate color palette
   [CustomTheme.LIGHT]: {
     baseColors: { ...baseColorsTheme[CustomTheme.LIGHT] },
     brandColors: {
       primary: {
-        DEFAULT: '#000000',
+        DEFAULT: '#33A33A', // Primary color
         foreground: '#FFFFFF',
-        50: '#f2f2f2',
-        100: '#d9d9d9',
-        200: '#bfbfbf',
-        300: '#a6a6a6',
-        400: '#8c8c8c',
-        500: '#737373',
-        600: '#595959',
-        700: '#404040',
-        800: '#262626',
-        900: '#0d0d0d',
+        50: '#f0f8f0',
+        100: '#d0f0d0',
+        200: '#b0e8b0',
+        300: '#90e090',
+        400: '#70d870',
+        500: '#33A33A',
+        600: '#2a822a',
+        700: '#206020',
+        800: '#174017',
+        900: '#0d200d',
       },
       secondary: {
-        DEFAULT: '#A1A1AA',
+        DEFAULT: '#88919B', // Secondary color
         foreground: '#FFFFFF',
-        50: '#f1f2fc',
-        100: '#d7d7df',
-        200: '#bcbcc3',
-        300: '#a1a1aa',
-        400: '#868691',
-        500: '#6d6d78',
-        600: '#55555e',
-        700: '#3d3d44',
-        800: '#24242b',
-        900: '#0b0b15',
+        50: '#f2f3f5',
+        100: '#d9dde1',
+        200: '#c0c6cd',
+        300: '#88919B',
+        400: '#5e6d78',
+        500: '#4c5a63',
+        600: '#3b4750',
+        700: '#2a353d',
+        800: '#19232a',
+        900: '#0a1018',
       },
       danger: {
-        DEFAULT: '#E2231A',
+        DEFAULT: '#F10000', // Danger color
         foreground: '#FFFFFF',
-        50: '#ffe5e4',
-        100: '#fcbbb8',
-        200: '#f4908c',
-        300: '#ee645e',
-        400: '#e73931',
-        500: '#ce2018',
-        600: '#a11711',
-        700: '#730f0b',
-        800: '#480705',
-        900: '#1f0000',
+        50: '#ffe5e5',
+        100: '#fbbfbf',
+        200: '#f79898',
+        300: '#f16565',
+        400: '#f10000',
+        500: '#d00000',
+        600: '#a00000',
+        700: '#700000',
+        800: '#400000',
+        900: '#200000',
       },
       success: {
-        DEFAULT: '#17C964',
+        DEFAULT: '#1BAA51', // Success color
         foreground: '#FFFFFF',
-        50: '#deffed',
-        100: '#b5f8d3',
-        200: '#8af3b7',
-        300: '#5ded9b',
-        400: '#31e780',
-        500: '#18ce66',
-        600: '#0ca04f',
-        700: '#037238',
-        800: '#004620',
-        900: '#001905',
+        50: '#e4f8ed',
+        100: '#b6e9cd',
+        200: '#89d9ac',
+        300: '#5bc98c',
+        400: '#1BAA51',
+        500: '#0c8a42',
+        600: '#07672e',
+        700: '#05451b',
+        800: '#022208',
+        900: '#000000',
       },
     },
     telegramColors: {
       mainButton: {
-        color: '#000000',
-        textColor: '#FFFFFF',
-        disabledColor: '#A1A1AA',
+        color: '#D90D10', // Primary button color
+        textColor: '#FFFFFF', // Button text color
+        disabledColor: '#88919B', // Disabled button color
       },
     },
   },
@@ -157,67 +156,67 @@ export const themes: Themes = {
     baseColors: { ...baseColorsTheme[CustomTheme.DARK] },
     brandColors: {
       primary: {
-        DEFAULT: '#FFFFFF',
-        foreground: '#000000',
-        50: '#f2f2f2',
-        100: '#d9d9d9',
-        200: '#bfbfbf',
-        300: '#a6a6a6',
-        400: '#8c8c8c',
-        500: '#737373',
-        600: '#595959',
-        700: '#404040',
-        800: '#262626',
-        900: '#0d0d0d',
+        DEFAULT: '#1AA020', // Primary color
+        foreground: '#FFFFFF',
+        50: '#e5f7e5',
+        100: '#c0edc0',
+        200: '#9be49b',
+        300: '#76db76',
+        400: '#51d251',
+        500: '#1AA020',
+        600: '#138014',
+        700: '#0e600e',
+        800: '#094008',
+        900: '#042004',
       },
       secondary: {
-        DEFAULT: 'rgba(255, 255, 255, 0.20)',
+        DEFAULT: '#71717A', // Secondary color
         foreground: '#FFFFFF',
-        50: '#f2f2f233',
-        100: '#d9d9d933',
-        200: '#bfbfbf33',
-        300: '#a6a6a633',
-        400: '#8c8c8c33',
-        500: '#73737333',
-        600: '#59595933',
-        700: '#40404033',
-        800: '#26262633',
-        900: '#0d0d0d33',
+        50: '#f1f2f2',
+        100: '#d8d9da',
+        200: '#bfc0c1',
+        300: '#9b9d9e',
+        400: '#71717A',
+        500: '#4a4b4c',
+        600: '#333536',
+        700: '#1a1c1e',
+        800: '#0c0f11',
+        900: '#000203',
       },
       danger: {
-        DEFAULT: '#E2231A',
+        DEFAULT: '#F10000', // Danger color
         foreground: '#FFFFFF',
-        50: '#ffe5e4',
-        100: '#fcbbb8',
-        200: '#f4908c',
-        300: '#ee645e',
-        400: '#e73931',
-        500: '#ce2018',
-        600: '#a11711',
-        700: '#730f0b',
-        800: '#480705',
-        900: '#1f0000',
+        50: '#ffe5e5',
+        100: '#fbbfbf',
+        200: '#f79898',
+        300: '#f16565',
+        400: '#f10000',
+        500: '#d00000',
+        600: '#a00000',
+        700: '#700000',
+        800: '#400000',
+        900: '#200000',
       },
       success: {
-        DEFAULT: '#17C964',
+        DEFAULT: '#1BAA51', // Success color
         foreground: '#FFFFFF',
-        50: '#deffed',
-        100: '#b5f8d3',
-        200: '#8af3b7',
-        300: '#5ded9b',
-        400: '#31e780',
-        500: '#18ce66',
-        600: '#0ca04f',
-        700: '#037238',
-        800: '#004620',
-        900: '#001905',
+        50: '#e4f8ed',
+        100: '#b6e9cd',
+        200: '#89d9ac',
+        300: '#5bc98c',
+        400: '#1BAA51',
+        500: '#0c8a42',
+        600: '#07672e',
+        700: '#05451b',
+        800: '#022208',
+        900: '#000000',
       },
     },
     telegramColors: {
       mainButton: {
-        color: '#FFFFFF',
-        textColor: '#000000',
-        disabledColor: '#A1A1AA',
+        color: '#1AA020', // Primary button color
+        textColor: '#FFFFFF', // Button text color
+        disabledColor: '#71717A', // Disabled button color
       },
     },
   },
