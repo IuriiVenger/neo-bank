@@ -1,8 +1,7 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
-import { toast } from 'react-toastify';
-
 import { AppEnviroment, ResponseStatus } from '@/constants';
+import { getFromLocalStorage } from '@/utils/helpers';
 import { navigate } from '@/utils/router';
 import { deleteTokens, refreshTokens, setTokens } from '@/utils/tokensFactory';
 
@@ -10,16 +9,19 @@ import { deleteTokens, refreshTokens, setTokens } from '@/utils/tokensFactory';
 const baseURL = process.env.API_URL;
 const tenantId = process.env.TENANT_ID;
 
+type RequestQueueItem = {
+  resolve: Function;
+  reject: Function;
+};
+
 export const instance = axios.create({
   baseURL: baseURL || '/api/',
   timeout: 60000,
 });
 
-const isBrowser = typeof window !== 'undefined';
-
 instance.interceptors.request.use((config) => {
-  const access_token = isBrowser && localStorage.getItem('access_token');
-  const appEnviroment = (isBrowser && localStorage.getItem('app_enviroment')) || AppEnviroment.WEB;
+  const access_token = getFromLocalStorage('access_token');
+  const appEnviroment = getFromLocalStorage('app_enviroment') || AppEnviroment.WEB;
 
   const modifiedHeaders = {
     ...config.headers,
@@ -36,25 +38,23 @@ instance.interceptors.request.use((config) => {
   return { ...config, headers: modifiedHeaders } as unknown as InternalAxiosRequestConfig;
 });
 
-const defaultErrorMessageForUnauthorized = 'You are not authorized. Please log in.';
-
 let isTokenRefreshing = false;
-let requestQueue: (() => void)[] = [];
+let requestQueue: RequestQueueItem[] = [];
 
 instance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error?.response?.status === ResponseStatus.UNAUTHORIZED) {
       const { response, config: failedRequest } = error;
-      const refreshToken = isBrowser && localStorage.getItem('refresh_token');
-      const appEnviroment = (isBrowser && localStorage.getItem('app_enviroment')) || AppEnviroment.WEB;
+      const refreshToken = getFromLocalStorage('refresh_token');
+      const appEnviroment = getFromLocalStorage('app_enviroment') || AppEnviroment.WEB;
 
       if (response.config?.url.includes('/auth/refresh/refresh_token') || !refreshToken) {
         if (typeof window !== 'undefined') {
-          toast.error(error?.response?.data?.message || defaultErrorMessageForUnauthorized);
           appEnviroment === AppEnviroment.TELEGRAM ? navigate('/auth/telegram/login') : navigate('/auth/login');
         }
         deleteTokens();
+        requestQueue.forEach((request) => request.reject());
         requestQueue = [];
         return Promise.reject(response);
       }
@@ -64,18 +64,18 @@ instance.interceptors.response.use(
           .then((newTokens) => {
             if (newTokens?.access_token) {
               setTokens(newTokens);
-              requestQueue.forEach((request) => request());
+              requestQueue.forEach((request) => request.resolve());
               requestQueue = [];
             }
           })
-          .catch(() => Promise.reject(response))
           .finally(() => {
             isTokenRefreshing = false;
           });
       }
-      return new Promise((resolve) => {
-        requestQueue.push(() => {
-          resolve(instance(failedRequest));
+      return new Promise((res, rej) => {
+        requestQueue.push({
+          resolve: () => res(instance(failedRequest)),
+          reject: () => rej(instance(failedRequest)),
         });
       });
     }

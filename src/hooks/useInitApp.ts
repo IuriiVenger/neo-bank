@@ -24,6 +24,7 @@ import {
   setSelectedFiat,
 } from '@/store/slices/finance';
 import { AppDispatch } from '@/store/types';
+import { getFromLocalStorage } from '@/utils/helpers';
 
 const useInitApp = (dispatch: AppDispatch) => {
   const { initUser } = useAuth(dispatch);
@@ -75,7 +76,7 @@ const useInitApp = (dispatch: AppDispatch) => {
   };
 
   const initApp = async () => {
-    const isAuthTokensExist = localStorage.getItem('access_token');
+    const isAuthTokensExist = getFromLocalStorage('access_token');
 
     try {
       await initWebApp();
