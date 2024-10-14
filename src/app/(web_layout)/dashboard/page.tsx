@@ -51,6 +51,7 @@ import {
   hiddenLoadSelectedWallet,
   loadSelectedWalletFiatAccounts,
   loadFiatAccountCards,
+  loadMoreSelectedWalletFiatAccounts,
 } from '@/store/slices/finance';
 import { setModalVisible } from '@/store/slices/ui';
 import { ChangeDashboardTabAdditionalParams } from '@/types';
@@ -145,6 +146,17 @@ const DashboardPage = () => {
           wallet_uuid: selectedWallet.data.uuid,
           limit: cardLoadMoreDefaultLimit,
           offset: selectedWalletCards.meta.offset,
+        }),
+      );
+  };
+
+  const loadMoreWalletFiatAccountsHandler = async () => {
+    selectedWallet.data &&
+      dispatch(
+        loadMoreSelectedWalletFiatAccounts({
+          wallet_uuid: selectedWallet.data.uuid,
+          limit: defaultPaginationParams.limit,
+          offset: selectedWalletFiatAccounts.meta.offset,
         }),
       );
   };
@@ -280,6 +292,7 @@ const DashboardPage = () => {
     getWalletAddress,
     isTelegramEnviroment,
     loadMoreWalletCards: loadMoreCardsHandler,
+    loadMoreWalletFiatAccounts: loadMoreWalletFiatAccountsHandler,
     loadMoreCardTransactions: loadMoreCardTransactionsHandler,
     loadMoreWalletTransactions: loadMoreWalletTransactionsHandler,
     loadSelectedWalletCards,
@@ -295,6 +308,8 @@ const DashboardPage = () => {
     selectFiat,
     selectWallet,
     selectedWalletBalanceCurrency,
+    selectedWalletFiatAccounts,
+    selectedWalletFiatAccountsWithCards,
     verificationStatus: userData?.kyc_status,
     walletTransactions: selectedWalletTransactions,
     walletTypes,
@@ -329,7 +344,10 @@ const DashboardPage = () => {
   const fiatAccountsCardsFirstLoad = async () => {
     selectedWalletFiatAccounts.data &&
       selectedWalletFiatAccounts.data.forEach((fiatAccount) => {
-        if (selectedWalletFiatAccountsWithCards[fiatAccount.id]?.status === RequestStatus.NONE && selectedWallet.data) {
+        if (
+          selectedWalletFiatAccountsWithCards[fiatAccount.id]?.cards.status === RequestStatus.NONE &&
+          selectedWallet.data
+        ) {
           dispatch(loadFiatAccountCards({ wallet_uuid: selectedWallet.data.uuid, fiat_account_id: fiatAccount.id }));
         }
       });

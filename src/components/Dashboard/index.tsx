@@ -1,7 +1,5 @@
-// import { Button } from '@nextui-org/react';
 import { AxiosResponse } from 'axios';
 import { FC, useState } from 'react';
-// import { CiCirclePlus } from 'react-icons/ci';
 
 import CreateWalletModal from '../modals/CreateWalletModal';
 import Loader from '../ui/Loader';
@@ -18,7 +16,7 @@ import { WhiteLabelConfig } from '@/config/whitelabel';
 import { AppEnviroment, DashboardTabs, KYCStatuses, RequestStatus, WalletTypeValues } from '@/constants';
 
 import { UseExternalCalcData } from '@/hooks/useExternalCalc';
-import { StoreDataWithStatus, StoreDataWithStatusAndMeta } from '@/store/types';
+import { FiatAccountsWithCards, StoreDataWithStatus, StoreDataWithStatusAndMeta } from '@/store/types';
 import { ChangeDashboardTabAdditionalParams, ValueWithLabel } from '@/types';
 
 export interface DashboardProps {
@@ -49,6 +47,7 @@ export interface DashboardProps {
   getWalletAddress: (chain: number, wallet_uuid: string) => Promise<API.Wallets.WalletChain.Response>;
   isTelegramEnviroment: boolean;
   loadMoreWalletCards: () => void;
+  loadMoreWalletFiatAccounts: () => void;
   loadMoreCardTransactions: () => void;
   loadMoreWalletTransactions: () => void;
   loadSelectedWalletCards: () => void;
@@ -65,6 +64,8 @@ export interface DashboardProps {
   selectedFiat: null | API.List.Fiat;
   selectedWallet: StoreDataWithStatus<API.Wallets.ExtendWallet | null>;
   selectedWalletBalanceCurrency: string;
+  selectedWalletFiatAccounts: StoreDataWithStatusAndMeta<API.Wallets.FiatAccount[] | null>;
+  selectedWalletFiatAccountsWithCards: Record<string, FiatAccountsWithCards>;
   updateCard: (card_id: string, data: API.Cards.Update.Request) => Promise<void>;
   verificationStatus?: KYCStatuses;
   walletTransactions: StoreDataWithStatusAndMeta<API.WalletTransactions.Transaction[] | null>;

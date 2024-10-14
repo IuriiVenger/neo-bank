@@ -9,11 +9,11 @@ import ReceiveCryptoModal from '../../ReceiveCryptoModal';
 import WalletTransactions from '../../WalletTransactions';
 import WithdrawCryptoModal from '../../WithdrawCryptoModal';
 
+import FiatAccountsList from './FiatAccountsList';
 import MainInformation from './MainInformation';
 import WalletBalanceList from './WalletBalanceList';
 
 import { DashboardProps } from '@/components/Dashboard';
-import CardsList from '@/components/Dashboard/tabs/MainTab/CardsList';
 import DefaultContainer from '@/components/ui/DefaultContainer';
 import { RoundButtonProps } from '@/components/ui/RoundButton';
 import { DashboardTabs } from '@/constants';
@@ -27,6 +27,7 @@ type MainTabProps = {
   chainList: DashboardProps['chainList'];
   cards: DashboardProps['cards'];
   loadSelectedWalletCards: DashboardProps['loadSelectedWalletCards'];
+  loadMoreWalletFiatAccounts: DashboardProps['loadMoreWalletFiatAccounts'];
   loadMoreWalletCards: DashboardProps['loadMoreWalletCards'];
   loadMoreWalletTransactions: DashboardProps['loadMoreWalletTransactions'];
   createCard: DashboardProps['createCard'];
@@ -42,6 +43,8 @@ type MainTabProps = {
   createWalletAddress: DashboardProps['createWalletAddress'];
   selectCrypto: DashboardProps['selectCrypto'];
   externalCalcData: DashboardProps['externalCalcData'];
+  selectedWalletFiatAccounts: DashboardProps['selectedWalletFiatAccounts'];
+  selectedWalletFiatAccountsWithCards: DashboardProps['selectedWalletFiatAccountsWithCards'];
 };
 
 const MainTab: FC<MainTabProps> = (props) => {
@@ -52,6 +55,10 @@ const MainTab: FC<MainTabProps> = (props) => {
     selectedWalletBalanceCurrency,
     chainList,
     loadSelectedWalletCards,
+    loadMoreWalletFiatAccounts,
+    selectedWalletFiatAccountsWithCards,
+    bins,
+    selectedWalletFiatAccounts,
   } = props;
 
   const [isReceiveCryptoModalOpen, setIsReceiveCryptoModalOpen] = useState(false);
@@ -60,6 +67,9 @@ const MainTab: FC<MainTabProps> = (props) => {
 
   const currentWalletBalanceAmount = separateNumbers(roundToDecimals(selectedWallet.data?.total_amount || 0));
   const currentWalletBalance = `${selectedWalletBalanceCurrency} ${currentWalletBalanceAmount}`;
+  const currentWalletCryptoBalance =
+    selectedWallet.data?.crypto_total !== undefined &&
+    `~${selectedWalletBalanceCurrency}${separateNumbers(roundToDecimals(selectedWallet.data.crypto_total))}`;
 
   const onCardClick = (card_id: string) => {
     changeDashboardTab(DashboardTabs.CARD, { card_id });
@@ -99,21 +109,37 @@ const MainTab: FC<MainTabProps> = (props) => {
   ];
 
   return (
-    <section className={cn(className, 'bg-custom-turquoise-gradient grid max-w-screen-xl grid-cols-3 gap-4')}>
-      <MainInformation className="col-span-3" balance={currentWalletBalance} actionButtons={actionButtons} />
-      <DefaultContainer className={cn(className, 'col-span-3 lg:col-span-2 xs:px-0 max-xs:px-0')}>
-        <CardsList openCreateCardModal={openCreateCardModal} onCardClick={onCardClick} cardSize="adaptive" {...props} />
-      </DefaultContainer>
-      <DefaultContainer className="col-span-3 row-span-2 flex flex-col lg:col-span-1">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl lg:text-2xl">Wallet</h2>
-          <button onClick={openWalletTab} type="button" className="text-foreground-2 text-small hover:opacity-hover ">
-            Show all
-          </button>
+    <section className={cn(className, 'bg-custom-turquoise-gradient grid max-w-screen-xl grid-cols-6 gap-4')}>
+      <MainInformation className="col-span-6" balance={currentWalletBalance} actionButtons={actionButtons} />
+      <div className="col-span-6 flex flex-col gap-4 md:col-span-3 lg:col-span-2">
+        <DefaultContainer paddingStyle="none" className="flex flex-col py-4">
+          <div className="mb-4 flex justify-between px-4">
+            <div>
+              {currentWalletCryptoBalance && <h2 className="text-xl lg:text-2xl">{currentWalletCryptoBalance}</h2>}
+              <p className="text-foreground-2 text-xs">Crypto Wallet</p>
+            </div>
+            <button
+              onClick={openWalletTab}
+              type="button"
+              className="text-foreground-2 h-8 text-small hover:opacity-hover "
+            >
+              See details
+            </button>
+          </div>
+          <WalletBalanceList wallet={selectedWallet.data} />
+        </DefaultContainer>
+        <div>
+          <FiatAccountsList
+            fiatAccounts={selectedWalletFiatAccountsWithCards}
+            loadMoreFiatAccounts={loadMoreWalletFiatAccounts}
+            bins={bins}
+            onCardClick={onCardClick}
+            isLoadMoreAvailible={!selectedWalletFiatAccounts.meta?.isLastPage}
+          />
         </div>
-        <WalletBalanceList selectedWalletBalanceCurrency={selectedWalletBalanceCurrency} wallet={selectedWallet.data} />
-      </DefaultContainer>
-      <DefaultContainer className="col-span-3 lg:col-span-2">
+      </div>
+
+      <DefaultContainer className="col-span-6 h-fit md:col-span-3 lg:col-span-4">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl lg:text-2xl">Transactions</h2>
           <button

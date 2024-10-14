@@ -1,15 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import {
-  AppAction,
-  StoreDataWithStatus,
-  StoreDataWithStatusAndMeta,
-  StoreDataWithStatusAndMetaRecordsWithNames,
-  StoreOfframpCalcData,
-  StoreOnrampCalcData,
-  SupabasePaginationParams,
-} from '../types';
+import { AppAction, FinanceState, LoadWithLimit, RequiredLoadWithLimit, SupabasePaginationParams } from '../types';
 
 import { fiat_accounts } from '@/api/fiat_accounts';
 import { issuing } from '@/api/issuing';
@@ -23,41 +15,6 @@ import {
   defaultPaginationParams,
   emptyStoreDataWithStatus,
 } from '@/constants';
-
-type FinanceState = {
-  bins: API.Cards.CardConfig[];
-  chains: API.List.Chains[];
-  crypto: API.List.Crypto[];
-  cryptoBySymbol: API.List.CryptoBySymbol[];
-  fiats: API.List.Fiat[];
-  fiatExchangeRate: API.Exchange.F2C[];
-  onrampCalc: StoreDataWithStatus<StoreOnrampCalcData[] | null>;
-  offrampCalc: StoreDataWithStatus<StoreOfframpCalcData[] | null>;
-  withdrawCalc: StoreDataWithStatus<API.Orders.Crypto.Withdrawal.Calc.Response | null>;
-  selectedChain: null | API.List.Chains;
-  selectedCrypto: null | API.List.Crypto;
-  selectedCard: StoreDataWithStatus<API.Cards.CardDetailItem | null>;
-  selectedCardTransactions: StoreDataWithStatusAndMeta<API.Cards.TransactionItem[] | null>;
-  selectedFiat: null | API.List.Fiat;
-  selectedFiatAccount: StoreDataWithStatus<API.Wallets.FiatAccount | null>;
-  selectedFiatAccountCards: StoreDataWithStatusAndMeta<API.Cards.CardListItem[] | null>;
-  selectedWallet: StoreDataWithStatus<API.Wallets.ExtendWallet | null>;
-  selectedWalletTransactions: StoreDataWithStatusAndMeta<API.WalletTransactions.Transaction[] | null>;
-  selectedWalletCards: StoreDataWithStatusAndMeta<API.Cards.CardListItem[] | null>;
-  selectedWalletFiatAccounts: StoreDataWithStatusAndMeta<API.Wallets.FiatAccount[] | null>;
-  selectedWalletFiatAccountsWithCards: StoreDataWithStatusAndMetaRecordsWithNames<API.Cards.CardListItem[] | null>;
-  userWallets: API.Wallets.Wallet[];
-};
-
-type LoadWithLimit<T> = T & {
-  limit?: number;
-  offset?: number;
-};
-
-type RequiredLoadWithLimit<T> = T & {
-  limit: number;
-  offset: number;
-};
 
 const initialState: FinanceState = {
   bins: [],
@@ -154,12 +111,8 @@ export const loadSelectedFiatAccount = createAsyncThunk(
 
 export const loadSelectedFiatAccountCards = createAsyncThunk(
   'finanse/selectedFiatAccountCards',
-  async ({
-    wallet_uuid,
-    fiat_account_id,
-    limit,
-    offset,
-  }: LoadWithLimit<{ wallet_uuid: string; fiat_account_id: string }>) => {
+  async (props: LoadWithLimit<{ wallet_uuid: string; fiat_account_id: string }>) => {
+    const { wallet_uuid, fiat_account_id, limit, offset } = props;
     const requestData = {
       wallet_uuid,
       fiat_account_id,
@@ -180,12 +133,9 @@ export const loadSelectedFiatAccountCards = createAsyncThunk(
 
 export const loadFiatAccountCards = createAsyncThunk(
   'finanse/fiatAccountCards',
-  async ({
-    wallet_uuid,
-    fiat_account_id,
-    limit,
-    offset,
-  }: LoadWithLimit<{ wallet_uuid: string; fiat_account_id: string }>) => {
+  async (props: LoadWithLimit<{ wallet_uuid: string; fiat_account_id: string }>) => {
+    const { wallet_uuid, fiat_account_id, limit, offset } = props;
+
     const requestData = {
       wallet_uuid,
       fiat_account_id,
@@ -367,35 +317,35 @@ const financeSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(loadFiatAccountCards.pending, (state, { meta }) => {
-      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].status = RequestStatus.PENDING;
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.status = RequestStatus.PENDING;
     });
     builder.addCase(loadFiatAccountCards.fulfilled, (state, { meta, payload }) => {
-      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].status = RequestStatus.FULLFILLED;
-      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].data = payload.data;
-      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].meta.offset = payload.data.length;
-      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].meta.isLastPage =
-        payload.data.length < state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].meta.limit;
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.status = RequestStatus.FULLFILLED;
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.data = payload.data;
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.meta.offset = payload.data.length;
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.meta.isLastPage =
+        payload.data.length < state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.meta.limit;
     });
     builder.addCase(loadFiatAccountCards.rejected, (state, { meta }) => {
-      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].status = RequestStatus.REJECTED;
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.status = RequestStatus.REJECTED;
     });
     builder.addCase(loadMoreFiatAccountCards.pending, (state, { meta }) => {
-      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].status = RequestStatus.PENDING;
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.status = RequestStatus.PENDING;
     });
     builder.addCase(loadMoreFiatAccountCards.fulfilled, (state, { meta, payload }) => {
-      const existingData = state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].data;
+      const existingData = state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.data;
 
-      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].status = RequestStatus.FULLFILLED;
-      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].data = existingData
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.status = RequestStatus.FULLFILLED;
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.data = existingData
         ? [...existingData, ...payload.data]
         : payload.data;
-      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].meta.offset += payload.data.length;
-      if (payload.data.length < state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].meta.limit) {
-        state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].meta.isLastPage = true;
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.meta.offset += payload.data.length;
+      if (payload.data.length < state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.meta.limit) {
+        state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.meta.isLastPage = true;
       }
     });
     builder.addCase(loadMoreFiatAccountCards.rejected, (state, { meta }) => {
-      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].status = RequestStatus.REJECTED;
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.status = RequestStatus.REJECTED;
     });
     builder.addCase(hiddenLoadSelectedWallet.fulfilled, (state, action) => {
       state.selectedWallet.data = action.payload;
@@ -416,10 +366,10 @@ const financeSlice = createSlice({
     builder.addCase(loadSelectedWalletFiatAccounts.fulfilled, (state, { payload }) => {
       state.selectedWalletFiatAccounts.status = RequestStatus.FULLFILLED;
       state.selectedWalletFiatAccounts.data = payload;
-      payload.forEach(({ id }) => {
-        state.selectedWalletFiatAccountsWithCards[id] = {
-          ...emptyStoreDataWithStatus,
-          meta: cardInitialPaginationParams,
+      payload.forEach((fiatAccount) => {
+        state.selectedWalletFiatAccountsWithCards[fiatAccount.id] = {
+          ...fiatAccount,
+          cards: { ...emptyStoreDataWithStatus, meta: cardInitialPaginationParams },
         };
       });
       state.selectedWalletFiatAccounts.meta.offset = payload.length;
@@ -436,10 +386,10 @@ const financeSlice = createSlice({
       state.selectedWalletFiatAccounts.data = state.selectedWalletFiatAccounts.data
         ? [...state.selectedWalletFiatAccounts.data, ...payload]
         : payload;
-      payload.forEach(({ id }) => {
-        state.selectedWalletFiatAccountsWithCards[id] = {
-          ...emptyStoreDataWithStatus,
-          meta: cardInitialPaginationParams,
+      payload.forEach((fiatAccount) => {
+        state.selectedWalletFiatAccountsWithCards[fiatAccount.id] = {
+          ...fiatAccount,
+          cards: { ...emptyStoreDataWithStatus, meta: cardInitialPaginationParams },
         };
       });
       state.selectedWalletFiatAccounts.meta.offset += payload.length;

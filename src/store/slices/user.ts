@@ -1,18 +1,11 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
-import { User } from '@supabase/supabase-js';
+import { UserState } from '../types';
 
-import { API } from '@/api/types';
 import { RequestStatus } from '@/constants';
 
-type InitialState = {
-  user: User | null;
-  userData: API.Auth.UserData | null;
-  userLoadingStatus: RequestStatus;
-};
-
-const initialState: InitialState = {
+const initialState: UserState = {
   user: null,
   userData: null,
   userLoadingStatus: RequestStatus.NONE,

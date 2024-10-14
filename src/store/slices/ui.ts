@@ -1,17 +1,9 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { CustomTheme, ModalNames } from '@/constants';
 import { ModalVisibility } from '@/store/types';
 import { getFromLocalStorage } from '@/utils/helpers';
-
-type SetVisiblePopupAction = {
-  payload: keyof ModalVisibility;
-};
-
-type SetThemeAction = {
-  payload: CustomTheme;
-};
 
 type InitialState = {
   popupVisibility: ModalVisibility;
@@ -40,10 +32,10 @@ const uiSlice = createSlice({
   name: 'ui',
   initialState,
   reducers: {
-    setModalVisible: (state, action: SetVisiblePopupAction) => {
+    setModalVisible: (state, action: PayloadAction<keyof ModalVisibility>) => {
       state.popupVisibility[action.payload] = true;
     },
-    setModalInvisible: (state, action: SetVisiblePopupAction) => {
+    setModalInvisible: (state, action: PayloadAction<keyof ModalVisibility>) => {
       state.popupVisibility[action.payload] = false;
     },
     increaseOpenModalCount: (state) => {
@@ -52,7 +44,7 @@ const uiSlice = createSlice({
     decreaseOpenModalCount: (state) => {
       state.openModalCount -= 1;
     },
-    setActiveTheme(state, action: SetThemeAction) {
+    setActiveTheme(state, action: PayloadAction<CustomTheme>) {
       state.activeTheme = action.payload;
       localStorage.setItem('active_theme', action.payload);
     },

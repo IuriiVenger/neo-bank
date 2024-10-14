@@ -20,7 +20,7 @@ const cardSizesMap: Record<CardSizes, Record<CardSizesValues, string>> = {
   xs: {
     provider: 'h-1 w-fit',
     tenantLogo: 'h-1 w-fit',
-    card: 'w-15 h-9 rounded-[2px] p-1.5',
+    card: ' w-22 h-14 rounded-[2px] p-1.5',
     cardNumber: 'text-[4px]',
     balance: 'hidden',
     balanceLabel: 'hidden',
