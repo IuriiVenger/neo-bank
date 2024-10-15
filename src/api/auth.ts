@@ -36,8 +36,10 @@ export const auth = {
   },
   user_data: () => getRequest<API.Auth.UserData>('/auth/user_data'),
   telegram: {
-    signin: (data: API.Auth.Telegram.Signin) => postRequest<API.Auth.Tokens>('/auth/telegram/signin/tg_id', { data }),
+    signin: (data: API.Auth.Telegram.Signin) =>
+      postRequest<Omit<API.Auth.Tokens, 'refresh_token'>>('/auth/telegram/signin/tg_id', { data }),
 
-    signup: (data: API.Auth.Telegram.Signup) => postRequest<API.Auth.Tokens>('/auth/telegram/signup/phone', { data }),
+    signup: (data: API.Auth.Telegram.Signup) =>
+      postRequest<Omit<API.Auth.Tokens, 'refresh_token'>>('/auth/telegram/signup/phone', { data }),
   },
 };

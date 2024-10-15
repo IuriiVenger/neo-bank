@@ -1,10 +1,8 @@
 import { cn } from '@nextui-org/react';
 import { FC, useEffect, useState } from 'react';
-
 import ReactVisibilitySensor from 'react-visibility-sensor';
 
-import { DashboardProps } from '../..';
-
+import { DashboardProps } from '@/components/Dashboard';
 import FiatAccount from '@/components/FiatAccount';
 import DefaultContainer from '@/components/ui/DefaultContainer';
 import Loader from '@/components/ui/Loader';
@@ -21,10 +19,6 @@ type FiatAccountListProps = {
 const FiatAccountsList: FC<FiatAccountListProps> = (props) => {
   const { fiatAccounts, loadMoreFiatAccounts, className, bins, onCardClick, isLoadMoreAvailible } = props;
   const [isEndCardsListVisible, setIsEndCardsListVisible] = useState(false);
-
-  if (!fiatAccounts) {
-    return null;
-  }
 
   const fiatAccountsData = Object.entries(fiatAccounts).map(([key, value]) => ({
     fiatAccountId: key,

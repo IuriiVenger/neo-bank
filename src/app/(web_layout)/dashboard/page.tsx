@@ -18,7 +18,6 @@ import {
   defaultPaginationParams,
   ModalNames,
   DashboardTabs,
-  cardInitialPaginationParams,
   cardLoadMoreDefaultLimit,
   AppEnviroment,
   RequestStatus,
@@ -84,7 +83,7 @@ const DashboardPage = () => {
   const selectedWalletBalanceCurrency = useAppSelector(selectCurrentWalletBalanceCurrency);
   const availableToExchangeCrypto = useAppSelector(selectActiveFiatAvailableCrypto);
   const { createOnRampOrder, createOffRampOrder, createCrypto2CryptoOrder, createInternalTopUpOrder } = useOrder();
-  const { getWalletAddress, createWalletAddress } = useWallet();
+  const { getWalletAddress, createWalletAddress, clearSelectedCardData } = useWallet();
   const externalCalcData = useExternalCalc();
 
   const allowedCryptoToFiatUuid = fiatExchangeRate.map((item) => item.crypto_uuid);
@@ -116,7 +115,7 @@ const DashboardPage = () => {
   const changeActiveCard = async (card_id: string | null) => {
     setActiveCardId(card_id);
     if (!card_id) {
-      dispatch(clearSelectedCard());
+      clearSelectedCardData(dispatch);
       return;
     }
 
@@ -135,7 +134,7 @@ const DashboardPage = () => {
   };
 
   const loadSelectedWalletCards = async () => {
-    const { limit, offset } = cardInitialPaginationParams;
+    const { limit, offset } = defaultPaginationParams;
     selectedWallet.data && dispatch(loadWalletCards({ wallet_uuid: selectedWallet.data.uuid, limit, offset }));
   };
 
@@ -220,8 +219,8 @@ const DashboardPage = () => {
     dispatch(
       loadWalletCards({
         wallet_uuid: wallet.uuid,
-        limit: cardInitialPaginationParams.limit,
-        offset: cardInitialPaginationParams.offset,
+        limit: defaultPaginationParams.limit,
+        offset: defaultPaginationParams.offset,
       }),
     );
     dispatch(loadSelectedWalletFiatAccounts({ wallet_uuid: wallet.uuid }));

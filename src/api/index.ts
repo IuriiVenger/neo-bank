@@ -3,7 +3,7 @@ import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { AppEnviroment, ResponseStatus } from '@/constants';
 import { getFromLocalStorage } from '@/utils/helpers';
 import { navigate } from '@/utils/router';
-import { deleteTokens, refreshTokens, setTokens } from '@/utils/tokensFactory';
+import { refreshTokens, setTokens } from '@/utils/tokensFactory';
 
 // eslint-disable-next-line no-constant-condition
 const baseURL = process.env.API_URL;
@@ -47,13 +47,11 @@ instance.interceptors.response.use(
     if (error?.response?.status === ResponseStatus.UNAUTHORIZED) {
       const { response, config: failedRequest } = error;
       const refreshToken = getFromLocalStorage('refresh_token');
-      const appEnviroment = getFromLocalStorage('app_enviroment') || AppEnviroment.WEB;
 
       if (response.config?.url.includes('/auth/refresh/refresh_token') || !refreshToken) {
         if (typeof window !== 'undefined') {
-          appEnviroment === AppEnviroment.TELEGRAM ? navigate('/auth/telegram/login') : navigate('/auth/login');
+          navigate('/auth/logout');
         }
-        deleteTokens();
         requestQueue.forEach((request) => request.reject());
         requestQueue = [];
         return Promise.reject(response);

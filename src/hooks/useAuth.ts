@@ -12,7 +12,8 @@ import { RequestStatus } from '@/constants';
 import { setAppFullInitialized } from '@/store/slices/config';
 import { setUser, setUserData, setUserLoadingStatus } from '@/store/slices/user';
 import { AppDispatch } from '@/store/types';
-import { deleteTokens, setTokens } from '@/utils/tokensFactory';
+
+import { setTokens } from '@/utils/tokensFactory';
 
 const useAuth = (dispatch: AppDispatch) => {
   const [email, setEmail] = useState('');
@@ -22,7 +23,7 @@ const useAuth = (dispatch: AppDispatch) => {
   const [isOtpRequested, setIsOtpRequested] = useState(false);
 
   const router = useRouter();
-  const { initUserWallets, unloadWallets } = useWallet();
+  const { initUserWallets, clearUserFinanceData } = useWallet();
 
   const setLoadingStatus = (status: RequestStatus) => {
     dispatch(setUserLoadingStatus(status));
@@ -45,7 +46,7 @@ const useAuth = (dispatch: AppDispatch) => {
   const clearUserContent = async () => {
     dispatch(setUser(null));
     dispatch(setUserData(null));
-    unloadWallets(dispatch);
+    clearUserFinanceData(dispatch);
   };
 
   const resetAuthState = () => {
@@ -53,6 +54,10 @@ const useAuth = (dispatch: AppDispatch) => {
     setPassword('');
     setOtp('');
     setIsOtpRequested(false);
+  };
+
+  const signOut = async () => {
+    router.push('auth/logout');
   };
 
   const initUser = async () => {
@@ -64,7 +69,7 @@ const useAuth = (dispatch: AppDispatch) => {
       dispatch(setAppFullInitialized(true));
     } catch (e) {
       setLoadingStatus(RequestStatus.REJECTED);
-      deleteTokens();
+      signOut();
     }
   };
 
@@ -218,18 +223,6 @@ const useAuth = (dispatch: AppDispatch) => {
     }
   };
 
-  const signOut = async () => {
-    setLoadingStatus(RequestStatus.PENDING);
-
-    try {
-      clearUserContent();
-      deleteTokens();
-      router.push('/auth');
-    } finally {
-      setLoadingStatus(RequestStatus.NONE);
-    }
-  };
-
   return {
     signIn,
     signInByEmailOtp,
@@ -249,6 +242,7 @@ const useAuth = (dispatch: AppDispatch) => {
     getEmailOtp,
     getPhoneOtp,
     isOtpRequested,
+    clearUserContent,
   };
 };
 

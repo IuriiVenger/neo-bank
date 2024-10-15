@@ -8,13 +8,7 @@ import { issuing } from '@/api/issuing';
 import { orders } from '@/api/orders';
 import { API } from '@/api/types';
 import { wallets } from '@/api/wallets';
-import {
-  CalcType,
-  RequestStatus,
-  cardInitialPaginationParams,
-  defaultPaginationParams,
-  emptyStoreDataWithStatus,
-} from '@/constants';
+import { CalcType, RequestStatus, emptyStoreDataWithStatus, emptyStoreDataWithStatusAndMeta } from '@/constants';
 
 const initialState: FinanceState = {
   bins: [],
@@ -30,29 +24,14 @@ const initialState: FinanceState = {
   selectedCrypto: null,
   selectedFiat: null,
   selectedFiatAccount: emptyStoreDataWithStatus,
-  selectedFiatAccountCards: {
-    ...emptyStoreDataWithStatus,
-    meta: cardInitialPaginationParams,
-  },
+  selectedFiatAccountCards: emptyStoreDataWithStatusAndMeta,
   selectedWallet: emptyStoreDataWithStatus,
-  selectedWalletFiatAccounts: {
-    ...emptyStoreDataWithStatus,
-    meta: defaultPaginationParams,
-  },
+  selectedWalletFiatAccounts: emptyStoreDataWithStatusAndMeta,
   selectedWalletFiatAccountsWithCards: {},
   selectedCard: emptyStoreDataWithStatus,
-  selectedCardTransactions: {
-    ...emptyStoreDataWithStatus,
-    meta: defaultPaginationParams,
-  },
-  selectedWalletTransactions: {
-    ...emptyStoreDataWithStatus,
-    meta: defaultPaginationParams,
-  },
-  selectedWalletCards: {
-    ...emptyStoreDataWithStatus,
-    meta: cardInitialPaginationParams,
-  },
+  selectedCardTransactions: emptyStoreDataWithStatusAndMeta,
+  selectedWalletTransactions: emptyStoreDataWithStatusAndMeta,
+  selectedWalletCards: emptyStoreDataWithStatusAndMeta,
   userWallets: [],
 };
 
@@ -303,16 +282,39 @@ const financeSlice = createSlice({
     setSelectedWallet: (state, action: AppAction<API.Wallets.ExtendWallet | null>) => {
       state.selectedWallet.data = action.payload;
     },
-
     setUserWallets: (state, action: AppAction<API.Wallets.Wallet[]>) => {
       state.userWallets = action.payload;
     },
+    clearSelectedWallet: (state) => {
+      state.selectedWallet = emptyStoreDataWithStatus;
+    },
+    clearUserWallets: (state) => {
+      state.userWallets = [];
+    },
     clearSelectedCard: (state) => {
       state.selectedCard = emptyStoreDataWithStatus;
-      state.selectedCardTransactions = {
-        ...emptyStoreDataWithStatus,
-        meta: defaultPaginationParams,
-      };
+      state.selectedCardTransactions = emptyStoreDataWithStatusAndMeta;
+    },
+    clearSelectedFiatAccount: (state) => {
+      state.selectedFiatAccount = emptyStoreDataWithStatus;
+    },
+    clearSelectedFiatAccountCards: (state) => {
+      state.selectedFiatAccountCards = emptyStoreDataWithStatusAndMeta;
+    },
+    cleareSelectewWalletFiatAccounts: (state) => {
+      state.selectedWalletFiatAccounts = emptyStoreDataWithStatusAndMeta;
+    },
+    clearSelectedWalletFiatAccountsWithCards: (state) => {
+      state.selectedWalletFiatAccountsWithCards = {};
+    },
+    clearSelectedCardTransactions: (state) => {
+      state.selectedCardTransactions = emptyStoreDataWithStatusAndMeta;
+    },
+    clearSelectedWalletTransactions: (state) => {
+      state.selectedWalletTransactions = emptyStoreDataWithStatusAndMeta;
+    },
+    clearSelectedWalletCards: (state) => {
+      state.selectedWalletCards = emptyStoreDataWithStatusAndMeta;
     },
   },
   extraReducers: (builder) => {
@@ -369,7 +371,7 @@ const financeSlice = createSlice({
       payload.forEach((fiatAccount) => {
         state.selectedWalletFiatAccountsWithCards[fiatAccount.id] = {
           ...fiatAccount,
-          cards: { ...emptyStoreDataWithStatus, meta: cardInitialPaginationParams },
+          cards: emptyStoreDataWithStatusAndMeta,
         };
       });
       state.selectedWalletFiatAccounts.meta.offset = payload.length;
@@ -389,7 +391,7 @@ const financeSlice = createSlice({
       payload.forEach((fiatAccount) => {
         state.selectedWalletFiatAccountsWithCards[fiatAccount.id] = {
           ...fiatAccount,
-          cards: { ...emptyStoreDataWithStatus, meta: cardInitialPaginationParams },
+          cards: emptyStoreDataWithStatusAndMeta,
         };
       });
       state.selectedWalletFiatAccounts.meta.offset += payload.length;
@@ -543,6 +545,15 @@ export const {
   setUserWallets,
   setSelectedWallet,
   clearSelectedCard,
+  clearSelectedFiatAccount,
+  clearSelectedFiatAccountCards,
+  cleareSelectewWalletFiatAccounts,
+  clearSelectedWalletFiatAccountsWithCards,
+  clearSelectedCardTransactions,
+  clearSelectedWalletTransactions,
+  clearSelectedWalletCards,
+  clearSelectedWallet,
+  clearUserWallets,
 } = financeSlice.actions;
 
 export default financeSlice.reducer;

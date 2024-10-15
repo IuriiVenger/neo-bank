@@ -19,7 +19,7 @@ const EmptyState: FC<EmptyStateProps> = (props) => {
   return (
     <div
       className={cn(
-        'm-auto flex items-center justify-center gap-3 text-center lg:gap-6',
+        'm-auto flex items-center justify-center gap-4 text-center',
         className,
         !horizontalEmptyState && 'flex-col',
       )}
@@ -31,7 +31,7 @@ const EmptyState: FC<EmptyStateProps> = (props) => {
             {title}
           </button>
         ) : (
-          <h4 className="mt-4 font-medium lg:mt-5">{title}</h4>
+          <h4 className="font-medium">{title}</h4>
         )}
         {!!description && <p className="text-foreground-2 mt-1 whitespace-break-spaces text-sm">{description}</p>}
       </div>
