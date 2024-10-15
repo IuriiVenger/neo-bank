@@ -80,7 +80,7 @@ const useInitApp = (dispatch: AppDispatch) => {
 
     try {
       await initWebApp();
-      isAuthTokensExist && isWebEnviroment && (await initUser());
+      // isAuthTokensExist && isWebEnviroment && (await initUser());
     } catch (error) {
       toast.error('Error during app initialization');
       console.error('Error during initWebApp:', error);
