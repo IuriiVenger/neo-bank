@@ -69,8 +69,8 @@ const TelegramInit = () => {
   const dispatch = useAppDispatch();
   const telegramTheme = useThemeParams(true);
 
-  const { initUser } = useAuth(dispatch);
-  const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, initUser);
+  const { loadUserContent } = useAuth(dispatch);
+  const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, loadUserContent);
   const [isThemeInitialized, setIsThemeInitialized] = useState(false);
 
   const initTheme = () => {
