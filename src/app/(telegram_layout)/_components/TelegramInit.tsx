@@ -79,6 +79,10 @@ const TelegramInit = () => {
   };
 
   const updateTheme = () => {
+    if (!activeTheme) {
+      return;
+    }
+
     window.Telegram.WebApp.setBackgroundColor(themes[activeTheme].baseColors.background);
     window.Telegram.WebApp.setHeaderColor(themes[activeTheme].baseColors.background);
     window.Telegram.WebApp.setBottomBarColor(themes[activeTheme].baseColors.background);

@@ -1,14 +1,16 @@
 'use client';
 
 import { AppProgressBar } from 'next-nprogress-bar';
-import { Suspense, useEffect, useState } from 'react';
+import { FC, Suspense, useEffect, useState } from 'react';
 
 import { themes } from '@/config/themes';
-import { useAppSelector } from '@/store';
-import { selectActiveTheme } from '@/store/selectors';
+import { CustomTheme } from '@/constants';
 
-const RouteProgressBar = () => {
-  const activeTheme = useAppSelector(selectActiveTheme);
+type ProgressBarProps = {
+  activeTheme: CustomTheme;
+};
+
+const RouteProgressBar: FC<ProgressBarProps> = ({ activeTheme }) => {
   const [isProgressBarVisible, setIsProgressBarVisible] = useState(false);
 
   const onThemeChanged = () => {
