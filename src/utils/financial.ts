@@ -12,6 +12,7 @@ import trx from 'cryptocurrency-icons/svg/icon/trx.svg';
 import usdc from 'cryptocurrency-icons/svg/icon/usdc.svg';
 import usdt from 'cryptocurrency-icons/svg/icon/usdt.svg';
 import xrp from 'cryptocurrency-icons/svg/icon/xrp.svg';
+import { StaticImageData } from 'next/image';
 import currencyFlag from 'react-currency-flags/dist/flags';
 
 import { roundToDecimals } from './converters';
@@ -37,10 +38,13 @@ import cream from '@/assets/svg/landing-cryptocurrency-icons/cream.svg';
 import cryptoCom from '@/assets/svg/landing-cryptocurrency-icons/cryptoCom.svg';
 import currencyCom from '@/assets/svg/landing-cryptocurrency-icons/currencyCom.svg';
 import dash from '@/assets/svg/landing-cryptocurrency-icons/dash.svg';
+import mcnt from '@/assets/svg/landing-cryptocurrency-icons/mcnt.webp';
+import not from '@/assets/svg/landing-cryptocurrency-icons/not.svg';
+import ton from '@/assets/svg/landing-cryptocurrency-icons/ton.svg';
 import { WithOptionalAmount } from '@/types';
 
 type CryptoIcons = {
-  [key: string]: string;
+  [key: string]: string | StaticImageData;
 };
 
 export const cryptoIcons: CryptoIcons = {
@@ -51,9 +55,12 @@ export const cryptoIcons: CryptoIcons = {
   dot,
   eth,
   matic,
+  mcnt,
   sol,
   tron,
   trx,
+  ton,
+  not,
   usdt,
   xrp,
   usdc,
@@ -96,12 +103,15 @@ export const isWalletTransaction = (
 ): transaction is API.WalletTransactions.Transaction =>
   (transaction as API.WalletTransactions.Transaction).txid !== undefined;
 
-export const getCurrencyIconSrc = (currency: API.List.Crypto | API.List.Fiat | API.List.Chains): string =>
+export const getCurrencyIconSrc = (
+  currency: API.List.Crypto | API.List.Fiat | API.List.Chains,
+): string | StaticImageData =>
   isFiat(currency)
     ? currencyFlag[currency.code.toLowerCase() as keyof typeof currencyFlag]
     : cryptoIcons[currency.symbol.toLowerCase()] || cryptoIcons.btc;
 
-export const getCryptoIconSrc = (symbol: string): string => cryptoIcons[symbol.toLowerCase()] || cryptoIcons.btc;
+export const getCryptoIconSrc = (symbol: string): string | StaticImageData =>
+  cryptoIcons[symbol.toLowerCase()] || cryptoIcons.btc;
 
 export const getActiveFiatAvailableCrypto = (fiatExchangeRate: API.Exchange.F2C[], crypto: API.List.Crypto[]) => {
   const availableToExchangeCryptoUuid = fiatExchangeRate.map((item) => item.crypto_uuid);
