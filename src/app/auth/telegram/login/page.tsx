@@ -16,10 +16,10 @@ const TelegramAuthSignupPage = () => {
   const initData = useInitData(true);
   const dispatch = useAppDispatch();
   const { userLoadingStatus } = useAppSelector(selectUser);
-  const { initUser } = useAuth(dispatch);
+  const { loadUserContent } = useAuth(dispatch);
   const isUserLoading = userLoadingStatus === RequestStatus.PENDING;
 
-  const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, initUser);
+  const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, loadUserContent);
 
   return (
     <SDKProvider>
