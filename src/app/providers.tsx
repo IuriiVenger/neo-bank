@@ -1,8 +1,10 @@
 'use client';
 
 import { cn, NextUIProvider } from '@nextui-org/react';
+import { getCookie, setCookie } from 'cookies-next';
 import { Inter } from 'next/font/google';
-import { useEffect } from 'react';
+import { cookies } from 'next/headers';
+import { FC, PropsWithChildren, useEffect } from 'react';
 
 import { Slide, ToastContainer } from 'react-toastify';
 
@@ -10,21 +12,26 @@ import GlobalClientErrorHandler from '@/components/GlobalClientErrorHandler';
 
 import RouteProgressBar from '@/components/ui/ProgressBar';
 
+import { CustomTheme } from '@/constants';
 import useInitApp from '@/hooks/useInitApp';
 import { useAppDispatch, useAppSelector } from '@/store';
 import StoreWatchers from '@/store/components/StoreWatchers';
 import { selectActiveTheme } from '@/store/selectors';
+import { setActiveTheme } from '@/store/slices/ui';
 
 const font = Inter({ subsets: ['latin'] });
 
-export const Providers = ({ children }: { children: React.ReactNode }) => {
+type ProvidersProps = PropsWithChildren<{ initialTheme: CustomTheme }>;
+
+export const Providers: FC<ProvidersProps> = ({ children, initialTheme }) => {
   const dispatch = useAppDispatch();
-  const activeTheme = useAppSelector(selectActiveTheme);
+  const activeTheme = useAppSelector(selectActiveTheme) || initialTheme;
 
   const { initApp } = useInitApp(dispatch);
 
   useEffect(() => {
     initApp();
+    dispatch(setActiveTheme(initialTheme));
   }, []);
 
   return (
@@ -33,7 +40,7 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
         <NextUIProvider className={cn('flex min-h-screen flex-col items-center')}>
           <GlobalClientErrorHandler />
           {children}
-          <RouteProgressBar />
+          <RouteProgressBar activeTheme={activeTheme} />
           <ToastContainer
             position="top-right"
             closeButton={false}

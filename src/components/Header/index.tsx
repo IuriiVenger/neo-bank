@@ -9,6 +9,7 @@ import {
   NavbarContent,
   NavbarItem,
   Divider,
+  cn,
 } from '@nextui-org/react';
 
 import Link from 'next/link';
@@ -27,7 +28,7 @@ import whiteLabelConfig from '@/config/whitelabel';
 import { ModalNames, requestKYCStatuses } from '@/constants';
 import useAuth from '@/hooks/useAuth';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { selectIsUserLoggedIn, selectUser } from '@/store/selectors';
+import { selectConfig, selectIsUserLoggedIn, selectUser } from '@/store/selectors';
 import { setModalVisible } from '@/store/slices/ui';
 
 const authItems = [
@@ -39,6 +40,8 @@ const Header: FC = () => {
   const dispatch = useAppDispatch();
   const isUserSignedIn = useAppSelector(selectIsUserLoggedIn);
   const { userData } = useAppSelector(selectUser);
+  const { isWebAppInitialized } = useAppSelector(selectConfig);
+
   const { signOut } = useAuth(dispatch);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -99,7 +102,7 @@ const Header: FC = () => {
             </NavbarItem>
           ))}
         </div>
-        <ThemeSwitcher />
+        <ThemeSwitcher className={cn(!isWebAppInitialized && 'invisible')} />
         <AuthButtons />
       </NavbarContent>
 
