@@ -1,6 +1,6 @@
 import { getCookie, setCookie } from 'cookies-next';
 
-import { supportEmail, walletType } from '../constants';
+import { CustomTheme, supportEmail, walletType } from '../constants';
 
 export const getWalletTypeLabel = (type: string) => walletType[type]?.label || type;
 
@@ -76,4 +76,18 @@ export const getFromLocalStorage = (key: string) => {
   if (typeof window === 'undefined' || !key) return null;
   const item = localStorage.getItem(key);
   return item;
+};
+
+export const getInitialTheme = (cookiesTheme: string | undefined, envTheme: string | undefined): CustomTheme => {
+  const themeValues = Object.values(CustomTheme);
+
+  if (cookiesTheme && themeValues.includes(cookiesTheme as CustomTheme)) {
+    return cookiesTheme as CustomTheme;
+  }
+
+  if (envTheme && themeValues.includes(envTheme as CustomTheme)) {
+    return envTheme as CustomTheme;
+  }
+
+  return CustomTheme.DARK;
 };

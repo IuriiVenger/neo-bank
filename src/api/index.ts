@@ -2,7 +2,7 @@ import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 import { AppEnviroment, ResponseStatus } from '@/constants';
 import { getFromLocalStorage } from '@/utils/helpers';
-import { navigate } from '@/utils/router';
+import { navigate } from '@/utils/server';
 import { deleteTokens, refreshTokens, setTokens } from '@/utils/tokensFactory';
 
 // eslint-disable-next-line no-constant-condition
