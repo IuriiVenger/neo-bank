@@ -2,7 +2,7 @@
 const { execSync } = require('child_process');
 
 const sourceBranch = 'main';
-const targetBranches = ['whitelabel/dauphin', 'whitelabel/flashcash', 'whitelabel/main-card'];
+const targetBranches = ['whitelabel/dauphin', 'whitelabel/flashcash', 'whitelabel/main-card', 'whitelabel/axioma'];
 
 function runCommand(command) {
   try {
