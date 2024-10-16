@@ -29,5 +29,4 @@ export const unsupportedTelegramVersions = [
   '6.7',
   '6.8',
   '6.9',
-  '7.10',
 ];
