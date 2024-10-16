@@ -29,7 +29,6 @@ instance.interceptors.request.use((config) => {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
     'X-Tenant-Id': tenantId,
-    'Cache-Control': 'no-cache',
   };
 
   if (access_token) {

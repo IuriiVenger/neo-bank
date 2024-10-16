@@ -233,8 +233,8 @@ const DashboardPage = () => {
     dispatch(
       loadCards({
         wallet_uuid: selectedWallet.data?.uuid || '',
-        limit: selectedWalletCards.meta.limit,
-        offset: selectedWalletCards.meta.offset,
+        limit: defaultPaginationParams.limit,
+        offset: defaultPaginationParams.offset,
       }),
     );
     await selectCard(card_id);
