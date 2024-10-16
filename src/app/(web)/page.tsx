@@ -1,5 +1,5 @@
-import MainPageContent from './_components/MainPageContent';
-import MainLayout from './layout';
+import MainPageContent from './(main_layout)/_components/MainPageContent';
+import MainLayout from './(main_layout)/layout';
 
 import DashboardPage from '@/app/(web)/(main_layout)/dashboard/page';
 import whiteLabelConfig from '@/config/whitelabel';

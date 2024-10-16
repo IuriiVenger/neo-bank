@@ -1,4 +1,4 @@
-import MainPage from './(web)/(main_layout)/page';
+import MainPage from './(web)/page';
 
 const Home = async () => <MainPage />;
 
