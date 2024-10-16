@@ -2,7 +2,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { FC } from 'react';
 
-import SetWebEnviroment from '../_components/SetWebEnviroment';
+import SetWebEnviroment from '../../../components/initialization/SetWebEnviroment';
 
 import darkLogo from '@/assets/tenant/dark/logo.svg';
 import lightLogo from '@/assets/tenant/light/logo.svg';

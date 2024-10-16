@@ -2,7 +2,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FC, Suspense } from 'react';
 
 // import Footer from '@/components/Footer';
-import SetWebEnviroment from '../_components/SetWebEnviroment';
+import SetWebEnviroment from '../../../components/initialization/SetWebEnviroment';
 
 import Header from '@/components/Header';
 import LayoutModalContainer from '@/components/modals/LayoutModalContainer';

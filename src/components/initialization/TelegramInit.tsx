@@ -4,7 +4,6 @@ import { useInitData, useLaunchParams, useMiniApp, useSettingsButton, useThemePa
 
 import { useEffect, useState } from 'react';
 
-import SetTelegramEnviroment from '@/app/(telegram)/_components/SetTelegramEnviroment';
 import { themes } from '@/config/themes';
 import { CustomTheme, ModalNames } from '@/constants';
 import useAuth from '@/hooks/useAuth';
@@ -124,7 +123,7 @@ const TelegramInit = () => {
     }
   }, [isWebAppInitialized, isUserLoggedIn]);
 
-  return <SetTelegramEnviroment />;
+  return null;
 };
 
 export default TelegramInit;
