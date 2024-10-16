@@ -8,7 +8,6 @@ import { API } from '@/api/types';
 
 import { wallets } from '@/api/wallets';
 import Dashboard, { DashboardProps } from '@/components/Dashboard';
-import privateRoute from '@/components/privateRoute';
 import Loader from '@/components/ui/Loader';
 import whiteLabelConfig from '@/config/whitelabel';
 import {
@@ -323,4 +322,4 @@ const DashboardPage = () => {
   return <Dashboard {...dasboardProps} />;
 };
 
-export default privateRoute(DashboardPage);
+export default DashboardPage;

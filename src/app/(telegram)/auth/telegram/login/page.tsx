@@ -2,8 +2,8 @@
 
 import { useLaunchParams, useMiniApp, useInitData, SDKProvider } from '@telegram-apps/sdk-react';
 
+import SetTelegramEnviroment from '@/app/(telegram)/_components/SetTelegramEnviroment';
 import TelegramLogIn from '@/components/Auth/TelegramLogIn';
-import SetTelegramEnviroment from '@/components/telegram/SetTelegramEnviroment';
 import { RequestStatus } from '@/constants';
 import useAuth from '@/hooks/useAuth';
 import useTelegramAuth from '@/hooks/useTelegramAuth';

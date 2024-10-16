@@ -8,13 +8,13 @@ type SetAppEnviromentAction = {
 };
 
 type ConfigState = {
-  appEnviroment: AppEnviroment;
+  appEnviroment: AppEnviroment | null;
   isWebAppInitialized: boolean;
   isAppFullInitialized: boolean;
 };
 
 const initialState: ConfigState = {
-  appEnviroment: AppEnviroment.WEB,
+  appEnviroment: null,
   isAppFullInitialized: false,
   isWebAppInitialized: false,
 };

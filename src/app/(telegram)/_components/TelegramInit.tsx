@@ -4,7 +4,7 @@ import { useInitData, useLaunchParams, useMiniApp, useSettingsButton, useThemePa
 
 import { useEffect, useState } from 'react';
 
-import SetTelegramEnviroment from '@/components/telegram/SetTelegramEnviroment';
+import SetTelegramEnviroment from '@/app/(telegram)/_components/SetTelegramEnviroment';
 import { themes } from '@/config/themes';
 import { CustomTheme, ModalNames } from '@/constants';
 import useAuth from '@/hooks/useAuth';
