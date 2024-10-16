@@ -5,6 +5,9 @@ import { FC, PropsWithChildren } from 'react';
 
 import UpdateTelegram from '../UpdateTelegram';
 
+import SetTelegramEnviroment from './SetTelegramEnviroment';
+import TelegramInit from './TelegramInit';
+
 import { unsupportedTelegramVersions } from '@/config/telegram';
 
 const WithCheckTGVersion: FC<PropsWithChildren> = ({ children }) => {
@@ -14,7 +17,13 @@ const WithCheckTGVersion: FC<PropsWithChildren> = ({ children }) => {
     return <UpdateTelegram />;
   }
 
-  return children;
+  return (
+    <>
+      <SetTelegramEnviroment />
+      <TelegramInit />
+      {children}
+    </>
+  );
 };
 
 export default WithCheckTGVersion;
