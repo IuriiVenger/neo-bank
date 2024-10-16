@@ -9,6 +9,10 @@ import { unsupportedTelegramVersions } from '@/config/telegram';
 const MiniAppPage = () => {
   const launchParams = useLaunchParams(true);
 
+  console.log('launchParams', launchParams?.version);
+  launchParams?.version &&
+    console.log('unsupportedTelegramVersions', unsupportedTelegramVersions.includes(launchParams.version));
+
   if (launchParams?.version && unsupportedTelegramVersions.includes(launchParams.version)) {
     return <h1>Plese update your app</h1>;
   }
