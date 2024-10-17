@@ -46,7 +46,7 @@ type FiatAccountsWithCards = API.Wallets.FiatAccount & {
 };
 
 type ConfigState = {
-  appEnviroment: AppEnviroment;
+  appEnviroment: AppEnviroment | null;
   isWebAppInitialized: boolean;
   isAppFullInitialized: boolean;
 };
