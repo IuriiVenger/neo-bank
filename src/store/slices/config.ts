@@ -6,7 +6,7 @@ import { ConfigState } from '../types';
 import { AppEnviroment } from '@/constants';
 
 const initialState: ConfigState = {
-  appEnviroment: AppEnviroment.WEB,
+  appEnviroment: null,
   isAppFullInitialized: false,
   isWebAppInitialized: false,
 };

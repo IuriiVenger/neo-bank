@@ -3,19 +3,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { CustomTheme, ModalNames } from '@/constants';
 import { ModalVisibility } from '@/store/types';
-import { getFromLocalStorage } from '@/utils/helpers';
 
 type InitialState = {
   popupVisibility: ModalVisibility;
   openModalCount: number;
-  activeTheme: CustomTheme;
+  activeTheme: CustomTheme | null;
 };
-
-const customThemesValues = Object.values(CustomTheme);
-const envDefaultTheme = process.env.DEFAULT_THEME as CustomTheme;
-const localStorageTheme = getFromLocalStorage('active_theme') as CustomTheme;
-const externalDefaultTheme = localStorageTheme || envDefaultTheme;
-const defaultTheme = customThemesValues.includes(externalDefaultTheme) ? externalDefaultTheme : CustomTheme.DARK;
 
 const initialPopupVisibility: ModalVisibility = Object.values(ModalNames).reduce((acc, key) => {
   acc[key as ModalNames] = false;
@@ -25,7 +18,7 @@ const initialPopupVisibility: ModalVisibility = Object.values(ModalNames).reduce
 const initialState: InitialState = {
   popupVisibility: initialPopupVisibility,
   openModalCount: 0,
-  activeTheme: defaultTheme,
+  activeTheme: null,
 };
 
 const uiSlice = createSlice({
@@ -46,7 +39,6 @@ const uiSlice = createSlice({
     },
     setActiveTheme(state, action: PayloadAction<CustomTheme>) {
       state.activeTheme = action.payload;
-      localStorage.setItem('active_theme', action.payload);
     },
   },
 });
