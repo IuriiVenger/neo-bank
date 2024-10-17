@@ -28,9 +28,7 @@ import { getFromLocalStorage } from '@/utils/helpers';
 
 const useInitApp = (dispatch: AppDispatch) => {
   const { initUser } = useAuth(dispatch);
-  const { appEnviroment } = useAppSelector(selectConfig);
-
-  const isWebEnviroment = appEnviroment === AppEnviroment.WEB;
+  // const { appEnviroment } = useAppSelector(selectConfig);
 
   const initWebApp = async () => {
     const [binsData, fiatsData, cryptoData, chainsData, cryptoBySymbolData] = await Promise.allSettled([
@@ -76,11 +74,14 @@ const useInitApp = (dispatch: AppDispatch) => {
   };
 
   const initApp = async () => {
+    const appEnviroment = getFromLocalStorage('app_enviroment') as AppEnviroment;
+    const isWebEnviroment = appEnviroment === AppEnviroment.WEB;
     const isAuthTokensExist = getFromLocalStorage('access_token');
 
     try {
       await initWebApp();
-      isAuthTokensExist && (await initUser());
+      console.log('isWebEnviroment:', isWebEnviroment);
+      isAuthTokensExist && isWebEnviroment && (await initUser());
     } catch (error) {
       toast.error('Error during app initialization');
       console.error('Error during initWebApp:', error);

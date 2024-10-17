@@ -1,9 +1,9 @@
 'use client';
 
-import { useLaunchParams, useMiniApp, useInitData, SDKProvider } from '@telegram-apps/sdk-react';
+import { useLaunchParams, useMiniApp, useInitData } from '@telegram-apps/sdk-react';
 
 import TelegramLogIn from '@/components/Auth/TelegramLogIn';
-import SetTelegramEnviroment from '@/components/telegram/SetTelegramEnviroment';
+
 import { RequestStatus } from '@/constants';
 import useAuth from '@/hooks/useAuth';
 import useTelegramAuth from '@/hooks/useTelegramAuth';
@@ -16,17 +16,12 @@ const TelegramAuthSignupPage = () => {
   const initData = useInitData(true);
   const dispatch = useAppDispatch();
   const { userLoadingStatus } = useAppSelector(selectUser);
-  const { initUser } = useAuth(dispatch);
+  const { loadUserContent } = useAuth(dispatch);
   const isUserLoading = userLoadingStatus === RequestStatus.PENDING;
 
-  const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, initUser);
+  const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, loadUserContent);
 
-  return (
-    <SDKProvider>
-      <SetTelegramEnviroment />
-      <TelegramLogIn signInByTelegram={initTelegramAuth} isLoading={isUserLoading} />
-    </SDKProvider>
-  );
+  return <TelegramLogIn signInByTelegram={initTelegramAuth} isLoading={isUserLoading} />;
 };
 
 export default TelegramAuthSignupPage;

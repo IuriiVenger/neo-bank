@@ -1,7 +1,20 @@
 import { API } from '@/api/types';
 import { wallets } from '@/api/wallets';
 import { WalletTypeValues } from '@/constants';
-import { loadSelectedWallet, setSelectedWallet, setUserWallets } from '@/store/slices/finance';
+import {
+  clearSelectedCard,
+  clearSelectedCardTransactions,
+  clearSelectedFiatAccount,
+  clearSelectedFiatAccountCards,
+  clearSelectedWallet,
+  clearSelectedWalletCards,
+  clearSelectedWalletFiatAccountsWithCards,
+  clearSelectedWalletTransactions,
+  clearUserWallets,
+  loadSelectedWallet,
+  setSelectedWallet,
+  setUserWallets,
+} from '@/store/slices/finance';
 import { AppDispatch } from '@/store/types';
 
 const useWallet = () => {
@@ -30,12 +43,24 @@ const useWallet = () => {
     }
   };
 
-  const unloadWallets = (dispatch: AppDispatch) => {
-    dispatch(setUserWallets([]));
-    dispatch(setSelectedWallet(null));
+  const clearSelectedCardData = (dispatch: AppDispatch) => {
+    dispatch(clearSelectedCard());
+    dispatch(clearSelectedCardTransactions());
   };
 
-  return { createWalletAddress, getWalletAddress, initUserWallets, unloadWallets };
+  const clearUserFinanceData = (dispatch: AppDispatch) => {
+    dispatch(clearUserWallets());
+    dispatch(clearSelectedWallet());
+    dispatch(clearSelectedFiatAccount());
+    dispatch(clearSelectedFiatAccountCards());
+    dispatch(clearSelectedWalletFiatAccountsWithCards());
+    dispatch(clearSelectedWalletFiatAccountsWithCards());
+    dispatch(clearSelectedWalletTransactions());
+    dispatch(clearSelectedWalletCards());
+    clearSelectedCardData(dispatch);
+  };
+
+  return { createWalletAddress, getWalletAddress, initUserWallets, clearUserFinanceData, clearSelectedCardData };
 };
 
 export default useWallet;

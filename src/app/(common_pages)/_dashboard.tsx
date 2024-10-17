@@ -8,7 +8,6 @@ import { API } from '@/api/types';
 
 import { wallets } from '@/api/wallets';
 import Dashboard, { DashboardProps } from '@/components/Dashboard';
-import privateRoute from '@/components/privateRoute';
 import Loader from '@/components/ui/Loader';
 import whiteLabelConfig from '@/config/whitelabel';
 import {
@@ -18,9 +17,9 @@ import {
   defaultPaginationParams,
   ModalNames,
   DashboardTabs,
-  cardInitialPaginationParams,
   cardLoadMoreDefaultLimit,
   AppEnviroment,
+  RequestStatus,
 } from '@/constants';
 import useExternalCalc from '@/hooks/useExternalCalc';
 import useOrder from '@/hooks/useOrder';
@@ -34,7 +33,7 @@ import {
   selectUser,
 } from '@/store/selectors';
 import {
-  loadCards,
+  loadWalletCards,
   loadMoreWalletTransactions,
   loadSelectedWallet,
   loadWalletTransactions,
@@ -46,8 +45,11 @@ import {
   setSelectedFiat,
   setUserWallets,
   clearSelectedCard,
-  loadMoreCards,
+  loadMoreWalletCards,
   hiddenLoadSelectedWallet,
+  loadSelectedWalletFiatAccounts,
+  loadFiatAccountCards,
+  loadMoreSelectedWalletFiatAccounts,
 } from '@/store/slices/finance';
 import { setModalVisible } from '@/store/slices/ui';
 import { ChangeDashboardTabAdditionalParams } from '@/types';
@@ -69,7 +71,10 @@ const DashboardPage = () => {
     selectedWalletTransactions,
     selectedWalletCards,
     selectedCardTransactions,
+    selectedWalletFiatAccounts,
+    selectedWalletFiatAccountsWithCards,
   } = useAppSelector(selectFinanceData);
+  const dispatch = useAppDispatch();
 
   const { isWebAppInitialized, appEnviroment } = useAppSelector(selectConfig);
 
@@ -77,20 +82,23 @@ const DashboardPage = () => {
   const selectedWalletBalanceCurrency = useAppSelector(selectCurrentWalletBalanceCurrency);
   const availableToExchangeCrypto = useAppSelector(selectActiveFiatAvailableCrypto);
   const { createOnRampOrder, createOffRampOrder, createCrypto2CryptoOrder, createInternalTopUpOrder } = useOrder();
-  const { getWalletAddress, createWalletAddress } = useWallet();
+  const { getWalletAddress, createWalletAddress, clearSelectedCardData } = useWallet();
   const externalCalcData = useExternalCalc();
-  const [lastActiveWallet, setLastActiveWallet] = useState<API.Wallets.ExtendWallet | null>(null);
-  const dispatch = useAppDispatch();
 
-  const [queryDashboardTab, setQueryDashboardTab] = useQueryState('tab');
-  const [queryCardId, setQueryCardId] = useQueryState('card_id');
-
-  const initialDasboardTab = (queryDashboardTab as DashboardTabs) || DashboardTabs.MAIN;
   const allowedCryptoToFiatUuid = fiatExchangeRate.map((item) => item.crypto_uuid);
   const allowedCryptoToFiatList = crypto.filter((item) => allowedCryptoToFiatUuid.includes(item.uuid));
 
-  const [activeDashboardTab, setActiveDashboardTab] = useState<DashboardTabs>(initialDasboardTab);
+  const [queryDashboardTab, setQueryDashboardTab] = useQueryState<DashboardTabs>('tab', {
+    defaultValue: DashboardTabs.MAIN,
+    parse: (value) => value as DashboardTabs,
+  });
+  const [queryCardId, setQueryCardId] = useQueryState('card_id');
+  const [queryFiactAccountId, setQueryFiatAccountId] = useQueryState('fiat_account_id');
+
+  const [activeDashboardTab, setActiveDashboardTab] = useState<DashboardTabs>(queryDashboardTab);
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
+  const [lastActiveWallet, setLastActiveWallet] = useState<API.Wallets.ExtendWallet | null>(null);
+  const [activeFiatAccountId, setActiveFiatAccountId] = useState<string | null>(null);
 
   const walletTypes = Object.values(walletType);
   const isTelegramEnviroment = appEnviroment === AppEnviroment.TELEGRAM;
@@ -106,7 +114,7 @@ const DashboardPage = () => {
   const changeActiveCard = async (card_id: string | null) => {
     setActiveCardId(card_id);
     if (!card_id) {
-      dispatch(clearSelectedCard());
+      clearSelectedCardData(dispatch);
       return;
     }
 
@@ -125,17 +133,28 @@ const DashboardPage = () => {
   };
 
   const loadSelectedWalletCards = async () => {
-    const { limit, offset } = cardInitialPaginationParams;
-    selectedWallet.data && dispatch(loadCards({ wallet_uuid: selectedWallet.data.uuid, limit, offset }));
+    const { limit, offset } = defaultPaginationParams;
+    selectedWallet.data && dispatch(loadWalletCards({ wallet_uuid: selectedWallet.data.uuid, limit, offset }));
   };
 
   const loadMoreCardsHandler = async () => {
     selectedWallet.data &&
       dispatch(
-        loadMoreCards({
+        loadMoreWalletCards({
           wallet_uuid: selectedWallet.data.uuid,
           limit: cardLoadMoreDefaultLimit,
           offset: selectedWalletCards.meta.offset,
+        }),
+      );
+  };
+
+  const loadMoreWalletFiatAccountsHandler = async () => {
+    selectedWallet.data &&
+      dispatch(
+        loadMoreSelectedWalletFiatAccounts({
+          wallet_uuid: selectedWallet.data.uuid,
+          limit: defaultPaginationParams.limit,
+          offset: selectedWalletFiatAccounts.meta.offset,
         }),
       );
   };
@@ -197,12 +216,13 @@ const DashboardPage = () => {
 
     dispatch(loadWalletTransactions({ wallet_uuid: wallet.uuid }));
     dispatch(
-      loadCards({
+      loadWalletCards({
         wallet_uuid: wallet.uuid,
-        limit: cardInitialPaginationParams.limit,
-        offset: cardInitialPaginationParams.offset,
+        limit: defaultPaginationParams.limit,
+        offset: defaultPaginationParams.offset,
       }),
     );
+    dispatch(loadSelectedWalletFiatAccounts({ wallet_uuid: wallet.uuid }));
     changeActiveCard(null);
   };
 
@@ -232,10 +252,10 @@ const DashboardPage = () => {
   const updateCard = async (card_id: string, data: API.Cards.Update.Request) => {
     await issuing.cards.update(card_id, data);
     dispatch(
-      loadCards({
+      loadWalletCards({
         wallet_uuid: selectedWallet.data?.uuid || '',
-        limit: selectedWalletCards.meta.limit,
-        offset: selectedWalletCards.meta.offset,
+        limit: defaultPaginationParams.limit,
+        offset: defaultPaginationParams.offset,
       }),
     );
     await selectCard(card_id);
@@ -269,7 +289,8 @@ const DashboardPage = () => {
     getSensitiveData,
     getWalletAddress,
     isTelegramEnviroment,
-    loadMoreCards: loadMoreCardsHandler,
+    loadMoreWalletCards: loadMoreCardsHandler,
+    loadMoreWalletFiatAccounts: loadMoreWalletFiatAccountsHandler,
     loadMoreCardTransactions: loadMoreCardTransactionsHandler,
     loadMoreWalletTransactions: loadMoreWalletTransactionsHandler,
     loadSelectedWalletCards,
@@ -285,6 +306,8 @@ const DashboardPage = () => {
     selectFiat,
     selectWallet,
     selectedWalletBalanceCurrency,
+    selectedWalletFiatAccounts,
+    selectedWalletFiatAccountsWithCards,
     verificationStatus: userData?.kyc_status,
     walletTransactions: selectedWalletTransactions,
     walletTypes,
@@ -316,6 +339,22 @@ const DashboardPage = () => {
     activeCardId && selectCard(activeCardId);
   }, []);
 
+  const fiatAccountsCardsFirstLoad = async () => {
+    selectedWalletFiatAccounts.data &&
+      selectedWalletFiatAccounts.data.forEach((fiatAccount) => {
+        if (
+          selectedWalletFiatAccountsWithCards[fiatAccount.id]?.cards.status === RequestStatus.NONE &&
+          selectedWallet.data
+        ) {
+          dispatch(loadFiatAccountCards({ wallet_uuid: selectedWallet.data.uuid, fiat_account_id: fiatAccount.id }));
+        }
+      });
+  };
+
+  useEffect(() => {
+    fiatAccountsCardsFirstLoad();
+  }, [selectedWalletFiatAccounts]);
+
   if (!isWebAppInitialized) {
     return <Loader />;
   }
@@ -323,4 +362,4 @@ const DashboardPage = () => {
   return <Dashboard {...dasboardProps} />;
 };
 
-export default privateRoute(DashboardPage);
+export default DashboardPage;

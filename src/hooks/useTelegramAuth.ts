@@ -16,7 +16,7 @@ const useTelegramAuth = (
   launchParams: LaunchParams | undefined,
   initData: InitData | undefined,
   miniApp: MiniApp | undefined,
-  initUser: () => Promise<void>,
+  loadUserContent: () => Promise<void>,
 ) => {
   const router = useRouter();
   const tg_id = initData?.user?.id;
@@ -58,7 +58,7 @@ const useTelegramAuth = (
     try {
       const { data } = await auth.telegram.signup(signUpData);
       setTokens(data);
-      await initUser();
+      await loadUserContent();
       router.push('/mini-app');
       setLoadingStatus(RequestStatus.FULLFILLED);
     } catch (e) {
@@ -88,7 +88,7 @@ const useTelegramAuth = (
       const { data } = await auth.telegram.signin(signInData);
 
       setTokens(data);
-      await initUser();
+      await loadUserContent();
       setLoadingStatus(RequestStatus.FULLFILLED);
     } catch (e) {
       setLoadingStatus(RequestStatus.REJECTED);

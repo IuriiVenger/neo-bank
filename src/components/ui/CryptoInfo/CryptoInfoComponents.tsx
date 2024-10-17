@@ -5,11 +5,20 @@ import { FC } from 'react';
 import { roundToDecimals } from '@/utils/converters';
 import { getCryptoIconSrc } from '@/utils/financial';
 
+const cryptoLabelSizesData = {
+  xs: 'h-5 w-5',
+  sm: 'h-7 w-7',
+  md: 'h-[42px] w-[42px]',
+  lg: 'h-12 w-12',
+};
+
 type CryptoLabelProps = {
   currencyNameLabel?: string;
   crypto: {
     symbol: string;
   };
+  onlyIcon?: boolean;
+  size?: keyof typeof cryptoLabelSizesData;
 };
 
 export type CryptoInfoAmountProps = {
@@ -22,19 +31,21 @@ export type CryptoInfoAmountProps = {
   className?: string;
 } & ({ withoutFiat: true; fiatSymbol?: never } | { withoutFiat?: never; fiatSymbol: string });
 
-export const CryptoLabel: FC<CryptoLabelProps> = ({ crypto, currencyNameLabel }) => (
+export const CryptoLabel: FC<CryptoLabelProps> = ({ crypto, currencyNameLabel, onlyIcon, size = 'md' }) => (
   <div className="flex items-center gap-3">
     <Image
-      className="h-[42px] w-[42px] rounded-full object-cover"
+      className={cn('rounded-full object-cover', cryptoLabelSizesData[size])}
       src={getCryptoIconSrc(crypto.symbol)}
       alt="currency label"
       height={44}
       width={44}
     />
-    <div className="flex flex-col items-start">
-      <span className="font-medium leading-5">{currencyNameLabel || crypto.symbol}</span>
-      <span className="text-foreground-2 text-sm leading-4">{crypto.symbol}</span>
-    </div>
+    {!onlyIcon && (
+      <div className="flex flex-col items-start">
+        <span className="font-medium leading-5">{currencyNameLabel || crypto.symbol}</span>
+        <span className="text-foreground-2 text-sm leading-4">{crypto.symbol}</span>
+      </div>
+    )}
   </div>
 );
 
