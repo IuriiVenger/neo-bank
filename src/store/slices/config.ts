@@ -1,17 +1,9 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+import { ConfigState } from '../types';
 
 import { AppEnviroment } from '@/constants';
-
-type SetAppEnviromentAction = {
-  payload: AppEnviroment;
-};
-
-type ConfigState = {
-  appEnviroment: AppEnviroment | null;
-  isWebAppInitialized: boolean;
-  isAppFullInitialized: boolean;
-};
 
 const initialState: ConfigState = {
   appEnviroment: null,
@@ -29,7 +21,7 @@ const confgiSlice = createSlice({
     setAppFullInitialized: (state, action) => {
       state.isAppFullInitialized = action.payload;
     },
-    setAppEnviroment(state, action: SetAppEnviromentAction) {
+    setAppEnviroment(state, action: PayloadAction<AppEnviroment>) {
       state.appEnviroment = action.payload;
     },
   },

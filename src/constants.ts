@@ -101,17 +101,16 @@ export const defaultPaginationParams = {
   isLastPage: false,
 };
 
-export const cardInitialPaginationParams = {
-  limit: 10,
-  offset: 0,
-  isLastPage: false,
-};
-
 export const cardLoadMoreDefaultLimit = 12;
 
 export const emptyStoreDataWithStatus = {
   status: RequestStatus.NONE,
   data: null,
+};
+
+export const emptyStoreDataWithStatusAndMeta = {
+  ...emptyStoreDataWithStatus,
+  meta: defaultPaginationParams,
 };
 
 export enum CalcType {
