@@ -10,13 +10,17 @@ type FiatAccountProps = {
   fiat_account: FiatAccountsWithCards;
   bins: DashboardProps['bins'];
   onCardClick: (card_id: string) => void;
+  onSeeDetailsClick: (fiat_account_id: string) => void;
+  loadMoreFiatAccountCards: DashboardProps['loadMoreFiatAccountCards'];
 };
 
-const FiatAccount: FC<FiatAccountProps> = ({ fiat_account, bins, onCardClick }) => {
+const FiatAccount: FC<FiatAccountProps> = (props) => {
+  const { fiat_account, bins, onCardClick, onSeeDetailsClick, loadMoreFiatAccountCards } = props;
   const { cards, total_balance } = fiat_account;
 
   const program = bins.find((bin) => bin.id === fiat_account.program_id);
-  const loadMoreFiatAccountCards = () => console.log(123);
+  const seeDetailsClickHandler = (fiat_account_id: string) => () => onSeeDetailsClick(fiat_account_id);
+  const loadMoreCards = () => loadMoreFiatAccountCards(fiat_account.id);
 
   return (
     <div>
@@ -26,22 +30,26 @@ const FiatAccount: FC<FiatAccountProps> = ({ fiat_account, bins, onCardClick }) 
             {fiat_account.fiat.symbol}
             {roundToDecimals(total_balance)}
           </h2>
-          <button type="button" className="text-foreground-2 text-sm hover:opacity-hover">
+          <button
+            type="button"
+            className="text-foreground-2 text-sm hover:opacity-hover"
+            onClick={seeDetailsClickHandler(fiat_account.id)}
+          >
             See details
           </button>
         </div>
         <p className="text-foreground-2 text-sm">{program?.name}</p>
       </div>
       <CardsList
-        openCreateCardModal={loadMoreFiatAccountCards}
+        openCreateCardModal={() => console.log('openCreateCardModal')}
         cards={cards}
         cardsOnly
         cardSize="xs"
         scrollContainerClassName="gap-1.5"
         smallPaddings
         hideCardInfo
-        loadMoreCards={loadMoreFiatAccountCards}
-        openKYC={loadMoreFiatAccountCards}
+        loadMoreCards={loadMoreCards}
+        openKYC={() => console.log('openKYC')}
         onCardClick={onCardClick}
         horizontalEmptyState
       />

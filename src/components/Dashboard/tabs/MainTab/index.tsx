@@ -27,12 +27,14 @@ type MainTabProps = {
   selectedWalletBalanceCurrency: string;
   changeDashboardTab: DashboardProps['changeDashboardTab'];
   chainList: DashboardProps['chainList'];
+  fiatList: DashboardProps['fiatList'];
   cards: DashboardProps['cards'];
   loadSelectedWalletCards: DashboardProps['loadSelectedWalletCards'];
+  loadMoreFiatAccountCards: DashboardProps['loadMoreFiatAccountCards'];
   loadMoreWalletFiatAccounts: DashboardProps['loadMoreWalletFiatAccounts'];
   loadMoreWalletCards: DashboardProps['loadMoreWalletCards'];
   loadMoreWalletTransactions: DashboardProps['loadMoreWalletTransactions'];
-  createCard: DashboardProps['createCard'];
+  createStandAloneCard: DashboardProps['createStandAloneCard'];
   createCrypto2CryptoOrder: DashboardProps['createCrypto2CryptoOrder'];
   createCrypto2FiatOrder: DashboardProps['createCrypto2FiatOrder'];
   walletTransactions: DashboardProps['walletTransactions'];
@@ -61,6 +63,8 @@ const MainTab: FC<MainTabProps> = (props) => {
     selectedWalletFiatAccountsWithCards,
     bins,
     selectedWalletFiatAccounts,
+    loadMoreFiatAccountCards,
+    createStandAloneCard,
   } = props;
 
   const [isReceiveCryptoModalOpen, setIsReceiveCryptoModalOpen] = useState(false);
@@ -78,6 +82,8 @@ const MainTab: FC<MainTabProps> = (props) => {
   };
   const openWalletTab = () => changeDashboardTab(DashboardTabs.WALLET);
   const openTransactionsTab = () => changeDashboardTab(DashboardTabs.TRANSACTIONS);
+  const openFiatAccountTab = (fiat_account_id: string) =>
+    changeDashboardTab(DashboardTabs.FIAT_ACCOUNT, { fiat_account_id });
   const openReceiveCryptoModal = () => setIsReceiveCryptoModalOpen(true);
   const openCreateCardModal = () => setIsCreateCardModalOpen(true);
   const openWithdrawCryptoModal = () => setIsWithdrawCryptoModalOpen(true);
@@ -143,6 +149,8 @@ const MainTab: FC<MainTabProps> = (props) => {
               bins={bins}
               onCardClick={onCardClick}
               isLoadMoreAvailible={!selectedWalletFiatAccounts.meta?.isLastPage}
+              openFiatAccountTab={openFiatAccountTab}
+              loadMoreFiatAccountCards={loadMoreFiatAccountCards}
             />
           </ScrollContainer>
           <FiatAccountsList
@@ -152,6 +160,8 @@ const MainTab: FC<MainTabProps> = (props) => {
             bins={bins}
             onCardClick={onCardClick}
             isLoadMoreAvailible={!selectedWalletFiatAccounts.meta?.isLastPage}
+            openFiatAccountTab={openFiatAccountTab}
+            loadMoreFiatAccountCards={loadMoreFiatAccountCards}
           />
         </div>
 
@@ -178,6 +188,7 @@ const MainTab: FC<MainTabProps> = (props) => {
       />
       <CreateCardModal
         isOpen={isCreateCardModalOpen}
+        createCard={createStandAloneCard}
         setIsModalOpen={setIsCreateCardModalOpen}
         onCardCreate={onCardCreate}
         {...props}

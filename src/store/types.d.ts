@@ -1,3 +1,4 @@
+import { User } from '@supabase/supabase-js';
 import { TypedUseSelectorHook } from 'react-redux';
 
 import { store } from '.';

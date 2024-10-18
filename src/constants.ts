@@ -59,16 +59,9 @@ export enum PaymentMethod {
 }
 
 export enum DashboardTabs {
-  DEPOSIT = 'deposit',
-  WITHDRAW = 'withdraw',
-  EXCHANGE = 'exchange',
-  INFO = 'info',
-  CARDS = 'cards',
-
-  // new
-
   MAIN = 'main',
   CARD = 'card',
+  FIAT_ACCOUNT = 'fiat_account',
   WALLET = 'wallet',
   TRANSACTIONS = 'transactions',
 }

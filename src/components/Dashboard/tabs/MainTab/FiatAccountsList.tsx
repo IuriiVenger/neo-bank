@@ -11,13 +11,15 @@ type FiatAccountListProps = {
   className?: string;
   fiatAccounts: DashboardProps['selectedWalletFiatAccountsWithCards'];
   onCardClick: (card_id: string) => void;
-  loadMoreFiatAccounts: () => void;
+  loadMoreFiatAccounts: DashboardProps['loadMoreWalletFiatAccounts'];
+  loadMoreFiatAccountCards: DashboardProps['loadMoreFiatAccountCards'];
   bins: DashboardProps['bins'];
   isLoadMoreAvailible?: boolean;
+  openFiatAccountTab: (fiat_account_id: string) => void;
 };
 
 const FiatAccountsList: FC<FiatAccountListProps> = (props) => {
-  const { fiatAccounts, loadMoreFiatAccounts, className, bins, onCardClick, isLoadMoreAvailible } = props;
+  const { fiatAccounts, loadMoreFiatAccounts, className, isLoadMoreAvailible, openFiatAccountTab } = props;
   const [isEndCardsListVisible, setIsEndCardsListVisible] = useState(false);
 
   const fiatAccountsData = Object.entries(fiatAccounts).map(([key, value]) => ({
@@ -38,8 +40,8 @@ const FiatAccountsList: FC<FiatAccountListProps> = (props) => {
           <FiatAccount
             key={fiatAccount.fiatAccountId}
             fiat_account={fiatAccount}
-            bins={bins}
-            onCardClick={onCardClick}
+            onSeeDetailsClick={openFiatAccountTab}
+            {...props}
           />
         </DefaultContainer>
       ))}

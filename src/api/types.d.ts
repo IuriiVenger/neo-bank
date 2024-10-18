@@ -65,7 +65,7 @@ export namespace API {
   export namespace Cards {
     export interface CardConfig {
       id: string;
-      allowed_currencies: string[];
+      allowed_currencies?: string[];
       base_currency: string;
       brand: string;
       form_factor: CardFormFactor;
@@ -158,7 +158,7 @@ export namespace API {
       authorization_controls: {
         id: string;
         card_id: string;
-        allowed_currencies: string[];
+        allowed_currencies?: string[];
         allowed_transaction_count: string;
         allowed_merchant_categories: string | null;
       };
@@ -223,7 +223,6 @@ export namespace API {
       cvv: string;
       expiry_month: number;
       expiry_year: number;
-      name_on_card: string;
     }
 
     export interface OTP {
@@ -244,7 +243,7 @@ export namespace API {
     };
 
     export namespace Create {
-      export interface Request {
+      export interface StandAloneRequest {
         authorization_controls: AuthorizationControls;
         transaction_limits: TransactionLimit[];
         name_on_card: string;
@@ -255,7 +254,14 @@ export namespace API {
         wallet_id: string;
       }
 
-      export type Response = CardDetailItem;
+      export interface FiatAccountRequest {
+        fiat_account_id: string;
+        request_id: string;
+        nick_name: string;
+      }
+
+      export type StandAloneResponse = CardDetailItem;
+      export type FiatAccountResponse = CardDetailItem;
     }
 
     export namespace Update {

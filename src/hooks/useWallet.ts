@@ -48,19 +48,30 @@ const useWallet = () => {
     dispatch(clearSelectedCardTransactions());
   };
 
+  const clearSelectedFiatAccountData = (dispatch: AppDispatch) => {
+    dispatch(clearSelectedFiatAccount());
+    dispatch(clearSelectedFiatAccountCards());
+  };
+
   const clearUserFinanceData = (dispatch: AppDispatch) => {
     dispatch(clearUserWallets());
     dispatch(clearSelectedWallet());
-    dispatch(clearSelectedFiatAccount());
-    dispatch(clearSelectedFiatAccountCards());
     dispatch(clearSelectedWalletFiatAccountsWithCards());
     dispatch(clearSelectedWalletFiatAccountsWithCards());
     dispatch(clearSelectedWalletTransactions());
     dispatch(clearSelectedWalletCards());
+    clearSelectedFiatAccountData(dispatch);
     clearSelectedCardData(dispatch);
   };
 
-  return { createWalletAddress, getWalletAddress, initUserWallets, clearUserFinanceData, clearSelectedCardData };
+  return {
+    createWalletAddress,
+    getWalletAddress,
+    initUserWallets,
+    clearUserFinanceData,
+    clearSelectedCardData,
+    clearSelectedFiatAccountData,
+  };
 };
 
 export default useWallet;

@@ -6,8 +6,12 @@ import { defaultPaginationParams } from '@/constants';
 
 export const issuing = {
   cards: {
-    create: (data: API.Cards.Create.Request) =>
-      postRequest<API.Cards.Create.Response>('/issuing/cards/create', { data }),
+    create: {
+      standAloneCard: (data: API.Cards.Create.StandAloneRequest) =>
+        postRequest<API.Cards.Create.StandAloneResponse>('/issuing/cards/create', { data }),
+      fiatAccountCard: (data: API.Cards.Create.FiatAccountRequest) =>
+        postRequest<API.Cards.Create.FiatAccountResponse>('/issuing/cards/', { data }),
+    },
     getByWalletUuid: (wallet_uuid: string, limit: number, offset: number) =>
       getRequest<API.Cards.CardsList>('/issuing/cards', { params: { wallet_uuid, limit, offset } }),
     getByFiatAccountAndWalletId: (wallet_uuid: string, fiat_account_id: string, limit: number, offset: number) =>
