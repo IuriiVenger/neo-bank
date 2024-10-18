@@ -35,6 +35,7 @@ export type CardsListProps = {
   hideCardInfo?: boolean;
   smallPaddings?: boolean;
   horizontalEmptyState?: boolean;
+  noPadding?: boolean;
 };
 
 const CardsList: FC<CardsListProps> = (props) => {
@@ -52,6 +53,7 @@ const CardsList: FC<CardsListProps> = (props) => {
     smallPaddings,
     scrollContainerClassName,
     horizontalEmptyState,
+    noPadding,
   } = props;
   const { data, status, meta } = cards;
 
@@ -83,6 +85,10 @@ const CardsList: FC<CardsListProps> = (props) => {
   };
 
   const createCardButtonClickHandler = () => {
+    if (!openCreateCardModal) {
+      return;
+    }
+
     verificationStatus === KYCStatuses.APPROVED ? openCreateCardModal() : openKYC();
   };
 
@@ -148,7 +154,12 @@ const CardsList: FC<CardsListProps> = (props) => {
         </div>
       )}
       <ScrollContainer
-        className={cn('flex px-4 pt-5  ', scrollContainerClassName, !smallPaddings && 'lg:px-8 lg:pt-6')}
+        className={cn(
+          'flex',
+          scrollContainerClassName,
+          !noPadding && 'px-4 pt-5',
+          !smallPaddings && !noPadding && 'lg:px-8 lg:pt-6',
+        )}
         ref={scrollContainer as any}
         onScroll={onContainerResizeAndScroll}
       >

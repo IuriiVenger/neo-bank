@@ -52,7 +52,7 @@ export interface DashboardProps {
   getWalletAddress: (chain: number, wallet_uuid: string) => Promise<API.Wallets.WalletChain.Response>;
   isTelegramEnviroment: boolean;
   loadMoreFiatAccountCards: (fiat_account_id: string) => void;
-  loadMoreSelectedFiatAccountCards: (fiat_account_id: string) => void;
+  loadMoreSelectedFiatAccountCards: () => void;
   loadMoreWalletCards: () => void;
   loadMoreWalletFiatAccounts: () => void;
   loadMoreCardTransactions: () => void;
