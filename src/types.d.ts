@@ -14,6 +14,7 @@ export type RGBColor = `rgb(${string})`;
 type ChangeDashboardTabAdditionalParams = {
   wallet_uuid?: string;
   card_id?: string | null;
+  fiat_account_id?: string;
 };
 
 type WithOptionalAmount<T> = T & { amount?: number };

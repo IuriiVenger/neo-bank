@@ -25,7 +25,8 @@ type CreateCardModalProps = {
   onCardCreate?: (card_id: string) => void;
   bins: DashboardProps['bins'];
   selectedWallet: DashboardProps['selectedWallet'];
-  createCard: DashboardProps['createCard'];
+  createCard: DashboardProps['createStandAloneCard'];
+  fiatList: DashboardProps['fiatList'];
 };
 
 enum CreateCardSteps {
@@ -52,14 +53,17 @@ type CreateCartStepsMap = {
 type FormFactorsMap = { [key: string]: TitleDescriptionValue<string, string, CardFormFactor> };
 type CardTypesMap = { [key: string]: TitleDescriptionValue<string, string, CardType> };
 
-const getCardTypesData = (programs: API.Cards.CardConfig[]) => {
+const getCardTypesData = (programs: API.Cards.CardConfig[], fiatList: API.List.Fiat[]) => {
   const types = programs.reduce((acc: CardTypesMap, program) => {
+    const programBaseFiatCode = fiatList.find((item) => item.uuid === program.base_currency)?.code;
     if (acc[program.type]) {
-      acc[program.type].description += `, ${program.allowed_currencies.join('/')}`;
+      programBaseFiatCode &&
+        !acc[program.type].description.includes(programBaseFiatCode) &&
+        (acc[program.type].description += `, ${programBaseFiatCode}`);
     } else {
       acc[program.type] = {
         title: cardTypeData[program.type].title,
-        description: program.allowed_currencies.join('/'),
+        description: programBaseFiatCode || '',
         value: program.type,
       };
     }
@@ -70,14 +74,18 @@ const getCardTypesData = (programs: API.Cards.CardConfig[]) => {
   return Object.values(types);
 };
 
-const getCardFormFactorsData = (programs: API.Cards.CardConfig[]) => {
+const getCardFormFactorsData = (programs: API.Cards.CardConfig[], fiatList: API.List.Fiat[]) => {
   const formFactorsMap = programs.reduce((acc: FormFactorsMap, program) => {
+    const programBaseFiatCode = fiatList.find((item) => item.uuid === program.base_currency)?.code;
+
     if (acc[program.form_factor]) {
-      acc[program.form_factor].description += `, ${program.allowed_currencies.join('/')}`;
+      programBaseFiatCode &&
+        !acc[program.form_factor].description.includes(programBaseFiatCode) &&
+        (acc[program.form_factor].description += `, ${programBaseFiatCode}`);
     } else {
       acc[program.form_factor] = {
         title: cardFormFactorsData[program.form_factor].title,
-        description: program.allowed_currencies.join('/'),
+        description: programBaseFiatCode || '',
         value: program.form_factor,
       };
     }
@@ -89,7 +97,7 @@ const getCardFormFactorsData = (programs: API.Cards.CardConfig[]) => {
 };
 
 const CreateCardModal: FC<CreateCardModalProps> = (props) => {
-  const { bins, createCard, selectedWallet, className, setIsModalOpen, isOpen, onCardCreate } = props;
+  const { bins, createCard, selectedWallet, className, setIsModalOpen, isOpen, onCardCreate, fiatList } = props;
 
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState<API.Cards.CardConfig | null>(null);
@@ -122,8 +130,11 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     );
   }, [currentStep, bins, cardFormFactor, cardType, selectedProgram]);
 
-  const cardTypes = useMemo(() => getCardTypesData(availablePrograms), [availablePrograms]);
-  const cardFormFactors = useMemo(() => getCardFormFactorsData(availablePrograms), [availablePrograms]);
+  const cardTypes = useMemo(() => getCardTypesData(availablePrograms, fiatList), [availablePrograms, fiatList]);
+  const cardFormFactors = useMemo(
+    () => getCardFormFactorsData(availablePrograms, fiatList),
+    [availablePrograms, fiatList],
+  );
 
   const openConfirmationModal = () => {
     if (!cardFormFactor || !cardType || !selectedProgram || !cardName || !cardholderName) {
@@ -150,6 +161,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     setCardName,
     cardholderName,
     setCardholderName,
+    fiatList,
   };
 
   const createCardHandler = async () => {
@@ -157,7 +169,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
       return;
     }
 
-    const requestData: API.Cards.Create.Request = {
+    const requestData: API.Cards.Create.StandAloneRequest = {
       authorization_controls: {} as API.Cards.AuthorizationControls,
       transaction_limits: [] as API.Cards.TransactionLimit[],
       program_id: selectedProgram.id,

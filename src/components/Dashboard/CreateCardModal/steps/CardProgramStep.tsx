@@ -5,12 +5,13 @@ import CustomOption from '@/components/ui/CustomOption';
 
 export type CardProgramStepProps = {
   availablePrograms: API.Cards.CardConfig[];
+  fiatList: API.List.Fiat[];
   selectedProgram: API.Cards.CardConfig | null;
   setSelectedProgram: (program: API.Cards.CardConfig) => void;
 };
 
 const CardProgramStep: FC<CardProgramStepProps> = (props) => {
-  const { availablePrograms, selectedProgram, setSelectedProgram } = props;
+  const { availablePrograms, selectedProgram, setSelectedProgram, fiatList } = props;
 
   const onCardTypeClick = useCallback(
     (value: boolean, key: string) => {
@@ -29,7 +30,7 @@ const CardProgramStep: FC<CardProgramStepProps> = (props) => {
           <CustomOption
             key={item.id}
             title={`${item.brand} ${item.form_factor}`}
-            description={item.allowed_currencies.join(', ')}
+            description={fiatList.find((fiat) => fiat.uuid === item.base_currency)?.symbol}
             type="radio"
             isChecked={selectedProgram?.id === item.id}
             onChange={onCardTypeClick}

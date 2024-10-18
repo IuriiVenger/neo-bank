@@ -20,7 +20,7 @@ const cardSizesMap: Record<CardSizes, Record<CardSizesValues, string>> = {
   xs: {
     provider: 'h-1 w-fit',
     tenantLogo: 'h-1 w-fit',
-    card: 'w-15 h-9 rounded-[2px] p-1.5',
+    card: ' w-22 h-14 rounded-[2px] p-1.5',
     cardNumber: 'text-[4px]',
     balance: 'hidden',
     balanceLabel: 'hidden',
@@ -34,9 +34,9 @@ const cardSizesMap: Record<CardSizes, Record<CardSizesValues, string>> = {
     balanceLabel: 'text-[10px]',
   },
   md: {
-    provider: 'h-5.5 w-fit',
-    tenantLogo: 'h-5 w-fit',
-    card: 'w-78 h-49 rounded-[12px] p-5',
+    provider: 'h-4 w-fit',
+    tenantLogo: 'h-3 w-fit',
+    card: 'w-56 h-36 rounded-[12px] p-3',
     cardNumber: 'text-base',
     balance: 'text-sm mt-1',
     balanceLabel: 'text-[8px]',
