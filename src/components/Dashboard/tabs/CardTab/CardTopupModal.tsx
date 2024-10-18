@@ -133,7 +133,7 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
     <MainModal
       isOpen={isOpen}
       onClose={closeModal}
-      confirmButtonDisabled={!isTopUpAvailable}
+      confirmButtonDisabled={!isTopUpAvailable || isConfirmationModalOpen}
       confirmButtonText={confirmButtonText}
       onConfirm={openConfirmationModal}
     >
