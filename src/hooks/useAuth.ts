@@ -237,6 +237,7 @@ const useAuth = (dispatch: AppDispatch) => {
     signUp,
     signOut,
     initUser,
+    loadUserContent,
     setEmail,
     setPhone,
     setPassword,

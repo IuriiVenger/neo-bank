@@ -8,7 +8,6 @@ import { API } from '@/api/types';
 
 import { wallets } from '@/api/wallets';
 import Dashboard, { DashboardProps } from '@/components/Dashboard';
-import privateRoute from '@/components/privateRoute';
 import Loader from '@/components/ui/Loader';
 import whiteLabelConfig from '@/config/whitelabel';
 import {
@@ -234,8 +233,8 @@ const DashboardPage = () => {
     dispatch(
       loadCards({
         wallet_uuid: selectedWallet.data?.uuid || '',
-        limit: selectedWalletCards.meta.limit,
-        offset: selectedWalletCards.meta.offset,
+        limit: defaultPaginationParams.limit,
+        offset: defaultPaginationParams.offset,
       }),
     );
     await selectCard(card_id);
@@ -323,4 +322,4 @@ const DashboardPage = () => {
   return <Dashboard {...dasboardProps} />;
 };
 
-export default privateRoute(DashboardPage);
+export default DashboardPage;
