@@ -19,6 +19,7 @@ type ConfirmModalProps = ConfirmModalTexts & {
   setIsModalOpen: (isOpen: boolean) => void;
   onConfirm: () => any;
   isOpen: boolean;
+  useNative?: boolean;
 };
 
 type TelegramConfirmModalProps = {
@@ -63,7 +64,7 @@ const TelegramConfirmModal: FC<TelegramConfirmModalProps> = memo(({ message, tit
 });
 
 const ConfirmModal: FC<ConfirmModalProps> = (props) => {
-  const { setIsModalOpen, onConfirm, isOpen, title, confirmText } = props;
+  const { setIsModalOpen, onConfirm, isOpen, title, confirmText, useNative } = props;
   const { appEnviroment } = useAppSelector(selectConfig);
   const isTelegramEnviroment = appEnviroment === AppEnviroment.TELEGRAM;
 
@@ -102,7 +103,7 @@ const ConfirmModal: FC<ConfirmModalProps> = (props) => {
     }
   }, [isOpen]);
 
-  if (isTelegramEnviroment) {
+  if (isTelegramEnviroment && useNative) {
     return (
       <TelegramConfirmModal
         isOpen={isOpen}
