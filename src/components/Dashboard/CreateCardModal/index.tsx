@@ -245,6 +245,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
         isOpen={isOpen}
         onClose={closeModal}
         confirmButtonDisabled={createCardStepsMap[currentStep].isDisabled}
+        confirmButtonHidden={isConfirmationModalOpen}
         backdrop="opaque"
         scrollBehavior="inside"
         // nativeCloseButton
