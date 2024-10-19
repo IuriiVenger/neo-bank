@@ -119,7 +119,6 @@ const TelegramInit = () => {
   }, [swipeBehavior]);
 
   useEffect(() => {
-    console.log('viewport', viewport);
     viewport?.expand();
   }, [viewport]);
 
