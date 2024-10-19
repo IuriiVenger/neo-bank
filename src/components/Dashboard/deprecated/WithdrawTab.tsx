@@ -17,6 +17,7 @@ import CurrencyListModal from '@/components/modals/CurrencyListModal';
 import CustomInput from '@/components/ui/CustomInput';
 import { PaymentMethod } from '@/constants';
 import { UseExternalCalcData } from '@/hooks/useExternalCalc';
+import { useRequestStatus } from '@/hooks/useRequestStatus';
 import { isCrypto, isFiat } from '@/utils/financial';
 
 type WithdrawTabProps = DashboardProps & {
@@ -47,12 +48,13 @@ const WithdrawTab: FC<WithdrawTabProps> = (props) => {
   const [isFiatModalOpen, setIsFiatModalOpen] = useState(false);
   const [isCryptoModalOpen, setIsCryptoModalOpen] = useState(false);
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
-
   const [activePaymentMethod, setActivePaymentMethod] = useState<PaymentMethod>(
     whiteLabelConfig?.disableFiat ? PaymentMethod.CRYPTO : PaymentMethod.FIAT,
   );
   const [withdrawTarget, setWithdrawTarget] = useState('');
   const [withrawConfirmationText, setWithdrawConfirmationText] = useState<string | null>(null);
+
+  const [requestStatus, setPending, setFullfilled, setRejected] = useRequestStatus();
 
   const isFiatPayment = activePaymentMethod === PaymentMethod.FIAT;
 
@@ -88,27 +90,42 @@ const WithdrawTab: FC<WithdrawTabProps> = (props) => {
     setWithdrawTarget(value);
   };
 
-  const clickButtonHandler = () => {
+  const clickButtonHandler = async () => {
     if (!selectedWallet.data || !selectedCrypto || !selectedFiat) return;
 
     if (isFiatPayment) {
-      return createCrypto2FiatOrder({
-        amount,
-        fiat_uuid: selectedFiat.uuid,
-        crypto_uuid: selectedCrypto.uuid,
-        wallet_uuid: selectedWallet.data.uuid,
-        card_number: withdrawTargetWithoutSpaces,
-        is_subsctract: true,
-      });
+      try {
+        setPending();
+        await createCrypto2FiatOrder({
+          amount,
+          fiat_uuid: selectedFiat.uuid,
+          crypto_uuid: selectedCrypto.uuid,
+          wallet_uuid: selectedWallet.data.uuid,
+          card_number: withdrawTargetWithoutSpaces,
+          is_subsctract: true,
+        });
+        setFullfilled();
+        return;
+      } catch (error) {
+        setRejected();
+        throw error;
+      }
     }
 
-    return createCrypto2CryptoOrder({
-      amount,
-      crypto_uuid: selectedCrypto.uuid,
-      wallet_uuid: selectedWallet.data.uuid,
-      to_address: withdrawTarget,
-      is_subsctract: true,
-    });
+    try {
+      setPending();
+      await createCrypto2CryptoOrder({
+        amount,
+        crypto_uuid: selectedCrypto.uuid,
+        wallet_uuid: selectedWallet.data.uuid,
+        to_address: withdrawTarget,
+        is_subsctract: true,
+      });
+      setFullfilled();
+    } catch (error) {
+      setRejected();
+      throw error;
+    }
   };
 
   const selectCurrency = (currency: API.List.Crypto | API.List.Fiat | API.List.Chains) => {
