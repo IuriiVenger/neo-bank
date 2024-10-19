@@ -122,6 +122,7 @@ const CardTab: FC<CardTabProps> = (props) => {
       title: isCardFrozen ? 'Unfreeze' : 'Freeze',
       onClick: openFreezeModal,
       disabled: isCardClosed,
+      isLoading: requestStatuses[cardDetailRequests.FREEZE].PENDING,
       Icon: IoSnow,
     },
     {
