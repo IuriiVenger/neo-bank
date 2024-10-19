@@ -133,6 +133,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     }
 
     if (openModalCount === 0) {
+      console.log('onModalClose', openModalCount);
       mainButton.hide(); // have to test
       backButton.hide();
       mainButton.enable();
