@@ -249,7 +249,7 @@ export namespace API {
       export interface Request {
         authorization_controls: AuthorizationControls;
         transaction_limits: TransactionLimit[];
-        name_on_card: string;
+        // name_on_card: string; hide cardholder name
         nick_name: string;
         purpose?: string;
         request_id: string;
