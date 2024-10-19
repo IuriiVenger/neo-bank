@@ -1,6 +1,13 @@
 'use client';
 
-import { useInitData, useLaunchParams, useMiniApp, useSettingsButton, useThemeParams } from '@telegram-apps/sdk-react';
+import {
+  useInitData,
+  useLaunchParams,
+  useMiniApp,
+  useSettingsButton,
+  useSwipeBehavior,
+  useThemeParams,
+} from '@telegram-apps/sdk-react';
 
 import { useEffect, useState } from 'react';
 
@@ -67,6 +74,7 @@ const TelegramInit = () => {
   const initData = useInitData(true);
   const dispatch = useAppDispatch();
   const telegramTheme = useThemeParams(true);
+  const swipeBehavior = useSwipeBehavior(true);
 
   const { loadUserContent } = useAuth(dispatch);
   const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, loadUserContent);
@@ -87,21 +95,6 @@ const TelegramInit = () => {
     window.Telegram.WebApp.setBottomBarColor(themes[activeTheme].baseColors.background);
   };
 
-  // useEffect(() => {
-  //   dispatch(setAppEnviroment(AppEnviroment.TELEGRAM));
-  //   localStorage.setItem('app_enviroment', AppEnviroment.TELEGRAM);
-  // }, []);
-
-  useEffect(() => {
-    if (isThemeInitialized) {
-      updateTheme();
-    }
-  }, [activeTheme]);
-
-  useEffect(() => {
-    initTheme();
-  }, [telegramTheme?.isDark]);
-
   const settingsButton = useSettingsButton(true);
   const openSettingsPopup = () => {
     dispatch(setModalVisible(ModalNames.SETTINGS));
@@ -113,6 +106,26 @@ const TelegramInit = () => {
     settingsButton.show();
     settingsButton.on('click', openSettingsPopup);
   };
+
+  // useEffect(() => {
+  //   dispatch(setAppEnviroment(AppEnviroment.TELEGRAM));
+  //   localStorage.setItem('app_enviroment', AppEnviroment.TELEGRAM);
+  // }, []);
+
+  useEffect(() => {
+    swipeBehavior?.disableVerticalSwipe();
+  }, [swipeBehavior]);
+
+  useEffect(() => {
+    if (isThemeInitialized) {
+      updateTheme();
+    }
+  }, [activeTheme]);
+
+  useEffect(() => {
+    initTheme();
+  }, [telegramTheme?.isDark]);
+
   useEffect(() => {
     initSettingsButton();
   }, [settingsButton]);
