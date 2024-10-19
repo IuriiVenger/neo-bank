@@ -54,6 +54,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   const enableMainButton = () => {
+    console.log('enableMainButton');
     mainButton.enable();
     activeTheme && mainButton.setBgColor(themes[activeTheme].telegramColors.mainButton.color);
     activeTheme && mainButton.setTextColor(themes[activeTheme].telegramColors.mainButton.textColor);
@@ -99,6 +100,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   const restorePreviousTelegramNativeButtons = () => {
+    console.log('restorePreviousTelegramNativeButtons');
     previousTelegramMainButtonHandler !== undefined && mainButton.on('click', previousTelegramMainButtonHandler);
     previousTelegramMainButtonHandler !== undefined && mainButton.show();
     previousTelegramMainButtonDisabled ? disableMainButton() : enableMainButton();
@@ -133,7 +135,6 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     }
 
     if (openModalCount === 0) {
-      console.log('onModalClose', openModalCount);
       mainButton.hide(); // have to test
       backButton.hide();
       mainButton.enable();
