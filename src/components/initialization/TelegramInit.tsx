@@ -116,10 +116,11 @@ const TelegramInit = () => {
 
   useEffect(() => {
     swipeBehavior?.disableVerticalSwipe();
-    if (viewport && !viewport.isExpanded) {
-      viewport.expand();
-    }
   }, [swipeBehavior]);
+
+  useEffect(() => {
+    viewport?.expand();
+  }, [viewport]);
 
   useEffect(() => {
     if (isThemeInitialized) {
