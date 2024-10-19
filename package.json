@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "dev:https": "next dev --experimental-https",
-    "update": "node updateTenantInfo.mjs",
-    "build": "npm run update && next build",
+    "update:tenant": "node updateTenantInfo.mjs",
+    "update:whitelabels": "node updateWhitelabels.mjs",
+    "build": "npm run update:tenant && next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "npx eslint . --ext .tsx --ext .ts --ext .js --fix",

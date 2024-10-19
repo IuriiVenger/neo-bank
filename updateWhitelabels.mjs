@@ -1,5 +1,5 @@
 /* eslint-disable */
-const { execSync } = require('child_process');
+import { execSync } from 'child_process';
 
 const sourceBranch = 'main';
 const targetBranches = ['whitelabel/dauphin', 'whitelabel/flashcash', 'whitelabel/main-card', 'whitelabel/axioma'];
