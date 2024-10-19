@@ -16,6 +16,7 @@ import MainModal from '@/components/modals/MainModal';
 
 import { CardFormFactor, cardFormFactorsData, CardType, cardTypeData } from '@/constants';
 
+import { useRequestStatus } from '@/hooks/useRequestStatus';
 import { TitleDescriptionValue } from '@/types';
 
 type CreateCardModalProps = {
@@ -93,15 +94,15 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
 
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState<API.Cards.CardConfig | null>(null);
-
   const [topUpConfirmationText, setTopUpConfirmationText] = useState<string | null>(null);
-
   const [cardFormFactor, setCardFormFactor] = useState<CardFormFactor | null>(null);
   const [cardType, setCardType] = useState<CardType | null>(null);
   const [currentStep, setCurrentStep] = useState<CreateCardSteps>(CreateCardSteps.FORM_FACTOR);
   const [cardName, setCardName] = useState<string | null>(null);
   const [cardholderName, setCardholderName] = useState<string | null>(null);
   const [createdCardId, setCreatedCardId] = useState<string | null>(null);
+
+  const [requestStatus, setPending, setFulfilled, setRejected] = useRequestStatus();
 
   const availablePrograms = useMemo(() => {
     if (currentStep === CreateCardSteps.FORM_FACTOR) {
@@ -167,9 +168,16 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
       request_id: crypto.randomUUID(),
     };
 
-    const { data } = await createCard(requestData);
-    setCreatedCardId(data.card_id);
-    setCurrentStep(CreateCardSteps.SUCCESS);
+    try {
+      setPending();
+      const { data } = await createCard(requestData);
+      setCreatedCardId(data.card_id);
+      setCurrentStep(CreateCardSteps.SUCCESS);
+      setFulfilled();
+    } catch (error) {
+      setRejected();
+      throw error;
+    }
   };
 
   const closeModal = () => {
@@ -247,6 +255,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
         confirmButtonDisabled={createCardStepsMap[currentStep].isDisabled}
         backdrop="opaque"
         scrollBehavior="inside"
+        isLoading={requestStatus.PENDING}
         // nativeCloseButton
         confirmButtonText={createCardStepsMap[currentStep].mainButtonText}
         onConfirm={createCardStepsMap[currentStep].onMainButtonClick}

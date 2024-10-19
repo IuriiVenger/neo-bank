@@ -6,7 +6,6 @@ import { FC, memo, useEffect, useState } from 'react';
 
 import { framerMotionAnimations } from '@/config/animations';
 import { AppEnviroment } from '@/constants';
-import { useRequestStatus } from '@/hooks/useRequestStatus';
 import { useAppSelector } from '@/store';
 import { selectConfig } from '@/store/selectors';
 
@@ -19,7 +18,6 @@ type ConfirmModalProps = ConfirmModalTexts & {
   setIsModalOpen: (isOpen: boolean) => void;
   onConfirm: () => any;
   isOpen: boolean;
-  useNative?: boolean;
 };
 
 type TelegramConfirmModalProps = {
@@ -64,34 +62,22 @@ const TelegramConfirmModal: FC<TelegramConfirmModalProps> = memo(({ message, tit
 });
 
 const ConfirmModal: FC<ConfirmModalProps> = (props) => {
-  const { setIsModalOpen, onConfirm, isOpen, title, confirmText, useNative } = props;
+  const { setIsModalOpen, onConfirm, isOpen, title, confirmText } = props;
   const { appEnviroment } = useAppSelector(selectConfig);
   const isTelegramEnviroment = appEnviroment === AppEnviroment.TELEGRAM;
-
-  const [requestStatuses, setPending, setFullfilled, setRejected] = useRequestStatus();
-  const [lastRequestStatus, _, setLastRequestFullfilled, setLastRequestRejected] = useRequestStatus();
 
   const [delay, setDelay] = useState(5);
 
   const handleClose = () => setIsModalOpen(false);
 
   const handleConfirmModal = async () => {
-    try {
-      setPending();
-      await onConfirm();
-      handleClose();
-      setFullfilled();
-      setLastRequestFullfilled();
-    } catch (error) {
-      setRejected();
-      setLastRequestRejected();
-      throw error;
-    }
+    onConfirm();
+    handleClose();
   };
 
   const modalTitle = title || 'Confirmation';
   const modalConfirmText = confirmText || 'Are you sure you want to proceed?';
-  const confirmButtonText = `${lastRequestStatus.REJECTED ? 'Try again' : 'Confirm'} ${delay ? ` (${delay})` : ''}`;
+  const confirmButtonText = `Confirm ${delay ? ` (${delay})` : ''}`;
 
   useEffect(() => {
     isOpen && delay > 0 && setTimeout(() => setDelay(delay - 1), 1000);
@@ -103,7 +89,7 @@ const ConfirmModal: FC<ConfirmModalProps> = (props) => {
     }
   }, [isOpen]);
 
-  if (isTelegramEnviroment && useNative) {
+  if (isTelegramEnviroment) {
     return (
       <TelegramConfirmModal
         isOpen={isOpen}
@@ -132,12 +118,7 @@ const ConfirmModal: FC<ConfirmModalProps> = (props) => {
         </ModalBody>
         <ModalFooter>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button
-            isDisabled={!!delay}
-            color={lastRequestStatus.REJECTED ? 'danger' : 'primary'}
-            isLoading={requestStatuses.PENDING}
-            onClick={handleConfirmModal}
-          >
+          <Button isDisabled={!!delay} color="primary" onClick={handleConfirmModal}>
             {confirmButtonText}
           </Button>
         </ModalFooter>
