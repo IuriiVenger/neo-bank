@@ -7,6 +7,7 @@ import {
   useSettingsButton,
   useSwipeBehavior,
   useThemeParams,
+  useViewport,
 } from '@telegram-apps/sdk-react';
 
 import { useEffect, useState } from 'react';
@@ -75,6 +76,7 @@ const TelegramInit = () => {
   const dispatch = useAppDispatch();
   const telegramTheme = useThemeParams(true);
   const swipeBehavior = useSwipeBehavior(true);
+  const viewport = useViewport(true);
 
   const { loadUserContent } = useAuth(dispatch);
   const { initTelegramAuth } = useTelegramAuth(dispatch, launchParams, initData, miniApp, loadUserContent);
@@ -114,6 +116,9 @@ const TelegramInit = () => {
 
   useEffect(() => {
     swipeBehavior?.disableVerticalSwipe();
+    if (viewport && !viewport.isExpanded) {
+      viewport.expand();
+    }
   }, [swipeBehavior]);
 
   useEffect(() => {
