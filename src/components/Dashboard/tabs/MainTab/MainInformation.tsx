@@ -25,7 +25,7 @@ const MainInformation: FC<MainInformationProps> = (props) => {
         <p className="whitespace-nowrap text-xl font-medium">Total balance</p>
         <p className="whitespace-nowrap  text-5xl">{balance}</p>
       </div>
-      <div className="flex gap-4 md:gap-9 max-md:justify-between max-md:px-2">
+      <div className="flex items-baseline gap-2 md:gap-9 max-md:justify-between max-md:px-2">
         {actionButtons.map((button, index) => (
           <RoundButton buttonClassname="md:!bg-background" key={button.id || index} {...button} />
         ))}
