@@ -72,6 +72,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   const onConfirmButtonDisabledChanged = () => {
+    console.log('onConfirmButtonDisabledChanged', confirmButtonDisabled);
     confirmButtonDisabled ? disableMainButton() : enableMainButton();
   };
 
