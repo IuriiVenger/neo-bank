@@ -18,7 +18,8 @@ import visa from '@/assets/svg/payment-systems/visa.svg';
 import logo from '@/assets/tenant/light/logo.svg';
 import { OfflineCryptoFormFieldAction } from '@/constants';
 import { UseExchangeData } from '@/hooks/useExchange';
-import { getActiveFiatAvailableCrypto, isCrypto, isFiat } from '@/utils/financial';
+import { getActiveFiatAvailableCrypto } from '@/utils/financial';
+import { isCrypto, isFiat } from '@/utils/typeguards';
 
 type OfflineCryptoFormProps = {
   selectCrypto: (crypto: API.List.Crypto) => void;

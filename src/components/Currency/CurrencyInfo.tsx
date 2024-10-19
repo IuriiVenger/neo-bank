@@ -7,7 +7,8 @@ import { HiOutlineSelector } from 'react-icons/hi';
 
 import { API } from '@/api/types';
 
-import { getCurrencyIconSrc, isCrypto, isFiat } from '@/utils/financial';
+import { getCurrencyIconSrc } from '@/utils/financial';
+import { isCrypto, isFiat } from '@/utils/typeguards';
 
 type CurrencyInfoProps = {
   currency: API.List.Crypto | API.List.Fiat | API.List.Chains;

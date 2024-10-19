@@ -21,11 +21,10 @@ import Loader from '@/components/ui/Loader';
 import RoundButton, { RoundButtonProps } from '@/components/ui/RoundButton';
 import { CardStatus, DashboardTabs, RequestStatus } from '@/constants';
 import { useRequestsStatus } from '@/hooks/useRequestStatus';
-import { ChangeDashboardTabAdditionalParams } from '@/types';
 import { getCardBalance } from '@/utils/financial';
 
 type CardTabProps = {
-  changeDashboardTab: (tab: DashboardTabs, additionalRouteParams: ChangeDashboardTabAdditionalParams) => void;
+  changeDashboardTab: DashboardProps['changeDashboardTab'];
   selectedCard: DashboardProps['selectedCard'];
   selectedCardTransactions: DashboardProps['selectedCardTransactions'];
   loadMoreCardTransactions: DashboardProps['loadMoreCardTransactions'];
