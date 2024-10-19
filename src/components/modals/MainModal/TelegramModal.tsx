@@ -1,6 +1,6 @@
 import { cn, Modal, ModalBody, ModalContent, ModalHeader } from '@nextui-org/react';
 import { useBackButton, useMainButton } from '@telegram-apps/sdk-react';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { MainModalProps } from '.';
 
@@ -42,6 +42,8 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     onConfirm && onConfirm();
   };
 
+  const [isInitialized, setIsInitialized] = useState(false);
+
   const onConfirmButtonTextChanged = () => {
     if (!confirmButtonText) return;
 
@@ -78,7 +80,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
   };
 
   const onIsLoadingChanged = () => {
-    if (isLoading === undefined) return;
+    if (!isInitialized) return;
 
     isLoading ? showLoader() : hideLoader();
   };
@@ -144,6 +146,7 @@ const TelegramModal: FC<MainModalProps> = (props) => {
 
   useEffect(() => {
     onModalOpen();
+    setIsInitialized(true);
   }, []);
 
   useEffect(() => () => onModalClose(), []);
