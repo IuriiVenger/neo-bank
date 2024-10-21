@@ -48,9 +48,7 @@ const WithdrawTab: FC<WithdrawTabProps> = (props) => {
   const [isFiatModalOpen, setIsFiatModalOpen] = useState(false);
   const [isCryptoModalOpen, setIsCryptoModalOpen] = useState(false);
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
-  const [activePaymentMethod, setActivePaymentMethod] = useState<PaymentMethod>(
-    whiteLabelConfig?.disableFiat ? PaymentMethod.CRYPTO : PaymentMethod.FIAT,
-  );
+  const [activePaymentMethod, setActivePaymentMethod] = useState<PaymentMethod>(PaymentMethod.CRYPTO);
   const [withdrawTarget, setWithdrawTarget] = useState('');
   const [withrawConfirmationText, setWithdrawConfirmationText] = useState<string | null>(null);
 
@@ -149,7 +147,6 @@ const WithdrawTab: FC<WithdrawTabProps> = (props) => {
         className="w-full"
         activePaymentMethod={activePaymentMethod}
         onSelect={setActivePaymentMethod}
-        isFiatDisabled={whiteLabelConfig?.disableFiat}
       />
       <SelectCurrency
         label="Withdraw from"

@@ -228,3 +228,11 @@ export const getSelectedCoinCurrenciesWithAmount = (
     ? selectedCoinCurrenciesWithAmount.filter(({ amount }) => !!amount)
     : selectedCoinCurrenciesWithAmount;
 };
+
+export const getCardTransactionExchangeRate = (transaction: API.Cards.TransactionItem) => {
+  const exchangeRate = roundToDecimals(transaction.transaction_amount / transaction.billing_amount, 2);
+
+  const exchangeRateDescription = `1 ${transaction.billing_currency} = ${exchangeRate} ${transaction.transaction_currency}`;
+
+  return exchangeRateDescription;
+};

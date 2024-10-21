@@ -29,7 +29,7 @@ const InfoTab: FC<InfoTabProps> = (props) => {
   const isLoadMoreAvailible = !meta.isLastPage;
 
   return (
-    <section className="flex min-h-96 flex-col overflow-scroll">
+    <section className="flex min-h-96 flex-col overflow-y-auto">
       <Accordion
         selectedKeys={balanceAccordinState}
         onSelectionChange={setBalanceAccordionState}
