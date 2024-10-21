@@ -47,9 +47,7 @@ const DepositTab: FC<DepositTabProps> = (props) => {
   const [isFiatModalOpen, setIsFiatModalOpen] = useState(false);
   const [isCryptoModalOpen, setIsCryptoModalOpen] = useState(false);
   const [isChainModalOpen, setIsChainModalOpen] = useState(false);
-  const [activePaymentMethod, setActivePaymentMethod] = useState<PaymentMethod>(
-    whiteLabelConfig?.disableFiat ? PaymentMethod.CRYPTO : PaymentMethod.FIAT,
-  );
+  const [activePaymentMethod, setActivePaymentMethod] = useState<PaymentMethod>(PaymentMethod.CRYPTO);
   const [activeWalletAddress, setActiveWalletAddress] = useState<API.Wallets.WalletChain.Response | null>(null);
   const [isWalletAdressLoading, setIsWalletAdressLoading] = useState(false);
 
@@ -130,7 +128,6 @@ const DepositTab: FC<DepositTabProps> = (props) => {
         className="w-full"
         activePaymentMethod={activePaymentMethod}
         onSelect={setActivePaymentMethod}
-        isFiatDisabled={whiteLabelConfig?.disableFiat}
       />
       {activePaymentMethod === PaymentMethod.FIAT && (
         <>

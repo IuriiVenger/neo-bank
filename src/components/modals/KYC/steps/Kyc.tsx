@@ -1,11 +1,16 @@
 import SumsubWebSdk from '@sumsub/websdk-react';
-import { FC } from 'react';
+
+import { FC, useEffect, useState } from 'react';
+
+import { CustomTheme } from '@/constants';
 
 type KycProps = {
   accessToken: string;
+  activeTheme: CustomTheme | null;
 };
 
-const Kyc: FC<KycProps> = ({ accessToken }: KycProps) => {
+const Kyc: FC<KycProps> = ({ accessToken, activeTheme }: KycProps) => {
+  const [isSdkVisible, setIsSdkVisible] = useState(false);
   const errorHandler = (e: any) => {
     // eslint-disable-next-line no-console
     console.log(e);
@@ -15,12 +20,23 @@ const Kyc: FC<KycProps> = ({ accessToken }: KycProps) => {
     console.log(message);
   };
 
+  useEffect(() => {
+    setIsSdkVisible(false);
+    setTimeout(() => {
+      setIsSdkVisible(true);
+    }, 100);
+  }, [activeTheme]);
+
+  if (!isSdkVisible) {
+    return null;
+  }
+
   return (
     <SumsubWebSdk
       accessToken={accessToken}
       expirationHandler={() => Promise.resolve(accessToken)}
       config={{
-        theme: 'light',
+        theme: activeTheme,
         i18n: {
           document: {
             subTitles: {
@@ -29,7 +45,7 @@ const Kyc: FC<KycProps> = ({ accessToken }: KycProps) => {
           },
         },
       }}
-      options={{ theme: 'light' }}
+      options={{ theme: activeTheme }}
       onMessage={messageHandler}
       onError={errorHandler}
     />

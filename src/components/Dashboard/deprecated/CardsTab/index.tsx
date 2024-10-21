@@ -64,7 +64,7 @@ const CardsTab: FC<CardsTabProps> = (props) => {
         <Loader />
       ) : (
         <>
-          {activeCardMode.LIST && <CardsList onCardClick={setActiveCard} {...props} />}
+          {/* {activeCardMode.LIST && <CardsList onCardClick={setActiveCard} {...props} />} */}
           {activeCardMode.CARD_DETAIL && selectedCard.data && (
             <CardDetail card={selectedCard.data} setCardTabMode={() => setActiveCard(null)} {...props} />
           )}

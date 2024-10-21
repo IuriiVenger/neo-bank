@@ -1,3 +1,5 @@
+import { falsyValues } from '@/constants';
+
 export const roundToDecimals = (value: number, count = 2) => {
   const multiplier = 10 ** count;
 
@@ -49,8 +51,10 @@ export const getDate = (date: string) => {
 export const deleteDash = (str: string) => str.replace(/-/g, '');
 
 export const getCardExpiryRecord = (month: number, year: number) => {
-  const monthStr = month < 10 ? `0${month}` : month;
+  const monthStr = month.toString().length === 1 ? `0${month}` : month;
   const yearStr = year.toString().slice(-2);
 
   return `${monthStr}/${yearStr}`;
 };
+
+export const convertToBoolean = (value: any): boolean => !falsyValues.includes(value);

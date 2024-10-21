@@ -3,6 +3,7 @@ import { useCallback, useRef } from 'react';
 
 import { orders } from '@/api/orders';
 import { API } from '@/api/types';
+import whiteLabelConfig from '@/config/whitelabel';
 import { ModalNames } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { selectIsUserLoggedIn, selectUser } from '@/store/selectors';
@@ -31,7 +32,7 @@ const useOrder = () => {
       return false;
     }
 
-    if (availableLimitRef.current && availableLimitRef.current < amount) {
+    if (availableLimitRef.current && availableLimitRef.current < amount && !whiteLabelConfig.disableKYC) {
       openKYCModal();
       return false;
     }

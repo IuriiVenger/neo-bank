@@ -16,7 +16,7 @@ import { DashboardProps } from '@/components/Dashboard';
 import CardsList from '@/components/Dashboard/tabs/MainTab/CardsList';
 import DefaultContainer from '@/components/ui/DefaultContainer';
 import { RoundButtonProps } from '@/components/ui/RoundButton';
-import { DashboardTabs } from '@/constants';
+import { DashboardTabs, KYCStatuses } from '@/constants';
 import { roundToDecimals, separateNumbers } from '@/utils/converters';
 
 type MainTabProps = {
@@ -42,6 +42,7 @@ type MainTabProps = {
   createWalletAddress: DashboardProps['createWalletAddress'];
   selectCrypto: DashboardProps['selectCrypto'];
   externalCalcData: DashboardProps['externalCalcData'];
+  whiteLabelConfig?: DashboardProps['whiteLabelConfig'];
 };
 
 const MainTab: FC<MainTabProps> = (props) => {
@@ -52,6 +53,9 @@ const MainTab: FC<MainTabProps> = (props) => {
     selectedWalletBalanceCurrency,
     chainList,
     loadSelectedWalletCards,
+    verificationStatus,
+    openKYC,
+    whiteLabelConfig,
   } = props;
 
   const [isReceiveCryptoModalOpen, setIsReceiveCryptoModalOpen] = useState(false);
@@ -67,7 +71,14 @@ const MainTab: FC<MainTabProps> = (props) => {
   const openWalletTab = () => changeDashboardTab(DashboardTabs.WALLET);
   const openTransactionsTab = () => changeDashboardTab(DashboardTabs.TRANSACTIONS);
   const openReceiveCryptoModal = () => setIsReceiveCryptoModalOpen(true);
-  const openCreateCardModal = () => setIsCreateCardModalOpen(true);
+  const openCreateCardModal = () => {
+    if (whiteLabelConfig?.disableKYC || verificationStatus === KYCStatuses.APPROVED) {
+      setIsCreateCardModalOpen(true);
+      return;
+    }
+    openKYC();
+  };
+
   const openWithdrawCryptoModal = () => setIsWithdrawCryptoModalOpen(true);
 
   const onCardCreate = (card_id: string) => {
