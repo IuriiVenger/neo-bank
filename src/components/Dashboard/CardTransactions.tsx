@@ -28,7 +28,7 @@ const CardTransactions: FC<WalletTransactionsProps> = (props) => {
   const isLoadMoreAvailible = !meta.isLastPage && !disableLoadMore;
 
   return (
-    <section className="flex flex-col gap-4 overflow-scroll">
+    <section className="flex flex-col gap-4 overflow-y-auto">
       {!isFirstTransactionsLoading && data ? (
         <>
           {!data.length && (
@@ -39,7 +39,7 @@ const CardTransactions: FC<WalletTransactionsProps> = (props) => {
             />
           )}
           {data.map((transaction) => (
-            <TransactionItem tableView={tableView} key={transaction.transaction_id} transaction={transaction} />
+            <TransactionItem tableView={tableView} key={transaction.vendor_transaction_id} transaction={transaction} />
           ))}
           {isLoadMoreAvailible && (
             <Button

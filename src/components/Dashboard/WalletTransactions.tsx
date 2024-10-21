@@ -28,7 +28,7 @@ const WalletTransactions: FC<WalletTransactionsProps> = (props) => {
   const isLoadMoreAvailible = !meta.isLastPage && !disableLoadMore;
 
   return (
-    <section className="flex flex-col gap-4 overflow-scroll">
+    <section className="flex flex-col gap-4 overflow-y-auto">
       {!isFirstTransactionsLoading && data ? (
         <>
           {!data.length && (
