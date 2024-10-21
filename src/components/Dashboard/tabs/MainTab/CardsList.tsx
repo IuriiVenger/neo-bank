@@ -13,7 +13,8 @@ import { DashboardProps } from '../..';
 
 import cardsEmptyStateDark from '@/assets/svg/theme-illustrations/dark/card-empty-state.svg';
 import cardsEmptyStateLight from '@/assets/svg/theme-illustrations/light/card-empty-state.svg';
-import Card, { CardSizes } from '@/components/ui/Card';
+import Card from '@/components/ui/Card';
+import { CardSizes } from '@/components/ui/Card/types';
 import EmptyState from '@/components/ui/EmptyState';
 import Loader from '@/components/ui/Loader';
 import { KYCStatuses, RequestStatus } from '@/constants';
