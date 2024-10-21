@@ -16,6 +16,8 @@ import {
 
 import { TitleDescriptionShortitle, WalletType } from './types';
 
+export const falsyValues = ['false', '0', '', 'FALSE', false, null, undefined, NaN, 0];
+
 export enum RequestStatus {
   NONE = 'none',
   PENDING = 'pending',
