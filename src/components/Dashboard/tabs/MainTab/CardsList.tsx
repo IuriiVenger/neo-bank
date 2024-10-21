@@ -17,7 +17,7 @@ import Card from '@/components/ui/Card';
 import { CardSizes } from '@/components/ui/Card/types';
 import EmptyState from '@/components/ui/EmptyState';
 import Loader from '@/components/ui/Loader';
-import { KYCStatuses, RequestStatus } from '@/constants';
+import { RequestStatus } from '@/constants';
 
 import { deleteDash } from '@/utils/converters';
 import { getCardBalance } from '@/utils/financial';
@@ -27,26 +27,12 @@ export type CardsListProps = {
   className?: string;
   cardSize?: CardSizes;
   cards: DashboardProps['cards'];
-
   loadMoreCards: DashboardProps['loadMoreCards'];
-  openKYC: DashboardProps['openKYC'];
-  verificationStatus?: DashboardProps['verificationStatus'];
-
   openCreateCardModal: () => void;
 };
 
 const CardsList: FC<CardsListProps> = (props) => {
-  const {
-    cards,
-    onCardClick,
-
-    loadMoreCards,
-    openKYC,
-    verificationStatus,
-    className,
-    cardSize,
-    openCreateCardModal,
-  } = props;
+  const { cards, onCardClick, loadMoreCards, className, cardSize, openCreateCardModal } = props;
   const { data, status, meta } = cards;
 
   const scrollContainer = useRef<HTMLElement>(null);
@@ -74,10 +60,6 @@ const CardsList: FC<CardsListProps> = (props) => {
           scrollContainer.current.scrollLeft,
       });
     }
-  };
-
-  const createCardButtonClickHandler = () => {
-    verificationStatus === KYCStatuses.APPROVED ? openCreateCardModal() : openKYC();
   };
 
   useEffect(() => {
@@ -111,7 +93,7 @@ const CardsList: FC<CardsListProps> = (props) => {
       <div className="flex items-center justify-between gap-3 px-4 lg:px-8">
         <h2 className="text-xl lg:text-2xl">Cards</h2>
         <Button
-          onClick={createCardButtonClickHandler}
+          onClick={openCreateCardModal}
           radius="full"
           isIconOnly
           color="secondary"
@@ -156,7 +138,7 @@ const CardsList: FC<CardsListProps> = (props) => {
                   </div>
                 }
                 description="Top up and manage crypto easily by our cards"
-                onTitleClick={createCardButtonClickHandler}
+                onTitleClick={openCreateCardModal}
               />
             )}
             {data.map((card, index) => (
