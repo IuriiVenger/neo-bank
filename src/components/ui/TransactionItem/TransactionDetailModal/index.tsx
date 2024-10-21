@@ -1,11 +1,12 @@
 import { FC } from 'react';
 
-import TransactionDetailField from './TransactionDetailField';
+import TransactionDetailField, { TransactionDetailFieldProps } from './TransactionDetailField';
 
 import { API } from '@/api/types';
 import MainModal from '@/components/modals/MainModal';
-import { cardTransactionTypeData, walletTransactionTypeData } from '@/constants';
-import { isWalletTransaction } from '@/utils/financial';
+import { cardTransactionStatusData, cardTransactionTypeData, walletTransactionTypeData } from '@/constants';
+import { getDateAndTime } from '@/utils/converters';
+import { getCardTransactionExchangeRate, isWalletTransaction } from '@/utils/financial';
 import { getDirectionSymbol } from '@/utils/helpers';
 
 type TransactionDetilsProps = {
@@ -16,7 +17,7 @@ type TransactionDetilsProps = {
 };
 
 const TransactionDetailsModal: FC<TransactionDetilsProps> = ({ isOpen, transaction, onOpenChange }) => {
-  const transactionDetailFields: { label: string; value: string }[][] = isWalletTransaction(transaction)
+  const transactionDetailFields: TransactionDetailFieldProps['items'][] = isWalletTransaction(transaction)
     ? [
         [{ label: 'Status', value: transaction.status }],
         [
@@ -33,26 +34,32 @@ const TransactionDetailsModal: FC<TransactionDetilsProps> = ({ isOpen, transacti
           },
         ],
         [
-          { label: 'Date', value: transaction.created_at },
+          { label: 'Date', value: getDateAndTime(transaction.created_at) },
           { label: 'Amount', value: `${transaction.amount} ${transaction.crypto.symbol}` },
           { label: 'Info', value: transaction.info },
         ],
       ]
     : [
         [
-          { label: 'Status', value: transaction.status },
+          { label: 'Merchant', value: transaction.merchant },
+          {
+            label: 'Status',
+            value: cardTransactionStatusData[transaction.status]?.title || transaction.status,
+            valueClassname: cardTransactionStatusData[transaction.status]?.detailColor,
+            ValueIcon: cardTransactionStatusData[transaction.status]?.Icon,
+          },
           { label: 'Failury reason', value: transaction.failure_reason },
+          { label: 'Date', value: getDateAndTime(transaction.created_at) },
+          {
+            label: 'Transaction amount',
+            value: `${transaction.transaction_amount} ${transaction.transaction_currency}`,
+          },
+          { label: 'Billing amount', value: `${transaction.billing_amount} ${transaction.billing_currency}` },
+          { label: 'Exchange rate', value: getCardTransactionExchangeRate(transaction) },
         ],
         [
-          { label: 'Card ID', value: transaction.card_id },
-          { label: 'Wallet ID', value: transaction.wallet_id },
-          { label: 'Fiat account ID', value: transaction.fiat_account_id },
-          { label: 'Curency', value: transaction.transaction_currency },
-          { label: 'Type', value: transaction.transaction_type },
-        ],
-        [
-          { label: 'Date', value: transaction.posted_date },
-          { label: 'Amount', value: `${transaction.transaction_amount} ${transaction.transaction_currency}` },
+          { label: 'Card number', value: `**${transaction.last4}` },
+          { label: 'Transaction ID', value: transaction.vendor_transaction_id },
           { label: 'Type', value: transaction.transaction_type },
         ],
       ];
@@ -62,10 +69,10 @@ const TransactionDetailsModal: FC<TransactionDetilsProps> = ({ isOpen, transacti
     ? walletTransactionTypeData[transaction.type]?.[transaction.method]?.direction
     : cardTransactionTypeData[transaction.transaction_type]?.direction;
 
-  const transactionAmount = isWalletTransaction(transaction) ? transaction.amount : transaction.transaction_amount;
+  const transactionAmount = isWalletTransaction(transaction) ? transaction.amount : transaction.billing_amount;
   const transactionCurrency = isWalletTransaction(transaction)
     ? transaction.crypto.symbol
-    : transaction.transaction_currency;
+    : transaction.billing_currency;
 
   const closeModal = () => {
     onOpenChange(false);
