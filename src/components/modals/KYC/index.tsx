@@ -5,11 +5,13 @@ import { FC, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { API } from '@/api/types';
-import Kyc from '@/components/KYC/steps/Kyc';
-import Start from '@/components/KYC/steps/Start';
+import Kyc from '@/components/modals/KYC/steps/Kyc';
+import Start from '@/components/modals/KYC/steps/Start';
 import MainModal from '@/components/modals/MainModal';
 
-import { KYCStatuses } from '@/constants';
+import { CustomTheme, KYCStatuses } from '@/constants';
+import { useAppSelector } from '@/store';
+import { selectActiveTheme } from '@/store/selectors';
 
 type KYCModalProps = {
   onClose: Function;
@@ -31,6 +33,9 @@ const KYCModal: FC<KYCModalProps> = (props) => {
   const [accessToken, setAccessToken] = useState<string>('');
   const [isPending, setIsPending] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
+  const activeTheme = useAppSelector(selectActiveTheme);
+
+  const isLightTheme = activeTheme === CustomTheme.LIGHT;
 
   useEffect(() => {
     const getToken = async (userId: string) => {
@@ -61,12 +66,19 @@ const KYCModal: FC<KYCModalProps> = (props) => {
   };
 
   return (
-    <MainModal isOpen={isOpen} onClose={closeHandler} scrollBehavior="inside" confirmButtonHidden nativeCloseButton>
+    <MainModal
+      isOpen={isOpen}
+      onClose={closeHandler}
+      scrollBehavior="inside"
+      confirmButtonHidden
+      nativeCloseButton
+      contentClassName={isLightTheme ? 'bg-white' : 'bg-[#20252C]'}
+    >
       <>
         {step === KYCSteps.START && (
           <Start nextStep={() => setStep(KYCSteps.KYC)} isPending={isPending} isError={isError} {...props} />
         )}
-        {step === KYCSteps.KYC && <Kyc accessToken={accessToken} />}
+        {step === KYCSteps.KYC && <Kyc activeTheme={activeTheme} accessToken={accessToken} />}
       </>
     </MainModal>
   );
