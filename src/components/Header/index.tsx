@@ -15,7 +15,7 @@ import {
 import Link from 'next/link';
 import React, { FC, useMemo, useState } from 'react';
 
-import KYCButton from '../KYC/KYCButton';
+import KYCButton from '../modals/KYC/KYCButton';
 
 import ThemeImage from '../ui/ThemeImage';
 import ThemeSwitcher from '../ui/ThemeSwitcher';
@@ -58,6 +58,8 @@ const Header: FC = () => {
   );
 
   const filtredMenuItems = menuItems.filter((item) => item.enabled);
+  const isKYCButtonVisible =
+    userData && requestKYCStatuses.includes(userData.kyc_status) && !whiteLabelConfig.disableKYC;
 
   const closeMenu = () => setIsMenuOpen(false);
 
@@ -144,9 +146,7 @@ const Header: FC = () => {
           ))
         )}
 
-        {userData && requestKYCStatuses.includes(userData.kyc_status) && (
-          <KYCButton onClick={showKYCModal} status={userData?.kyc_status} />
-        )}
+        {isKYCButtonVisible && <KYCButton onClick={showKYCModal} status={userData?.kyc_status} />}
         <NavbarItem className="flex h-full items-end pb-6">
           <ThemeSwitcher />
         </NavbarItem>

@@ -10,6 +10,7 @@ import { CardsTabProps } from '..';
 import CreateCardModal from './CreateCardModal';
 
 import { API } from '@/api/types';
+import { DashboardProps } from '@/components/Dashboard';
 import Loader from '@/components/ui/Loader';
 import { KYCStatuses, RequestStatus } from '@/constants';
 import { UseExternalCalcData } from '@/hooks/useExternalCalc';
@@ -19,6 +20,7 @@ import { getCardProvider } from '@/utils/financial';
 export type CardsListProps = CardsTabProps & {
   onCardClick: (card_id: string) => void;
   externalCalcData: UseExternalCalcData;
+  whiteLabelConfig: DashboardProps['whiteLabelConfig'];
 };
 
 const CardsList: FC<CardsListProps> = (props) => {
