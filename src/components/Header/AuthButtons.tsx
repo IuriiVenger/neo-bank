@@ -7,8 +7,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FC } from 'react';
 
-import KYCButton from '../KYC/KYCButton';
+import KYCButton from '../modals/KYC/KYCButton';
 
+import whiteLabelConfig from '@/config/whitelabel';
 import { ModalNames, requestKYCStatuses } from '@/constants';
 import useAuth from '@/hooks/useAuth';
 import { useAppDispatch, useAppSelector } from '@/store';
@@ -26,7 +27,8 @@ const AuthButtons: FC<UserProps> = ({ className }) => {
   const { signOut } = useAuth(dispatch);
   const pathname = usePathname();
   const isDashboardPage = pathname === '/dashboard';
-  const isKYCButtonVisible = !isDashboardPage && userData && requestKYCStatuses.includes(userData.kyc_status);
+  const isKYCButtonVisible =
+    !isDashboardPage && userData && requestKYCStatuses.includes(userData.kyc_status) && !whiteLabelConfig.disableKYC;
 
   const openKycModal = () => dispatch(setModalVisible(ModalNames.KYC));
 

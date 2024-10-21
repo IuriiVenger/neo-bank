@@ -5,12 +5,17 @@ import CustomInput from '@/components/ui/CustomInput';
 export type CardDetailsStepProps = {
   cardName: string | null;
   setCardName: Dispatch<SetStateAction<string | null>>;
-  cardholderName: string | null;
-  setCardholderName: Dispatch<SetStateAction<string | null>>;
+  // cardholderName: string | null; hide cardholder name
+  // setCardholderName: Dispatch<SetStateAction<string | null>>; hide cardholder name
 };
 
 const CardDetailsStep: FC<CardDetailsStepProps> = (props) => {
-  const { cardName, cardholderName, setCardName, setCardholderName } = props;
+  const {
+    cardName,
+    // cardholderName,  hide cardholder name
+    setCardName,
+    // setCardholderName,  hide cardholder name
+  } = props;
 
   const onCardNameChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,12 +24,12 @@ const CardDetailsStep: FC<CardDetailsStepProps> = (props) => {
     [setCardName],
   );
 
-  const onCardholderNameChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setCardholderName(e.target.value);
-    },
-    [setCardholderName],
-  );
+  // const onCardholderNameChange = useCallback( hide cardholder name
+  //   (e: React.ChangeEvent<HTMLInputElement>) => {
+  //     setCardholderName(e.target.value);
+  //   },
+  //   [setCardholderName],
+  // );
 
   return (
     <div className="flex flex-col gap-12">
@@ -39,7 +44,7 @@ const CardDetailsStep: FC<CardDetailsStepProps> = (props) => {
           size="lg"
           radius="md"
         />
-        <CustomInput
+        {/* <CustomInput hide cardholder name
           isCustomBordered
           label="Cardholder name"
           value={cardholderName || ''}
@@ -47,7 +52,7 @@ const CardDetailsStep: FC<CardDetailsStepProps> = (props) => {
           placeholder="Enter cardholder name"
           size="lg"
           radius="md"
-        />
+        /> */}
       </div>
     </div>
   );
