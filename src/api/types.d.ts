@@ -186,33 +186,24 @@ export namespace API {
     }
 
     export interface TransactionItem {
-      auth_code: string;
+      vendor_transaction_id: string;
+      created_at: string;
+      cleared_at: string;
+      merchant: string;
+      last4: string;
+      title: string;
       billing_amount: number;
       billing_currency: string;
-      card_id: string;
-      wallet_id: string;
-      fiat_account_id: string;
-      card_nickname: string;
-      client_data: string;
-      digital_wallet_token_id: string;
-      failure_reason: string;
-      masked_card_number: string;
-      matched_authorizations: string[];
-      merchant: {
-        category_code: string;
-        city: string;
-        country: string;
-        name: string;
-      };
-      network_transaction_id: string;
-      posted_date: string;
-      retrieval_ref: string;
-      status: CardTransactionStatus;
       transaction_amount: number;
       transaction_currency: string;
-      transaction_date: string;
-      transaction_id: string;
+      conversion_rate: number;
+      failure_reason: string;
+      status: CardTransactionStatus;
       transaction_type: CardTransactionType;
+      is_credit: boolean;
+      has_receipt: boolean;
+      adjustment_type: string;
+      review_status: string;
     }
 
     export interface TransactionsList {

@@ -3,7 +3,16 @@
 
 import { IconType } from 'react-icons';
 
-import { RiArrowDownLine, RiArrowUpLine } from 'react-icons/ri';
+import {
+  RiArrowDownLine,
+  RiArrowGoBackFill,
+  RiArrowUpLine,
+  RiCheckDoubleFill,
+  RiCheckFill,
+  RiCloseLine,
+  RiTimeFill,
+  RiTimerLine,
+} from 'react-icons/ri';
 
 import { TitleDescriptionShortitle, WalletType } from './types';
 
@@ -267,6 +276,46 @@ export const cardTransactionTypeData: Record<
     Icon: RiArrowUpLine,
     direction: 'incoming',
     typeName: 'original_credit',
+  },
+};
+
+export const cardTransactionStatusData: Record<
+  CardTransactionStatus,
+  { title: string; Icon: IconType; detailColor?: string; listColor?: string }
+> = {
+  [CardTransactionStatus.APPROVED]: {
+    title: 'Approved',
+    Icon: RiCheckFill,
+    detailColor: 'text-green-500',
+  },
+  [CardTransactionStatus.CLEARED]: {
+    title: 'Cleared',
+    Icon: RiCheckDoubleFill,
+    detailColor: 'text-green-500',
+  },
+  [CardTransactionStatus.EXPIRED]: {
+    title: 'Expired',
+    Icon: RiTimerLine,
+    detailColor: 'text-red-500',
+    listColor: 'text-red-500',
+  },
+  [CardTransactionStatus.FAILED]: {
+    title: 'Failed',
+    Icon: RiCloseLine,
+    detailColor: 'text-red-500',
+    listColor: 'text-red-500',
+  },
+  [CardTransactionStatus.PENDING]: {
+    title: 'Pending',
+    Icon: RiTimeFill,
+    detailColor: 'text-yellow-500',
+    listColor: 'text-foreground-2',
+  },
+  [CardTransactionStatus.REVERSED]: {
+    title: 'Reversed',
+    Icon: RiArrowGoBackFill,
+    detailColor: 'text-orange-500',
+    listColor: 'text-yellow-500',
   },
 };
 
