@@ -89,7 +89,7 @@ const DetailCard: FC<DetailCardProps> = (props) => {
       className={cn(
         cardSizesMap[size].card,
         className,
-        'text-foreground-4 relative flex flex-col justify-between',
+        'relative flex flex-col justify-between text-white',
         (status !== CardStatus.ACTIVE || disabled || blocked) && 'grayscale',
       )}
     >
