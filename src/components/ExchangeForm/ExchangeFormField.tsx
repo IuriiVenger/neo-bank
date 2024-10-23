@@ -1,5 +1,5 @@
 import { cn } from '@nextui-org/react';
-import { FC, useRef } from 'react';
+import { FC, useRef, useState } from 'react';
 
 import CurrencyInfo from '../Currency/CurrencyInfo';
 import DefaultContainer from '../ui/DefaultContainer';
@@ -7,7 +7,7 @@ import DefaultContainer from '../ui/DefaultContainer';
 import Loader from '../ui/Loader';
 
 import { API } from '@/api/types';
-import { roundToDecimals } from '@/utils/converters';
+import { normaliseDecimalValue, roundToDecimals } from '@/utils/converters';
 
 type ExchangeFormFieldProps = {
   className?: string;
@@ -17,7 +17,7 @@ type ExchangeFormFieldProps = {
   chains?: API.List.Chains[];
   onCurrencyClick?: () => void;
   amount: string | number;
-  handleAmountInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setAmount?: (amount: number) => void;
   amountSymbol?: string;
   calculatedField?: boolean;
   isAmountLoading?: boolean;
@@ -34,9 +34,9 @@ const ExchangeFormField: FC<ExchangeFormFieldProps> = (props) => {
     chains,
     onCurrencyClick,
     amount,
-    handleAmountInput,
+    setAmount,
     amountSymbol,
-    calculatedField = !handleAmountInput,
+    calculatedField = !setAmount,
     isAmountLoading,
     roundAmount,
     roundAmountCount = 2,
@@ -49,6 +49,17 @@ const ExchangeFormField: FC<ExchangeFormFieldProps> = (props) => {
   };
 
   const amountValue = roundAmount ? roundToDecimals(+amount, roundAmountCount) : amount;
+
+  const [inputValue, setInputValue] = useState<string | number>(amountValue);
+
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const targetValue = normaliseDecimalValue(e.target.value);
+
+    setInputValue(targetValue);
+    if (!Number.isNaN(+targetValue) && setAmount) {
+      setAmount(+targetValue);
+    }
+  };
 
   return (
     <DefaultContainer
@@ -76,12 +87,13 @@ const ExchangeFormField: FC<ExchangeFormFieldProps> = (props) => {
           <div className="flex items-center text-xl font-semibold tracking-wide">
             <input
               className="w-full bg-inherit text-end text-foreground focus-visible:outline-none disabled:!bg-inherit disabled:opacity-100"
-              value={amountValue.toString()}
-              onChange={handleAmountInput}
-              type="number"
+              value={calculatedField ? amountValue : inputValue}
+              defaultValue={calculatedField ? amountValue : inputValue}
+              inputMode="decimal"
+              onChange={onInputChange}
+              type="text"
               disabled={calculatedField}
-              inputMode="numeric"
-              pattern="[0-9]*"
+              pattern="\d+(\.\d*)?"
               ref={inputRef}
             />
             <span className="ml-1">{amountSymbol}</span>

@@ -13,13 +13,13 @@ type ExchangeFormProps = {
   sellingTitleValue?: string;
   sellingAmount: string | number;
   sellingCurrency: API.List.Crypto | API.List.Fiat | null;
-  handleSellingAmountInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setSellingAmountInput?: (e: number) => void;
   onSellingCurrencyClick?: () => void;
   buyingTitleLabel?: string;
   buyingTitleValue?: string;
   buyingAmount: string | number;
   buyingCurrency: API.List.Crypto | API.List.Fiat | null;
-  handleBuyingAmountInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setBuyingAmountInput?: (e: number) => void;
   buyingAmoutPending?: boolean;
   onBuyingCurrencyClick?: () => void;
   roundSellingAmount?: boolean;
@@ -36,13 +36,13 @@ const ExchangeForm: FC<ExchangeFormProps> = (props) => {
     sellingTitleValue,
     sellingAmount,
     sellingCurrency,
-    handleSellingAmountInput,
+    setSellingAmountInput,
     onSellingCurrencyClick,
     buyingTitleLabel = 'To',
     buyingTitleValue,
     buyingAmount,
     buyingCurrency,
-    handleBuyingAmountInput,
+    setBuyingAmountInput,
     buyingAmoutPending,
     onBuyingCurrencyClick,
     roundBuyingAmount,
@@ -59,7 +59,7 @@ const ExchangeForm: FC<ExchangeFormProps> = (props) => {
         currency={sellingCurrency}
         chains={chains}
         amount={sellingAmount}
-        handleAmountInput={handleSellingAmountInput}
+        setAmount={setSellingAmountInput}
         amountSymbol={sellingCurrency?.symbol}
         onCurrencyClick={onSellingCurrencyClick}
         roundAmount={roundSellingAmount}
@@ -75,7 +75,7 @@ const ExchangeForm: FC<ExchangeFormProps> = (props) => {
         currency={buyingCurrency}
         amount={buyingAmount}
         amountSymbol={buyingCurrency?.symbol}
-        handleAmountInput={handleBuyingAmountInput}
+        setAmount={setBuyingAmountInput}
         isAmountLoading={buyingAmoutPending}
         onCurrencyClick={onBuyingCurrencyClick}
         roundAmount={roundBuyingAmount}
