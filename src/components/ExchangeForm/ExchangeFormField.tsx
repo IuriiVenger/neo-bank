@@ -7,6 +7,7 @@ import DefaultContainer from '../ui/DefaultContainer';
 import Loader from '../ui/Loader';
 
 import { API } from '@/api/types';
+import { roundToDecimals } from '@/utils/converters';
 
 type ExchangeFormFieldProps = {
   className?: string;
@@ -20,6 +21,8 @@ type ExchangeFormFieldProps = {
   amountSymbol?: string;
   calculatedField?: boolean;
   isAmountLoading?: boolean;
+  roundAmount?: boolean;
+  roundAmountCount?: number;
 };
 
 const ExchangeFormField: FC<ExchangeFormFieldProps> = (props) => {
@@ -35,6 +38,8 @@ const ExchangeFormField: FC<ExchangeFormFieldProps> = (props) => {
     amountSymbol,
     calculatedField = !handleAmountInput,
     isAmountLoading,
+    roundAmount,
+    roundAmountCount = 2,
   } = props;
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -42,6 +47,8 @@ const ExchangeFormField: FC<ExchangeFormFieldProps> = (props) => {
   const focusInputRef = () => {
     inputRef.current?.focus();
   };
+
+  const amountValue = roundAmount ? roundToDecimals(+amount, roundAmountCount) : amount;
 
   return (
     <DefaultContainer
@@ -69,7 +76,7 @@ const ExchangeFormField: FC<ExchangeFormFieldProps> = (props) => {
           <div className="flex items-center text-xl font-semibold tracking-wide">
             <input
               className="w-full bg-inherit text-end text-foreground focus-visible:outline-none disabled:!bg-inherit disabled:opacity-100"
-              value={amount.toString()}
+              value={amountValue.toString()}
               onChange={handleAmountInput}
               type="number"
               disabled={calculatedField}
