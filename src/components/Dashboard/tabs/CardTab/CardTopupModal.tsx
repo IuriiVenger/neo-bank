@@ -99,7 +99,7 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
     try {
       setPending();
       await createInternalTopUpOrder({
-        amount,
+        amount: +amount,
         crypto_uuid: selectedCrypto.uuid,
         fiat_uuid: selectedFiat.uuid,
         wallet_uuid: selectedWallet.data.uuid,
@@ -131,8 +131,6 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
     }
   };
 
-  const handleAmountInput = (e: React.ChangeEvent<HTMLInputElement>) => setAmount(Number(e.target.value));
-
   useEffect(() => {
     if (!selectedCard.data) return;
     setCardFiatCurrency();
@@ -156,13 +154,14 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
           sellingTitleValue={`Available: ${selectedCryptoWalletBalance} ${selectedCrypto?.symbol}`}
           sellingCurrency={selectedCrypto}
           sellingAmount={amount}
-          handleSellingAmountInput={handleAmountInput}
+          setSellingAmountInput={setAmount}
           buyingAmount={offrampCalcData?.amount_fiat || 0}
           buyingCurrency={selectedFiat}
           buyingTitleLabel="To"
           buyingTitleValue={`Balance: ${selectedCard.data?.fiat_account.fiat.symbol}${selectedCard.data?.fiat_account.balance}`}
           buyingAmoutPending={isOfframpCalcPending}
           onSellingCurrencyClick={openCryptoModal}
+          roundBuyingAmount
         />
 
         <CurrencyListModal
