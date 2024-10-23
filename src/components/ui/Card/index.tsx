@@ -69,7 +69,7 @@ type CardProps = {
   blocked?: boolean;
   provider?: CardProvider;
   cardNumber?: string;
-  balance?: string;
+  balance?: string | null;
   // CVV?: string;
   // expirationDate?: string;
   masked?: boolean;

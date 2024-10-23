@@ -21,7 +21,7 @@ const TransactionDetailField: FC<TransactionDetailFieldProps> = ({ items }) => (
     {items.map(({ label, value, valueClassname, ValueIcon }, index) => (
       <div key={index} className="flex justify-between gap-4">
         <span className="text-foreground-2 text-sm">{label}</span>
-        <span className={cn('flex items-center gap-1 text-end text-sm', valueClassname)}>
+        <span className={cn('flex items-center gap-1 break-all text-end text-sm', valueClassname)}>
           {ValueIcon && <ValueIcon />}
           {value}
         </span>
