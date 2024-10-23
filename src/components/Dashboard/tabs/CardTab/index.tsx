@@ -72,6 +72,7 @@ const CardTab: FC<CardTabProps> = (props) => {
 
   const isUserVerified = verificationStatus === KYCStatuses.APPROVED;
   const isCardPending = selectedCard.status === RequestStatus.PENDING;
+  const isCardRejected = selectedCard.status === RequestStatus.REJECTED;
   const isCardFrozen = selectedCard.data?.card_status === CardStatus.INACTIVE;
   const isCardClosed = selectedCard.data?.card_status === CardStatus.CLOSED;
 
@@ -155,9 +156,13 @@ const CardTab: FC<CardTabProps> = (props) => {
     },
   ];
 
+  if (isCardRejected) {
+    throw new Error('Selected card is not available');
+  }
+
   return (
     <>
-      {isCardPending || !selectedCard.data ? (
+      {isCardPending ? (
         <Loader className="h-full" />
       ) : (
         <>
@@ -166,19 +171,19 @@ const CardTab: FC<CardTabProps> = (props) => {
             <div className="flex w-fit flex-col gap-7 max-lg:self-center">
               <Card
                 className="max-md:hidden"
-                cardNumber={selectedCard.data.card_number}
-                provider={selectedCard.data.brand}
-                status={selectedCard.data.card_status}
-                balance={getCardBalance(selectedCard.data)}
+                cardNumber={selectedCard.data?.card_number}
+                provider={selectedCard.data?.brand}
+                status={selectedCard.data?.card_status}
+                balance={selectedCard.data && getCardBalance(selectedCard.data)}
                 masked
                 size="lg"
               />
               <Card
                 className="md:hidden"
-                cardNumber={selectedCard.data.card_number}
-                provider={selectedCard.data.brand}
-                balance={getCardBalance(selectedCard.data)}
-                status={selectedCard.data.card_status}
+                cardNumber={selectedCard.data?.card_number}
+                provider={selectedCard.data?.brand}
+                balance={selectedCard.data && getCardBalance(selectedCard.data)}
+                status={selectedCard.data?.card_status}
                 masked
                 size="md"
               />

@@ -58,3 +58,13 @@ export const getCardExpiryRecord = (month: number, year: number) => {
 };
 
 export const convertToBoolean = (value: any): boolean => !falsyValues.includes(value);
+
+export const normaliseDecimalValue = (value: string) => {
+  const valueWithDotsWithoutComma = value.replace(',', '.');
+  const valueWithMaxOneDots = valueWithDotsWithoutComma.replace(/\.([^.]*)/g, (match, group, offset) =>
+    offset === valueWithDotsWithoutComma.indexOf('.') ? match : group,
+  );
+  const normalizedValue = valueWithMaxOneDots.replace(/^0+(\d)/, '$1');
+
+  return normalizedValue;
+};
