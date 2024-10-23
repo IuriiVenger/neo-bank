@@ -2,7 +2,7 @@ import cn from 'classnames';
 import Image from 'next/image';
 import { FC } from 'react';
 
-import { CardSizes, CardSizesValues, CardProvider } from './types';
+import { CardProvider, CardSizes, DetailCardSizesValues } from './types';
 
 import masterCardLogo from '@/assets/svg/payment-systems/master-card-logo.svg';
 import visaLogo from '@/assets/svg/payment-systems/visa-logo-white.svg';
@@ -14,46 +14,36 @@ import ThemeImage from '@/components/ui/ThemeImage';
 import { CardStatus } from '@/constants';
 import { getCardProvider } from '@/utils/financial';
 
-const cardSizesMap: Record<CardSizes, Record<CardSizesValues, string>> = {
+const cardSizesMap: Record<CardSizes, Record<DetailCardSizesValues, string>> = {
   xs: {
     provider: 'h-1 w-fit',
     tenantLogo: 'h-1 w-fit',
-    card: ' w-22 h-14 rounded-[2px] p-1.5',
+    card: 'w-15 h-9 rounded-[2px] p-1.5',
     cardNumber: 'text-[4px]',
-    balance: 'hidden',
-    balanceLabel: 'hidden',
   },
   sm: {
     provider: 'h-3 w-fit',
     tenantLogo: 'h-2.5 w-fit',
     card: 'w-44 h-28 rounded-[7px] p-2.5',
     cardNumber: 'text-xs',
-    balance: 'text-sm',
-    balanceLabel: 'text-[10px]',
   },
   md: {
-    provider: 'h-4 w-fit',
-    tenantLogo: 'h-3 w-fit',
-    card: 'w-56 h-36 rounded-[12px] p-3',
-    cardNumber: 'text-base',
-    balance: 'text-sm mt-1',
-    balanceLabel: 'text-[8px]',
+    provider: 'h-5.5 w-fit',
+    tenantLogo: 'h-5 w-fit',
+    card: 'w-78 h-49 rounded-[12px] p-5',
+    cardNumber: 'text-xl',
   },
   lg: {
     provider: 'h-7 w-fit',
     tenantLogo: 'h-5 w-fit',
     card: 'w-90 h-57 rounded-[14px] p-5',
-    cardNumber: 'text-xl',
-    balance: 'text-2xl mt-1.5',
-    balanceLabel: 'text-sm',
+    cardNumber: 'text-2xl',
   },
   adaptive: {
     provider: 'h-3 w-fit lg:h-5.5 lg:w-fit',
     tenantLogo: 'h-2.5 w-fit lg:h-5 lg:w-fit',
     card: 'w-44 h-28 lg:w-78 lg:h-49 rounded-[7px] p-2.5 lg:p-5 lg:rounded-[12px]',
-    cardNumber: 'text-xs lg:text-base',
-    balance: 'text-sm lg:text-lg lg:mt-1.5',
-    balanceLabel: 'text-[8px] lg:text-sm',
+    cardNumber: 'text-xs lg:text-xl',
   },
 };
 
@@ -62,31 +52,28 @@ const CardProviders: Record<CardProvider, string> = {
   Mastercard: masterCardLogo,
 };
 
-type CardProps = {
+type DetailCardProps = {
   className?: string;
   size?: CardSizes;
   disabled?: boolean;
   blocked?: boolean;
   provider?: CardProvider;
-  cardNumber?: string;
-  balance?: string | null;
+  cardNumber: string;
   // CVV?: string;
-  // expirationDate?: string;
-  masked?: boolean;
+  expirationDate: string;
   // tenantLogo?: string;
   status?: CardStatus;
 };
 
-const Card: FC<CardProps> = (props) => {
+const DetailCard: FC<DetailCardProps> = (props) => {
   const {
     className,
     size = 'sm',
     disabled,
     blocked,
     provider,
-    masked,
     cardNumber,
-    balance,
+    expirationDate,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     // CVV,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -95,8 +82,6 @@ const Card: FC<CardProps> = (props) => {
     status = CardStatus.ACTIVE,
   } = props;
 
-  const printedCardNumber = masked && cardNumber ? `· · ${cardNumber.slice(-4)}` : cardNumber;
-
   const providerLogo = provider ? CardProviders[getCardProvider(provider)] : null;
 
   return (
@@ -104,7 +89,7 @@ const Card: FC<CardProps> = (props) => {
       className={cn(
         cardSizesMap[size].card,
         className,
-        'relative flex flex-col justify-between',
+        'relative flex flex-col justify-between text-white',
         (status !== CardStatus.ACTIVE || disabled || blocked) && 'grayscale',
       )}
     >
@@ -122,18 +107,17 @@ const Card: FC<CardProps> = (props) => {
           alt="Tenant logo"
         />
       </div>
-      {balance !== undefined && (
-        <div className="relative flex flex-col items-start">
-          <p className={cn(cardSizesMap[size].balanceLabel, 'text-white opacity-70')}>Balance:</p>
-          <p className={cn(cardSizesMap[size].balance, 'text-white')}>{balance}</p>
-        </div>
-      )}
-      <div className="relative flex items-center justify-between">
-        <p className={cn(cardSizesMap[size].cardNumber, 'text-white')}>{printedCardNumber}</p>
-        {providerLogo && <Image src={providerLogo} className={cardSizesMap[size].provider} alt="Provider logo" />}
+
+      <p className={cn(cardSizesMap[size].cardNumber, 'relative')}>{cardNumber}</p>
+
+      <div className="relative flex justify-between">
+        <p className={cardSizesMap[size].cardNumber}>{expirationDate}</p>
+        {providerLogo && (
+          <Image src={providerLogo} className={cn(cardSizesMap[size].provider, 'z-1 self-end')} alt="Provider logo" />
+        )}
       </div>
     </section>
   );
 };
 
-export default Card;
+export default DetailCard;

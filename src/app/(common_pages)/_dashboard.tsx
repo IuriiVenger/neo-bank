@@ -395,8 +395,12 @@ const DashboardPage = () => {
   }, [selectedWallet]);
 
   useEffect(() => {
-    setActiveDashboardTab((queryDashboardTab as DashboardTabs) || DashboardTabs.MAIN);
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    if (queryDashboardTab && Object.values(DashboardTabs).includes(queryDashboardTab as DashboardTabs)) {
+      setActiveDashboardTab(queryDashboardTab as DashboardTabs);
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    } else {
+      changeDashboardTab(DashboardTabs.MAIN);
+    }
   }, [queryDashboardTab]);
 
   useEffect(() => {

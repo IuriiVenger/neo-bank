@@ -26,6 +26,7 @@ const config: Config = {
     './src/assets/styles/**/*.{css,scss,sass}',
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
+  safelist: ['text-red-500', 'text-green-500', 'text-yellow-500', 'text-orange-500'],
   theme: {
     extend: {
       screens: {

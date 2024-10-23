@@ -122,8 +122,6 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
     }
   };
 
-  const handleAmountInput = (e: React.ChangeEvent<HTMLInputElement>) => setAmount(Number(e.target.value));
-
   useEffect(() => {
     if (!selectedCard.data) return;
     setCardFiatCurrency();
@@ -146,7 +144,7 @@ const CardTopupModal: FC<CardTopupModalProps> = (props) => {
           sellingTitleValue={`Available: ${selectedCryptoWalletBalance} ${selectedCrypto?.symbol}`}
           sellingCurrency={selectedCrypto}
           sellingAmount={amount}
-          handleSellingAmountInput={handleAmountInput}
+          setSellingAmountInput={setAmount}
           buyingAmount={offrampCalcData?.amount_fiat || 0}
           buyingCurrency={selectedFiat}
           buyingTitleLabel="To"

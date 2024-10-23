@@ -39,7 +39,7 @@ const WalletTransactions: FC<WalletTransactionsProps> = (props) => {
   }, [isEndCardsListVisible]);
 
   return (
-    <section className={cn('flex flex-col gap-4 overflow-scroll', className)}>
+    <section className={cn('flex flex-col gap-4 overflow-y-auto', className)}>
       {!isFirstTransactionsLoading && data ? (
         <>
           {!data.length && (

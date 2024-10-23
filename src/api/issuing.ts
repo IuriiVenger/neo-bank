@@ -30,7 +30,17 @@ export const issuing = {
   },
   transactions: {
     getByCardId: (card_id: string, limit = defaultPaginationParams.limit, offset = defaultPaginationParams.offset) =>
-      getRequest<API.Cards.TransactionsList>(`/issuing/transactions/`, { params: { limit, offset, card_id } }),
+      getRequest<API.Cards.TransactionsList>(`/issuing/transactions/`, {
+        params: { limit, offset, card_id, new_scheme: true },
+      }),
+    getByFiatAccountId: (
+      fiat_account_id: string,
+      limit = defaultPaginationParams.limit,
+      offset = defaultPaginationParams.offset,
+    ) =>
+      getRequest<API.Cards.TransactionsList>(`/issuing/transactions/`, {
+        params: { limit, offset, fiat_account_id, new_scheme: true },
+      }),
   },
   bins: {
     getAll: () => getRequest<API.Issuing.Programs.Response>('/issuing/config/programs').then(({ data }) => data),

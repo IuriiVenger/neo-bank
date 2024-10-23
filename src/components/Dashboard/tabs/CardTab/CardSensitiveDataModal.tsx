@@ -9,7 +9,8 @@ import { DashboardProps } from '../..';
 
 import { API } from '@/api/types';
 import MainModal from '@/components/modals/MainModal';
-import Card from '@/components/ui/Card';
+
+import DetailCard from '@/components/ui/Card/DetailCard';
 import CustomInput from '@/components/ui/CustomInput';
 import { getCardExpiryRecord, separateNumbers } from '@/utils/converters';
 
@@ -28,7 +29,7 @@ const CardSensitiveDataModal: FC<CardSensitiveDataModalProps> = (props) => {
   }
 
   const expiry = getCardExpiryRecord(sensitiveData.expiry_month, sensitiveData.expiry_year);
-  const numberMask = separateNumbers(+sensitiveData.card_number, '-', 4);
+  const numberMask = separateNumbers(+sensitiveData.card_number, ' ', 4);
 
   const copyCVVToClipboard = () => {
     copy(sensitiveData.cvv);
@@ -55,7 +56,13 @@ const CardSensitiveDataModal: FC<CardSensitiveDataModalProps> = (props) => {
             focused={focus}
           /> */}
 
-        <Card className="self-center" cardNumber={numberMask} provider={selectedCard.data?.brand} size="md" />
+        <DetailCard
+          className="self-center"
+          cardNumber={numberMask}
+          provider={selectedCard.data?.brand}
+          expirationDate={expiry}
+          size="lg"
+        />
         <div className="flex flex-col gap-3 py-4">
           <CustomInput
             isCustomBordered

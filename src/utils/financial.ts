@@ -29,6 +29,7 @@ import alqo from '@/assets/svg/landing-cryptocurrency-icons/alqo.svg';
 import anchorProtocol from '@/assets/svg/landing-cryptocurrency-icons/anchorProtocol.svg';
 import ankr from '@/assets/svg/landing-cryptocurrency-icons/ankr.svg';
 import appCoins from '@/assets/svg/landing-cryptocurrency-icons/appCoins.svg';
+import axt from '@/assets/svg/landing-cryptocurrency-icons/axt.webp';
 import compound from '@/assets/svg/landing-cryptocurrency-icons/compound.svg';
 import consensysCodefi from '@/assets/svg/landing-cryptocurrency-icons/consensysCodefi.svg';
 import convex from '@/assets/svg/landing-cryptocurrency-icons/convex.svg';
@@ -51,6 +52,7 @@ type CryptoIcons = {
 
 export const cryptoIcons: CryptoIcons = {
   ada,
+  axt,
   bnb,
   bsc,
   btc,
@@ -220,4 +222,12 @@ export const getSelectedCoinCurrenciesWithAmount = (
   return hideEmptyBalance
     ? selectedCoinCurrenciesWithAmount.filter(({ amount }) => !!amount)
     : selectedCoinCurrenciesWithAmount;
+};
+
+export const getCardTransactionExchangeRate = (transaction: API.Cards.TransactionItem) => {
+  const exchangeRate = roundToDecimals(transaction.transaction_amount / transaction.billing_amount, 2);
+
+  const exchangeRateDescription = `1 ${transaction.billing_currency} = ${exchangeRate} ${transaction.transaction_currency}`;
+
+  return exchangeRateDescription;
 };

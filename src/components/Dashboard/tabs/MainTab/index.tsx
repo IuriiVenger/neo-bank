@@ -18,7 +18,7 @@ import WalletBalanceList from './WalletBalanceList';
 import { DashboardProps } from '@/components/Dashboard';
 import DefaultContainer from '@/components/ui/DefaultContainer';
 import { RoundButtonProps } from '@/components/ui/RoundButton';
-import { DashboardTabs } from '@/constants';
+import { DashboardTabs, KYCStatuses } from '@/constants';
 import { roundToDecimals, separateNumbers } from '@/utils/converters';
 
 type MainTabProps = {
@@ -49,6 +49,7 @@ type MainTabProps = {
   externalCalcData: DashboardProps['externalCalcData'];
   selectedWalletFiatAccounts: DashboardProps['selectedWalletFiatAccounts'];
   selectedWalletFiatAccountsWithCards: DashboardProps['selectedWalletFiatAccountsWithCards'];
+  whiteLabelConfig?: DashboardProps['whiteLabelConfig'];
 };
 
 const MainTab: FC<MainTabProps> = (props) => {
@@ -65,6 +66,9 @@ const MainTab: FC<MainTabProps> = (props) => {
     selectedWalletFiatAccounts,
     loadMoreFiatAccountCards,
     createStandAloneCard,
+    verificationStatus,
+    openKYC,
+    whiteLabelConfig,
   } = props;
 
   const [isReceiveCryptoModalOpen, setIsReceiveCryptoModalOpen] = useState(false);
@@ -85,7 +89,14 @@ const MainTab: FC<MainTabProps> = (props) => {
   const openFiatAccountTab = (fiat_account_id: string) =>
     changeDashboardTab(DashboardTabs.FIAT_ACCOUNT, { fiat_account_id });
   const openReceiveCryptoModal = () => setIsReceiveCryptoModalOpen(true);
-  const openCreateCardModal = () => setIsCreateCardModalOpen(true);
+  const openCreateCardModal = () => {
+    if (whiteLabelConfig?.disableKYC || verificationStatus === KYCStatuses.APPROVED) {
+      setIsCreateCardModalOpen(true);
+      return;
+    }
+    openKYC();
+  };
+
   const openWithdrawCryptoModal = () => setIsWithdrawCryptoModalOpen(true);
 
   const onCardCreate = (card_id: string) => {

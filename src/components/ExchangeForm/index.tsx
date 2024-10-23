@@ -9,21 +9,23 @@ import { API } from '@/api/types';
 type ExchangeFormProps = {
   className?: string;
   chains?: API.List.Chains[];
-
   sellingTitleLabel?: string;
   sellingTitleValue?: string;
   sellingAmount: string | number;
   sellingCurrency: API.List.Crypto | API.List.Fiat | null;
-  handleSellingAmountInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setSellingAmountInput?: (e: number) => void;
   onSellingCurrencyClick?: () => void;
-
   buyingTitleLabel?: string;
   buyingTitleValue?: string;
   buyingAmount: string | number;
   buyingCurrency: API.List.Crypto | API.List.Fiat | null;
-  handleBuyingAmountInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setBuyingAmountInput?: (e: number) => void;
   buyingAmoutPending?: boolean;
   onBuyingCurrencyClick?: () => void;
+  roundSellingAmount?: boolean;
+  roundSellingAmountCount?: number;
+  roundBuyingAmount?: boolean;
+  roundBuyingAmountCount?: number;
 };
 
 const ExchangeForm: FC<ExchangeFormProps> = (props) => {
@@ -34,15 +36,19 @@ const ExchangeForm: FC<ExchangeFormProps> = (props) => {
     sellingTitleValue,
     sellingAmount,
     sellingCurrency,
-    handleSellingAmountInput,
+    setSellingAmountInput,
     onSellingCurrencyClick,
     buyingTitleLabel = 'To',
     buyingTitleValue,
     buyingAmount,
     buyingCurrency,
-    handleBuyingAmountInput,
+    setBuyingAmountInput,
     buyingAmoutPending,
     onBuyingCurrencyClick,
+    roundBuyingAmount,
+    roundBuyingAmountCount = 2,
+    roundSellingAmount,
+    roundSellingAmountCount = 2,
   } = props;
 
   return (
@@ -53,9 +59,11 @@ const ExchangeForm: FC<ExchangeFormProps> = (props) => {
         currency={sellingCurrency}
         chains={chains}
         amount={sellingAmount}
-        handleAmountInput={handleSellingAmountInput}
+        setAmount={setSellingAmountInput}
         amountSymbol={sellingCurrency?.symbol}
         onCurrencyClick={onSellingCurrencyClick}
+        roundAmount={roundSellingAmount}
+        roundAmountCount={roundSellingAmountCount}
       />
 
       <div className="bg-background-4 text-foreground-4 relative m-auto -my-[14px] flex h-11 w-11 items-center justify-center rounded-full text-2xl">
@@ -67,9 +75,11 @@ const ExchangeForm: FC<ExchangeFormProps> = (props) => {
         currency={buyingCurrency}
         amount={buyingAmount}
         amountSymbol={buyingCurrency?.symbol}
-        handleAmountInput={handleBuyingAmountInput}
+        setAmount={setBuyingAmountInput}
         isAmountLoading={buyingAmoutPending}
         onCurrencyClick={onBuyingCurrencyClick}
+        roundAmount={roundBuyingAmount}
+        roundAmountCount={roundBuyingAmountCount}
       />
     </div>
   );

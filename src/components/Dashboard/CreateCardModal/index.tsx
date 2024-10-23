@@ -16,6 +16,7 @@ import MainModal from '@/components/modals/MainModal';
 
 import { CardFormFactor, cardFormFactorsData, CardType, cardTypeData } from '@/constants';
 
+import { useRequestStatus } from '@/hooks/useRequestStatus';
 import { TitleDescriptionValue } from '@/types';
 
 type CreateCardModalProps = {
@@ -101,15 +102,15 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
 
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState<API.Cards.CardConfig | null>(null);
-
   const [topUpConfirmationText, setTopUpConfirmationText] = useState<string | null>(null);
-
   const [cardFormFactor, setCardFormFactor] = useState<CardFormFactor | null>(null);
   const [cardType, setCardType] = useState<CardType | null>(null);
   const [currentStep, setCurrentStep] = useState<CreateCardSteps>(CreateCardSteps.FORM_FACTOR);
   const [cardName, setCardName] = useState<string | null>(null);
-  const [cardholderName, setCardholderName] = useState<string | null>(null);
+  // const [cardholderName, setCardholderName] = useState<string | null>(null); hide cardholder name
   const [createdCardId, setCreatedCardId] = useState<string | null>(null);
+
+  const [requestStatus, setPending, setFulfilled, setRejected] = useRequestStatus();
 
   const availablePrograms = useMemo(() => {
     if (currentStep === CreateCardSteps.FORM_FACTOR) {
@@ -137,7 +138,13 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
   );
 
   const openConfirmationModal = () => {
-    if (!cardFormFactor || !cardType || !selectedProgram || !cardName || !cardholderName) {
+    if (
+      !cardFormFactor ||
+      !cardType ||
+      !selectedProgram ||
+      !cardName
+      // !cardholderName hide cardholder name
+    ) {
       return;
     }
     const confirmationText = `Are you sure you want to create ${cardFormFactorsData[
@@ -159,13 +166,18 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
     setSelectedProgram,
     cardName,
     setCardName,
-    cardholderName,
-    setCardholderName,
     fiatList,
+    // cardholderName, hide cardholder name
+    // setCardholderName, hide cardholder name
   };
 
   const createCardHandler = async () => {
-    if (!selectedWallet.data || !selectedProgram || !cardName || !cardholderName) {
+    if (
+      !selectedWallet.data ||
+      !selectedProgram ||
+      !cardName
+      // !cardholderName  hide cardholder name
+    ) {
       return;
     }
 
@@ -173,15 +185,22 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
       authorization_controls: {} as API.Cards.AuthorizationControls,
       transaction_limits: [] as API.Cards.TransactionLimit[],
       program_id: selectedProgram.id,
-      name_on_card: cardholderName,
+      // name_on_card: cardholderName, hide cardholder name
       nick_name: cardName,
       wallet_id: selectedWallet.data.uuid,
       request_id: crypto.randomUUID(),
     };
 
-    const { data } = await createCard(requestData);
-    setCreatedCardId(data.card_id);
-    setCurrentStep(CreateCardSteps.SUCCESS);
+    try {
+      setPending();
+      const { data } = await createCard(requestData);
+      setCreatedCardId(data.card_id);
+      setCurrentStep(CreateCardSteps.SUCCESS);
+      setFulfilled();
+    } catch (error) {
+      setRejected();
+      throw error;
+    }
   };
 
   const closeModal = () => {
@@ -240,7 +259,8 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
       mainButtonText: 'Create card',
       onMainButtonClick: openConfirmationModal,
       onBackButtonClick: () => setCurrentStep(CreateCardSteps.PROGRAM),
-      isDisabled: !cardName || !cardholderName,
+      // isDisabled: !cardName || !cardholderName, hide cardholder name
+      isDisabled: !cardName,
     },
     [CreateCardSteps.SUCCESS]: {
       Component: CardSusccessStep,
@@ -259,6 +279,7 @@ const CreateCardModal: FC<CreateCardModalProps> = (props) => {
         confirmButtonDisabled={createCardStepsMap[currentStep].isDisabled}
         backdrop="opaque"
         scrollBehavior="inside"
+        isLoading={requestStatus.PENDING}
         // nativeCloseButton
         confirmButtonText={createCardStepsMap[currentStep].mainButtonText}
         onConfirm={createCardStepsMap[currentStep].onMainButtonClick}
