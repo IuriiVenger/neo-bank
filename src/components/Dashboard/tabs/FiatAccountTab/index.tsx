@@ -8,8 +8,6 @@ import { DashboardProps } from '../..';
 
 import CardTransactions from '../../CardTransactions';
 
-import CardSensitiveDataModal from './CardSensitiveDataModal';
-
 import CardTopupModal from './CardTopupModal';
 
 import FiatAccountInformation from './FiatAccountInformation';
