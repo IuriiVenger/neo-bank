@@ -325,6 +325,23 @@ export namespace API {
       code: string;
       enabled: boolean;
     }
+
+    export interface Chains {
+      id: number;
+      enabled: boolean;
+      name: string;
+      symbol: string;
+    }
+
+    export interface NonModifiedCrypto {
+      uuid: string;
+      name: string;
+      symbol: string;
+      icon: string;
+      contract: string;
+      decimal?: number;
+      chain: Chains;
+    }
     export interface Crypto {
       uuid: string;
       name: string;
@@ -338,13 +355,6 @@ export namespace API {
     export interface CryptoBySymbol {
       symbol: string;
       items: Crypto[];
-    }
-
-    export interface Chains {
-      id: number;
-      enabled: boolean;
-      name: string;
-      symbol: string;
     }
   }
 

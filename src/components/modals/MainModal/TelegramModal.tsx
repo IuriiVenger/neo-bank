@@ -180,7 +180,9 @@ const TelegramModal: FC<MainModalProps> = (props) => {
     >
       <ModalContent className={cn('fixed left-0 top-0 max-h-svh md:relative md:max-h-[90vh]', contentClassName)}>
         {!!header && <ModalHeader>{header}</ModalHeader>}
-        <ModalBody className={cn('pb-10 shadow-inner sm:max-h-[90vh]', bodyClassname)}>{children}</ModalBody>
+        <ModalBody className={cn('overflow-y-auto pb-10 shadow-inner sm:max-h-[90vh]', bodyClassname)}>
+          {children}
+        </ModalBody>
       </ModalContent>
     </Modal>
   );
