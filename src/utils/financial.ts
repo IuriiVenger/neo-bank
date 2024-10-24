@@ -17,6 +17,8 @@ import currencyFlag from 'react-currency-flags/dist/flags';
 
 import { roundToDecimals } from './converters';
 
+import { isChain, isFiat } from './typeguards';
+
 import { API } from '@/api/types';
 import acalaNetwork from '@/assets/svg/landing-cryptocurrency-icons/acala-network.svg';
 import achain from '@/assets/svg/landing-cryptocurrency-icons/achain.svg';
@@ -90,15 +92,6 @@ export const landingCryptoIcons = [
   currencyCom,
   dash,
 ];
-
-export const isFiat = (currency: API.List.Crypto | API.List.Fiat | API.List.Chains): currency is API.List.Fiat =>
-  (currency as API.List.Fiat).code !== undefined && (currency as API.List.Fiat).enabled !== undefined;
-
-export const isCrypto = (currency: API.List.Crypto | API.List.Fiat | API.List.Chains): currency is API.List.Crypto =>
-  (currency as API.List.Crypto).contract !== undefined && (currency as API.List.Crypto).chain !== undefined;
-
-export const isChain = (currency: API.List.Crypto | API.List.Fiat | API.List.Chains): currency is API.List.Chains =>
-  (currency as API.List.Chains).id !== undefined && (currency as API.List.Chains).enabled !== undefined;
 
 export const isWalletTransaction = (
   transaction: API.WalletTransactions.Transaction | API.Cards.TransactionItem,

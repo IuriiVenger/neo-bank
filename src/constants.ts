@@ -70,16 +70,9 @@ export enum PaymentMethod {
 }
 
 export enum DashboardTabs {
-  DEPOSIT = 'deposit',
-  WITHDRAW = 'withdraw',
-  EXCHANGE = 'exchange',
-  INFO = 'info',
-  CARDS = 'cards',
-
-  // new
-
   MAIN = 'main',
   CARD = 'card',
+  FIAT_ACCOUNT = 'fiat_account',
   WALLET = 'wallet',
   TRANSACTIONS = 'transactions',
 }
@@ -112,17 +105,16 @@ export const defaultPaginationParams = {
   isLastPage: false,
 };
 
-export const cardInitialPaginationParams = {
-  limit: 10,
-  offset: 0,
-  isLastPage: false,
-};
-
 export const cardLoadMoreDefaultLimit = 12;
 
 export const emptyStoreDataWithStatus = {
   status: RequestStatus.NONE,
   data: null,
+};
+
+export const emptyStoreDataWithStatusAndMeta = {
+  ...emptyStoreDataWithStatus,
+  meta: defaultPaginationParams,
 };
 
 export enum CalcType {

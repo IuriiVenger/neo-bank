@@ -1,58 +1,35 @@
 /* eslint-disable no-param-reassign */
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import {
-  AppAction,
-  StoreDataWithStatus,
-  StoreDataWithStatusAndMeta,
-  StoreOfframpCalcData,
-  StoreOnrampCalcData,
-  SupabasePaginationParams,
-} from '../types';
+import { FinanceState, LoadWithLimit, RequiredLoadWithLimit, SupabasePaginationParams } from '../types';
 
+import { fiat_accounts } from '@/api/fiat_accounts';
 import { issuing } from '@/api/issuing';
 import { orders } from '@/api/orders';
 import { API } from '@/api/types';
 import { wallets } from '@/api/wallets';
-import {
-  CalcType,
-  RequestStatus,
-  cardInitialPaginationParams,
-  defaultPaginationParams,
-  emptyStoreDataWithStatus,
-} from '@/constants';
+import { CalcType, RequestStatus, emptyStoreDataWithStatus, emptyStoreDataWithStatusAndMeta } from '@/constants';
+import { isStoreDataWithStatus, isStoreDataWithStatusAndMeta } from '@/utils/typeguards';
 
-type FinanceState = {
-  bins: API.Cards.CardConfig[];
-  chains: API.List.Chains[];
-  crypto: API.List.Crypto[];
-  cryptoBySymbol: API.List.CryptoBySymbol[];
-  fiats: API.List.Fiat[];
-  fiatExchangeRate: API.Exchange.F2C[];
-  onrampCalc: StoreDataWithStatus<StoreOnrampCalcData[] | null>;
-  offrampCalc: StoreDataWithStatus<StoreOfframpCalcData[] | null>;
-  withdrawCalc: StoreDataWithStatus<API.Orders.Crypto.Withdrawal.Calc.Response | null>;
-  selectedChain: null | API.List.Chains;
-  selectedCrypto: null | API.List.Crypto;
-  selectedCard: StoreDataWithStatus<API.Cards.CardDetailItem | null>;
-  selectedFiat: null | API.List.Fiat;
-  selectedWallet: StoreDataWithStatus<API.Wallets.ExtendWallet | null>;
-  selectedWalletTransactions: StoreDataWithStatusAndMeta<API.WalletTransactions.Transaction[] | null> &
-    SupabasePaginationParams;
-  selectedCardTransactions: StoreDataWithStatusAndMeta<API.Cards.TransactionItem[] | null> & SupabasePaginationParams;
-  selectedWalletCards: StoreDataWithStatusAndMeta<API.Cards.CardListItem[] | null> & SupabasePaginationParams;
-  userWallets: API.Wallets.Wallet[];
-};
+// const updateStatus = <T>(state: T, field: keyof T, status: RequestStatus) => {
+//   if (isStoreDataWithStatus(state[field])) {
+//     state[field].status = status;
+//   }
+// };
 
-type LoadWithLimit<T> = T & {
-  limit?: number;
-  offset?: number;
-};
+// const updateDataAndStatus = <T>(state: T, field: keyof T, data: any, status: RequestStatus) => {
+//   if (isStoreDataWithStatus(state[field])) {
+//     state[field].data = data;
+//     state[field].status = status;
+//   }
+// };
 
-type RequiredLoadWithLimit<T> = T & {
-  limit: number;
-  offset: number;
-};
+// const updateMeta = <T>(state: T, field: keyof T, length: number, limit: number) => {
+//   if (isStoreDataWithStatusAndMeta(state[field])) {
+//     state[field].meta.offset = length;
+//     state[field].meta.isLastPage = length < limit;
+//   }
+// };
 
 const initialState: FinanceState = {
   bins: [],
@@ -67,20 +44,15 @@ const initialState: FinanceState = {
   selectedChain: null,
   selectedCrypto: null,
   selectedFiat: null,
+  selectedFiatAccount: emptyStoreDataWithStatus,
+  selectedFiatAccountCards: emptyStoreDataWithStatusAndMeta,
   selectedWallet: emptyStoreDataWithStatus,
+  selectedWalletFiatAccounts: emptyStoreDataWithStatusAndMeta,
+  selectedWalletFiatAccountsWithCards: {},
   selectedCard: emptyStoreDataWithStatus,
-  selectedCardTransactions: {
-    ...emptyStoreDataWithStatus,
-    meta: defaultPaginationParams,
-  },
-  selectedWalletTransactions: {
-    ...emptyStoreDataWithStatus,
-    meta: defaultPaginationParams,
-  },
-  selectedWalletCards: {
-    ...emptyStoreDataWithStatus,
-    meta: cardInitialPaginationParams,
-  },
+  selectedCardTransactions: emptyStoreDataWithStatusAndMeta,
+  selectedWalletTransactions: emptyStoreDataWithStatusAndMeta,
+  selectedWalletCards: emptyStoreDataWithStatusAndMeta,
   userWallets: [],
 };
 
@@ -98,6 +70,113 @@ export const loadSelectedWallet = createAsyncThunk('finanse/selectedWallet', asy
 
   return data;
 });
+
+export const loadSelectedWalletFiatAccounts = createAsyncThunk(
+  'finanse/selectedWalletFiatAccounts',
+  async ({ wallet_uuid, limit, offset }: LoadWithLimit<{ wallet_uuid: string }>) => {
+    const requestData = {
+      wallet_uuid,
+      limit: limit || initialState.selectedWalletFiatAccounts.meta.limit,
+      offset: offset || initialState.selectedWalletFiatAccounts.meta.offset,
+    };
+
+    const { data } = await fiat_accounts.getAllByWalletUuid(
+      requestData.wallet_uuid,
+      requestData.limit,
+      requestData.offset,
+    );
+
+    return data;
+  },
+);
+
+export const loadMoreSelectedWalletFiatAccounts = createAsyncThunk(
+  'finanse/moreSelectedWalletFiatAccounts',
+  async (props: RequiredLoadWithLimit<{ wallet_uuid: string }> & SupabasePaginationParams['meta']) => {
+    const { wallet_uuid, limit, offset } = props;
+    const { data } = await fiat_accounts.getAllByWalletUuid(wallet_uuid, limit, offset);
+
+    return data;
+  },
+);
+
+export const loadSelectedFiatAccount = createAsyncThunk(
+  'finanse/selectedFiatAccount',
+  async (fiat_account_id: string) => {
+    const { data } = await fiat_accounts.getByUuid(fiat_account_id);
+
+    return data;
+  },
+);
+
+export const loadSelectedFiatAccountCards = createAsyncThunk(
+  'finanse/selectedFiatAccountCards',
+  async (props: LoadWithLimit<{ wallet_uuid: string; fiat_account_id: string }>) => {
+    const { wallet_uuid, fiat_account_id, limit, offset } = props;
+    const requestData = {
+      wallet_uuid,
+      fiat_account_id,
+      limit: limit || initialState.selectedFiatAccountCards.meta.limit,
+      offset: offset || initialState.selectedFiatAccountCards.meta.offset,
+    };
+
+    const { data } = await issuing.cards.getByFiatAccountAndWalletId(
+      requestData.wallet_uuid,
+      requestData.fiat_account_id,
+      requestData.limit,
+      requestData.offset,
+    );
+
+    return data;
+  },
+);
+
+export const loadMoreSelectedFiatAccountCards = createAsyncThunk(
+  'finanse/moreSelectedFiatAccountCards',
+  async (
+    props: RequiredLoadWithLimit<{ wallet_uuid: string; fiat_account_id: string }> & SupabasePaginationParams['meta'],
+  ) => {
+    const { wallet_uuid, fiat_account_id, limit, offset } = props;
+    const { data } = await issuing.cards.getByFiatAccountAndWalletId(wallet_uuid, fiat_account_id, limit, offset);
+
+    return data;
+  },
+);
+
+export const loadFiatAccountCards = createAsyncThunk(
+  'finanse/fiatAccountCards',
+  async (props: LoadWithLimit<{ wallet_uuid: string; fiat_account_id: string }>) => {
+    const { wallet_uuid, fiat_account_id, limit, offset } = props;
+
+    const requestData = {
+      wallet_uuid,
+      fiat_account_id,
+      limit: limit || initialState.selectedFiatAccountCards.meta.limit,
+      offset: offset || initialState.selectedFiatAccountCards.meta.offset,
+    };
+
+    const { data } = await issuing.cards.getByFiatAccountAndWalletId(
+      requestData.wallet_uuid,
+      requestData.fiat_account_id,
+      requestData.limit,
+      requestData.offset,
+    );
+
+    return data;
+  },
+);
+
+export const loadMoreFiatAccountCards = createAsyncThunk(
+  'finanse/moreFiatAccountCards',
+  async (
+    props: RequiredLoadWithLimit<{ wallet_uuid: string; fiat_account_id: string }> & SupabasePaginationParams['meta'],
+  ) => {
+    const { wallet_uuid, fiat_account_id, limit, offset } = props;
+    const { data } = await issuing.cards.getByFiatAccountAndWalletId(wallet_uuid, fiat_account_id, limit, offset);
+
+    return data;
+  },
+);
 
 export const loadSelectedCard = createAsyncThunk('finanse/selectedCard', async (card_id: string) => {
   if (!card_id) {
@@ -156,20 +235,20 @@ export const loadMoreCardTransactions = createAsyncThunk(
   },
 );
 
-export const loadCards = createAsyncThunk(
-  'finanse/cards',
+export const loadWalletCards = createAsyncThunk(
+  'finanse/walletCards',
   async ({ wallet_uuid, limit, offset }: RequiredLoadWithLimit<{ wallet_uuid: string }>) => {
-    const { data } = await issuing.cards.getAll(wallet_uuid, limit, offset);
+    const { data } = await issuing.cards.getByWalletUuid(wallet_uuid, limit, offset);
 
     return data;
   },
 );
 
-export const loadMoreCards = createAsyncThunk(
-  'finanse/moreCards',
+export const loadMoreWalletCards = createAsyncThunk(
+  'finanse/moreWalletCards',
   async (props: RequiredLoadWithLimit<{ wallet_uuid: string }> & SupabasePaginationParams['meta']) => {
     const { wallet_uuid, limit, offset } = props;
-    const { data } = await issuing.cards.getAll(wallet_uuid, limit, offset);
+    const { data } = await issuing.cards.getByWalletUuid(wallet_uuid, limit, offset);
 
     return data;
   },
@@ -206,49 +285,103 @@ const financeSlice = createSlice({
   name: 'finance',
   initialState,
   reducers: {
-    setBins: (state, action: AppAction<API.Cards.CardConfig[]>) => {
+    setBins: (state, action: PayloadAction<API.Cards.CardConfig[]>) => {
       state.bins = action.payload;
     },
-    setChains: (state, action: AppAction<API.List.Chains[]>) => {
+    setChains: (state, action: PayloadAction<API.List.Chains[]>) => {
       state.chains = action.payload;
     },
-    setCrypto: (state, action: AppAction<API.List.Crypto[]>) => {
+    setCrypto: (state, action: PayloadAction<API.List.Crypto[]>) => {
       state.crypto = action.payload;
     },
-    setCryptoBySymbol: (state, action: AppAction<API.List.CryptoBySymbol[]>) => {
+    setCryptoBySymbol: (state, action: PayloadAction<API.List.CryptoBySymbol[]>) => {
       state.cryptoBySymbol = action.payload;
     },
-    setFiats: (state, action: AppAction<API.List.Fiat[]>) => {
+    setFiats: (state, action: PayloadAction<API.List.Fiat[]>) => {
       state.fiats = action.payload;
     },
-    setFiatExchangeRate: (state, action: AppAction<API.Exchange.F2C[]>) => {
+    setFiatExchangeRate: (state, action: PayloadAction<API.Exchange.F2C[]>) => {
       state.fiatExchangeRate = action.payload;
     },
-    setSelectedChain: (state, action: AppAction<API.List.Chains>) => {
+    setSelectedChain: (state, action: PayloadAction<API.List.Chains>) => {
       state.selectedChain = action.payload;
     },
-    setSelectedCrypto: (state, action: AppAction<API.List.Crypto>) => {
+    setSelectedCrypto: (state, action: PayloadAction<API.List.Crypto>) => {
       state.selectedCrypto = action.payload;
     },
-    setSelectedFiat: (state, action: AppAction<API.List.Fiat>) => {
+    setSelectedFiat: (state, action: PayloadAction<API.List.Fiat>) => {
       state.selectedFiat = action.payload;
     },
-    setSelectedWallet: (state, action: AppAction<API.Wallets.ExtendWallet | null>) => {
+    setSelectedWallet: (state, action: PayloadAction<API.Wallets.ExtendWallet | null>) => {
       state.selectedWallet.data = action.payload;
     },
-
-    setUserWallets: (state, action: AppAction<API.Wallets.Wallet[]>) => {
+    setUserWallets: (state, action: PayloadAction<API.Wallets.Wallet[]>) => {
       state.userWallets = action.payload;
+    },
+    clearSelectedWallet: (state) => {
+      state.selectedWallet = emptyStoreDataWithStatus;
+    },
+    clearUserWallets: (state) => {
+      state.userWallets = [];
     },
     clearSelectedCard: (state) => {
       state.selectedCard = emptyStoreDataWithStatus;
-      state.selectedCardTransactions = {
-        ...emptyStoreDataWithStatus,
-        meta: defaultPaginationParams,
-      };
+      state.selectedCardTransactions = emptyStoreDataWithStatusAndMeta;
+    },
+    clearSelectedFiatAccount: (state) => {
+      state.selectedFiatAccount = emptyStoreDataWithStatus;
+    },
+    clearSelectedFiatAccountCards: (state) => {
+      state.selectedFiatAccountCards = emptyStoreDataWithStatusAndMeta;
+    },
+    cleareSelectewWalletFiatAccounts: (state) => {
+      state.selectedWalletFiatAccounts = emptyStoreDataWithStatusAndMeta;
+    },
+    clearSelectedWalletFiatAccountsWithCards: (state) => {
+      state.selectedWalletFiatAccountsWithCards = {};
+    },
+    clearSelectedCardTransactions: (state) => {
+      state.selectedCardTransactions = emptyStoreDataWithStatusAndMeta;
+    },
+    clearSelectedWalletTransactions: (state) => {
+      state.selectedWalletTransactions = emptyStoreDataWithStatusAndMeta;
+    },
+    clearSelectedWalletCards: (state) => {
+      state.selectedWalletCards = emptyStoreDataWithStatusAndMeta;
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(loadFiatAccountCards.pending, (state, { meta }) => {
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.status = RequestStatus.PENDING;
+    });
+    builder.addCase(loadFiatAccountCards.fulfilled, (state, { meta, payload }) => {
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.status = RequestStatus.FULLFILLED;
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.data = payload.data;
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.meta.offset = payload.data.length;
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.meta.isLastPage =
+        payload.data.length < state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.meta.limit;
+    });
+    builder.addCase(loadFiatAccountCards.rejected, (state, { meta }) => {
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.status = RequestStatus.REJECTED;
+    });
+    builder.addCase(loadMoreFiatAccountCards.pending, (state, { meta }) => {
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.status = RequestStatus.PENDING;
+    });
+    builder.addCase(loadMoreFiatAccountCards.fulfilled, (state, { meta, payload }) => {
+      const existingData = state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.data;
+
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.status = RequestStatus.FULLFILLED;
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.data = existingData
+        ? [...existingData, ...payload.data]
+        : payload.data;
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.meta.offset += payload.data.length;
+      if (payload.data.length < state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.meta.limit) {
+        state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.meta.isLastPage = true;
+      }
+    });
+    builder.addCase(loadMoreFiatAccountCards.rejected, (state, { meta }) => {
+      state.selectedWalletFiatAccountsWithCards[meta.arg.fiat_account_id].cards.status = RequestStatus.REJECTED;
+    });
     builder.addCase(hiddenLoadSelectedWallet.fulfilled, (state, action) => {
       state.selectedWallet.data = action.payload;
     });
@@ -262,6 +395,46 @@ const financeSlice = createSlice({
     builder.addCase(loadSelectedWallet.rejected, (state) => {
       state.selectedWallet.status = RequestStatus.REJECTED;
     });
+    builder.addCase(loadSelectedWalletFiatAccounts.pending, (state) => {
+      state.selectedWalletFiatAccounts.status = RequestStatus.PENDING;
+    });
+    builder.addCase(loadSelectedWalletFiatAccounts.fulfilled, (state, { payload }) => {
+      state.selectedWalletFiatAccounts.status = RequestStatus.FULLFILLED;
+      state.selectedWalletFiatAccounts.data = payload;
+      payload.forEach((fiatAccount) => {
+        state.selectedWalletFiatAccountsWithCards[fiatAccount.id] = {
+          ...fiatAccount,
+          cards: emptyStoreDataWithStatusAndMeta,
+        };
+      });
+      state.selectedWalletFiatAccounts.meta.offset = payload.length;
+      state.selectedWalletFiatAccounts.meta.isLastPage = payload.length < state.selectedWalletFiatAccounts.meta.limit;
+    });
+    builder.addCase(loadSelectedWalletFiatAccounts.rejected, (state) => {
+      state.selectedWalletFiatAccounts.status = RequestStatus.REJECTED;
+    });
+    builder.addCase(loadMoreSelectedWalletFiatAccounts.pending, (state) => {
+      state.selectedWalletFiatAccounts.status = RequestStatus.PENDING;
+    });
+    builder.addCase(loadMoreSelectedWalletFiatAccounts.fulfilled, (state, { payload }) => {
+      state.selectedWalletFiatAccounts.status = RequestStatus.FULLFILLED;
+      state.selectedWalletFiatAccounts.data = state.selectedWalletFiatAccounts.data
+        ? [...state.selectedWalletFiatAccounts.data, ...payload]
+        : payload;
+      payload.forEach((fiatAccount) => {
+        state.selectedWalletFiatAccountsWithCards[fiatAccount.id] = {
+          ...fiatAccount,
+          cards: emptyStoreDataWithStatusAndMeta,
+        };
+      });
+      state.selectedWalletFiatAccounts.meta.offset += payload.length;
+      if (payload.length < state.selectedWalletFiatAccounts.meta.limit) {
+        state.selectedWalletFiatAccounts.meta.isLastPage = true;
+      }
+    });
+    builder.addCase(loadMoreSelectedWalletFiatAccounts.rejected, (state) => {
+      state.selectedWalletFiatAccounts.status = RequestStatus.REJECTED;
+    });
     builder.addCase(loadSelectedCard.pending, (state) => {
       state.selectedCard.status = RequestStatus.PENDING;
     });
@@ -271,6 +444,16 @@ const financeSlice = createSlice({
     });
     builder.addCase(loadSelectedCard.rejected, (state) => {
       state.selectedCard.status = RequestStatus.REJECTED;
+    });
+    builder.addCase(loadSelectedFiatAccount.pending, (state) => {
+      state.selectedFiatAccount.status = RequestStatus.PENDING;
+    });
+    builder.addCase(loadSelectedFiatAccount.fulfilled, (state, action) => {
+      state.selectedFiatAccount.status = RequestStatus.FULLFILLED;
+      state.selectedFiatAccount.data = action.payload;
+    });
+    builder.addCase(loadSelectedFiatAccount.rejected, (state) => {
+      state.selectedFiatAccount.status = RequestStatus.REJECTED;
     });
     builder.addCase(loadWalletTransactions.pending, (state) => {
       state.selectedWalletTransactions.status = RequestStatus.PENDING;
@@ -331,22 +514,22 @@ const financeSlice = createSlice({
     builder.addCase(loadMoreCardTransactions.rejected, (state) => {
       state.selectedCardTransactions.status = RequestStatus.REJECTED;
     });
-    builder.addCase(loadCards.pending, (state) => {
+    builder.addCase(loadWalletCards.pending, (state) => {
       state.selectedWalletCards.status = RequestStatus.PENDING;
     });
-    builder.addCase(loadCards.fulfilled, (state, action) => {
+    builder.addCase(loadWalletCards.fulfilled, (state, action) => {
       state.selectedWalletCards.status = RequestStatus.FULLFILLED;
       state.selectedWalletCards.data = action.payload.data;
       state.selectedWalletCards.meta.offset = action.payload.data.length;
       state.selectedWalletCards.meta.isLastPage = action.payload.data.length < state.selectedWalletCards.meta.limit;
     });
-    builder.addCase(loadCards.rejected, (state) => {
+    builder.addCase(loadWalletCards.rejected, (state) => {
       state.selectedWalletCards.status = RequestStatus.REJECTED;
     });
-    builder.addCase(loadMoreCards.pending, (state) => {
+    builder.addCase(loadMoreWalletCards.pending, (state) => {
       state.selectedWalletCards.status = RequestStatus.PENDING;
     });
-    builder.addCase(loadMoreCards.fulfilled, (state, action) => {
+    builder.addCase(loadMoreWalletCards.fulfilled, (state, action) => {
       state.selectedWalletCards.status = RequestStatus.FULLFILLED;
       state.selectedWalletCards.data = state.selectedWalletCards.data
         ? [...state.selectedWalletCards.data, ...action.payload.data]
@@ -356,7 +539,7 @@ const financeSlice = createSlice({
         state.selectedWalletCards.meta.isLastPage = true;
       }
     });
-    builder.addCase(loadMoreCards.rejected, (state) => {
+    builder.addCase(loadMoreWalletCards.rejected, (state) => {
       state.selectedWalletCards.status = RequestStatus.REJECTED;
     });
     builder.addCase(loadOnrampCalc.pending, (state) => {
@@ -389,6 +572,35 @@ const financeSlice = createSlice({
     builder.addCase(loadWithdrawCalc.rejected, (state) => {
       state.withdrawCalc.status = RequestStatus.REJECTED;
     });
+    builder.addCase(loadSelectedFiatAccountCards.pending, (state) => {
+      state.selectedFiatAccountCards.status = RequestStatus.PENDING;
+    });
+    builder.addCase(loadSelectedFiatAccountCards.fulfilled, (state, action) => {
+      state.selectedFiatAccountCards.status = RequestStatus.FULLFILLED;
+      state.selectedFiatAccountCards.data = action.payload.data;
+      state.selectedFiatAccountCards.meta.offset = action.payload.data.length;
+      state.selectedFiatAccountCards.meta.isLastPage =
+        action.payload.data.length < state.selectedFiatAccountCards.meta.limit;
+    });
+    builder.addCase(loadSelectedFiatAccountCards.rejected, (state) => {
+      state.selectedFiatAccountCards.status = RequestStatus.REJECTED;
+    });
+    builder.addCase(loadMoreSelectedFiatAccountCards.pending, (state) => {
+      state.selectedFiatAccountCards.status = RequestStatus.PENDING;
+    });
+    builder.addCase(loadMoreSelectedFiatAccountCards.fulfilled, (state, action) => {
+      state.selectedFiatAccountCards.status = RequestStatus.FULLFILLED;
+      state.selectedFiatAccountCards.data = state.selectedFiatAccountCards.data
+        ? [...state.selectedFiatAccountCards.data, ...action.payload.data]
+        : action.payload.data;
+      state.selectedFiatAccountCards.meta.offset += action.payload.data.length;
+      if (action.payload.data.length < state.selectedFiatAccountCards.meta.limit) {
+        state.selectedFiatAccountCards.meta.isLastPage = true;
+      }
+    });
+    builder.addCase(loadMoreSelectedFiatAccountCards.rejected, (state) => {
+      state.selectedFiatAccountCards.status = RequestStatus.REJECTED;
+    });
   },
 });
 
@@ -405,6 +617,15 @@ export const {
   setUserWallets,
   setSelectedWallet,
   clearSelectedCard,
+  clearSelectedFiatAccount,
+  clearSelectedFiatAccountCards,
+  cleareSelectewWalletFiatAccounts,
+  clearSelectedWalletFiatAccountsWithCards,
+  clearSelectedCardTransactions,
+  clearSelectedWalletTransactions,
+  clearSelectedWalletCards,
+  clearSelectedWallet,
+  clearUserWallets,
 } = financeSlice.actions;
 
 export default financeSlice.reducer;

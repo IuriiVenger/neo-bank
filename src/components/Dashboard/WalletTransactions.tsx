@@ -1,5 +1,7 @@
-import { Button } from '@nextui-org/react';
-import { FC } from 'react';
+import { Button, cn } from '@nextui-org/react';
+import { FC, useEffect, useState } from 'react';
+
+import ReactVisibilitySensor from 'react-visibility-sensor';
 
 import { API } from '@/api/types';
 import transactionsEmptyStateDark from '@/assets/svg/theme-illustrations/dark/transactions-empty-state.svg';
@@ -15,20 +17,29 @@ import { StoreDataWithStatusAndMeta } from '@/store/types';
 type WalletTransactionsProps = {
   walletTransactions: StoreDataWithStatusAndMeta<API.WalletTransactions.Transaction[] | null>;
   loadMoreWalletTransactions: () => void;
+  autoLoadMore?: boolean;
   disableLoadMore?: boolean;
   tableView?: boolean;
+  className?: string;
 };
 
 const WalletTransactions: FC<WalletTransactionsProps> = (props) => {
-  const { walletTransactions, loadMoreWalletTransactions, disableLoadMore, tableView } = props;
+  const { walletTransactions, loadMoreWalletTransactions, disableLoadMore, tableView, className, autoLoadMore } = props;
   const { data, status, meta } = walletTransactions;
+  const [isEndCardsListVisible, setIsEndCardsListVisible] = useState(false);
 
   const isTransactionsLoading = status === RequestStatus.PENDING;
   const isFirstTransactionsLoading = isTransactionsLoading && !data?.length;
   const isLoadMoreAvailible = !meta.isLastPage && !disableLoadMore;
 
+  useEffect(() => {
+    if (isEndCardsListVisible && isLoadMoreAvailible) {
+      loadMoreWalletTransactions();
+    }
+  }, [isEndCardsListVisible]);
+
   return (
-    <section className="flex flex-col gap-4 overflow-y-auto">
+    <section className={cn('flex flex-col gap-4 overflow-y-auto', className)}>
       {!isFirstTransactionsLoading && data ? (
         <>
           {!data.length && (
@@ -41,17 +52,24 @@ const WalletTransactions: FC<WalletTransactionsProps> = (props) => {
           {data.map((transaction) => (
             <TransactionItem tableView={tableView} key={transaction.id} transaction={transaction} />
           ))}
-          {isLoadMoreAvailible && (
+          {isLoadMoreAvailible && !autoLoadMore && (
             <Button
               color="primary"
               variant="bordered"
               radius="sm"
-              className="mt-4 w-full max-w-32 self-center "
+              className="mt-4 w-full max-w-32 flex-shrink-0 self-center"
               onClick={loadMoreWalletTransactions}
               isLoading={isTransactionsLoading}
             >
               Load more
             </Button>
+          )}
+          {isLoadMoreAvailible && autoLoadMore && (
+            <ReactVisibilitySensor onChange={setIsEndCardsListVisible}>
+              <div className="m-auto w-fit flex-shrink-0">
+                <Loader />
+              </div>
+            </ReactVisibilitySensor>
           )}
         </>
       ) : (

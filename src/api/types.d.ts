@@ -63,18 +63,16 @@ export namespace API {
   }
 
   export namespace Cards {
-    export interface FiatAccount {
-      id: string;
-      fiat: API.List.Fiat;
-      balance: number;
-      nick_name: string | null;
-    }
     export interface CardConfig {
       id: string;
-      allowed_currencies: string[];
+      allowed_currencies?: string[];
+      base_currency: string;
       brand: string;
-      billingAddress: string;
       form_factor: CardFormFactor;
+      name: string;
+      realtime_auth: boolean;
+      tokenizable: boolean;
+      vendor_id: string;
       purposes: string[] | null;
       fees: {
         issue: {
@@ -160,11 +158,11 @@ export namespace API {
       authorization_controls: {
         id: string;
         card_id: string;
-        allowed_currencies: string[];
+        allowed_currencies?: string[];
         allowed_transaction_count: string;
         allowed_merchant_categories: string | null;
       };
-      fiat_account: FiatAccount;
+      fiat_account: API.Wallets.FiatAccount;
     }
     export interface CardListItem {
       brand: string;
@@ -177,7 +175,7 @@ export namespace API {
       updated_at: string;
       wallet_id: string;
       program_uuid: string;
-      fiat_account: FiatAccount;
+      fiat_account: API.Wallets.FiatAccount;
     }
 
     export interface CardsList {
@@ -216,7 +214,6 @@ export namespace API {
       cvv: string;
       expiry_month: number;
       expiry_year: number;
-      name_on_card: string;
     }
 
     export interface OTP {
@@ -237,7 +234,7 @@ export namespace API {
     };
 
     export namespace Create {
-      export interface Request {
+      export interface StandAloneRequest {
         authorization_controls: AuthorizationControls;
         transaction_limits: TransactionLimit[];
         // name_on_card: string; hide cardholder name
@@ -248,7 +245,14 @@ export namespace API {
         wallet_id: string;
       }
 
-      export type Response = CardDetailItem;
+      export interface FiatAccountRequest {
+        fiat_account_id: string;
+        request_id: string;
+        nick_name: string;
+      }
+
+      export type StandAloneResponse = CardDetailItem;
+      export type FiatAccountResponse = CardDetailItem;
     }
 
     export namespace Update {
@@ -359,6 +363,47 @@ export namespace API {
   }
 
   export namespace Wallets {
+    export interface FiatAccount {
+      id: string;
+      created_at: string;
+      currency_id: string;
+      nick_name: string;
+      balance: number;
+      wallet_id: string;
+      program_id: string;
+      fiat: {
+        code: string;
+        uuid: string;
+        symbol: string;
+        enabled: boolean;
+        coingecko: string;
+      };
+      issuing_program: {
+        id: string;
+        name: string;
+        type: string;
+        brand: string;
+        purposes: string;
+        vendor_id: string;
+        form_factor: string;
+        tokenizable: boolean;
+        base_currency: string;
+        realtime_auth: boolean;
+        allowed_currencies: string[];
+      };
+      realtime_auth: [
+        {
+          id: string;
+          priority: number;
+          crypto_token: string;
+          fiat_account: string;
+        },
+      ];
+      realtimeauth_balance: number;
+      fiat_balance: number;
+      total_balance: number;
+    }
+
     export interface WallletBalanceCryptoDetails {
       uuid: string;
       crypto: {
@@ -410,6 +455,9 @@ export namespace API {
     }
 
     export interface ExtendWallet extends Wallet {
+      fiat_accounts: FiatAccount[];
+      fiat_total: number;
+      crypto_total: number;
       total_amount: number;
     }
 

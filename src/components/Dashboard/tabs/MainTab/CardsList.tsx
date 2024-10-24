@@ -17,7 +17,7 @@ import Card from '@/components/ui/Card';
 import { CardSizes } from '@/components/ui/Card/types';
 import EmptyState from '@/components/ui/EmptyState';
 import Loader from '@/components/ui/Loader';
-import { RequestStatus } from '@/constants';
+import { KYCStatuses, RequestStatus } from '@/constants';
 
 import { deleteDash } from '@/utils/converters';
 import { getCardBalance } from '@/utils/financial';
@@ -27,12 +27,35 @@ export type CardsListProps = {
   className?: string;
   cardSize?: CardSizes;
   cards: DashboardProps['cards'];
-  loadMoreCards: DashboardProps['loadMoreCards'];
+  loadMoreCards: () => void;
+  openKYC: DashboardProps['openKYC'];
+  verificationStatus?: DashboardProps['verificationStatus'];
   openCreateCardModal: () => void;
+  scrollContainerClassName?: string;
+  cardsOnly?: boolean;
+  hideCardInfo?: boolean;
+  smallPaddings?: boolean;
+  horizontalEmptyState?: boolean;
+  noPadding?: boolean;
 };
 
 const CardsList: FC<CardsListProps> = (props) => {
-  const { cards, onCardClick, loadMoreCards, className, cardSize, openCreateCardModal } = props;
+  const {
+    cards,
+    onCardClick,
+    loadMoreCards,
+    openKYC,
+    verificationStatus,
+    className,
+    cardSize,
+    openCreateCardModal,
+    cardsOnly,
+    hideCardInfo,
+    smallPaddings,
+    scrollContainerClassName,
+    horizontalEmptyState,
+    noPadding,
+  } = props;
   const { data, status, meta } = cards;
 
   const scrollContainer = useRef<HTMLElement>(null);
@@ -60,6 +83,14 @@ const CardsList: FC<CardsListProps> = (props) => {
           scrollContainer.current.scrollLeft,
       });
     }
+  };
+
+  const createCardButtonClickHandler = () => {
+    if (!openCreateCardModal) {
+      return;
+    }
+
+    verificationStatus === KYCStatuses.APPROVED ? openCreateCardModal() : openKYC();
   };
 
   useEffect(() => {
@@ -90,39 +121,46 @@ const CardsList: FC<CardsListProps> = (props) => {
 
   return (
     <div className={className}>
-      <div className="flex items-center justify-between gap-3 px-4 lg:px-8">
-        <h2 className="text-xl lg:text-2xl">Cards</h2>
-        <Button
-          onClick={openCreateCardModal}
-          radius="full"
-          isIconOnly
-          color="secondary"
-          className="h-6 w-6 min-w-6 flex-grow-0 text-2xl"
-        >
-          <RiAddFill />
-        </Button>
+      {!cardsOnly && (
+        <div className="flex items-center justify-between gap-3 px-4 lg:px-8">
+          <h2 className="text-xl lg:text-2xl">Cards</h2>
+          <Button
+            onClick={createCardButtonClickHandler}
+            radius="full"
+            isIconOnly
+            color="secondary"
+            className="h-6 w-6 min-w-6 flex-grow-0 text-2xl"
+          >
+            <RiAddFill />
+          </Button>
 
-        <div className="hidden flex-grow justify-end gap-2 lg:flex">
-          <button
-            disabled={!scrollAvailiblity.isLeftScrollAvailible}
-            type="button"
-            className={cn('text-2xl', !scrollAvailiblity.isLeftScrollAvailible && 'opacity-50')}
-            onClick={scrollLeft}
-          >
-            <RiArrowLeftSLine />
-          </button>
-          <button
-            disabled={!scrollAvailiblity.isRightScrollAvailible}
-            type="button"
-            className={cn('text-2xl', !scrollAvailiblity.isRightScrollAvailible && 'opacity-50')}
-            onClick={scrollRight}
-          >
-            <RiArrowRightSLine />
-          </button>
+          <div className="hidden flex-grow justify-end gap-2 lg:flex">
+            <button
+              disabled={!scrollAvailiblity.isLeftScrollAvailible}
+              type="button"
+              className={cn('text-2xl', !scrollAvailiblity.isLeftScrollAvailible && 'opacity-50')}
+              onClick={scrollLeft}
+            >
+              <RiArrowLeftSLine />
+            </button>
+            <button
+              disabled={!scrollAvailiblity.isRightScrollAvailible}
+              type="button"
+              className={cn('text-2xl', !scrollAvailiblity.isRightScrollAvailible && 'opacity-50')}
+              onClick={scrollRight}
+            >
+              <RiArrowRightSLine />
+            </button>
+          </div>
         </div>
-      </div>
+      )}
       <ScrollContainer
-        className="lg:h-68 flex min-h-40 gap-6 px-4 pt-5 lg:px-8 lg:pt-6"
+        className={cn(
+          'flex',
+          scrollContainerClassName,
+          !noPadding && 'px-4 pt-5',
+          !smallPaddings && !noPadding && 'lg:px-8 lg:pt-6',
+        )}
         ref={scrollContainer as any}
         onScroll={onContainerResizeAndScroll}
       >
@@ -138,7 +176,8 @@ const CardsList: FC<CardsListProps> = (props) => {
                   </div>
                 }
                 description="Top up and manage crypto easily by our cards"
-                onTitleClick={openCreateCardModal}
+                onTitleClick={createCardButtonClickHandler}
+                horizontalEmptyState={horizontalEmptyState}
               />
             )}
             {data.map((card, index) => (
@@ -159,8 +198,12 @@ const CardsList: FC<CardsListProps> = (props) => {
                     masked
                   />
                 </button>
-                <p className="text-foreground-2 mt-2 text-xs lg:mt-[14px] lg:text-sm">{card.nick_name}</p>
-                <p className="text-sm font-medium lg:text-base">{getCardBalance(card)}</p>
+                {!hideCardInfo && (
+                  <>
+                    <p className="text-foreground-2 mt-2 text-xs lg:mt-[14px] lg:text-sm">{card.nick_name}</p>
+                    <p className="text-sm font-medium lg:text-base">{getCardBalance(card)}</p>
+                  </>
+                )}
               </div>
             ))}
             {isLoadMoreAvailible && (

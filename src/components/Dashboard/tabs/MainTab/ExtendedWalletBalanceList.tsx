@@ -1,29 +1,27 @@
 import cn from 'classnames';
 import { FC } from 'react';
 
-import ScrollContainer from 'react-indiana-drag-scroll';
-
 import { API } from '@/api/types';
 import cryptoEmptyStateDark from '@/assets/svg/theme-illustrations/dark/crypto-empty-state.svg';
 import cryptoEmptyStateLight from '@/assets/svg/theme-illustrations/light/crypto-empty-state.svg';
 
-import ShortCryptoInfo from '@/components/ui/CryptoInfo/ShortCryptoInfo';
+import CryptoInfo from '@/components/ui/CryptoInfo';
 import EmptyState from '@/components/ui/EmptyState';
 
-type WalletBalanceListProps = {
+type ExtendedWalletBalanceListProps = {
   wallet: API.Wallets.Wallet | null;
   className?: string;
+  selectedWalletBalanceCurrency: string;
 };
 
-const WalletBalanceList: FC<WalletBalanceListProps> = (props) => {
-  const { wallet, className } = props;
+const ExtendedWalletBalanceList: FC<ExtendedWalletBalanceListProps> = (props) => {
+  const { wallet, className, selectedWalletBalanceCurrency } = props;
 
   return (
-    <section className={cn(className)}>
-      <ScrollContainer className={cn('flex gap-1.5 px-4')}>
-        {wallet?.balance.map((crypto, index) => <ShortCryptoInfo key={index} crypto={crypto} />)}
-      </ScrollContainer>
-
+    <section className={cn(className, 'flex h-full flex-grow flex-col gap-4')}>
+      {wallet?.balance.map((crypto, index) => (
+        <CryptoInfo key={index} crypto={crypto} fiatSymbol={selectedWalletBalanceCurrency} />
+      ))}
       {!wallet?.balance.length && (
         <EmptyState
           darkImage={cryptoEmptyStateDark}
@@ -36,4 +34,4 @@ const WalletBalanceList: FC<WalletBalanceListProps> = (props) => {
   );
 };
 
-export default WalletBalanceList;
+export default ExtendedWalletBalanceList;
