@@ -61,7 +61,7 @@ const CardSensitiveDataModal: FC<CardSensitiveDataModalProps> = (props) => {
           cardNumber={numberMask}
           provider={selectedCard.data?.brand}
           expirationDate={expiry}
-          size="lg"
+          size="md"
         />
         <div className="flex flex-col gap-3 py-4">
           <CustomInput
