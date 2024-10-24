@@ -11,7 +11,10 @@ export const list = {
     getAll: (params?: AxiosRequestConfig) => getRequest<API.List.Fiat[]>('/fiats', params).then(({ data }) => data),
   },
   crypto: {
-    getAll: (params?: AxiosRequestConfig) => getRequest<API.List.Crypto[]>('/crypto', params).then(({ data }) => data),
+    getAll: (params?: AxiosRequestConfig): Promise<API.List.Crypto[]> =>
+      getRequest<API.List.NonModifiedCrypto[]>('/crypto', params).then(
+        ({ data }) => data.map((item) => ({ ...item, chain: item.chain.id })), // have to fix on backend
+      ),
     bySymbol: () => getRequest<API.List.CryptoBySymbol[]>('/crypto/by_symbol').then(({ data }) => data),
   },
   chains: {
